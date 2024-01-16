@@ -1,0 +1,338 @@
+<div className="tooltip-wrapper css-p86p9k e1vovkv60">
+                        <div className="css-1rssoz2 egux72a20">
+                          <div className="css-1dwsndp egux72a21">
+                            <div className="css-udumnv egux72a22">
+                              <span className="header-span">
+                                <span className="header-span">основной</span>
+                              </span>
+                            </div>
+                            <div className="css-5yz5oa egux72a28">
+                              <div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-0"
+                                    href="/for-sale/%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <svg
+                                      width="17"
+                                      height="17"
+                                      viewBox="0 0 17 17"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M14.2126 4.50901L9.01649 1.50901C8.05991 0.956721 6.83673 1.28447 6.28444 2.24106L5.53444 3.54009C4.62929 5.10786 5.0749 7.08481 6.51016 8.12336L3.47485 13.038L3.70412 14.0114C3.83447 14.2548 4.72267 15.0453 4.96611 14.9149L6.31339 14.0907L7.54999 12.7789L7.48659 11.5669C7.67602 11.3146 8.09529 11.1136 8.7444 10.9637L9.44945 9.8416C11.1181 10.7795 13.2351 10.2022 14.1947 8.54009L14.9447 7.24106C15.497 6.28447 15.1692 5.06129 14.2126 4.50901ZM7.05652 7.23872L7.21817 7.39601C7.25002 7.41635 7.28248 7.43607 7.31553 7.45516L9.91361 8.95516C11.1093 9.64551 12.6383 9.23583 13.3287 8.04009L14.0787 6.74106C14.3548 6.26276 14.1909 5.65117 13.7126 5.37503L8.51649 2.37503C8.0382 2.09889 7.42661 2.26276 7.15047 2.74106L6.40047 4.04009C5.76667 5.13787 6.06006 6.51653 7.03767 7.26926L7.05652 7.23872ZM4.54307 13.2114L7.36677 8.63944L8.58269 9.34146L8.10749 10.0978C7.4632 10.2912 6.99138 10.561 6.68697 10.9664C6.54615 11.1539 6.4757 11.3849 6.48796 11.6191L6.52902 12.4041L5.67747 13.3075L4.88199 13.7941C4.80411 13.7307 4.72597 13.6596 4.66935 13.6081L4.66933 13.6081L4.6276 13.5703L4.54307 13.2114ZM9.49854 5.29009C9.49854 5.70431 9.83433 6.04009 10.2485 6.04009C10.6628 6.04009 10.9985 5.70431 10.9985 5.29009C10.9985 4.87588 10.6628 4.54009 10.2485 4.54009C9.83433 4.54009 9.49854 4.87588 9.49854 5.29009Z"
+                                        fill="#303030"
+                                      ></path>
+                                    </svg>
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Дома на продажу
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-1"
+                                    href="/for-sale/%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="17"
+                                      height="17"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        fill="#303030"
+                                        fillRule="evenodd"
+                                        d="M21 20h.5a.5.5 0 1 1 0 1h-19a.5.5 0 1 1 0-1H3V9a2 2 0 0 1 2-2h4V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5h2a2 2 0 0 1 2 2v8zm-4-9v9h3v-8a1 1 0 0 0-1-1h-2zm-1 9V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v2h1a2 2 0 0 1 2 2v11h3zM6 20v-2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2h2V9a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v11h2zm1 0h2v-2H7v2zm-.5-10a.5.5 0 0 1 .5.5v1a.5.5 0 1 1-1 0v-1a.5.5 0 0 1 .5-.5zm3 0a.5.5 0 0 1 .5.5v1a.5.5 0 1 1-1 0v-1a.5.5 0 0 1 .5-.5zm-3 3a.5.5 0 0 1 .5.5v1a.5.5 0 1 1-1 0v-1a.5.5 0 0 1 .5-.5zm3 0a.5.5 0 0 1 .5.5v1a.5.5 0 1 1-1 0v-1a.5.5 0 0 1 .5-.5z"
+                                      ></path>
+                                    </svg>
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        новые проекты
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="css-1dwsndp egux72a21">
+                            <div className="css-udumnv egux72a22">
+                              <span className="header-span">
+                                <span className="header-span">
+                                  Популярные запросы · Продажа квартир
+                                </span>
+                              </span>
+                            </div>
+                            <div className="css-5yz5oa egux72a28">
+                              <div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-0"
+                                    href="/for-sale/%D7%97%D7%99%D7%A4%D7%94-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Хайфе
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-1"
+                                    href="/for-sale/%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Иерусалиме
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-2"
+                                    href="/for-sale/%D7%97%D7%95%D7%9C%D7%95%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Холоне
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-3"
+                                    href="/for-sale/%D7%A4%D7%AA%D7%97-%D7%AA%D7%A7%D7%95%D7%95%D7%94-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Петах-Тикве
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-4"
+                                    href="/for-sale/%D7%A8%D7%90%D7%A9%D7%95%D7%9F-%D7%9C%D7%A6%D7%99%D7%95%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Ришон Леционе
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-0"
+                                    href="/for-sale/%D7%90%D7%A9%D7%93%D7%95%D7%93-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Ашдоде
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-1"
+                                    href="/for-sale/%D7%91%D7%AA-%D7%99%D7%9D-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Бат Яме
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-2"
+                                    href="/for-sale/%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Реховоте
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-3"
+                                    href="/for-sale/%D7%AA%D7%9C-%D7%90%D7%91%D7%99%D7%91-%D7%99%D7%A4%D7%95-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Тель-Авиве
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                                <div className="css-1q93yct egux72a24">
+                                  <a
+                                    data-auto="link-4"
+                                    href="/for-sale/%D7%92%D7%91%D7%A2%D7%AA%D7%99%D7%99%D7%9D-%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+                                    className=""
+                                  >
+                                    <span className="header-span">
+                                      <span className="header-span">
+                                        Квартиры на продажу в Гиватаиме
+                                      </span>
+                                    </span>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="css-1dwsndp egux72a21">
+                            <div className="css-udumnv egux72a22">
+                              <span className="header-span">
+                                <span className="header-span">
+                                  Популярные запросы · Новые проекты
+                                </span>
+                              </span>
+                            </div>
+                            <div className="css-5yz5oa egux72a28">
+                              <div>
+                                <a
+                                  data-auto="link-0"
+                                  href="/projects-for-sale/חיפה-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Хайфе
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-1"
+                                  href="/projects-for-sale/ירושלים-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Иерусалиме
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-2"
+                                  href="/projects-for-sale/חולון-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Холоне
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-3"
+                                  href="/projects-for-sale/פתח-תקווה-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Петах-Тикве
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-4"
+                                  href="/projects-for-sale/ראשון-לציון-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Ришон Леционе
+                                    </span>
+                                  </span>
+                                </a>
+                              </div>
+                              <div>
+                                <a
+                                  data-auto="link-0"
+                                  href="/projects-for-sale/נתניה-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Нетании
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-1"
+                                  href="/projects-for-sale/בת-ים-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Бат Яме
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-2"
+                                  href="/projects-for-sale/אשקלון-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Ашкелоне
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-3"
+                                  href="/projects-for-sale/תל-אביב-יפו-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Тель-Авиве
+                                    </span>
+                                  </span>
+                                </a>
+                                <a
+                                  data-auto="link-4"
+                                  href="/projects-for-sale/גבעתיים-ישראל"
+                                  className="css-lfb8ag egux72a23"
+                                >
+                                  <span className="header-span">
+                                    <span className="header-span">
+                                      Новые проекты в Гиватаиме
+                                    </span>
+                                  </span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>

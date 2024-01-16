@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="window-target" content="_top">
+    <title>Vite + React</title>
+  </head>
+  <body
+    class="INDlangdirRTL INDpositionLeft INDMobile INDChrome INDhasDragTooltip"
+  >
+    <div
+      id="INDWrap"
+      lang="he"
+      dir="rtl"
+      data-ind-version="2.1.9"
+      style="display: block"
+    >
+      <div id="INDmenu" aria-hidden="true"></div>
+      <div id="INDpopup" aria-hidden="true">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="INDpopupHead"
+          tabindex="0"
+        >
+          <div id="INDpopupHead" role="heading" aria-level="2" tabindex="0">
+            <font class="font-vertical-align"
+              ><font class="font-vertical-align"
+                >Всплывающий заголовок</font
+              ></font
+            >
+          </div>
+          <div id="INDContent" class="INDpopupContent"></div>
+          <button id="INDCloseBtn" class="INDpopupConfirm" tabindex="0">
+            <font class="font-vertical-align"
+              ><font class="font-vertical-align">Закрывать</font></font
+            >
+          </button>
+        </div>
+      </div>
+      <style>
+        .INDMobile.INDbtn-draging {
+          overflow: hidden;
+        }
+        #INDmenu-btn-moveArrow :first-child {
+          stroke: none !important;
+        }
+        #INDWrap {
+          position: relative;
+          position: absolute;
+          width: 100%;
+          height: 0;
+          top: 0;
+          z-index: 2147483647;
+        }
+        @media print {
+          #INDWrap {
+            display: none !important;
+          }
+        }
+        #INDWrap template {
+          display: none !important;
+        }
+        #INDblindNotif {
+          position: fixed !important;
+        }
+        .INDloader {
+          display: block;
+          width: 50%;
+          height: auto;
+          margin: 20px auto;
+        }
+        .INDloader:after {
+          content: " ";
+          display: block;
+          width: 50px;
+          height: 50px;
+          margin: 1px;
+          border-radius: 50%;
+          border: 5px solid var(--indmaincolor);
+          border-color: var(--indmaincolor) transparent var(--indsecondcolor)
+            transparent;
+          animation: INDloader 1.2s linear infinite;
+        }
+        @keyframes INDloader {
+          0% {
+            transform: rotate(0);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        #INDbtnWrap {
+          margin: 0;
+          padding: 0;
+          border: none;
+          z-index: 9999;
+        }
+        #INDmenu-btn {
+          position: fixed;
+          margin: 0 16px;
+          padding: 0;
+          height: auto;
+          width: auto;
+          min-width: auto;
+          border: none;
+          outline: 0;
+          box-shadow: none;
+          background: 0 0;
+          transform: scale(var(--indscale, 1));
+          transition: transform 0.6s;
+          cursor: pointer;
+          z-index: inherit;
+        }
+        .INDpositionLeft #INDmenu-btn {
+          direction: ltr;
+          float: left;
+          left: -62px;
+        }
+        .INDpositionRight #INDmenu-btn {
+          direction: rtl;
+          float: right;
+          right: -62px;
+        }
+        .INDDesktop #INDmenu-btn {
+          top: 24px;
+        }
+        .INDMobile #INDmenu-btn {
+          bottom: 24px;
+        }
+        #INDmenu-btn svg {
+          position: static !important;
+          width: 110px;
+          height: 67px;
+          border: none;
+          outline: 0;
+        }
+        .INDpositionLeft #INDmenu-btn svg {
+          transform: scaleX(-1);
+        }
+        #INDmenu-btn svg :first-child {
+          fill: var(--indmaincolor, #122231);
+          stroke: #fff;
+          stroke-width: 14;
+        }
+        #INDmenu-btn svg :last-child {
+          fill: #fff;
+          fill: var(--indsecondcolor, #fff);
+        }
+        #INDmenu-btn:focus svg :first-child {
+          fill: #ffc;
+          stroke: #122231;
+          stroke-dasharray: 40, 10;
+        }
+        #INDmenu-btn:focus svg :last-child {
+          fill: #bf1722;
+        }
+        #INDmenu-btn svg * {
+          border: none;
+          outline: 0;
+        }
+        #INDmenu-btn.INDdrag {
+          filter: invert(1);
+          cursor: move !important;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn-moveArrow {
+          position: absolute !important;
+          top: -50% !important;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn[data-INDdrag] {
+          cursor: move !important;
+          overflow: hidden;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:focus,
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:hover {
+          overflow: unset;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:focus #INDmenu-btn-moveArrow,
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:hover #INDmenu-btn-moveArrow {
+          opacity: 1;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn-moveArrow {
+          display: none !important;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:before {
+          content: "";
+          background-color: #122231;
+          background-color: var(--indmaincolor, #122231);
+          border: 1px solid #fff;
+          border: 1px solid var(--indsecondcolor, #fff);
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+          position: absolute;
+          top: -40%;
+          width: 100%;
+          height: 120px;
+          z-index: -1;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn[data-INDdrag]:before {
+          cursor: move;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:after {
+          content: attr(data-drag-content);
+          background-color: #122231;
+          background-color: var(--indmaincolor, #122231);
+          border: 1px solid #fff;
+          border: 1px solid var(--indsecondcolor, #fff);
+          cursor: pointer;
+          color: #fff;
+          color: var(--indsecondcolor, #fff);
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+          position: absolute;
+          top: -40%;
+          left: unset;
+          right: unset;
+          width: auto;
+          height: 120px;
+          padding: 0 10px;
+          font-size: 18px;
+          word-break: normal;
+          word-wrap: normal;
+          white-space: pre-line;
+          line-height: 1.2em;
+          font-family: Open Sans Hebrew, Arial, Helvetica, sans-serif;
+          -moz-box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+        .INDhasDragTooltip #INDWrap[lang="ko"] #INDmenu-btn:after {
+          width: 177%;
+        }
+        .INDlangdirRTL.INDhasDragTooltip #INDWrap #INDmenu-btn:after {
+          width: 93px; /*line-height:1.4em*/
+        }
+        .INDpositionLeft #INDWrap #INDmenu-btn:after {
+          border-radius: 0 5px 5px 0;
+        }
+        .INDpositionRight #INDWrap #INDmenu-btn:after {
+          border-radius: 5px 0 0 5px;
+        }
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:focus:after,
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:focus:before,
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:hover:after,
+        .INDhasDragTooltip #INDWrap #INDmenu-btn:hover:before {
+          opacity: 1;
+        }
+        #INDquickAccess,
+        #INDquickAccess li,
+        #INDquickAccess ul {
+          height: 0;
+          list-style: none;
+        }
+        #INDquickAccess ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        #INDquickAccess li {
+          margin: 0;
+          padding: 0;
+        }
+        #INDquickAccess li:after,
+        #INDquickAccess li:before {
+          content: "" !important;
+          display: none !important;
+        }
+        #INDquickAccess button {
+          position: fixed;
+          top: -300px;
+          margin: 0;
+          padding: 8px 16px;
+          height: auto;
+          width: auto;
+          font-size: 24px;
+          font-weight: 700;
+          text-align: center;
+          line-height: normal !important;
+          cursor: pointer;
+          color: #fff;
+          background: #000;
+          border-radius: 4px;
+          border: 1px solid #fff;
+          transition: top 0.6s;
+          z-index: 10;
+        }
+        .INDMobile #INDquickAccess button {
+          font-size: 18px;
+        }
+        .INDlangdirRTL #INDquickAccess button {
+          font-family: Spacer, Arial, sans-serif;
+        }
+        .INDlangdirLTR #INDquickAccess button {
+          font-family: Verdana, Geneva, sans-serif;
+        }
+        .INDpositionLeft #INDquickAccess button {
+          left: 180px;
+        }
+        .INDpositionRight #INDquickAccess button {
+          right: 180px;
+        }
+        #INDquickAccess button:focus {
+          top: 0;
+        }
+        :not(#INDdummy).INDtooltip,
+        :not(#INDdummy).INDtooltip * {
+          line-height: 24px;
+          font-family: Alef, Open Sans Hebrew, Arial, sans-serif;
+          font-size: 16px;
+        }
+        :not(#INDdummy).INDtooltip {
+          position: absolute;
+          top: 2px;
+          margin: 0;
+          padding: 7px 21px;
+          width: auto;
+          min-width: 192px;
+          box-sizing: content-box;
+          text-align: center;
+          letter-spacing: 0.7px;
+          border: none;
+          border-radius: 8px;
+          -webkit-filter: drop-shadow(0 0 2px #fff);
+          -moz-filter: drop-shadow(0 0 2px #fff);
+          -ms-filter: drop-shadow(0 0 2px #fff);
+          filter: drop-shadow(0 0 2px #fff);
+          opacity: 0.87;
+        }
+        :not(#INDdummy):not(INDdummy).INDtooltip {
+          color: #fff !important;
+          background: #000 !important;
+        }
+        :not(#INDdummy):not(INDdummy).INDtooltip * {
+          color: #fff !important;
+        }
+        .INDpositionLeft :not(#INDdummy).INDtooltip {
+          float: left;
+        }
+        .INDpositionRight :not(#INDdummy).INDtooltip {
+          float: right;
+        }
+        .INDlangdirLTR :not(#INDdummy).INDtooltip {
+          direction: ltr;
+        }
+        .INDlangdirRTL :not(#INDdummy).INDtooltip {
+          direction: rtl;
+        }
+        :not(#INDdummy).INDtooltip:after {
+          content: "";
+          position: absolute;
+        }
+        :not(#INDdummy).INDtooltip.INDtipLeft:after,
+        :not(#INDdummy).INDtooltip.INDtipRight:after {
+          top: 17px;
+          margin-top: -8px;
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+        }
+        :not(#INDdummy).INDtooltip.INDtipBottom:after,
+        :not(#INDdummy).INDtooltip.INDtipTop:after {
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+        }
+        .INDlangdirRTL :not(#INDdummy).INDtooltip.INDtipBottom:after,
+        .INDlangdirRTL :not(#INDdummy).INDtooltip.INDtipTop:after {
+          right: 17px;
+          margin-right: -8px;
+        }
+        .INDlangdirLTR :not(#INDdummy).INDtooltip.INDtipBottom:after,
+        .INDlangdirLTR :not(#INDdummy).INDtooltip.INDtipTop:after {
+          left: 17px;
+          margin-left: -8px;
+        }
+        :not(#INDdummy).INDtooltip.INDtipLeft:after {
+          left: 100%;
+          border-left: 8px solid #000;
+        }
+        :not(#INDdummy).INDtooltip.INDtipRight:after {
+          right: 100%;
+          border-right: 8px solid #000;
+        }
+        :not(#INDdummy).INDtooltip.INDtipTop:after {
+          top: 100%;
+          border-top: 8px solid #000;
+        }
+        :not(#INDdummy).INDtooltip.INDtipBottom:after {
+          bottom: 100%;
+          border-bottom: 8px solid #000;
+        }
+        :not(#INDdummy).INDhiddenText {
+          display: inline-block;
+          color: #fff;
+          background: #000;
+          position: absolute;
+          height: 1px;
+          width: 1px;
+          overflow: hidden;
+          clip: rect(1px, 1px, 1px, 1px);
+        }
+        #INDmenu {
+          position: fixed;
+          top: 0;
+          margin: 0;
+          padding: 0;
+          width: auto;
+          z-index: 100000;
+          visibility: visible;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -o-user-select: none;
+          user-select: none;
+          border: none;
+          border-top: 27px solid #17384c;
+          border-bottom: 13px solid #17384c;
+          background: #fff;
+          transition: left 0.4s ease-in, right 0.4s ease-in, top 0.4s ease-in,
+            visibility 0.4s ease-in !important;
+        }
+        .INDpositionLeft #INDmenu {
+          left: 0;
+          right: initial !important;
+          border-right: 4px solid #17384c;
+        }
+        .INDpositionRight #INDmenu {
+          right: 0;
+          left: initial !important;
+          border-left: 4px solid #17384c;
+        }
+        #INDmenu[aria-hidden="true"] {
+          visibility: hidden;
+        }
+        .INDpositionLeft #INDmenu[aria-hidden="true"] {
+          left: -400px;
+        }
+        .INDpositionRight #INDmenu[aria-hidden="true"] {
+          right: -400px;
+        }
+        #INDmenu :focus {
+          outline: 1px solid #4d90fe !important;
+          outline: 1px auto #4d90fe !important;
+        }
+        #INDerror,
+        #INDloader {
+          background: #fff;
+          width: 127px;
+          text-align: center;
+        }
+        #INDerror {
+          width: 313px;
+        }
+        #INDerror h2 {
+          display: block;
+          -webkit-text-stroke: initial;
+          -moz-text-stroke: initial;
+          -ms-text-stroke: initial;
+        }
+        #INDerror h2,
+        #INDloader img {
+          margin: 24px 0;
+          width: auto;
+          line-height: initial;
+          letter-spacing: initial;
+        }
+        #INDerror * {
+          font-family: Arial, Helvetica, sans-serif;
+          font-weight: 500;
+          font-size: 25px;
+          color: #444;
+        }
+        #INDpopup {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 99999999999;
+          pointer-events: auto;
+          opacity: 1;
+          transition: opacity 250ms ease-in;
+        }
+        .INDlangdirLTR #INDpopup {
+          direction: ltr;
+        }
+        .INDlangdirRTL #INDpopup {
+          direction: rtl;
+        }
+        #INDpopup:not(.open) {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+          transition: opacity 250ms ease-in, visibility 0s ease 250ms;
+        }
+        #INDpopup > div {
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          margin: 0;
+          width: 660px;
+          height: 540px;
+          top: calc((100vh - 540px) / 2);
+          left: calc(50% - 330px);
+          background: #fff;
+          border: 0 solid #888;
+          border-radius: 10px;
+          padding: 12px 12px 44px;
+          background-color: #122231;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+        #INDpopup
+          > div:not(#INDdummy):not(.INDopenCmdLeg).flyingfocus_target_style {
+          padding: 12px 12px 44px !important;
+        }
+        #INDpopup .INDpopupContent {
+          flex-grow: 1;
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          -webkit-overflow-scrolling: touch;
+          overflow-y: hidden;
+          border-radius: 10px;
+          overflow: hidden;
+          font-family: Arial, sans-serif;
+          font-size: 16px;
+          text-align: left;
+          direction: ltr;
+          color: #333;
+          line-height: 1.3em;
+        }
+        #INDpopup .INDpopupContent #INDdictionaryPopupWrapper {
+          width: 100%;
+          margin: 0 auto;
+          padding: 15px 20px;
+          height: 100%;
+          background-color: #fff;
+        }
+        .INDSafari #INDpopup .INDpopupContent {
+          overflow-y: auto !important;
+        }
+        #INDpopup > div .INDpopupClose {
+          color: #fff;
+          font-weight: 700;
+          position: absolute;
+          top: 6px;
+          left: 13px;
+          font-size: 22px;
+          display: inline-block;
+          width: auto;
+          background: 0 0;
+          border: none;
+          padding: 0;
+          margin: 0;
+          cursor: pointer;
+          font-family: Open Sans Hebrew, Arial, Helvetica, sans-serif;
+          width: 17px;
+          height: 21px;
+          text-align: center;
+          line-height: 1em;
+          vertical-align: top;
+        }
+        #INDpopup > div #INDpopupHead {
+          color: #fff !important;
+          font-size: 22px;
+          text-align: center;
+          margin: 0;
+          padding: 10px 0 20px;
+          border: 0;
+          line-height: 1.1em;
+          font-weight: 400;
+          text-align: center;
+          height: auto;
+          width: 100%;
+          position: static;
+          font-family: Open Sans Hebrew, Arial, Helvetica, sans-serif;
+          -webkit-text-fill-color: unset;
+          -moz-text-fill-color: unset;
+          -ms-text-fill-color: unset;
+          -o-text-fill-color: unset;
+          -webkit-text-stroke: unset;
+          -moz-text-stroke: unset;
+          -ms-text-stroke: unset;
+          -o-text-stroke: unset;
+        }
+        body.INDmodalOpen {
+          overflow: hidden;
+        }
+        #INDpopup iframe {
+          width: 100%;
+          height: 100%;
+          border: 0 solid #ddd;
+          background: 0 0 !important;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          border-radius: 10px;
+          overflow: hidden;
+        }
+        #INDpopup .INDpopupConfirm {
+          color: #fff;
+          font-size: 18px;
+          width: auto;
+          height: auto;
+          margin: 0;
+          padding: 0;
+          border-radius: 0;
+          display: inline-block;
+          background: 0 0;
+          border: none;
+          box-shadow: none;
+          cursor: pointer;
+          position: absolute;
+          bottom: 7px;
+          left: 8px;
+          font-family: Open Sans Hebrew, Arial, Helvetica, sans-serif;
+        }
+        #INDWrap[lang="en"] #INDpopup .INDpopupConfirm {
+          right: 8px;
+          left: auto;
+        }
+        #INDWrap[lang="en"] #INDpopup > div .INDpopupClose {
+          right: 13px;
+          left: auto;
+        }
+        @media screen and (max-width: 800px) {
+          #INDpopup > div {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            left: 0;
+            border-radius: 0;
+          }
+          #INDWrap[lang="en"] #INDpopup > div {
+            height: 100%;
+          }
+        }
+        :not(#INDdummy).INDkeyboardIcon {
+          white-space: nowrap;
+          font-size: smaller;
+        }
+        :not(#INDdummy).INDkeyboardIcon kbd {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          box-sizing: border-box;
+          height: 24px;
+          min-width: 24px;
+          border: 0.2em solid;
+          border-radius: 0.3em;
+          border-color: #ddd #bbb #777 #999;
+          background-color: #fff !important;
+          background-image: linear-gradient(to bottom left, #eee, #fff, #eee);
+          padding: 0.1em 0.3em;
+          font-family: Arial, sans-serif;
+          font-family: monospace;
+          font-weight: 400;
+          vertical-align: bottom;
+        }
+        :not(#INDdummy).INDkeyboardIcon kbd,
+        :not(#INDdummy).INDkeyboardIcon kbd * {
+          color: #000 !important;
+          font-size: 12px;
+        }
+        :not(#INDdummy).INDkeyboardIcon kbd * {
+          margin: none;
+          padding: none;
+          border: none;
+        }
+        @media screen and (max-width: 800px) {
+          .INDhasDragTooltip #INDWrap #INDmenu-btn:after {
+            font-size: 15px;
+          }
+        }</style
+      ><style>
+        /* Nagich color */
+        #INDmenu-btn {
+          --indmaincolor: #122231;
+          --indsecondcolor: White;
+        }
+      </style>
+      <div id="INDbtnWrap">
+        <button
+          id="INDmenu-btn"
+          aria-expanded="false"
+          aria-haspopup="true"
+          accesskey="m"
+          data-drag-content="
+כַּפְתּוֹר נְגִישׁוּת"
+          class="INDsemicircle-btn INDoutline-btn"
+          style="--indscale: 0; --indmaincolor: #122231; --indsecondcolor: #fff"
+          data-inddrag="true"
+        >
+          <svg
+            id="INDmenu-btn-moveArrow"
+            version="1.2"
+            baseProfile="tiny"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            width="52px"
+            height="52px"
+            viewBox="0 0 52 52"
+            xml:space="preserve"
+          >
+            <path
+              fill="#010101"
+              d="M25.904,13.439c-0.189,0.022-0.364,0.109-0.498,0.244l-3.352,3.352c-0.346,0.307-0.378,0.836-0.07,1.183
+					c0.307,0.347,0.836,0.378,1.182,0.071c0.027-0.023,0.053-0.049,0.076-0.076l1.92-1.92v6.361C25.156,23.098,25.557,23.51,26,23.51
+					c0.442,0,0.844-0.412,0.838-0.855v-6.361l1.92,1.92c0.305,0.348,0.834,0.385,1.183,0.08s0.384-0.834,0.079-1.182
+					c-0.023-0.027-0.049-0.053-0.075-0.076l-3.351-3.352C26.414,13.502,26.159,13.41,25.904,13.439z M17.525,21.809
+					c-0.189,0.025-0.365,0.114-0.496,0.253l-3.352,3.351c-0.323,0.326-0.323,0.853,0,1.178l3.352,3.353
+					c0.304,0.348,0.833,0.384,1.182,0.079c0.348-0.304,0.385-0.833,0.08-1.182c-0.023-0.026-0.049-0.053-0.075-0.077l-1.921-1.919h6.354
+					c0.443,0.008,0.848-0.395,0.848-0.838c0-0.441-0.404-0.844-0.848-0.838h-6.354l1.921-1.928c0.331-0.324,0.337-0.854,0.015-1.186
+					C18.047,21.867,17.787,21.775,17.525,21.809z M34.283,21.809c-0.462,0.05-0.794,0.463-0.745,0.922
+					c0.02,0.193,0.108,0.373,0.247,0.51l1.919,1.928h-6.354c-0.029,0-0.058,0-0.086,0c-0.439,0.023-0.818,0.443-0.795,0.882
+					c0.022,0.438,0.443,0.816,0.881,0.794h6.354l-1.919,1.919c-0.348,0.309-0.38,0.838-0.073,1.184c0.308,0.347,0.838,0.379,1.184,0.072
+					c0.027-0.025,0.053-0.05,0.075-0.076l3.353-3.353c0.322-0.325,0.322-0.852,0-1.178l-3.353-3.351
+					C34.793,21.875,34.538,21.782,34.283,21.809z M25.992,28.502c-0.442,0.005-0.839,0.413-0.83,0.855v6.353l-1.92-1.919
+					c-0.178-0.187-0.433-0.279-0.689-0.254c-0.46,0.05-0.793,0.463-0.744,0.923c0.021,0.193,0.107,0.372,0.246,0.509l3.352,3.352
+					c0.327,0.327,0.857,0.328,1.186,0.001c0,0,0.001-0.001,0.002-0.001l3.351-3.352c0.347-0.307,0.379-0.836,0.072-1.183
+					s-0.838-0.379-1.184-0.071c-0.027,0.023-0.053,0.049-0.075,0.076l-1.92,1.919v-6.353C26.848,28.91,26.438,28.498,25.992,28.502z"
+            ></path></svg
+          ><svg
+            id="ew-logo-svg"
+            version="1.2"
+            baseProfile="tiny"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 12.028 15.293"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                fill-rule="evenodd"
+                fill="#171D2D"
+                d="M8.466,14.317l1.059,0.962h2.504l-1.174-1.065l-1.173-1.067L8.607,12.17l-0.284-0.258
+			c-0.303,0.467-0.723,0.895-1.181,1.202c-0.255,0.171-0.523,0.306-0.79,0.384c-0.294,0.088-0.613,0.133-0.955,0.133
+			c-0.51,0-0.98-0.099-1.412-0.295c-0.432-0.194-0.802-0.46-1.11-0.793c-0.309-0.334-0.549-0.722-0.72-1.169
+			c-0.087-0.225-0.152-0.457-0.194-0.696L0.891,9.707L0.089,8.979C0.03,9.304,0,9.64,0,9.983c0,0.727,0.132,1.412,0.397,2.06
+			c0.264,0.648,0.631,1.212,1.103,1.691c0.47,0.48,1.034,0.859,1.691,1.138c0.657,0.281,1.382,0.421,2.176,0.421
+			c0.137,0,0.274-0.004,0.407-0.014c0.455-0.03,0.883-0.112,1.285-0.244C7.556,14.872,8.03,14.625,8.466,14.317L8.466,14.317z"
+              ></path>
+              <linearGradient
+                id="INDmenu-btn_icon_lg"
+                gradientUnits="userSpaceOnUse"
+                x1="1.0684"
+                y1="3.5537"
+                x2="11.4826"
+                y2="9.2203"
+              >
+                <stop offset="0" style="stop-color: #71c387"></stop>
+                <stop offset="1" style="stop-color: #0596c6"></stop>
+              </linearGradient>
+              <path
+                fill-rule="evenodd"
+                fill="url(#INDmenu-btn_icon_lg)"
+                d="M10.502,11.615c0.175-0.528,0.263-1.081,0.263-1.66
+			c0-0.725-0.133-1.412-0.398-2.061c-0.264-0.646-0.631-1.209-1.102-1.689s-1.035-0.861-1.691-1.14
+			c-0.656-0.28-1.382-0.419-2.176-0.419c-0.672,0-1.345,0.104-1.975,0.344l0.665-1.688H2.278L0.716,7.272l1.425,1.295l2.248,2.043
+			l1.251-1.137L3.09,7.154c0.628-0.56,1.438-0.847,2.277-0.847c0.509,0,0.98,0.098,1.412,0.295c0.431,0.196,0.802,0.46,1.11,0.795
+			C8.198,7.729,8.438,8.121,8.61,8.565C8.781,9.01,8.867,9.484,8.867,9.983c0,0.051-0.001,0.098-0.003,0.146l0.691,0.628
+			L10.502,11.615L10.502,11.615z M3.865,0c0.693,0,1.254,0.561,1.254,1.253c0,0.693-0.561,1.254-1.254,1.254S2.611,1.946,2.611,1.253
+			C2.611,0.561,3.172,0,3.865,0z"
+              ></path>
+            </g>
+          </svg>
+          <span class="INDhiddenText"
+            ><font class="font-vertical-align"
+              ><font class="font-vertical-align">доступность</font></font
+            ></span
+          >
+        </button>
+      </div>
+      <div id="INDquickAccess">
+        <ul>
+          <li>
+            <button accesskey="b" class="INDshortcutBtn" tabindex="1">
+              הַתְאָמַת הָאֲתָר לְעִוְורִים<span class="INDhiddenText">
+                הַמִּשְׁתַּמְּשִׁים בְּתוֹכְנַת קוֹרֵא־מָסָךְ.</span
+              >
+            </button>
+          </li>
+          <li><button tabindex="1">פְּתִיחַת תַּפְרִיט נְגִישׁוּת.</button></li>
+        </ul>
+      </div>
+      <div id="INDblindNotif" tabindex="-1" class="INDhiddenText" role="alert">
+        שִׂים לֵב: בְּאֲתָר זֶה מֻפְעֶלֶת מַעֲרֶכֶת "נָגִישׁ בִּקְלִיק"
+        הַמְּסַיַּעַת לִנְגִישׁוּת הָאֲתָר.
+      </div>
+      <style>
+        /* Custom icons */
+
+        #INDmenu-btn {
+          --indscale-contra: calc(1 - var(--indscale));
+          --indscale-margin: calc(var(--indscale-contra) * 10 * -4px);
+        }
+
+        .INDpositionRight #INDmenu-btn {
+          right: 5px !important;
+          margin-right: var(--indscale-margin) !important;
+        }
+
+        .INDpositionLeft #INDmenu-btn {
+          left: 5px !important;
+          margin-left: var(--indscale-margin) !important;
+        }
+
+        #INDmenu-btn {
+          padding: 15px;
+          background: var(--indmaincolor) !important;
+        }
+
+        #INDmenu-btn > svg {
+          transform: none !important;
+          width: 50px !important;
+          height: 50px !important;
+          display: block !important;
+        }
+        #INDmenu-btn svg * {
+          stroke: none !important;
+          fill: var(--indsecondcolor) !important;
+        }
+
+        #INDmenu-btn > span {
+          text-align: center;
+          font-size: 1.7rem;
+          color: var(--indsecondcolor) !important;
+        }
+        /* Arrows */
+        #INDmenu-btn.INDarrow-btn.INDarrow-before-btn > span {
+          padding-right: 0px;
+          padding-left: 20px;
+        }
+
+        #INDmenu-btn.INDarrow-btn.INDarrow-after-btn > span {
+          padding-right: 20px;
+          padding-left: 0px;
+        }
+
+        #INDmenu-btn.INDarrow-btn.INDarrow-before-btn > span:before,
+        #INDmenu-btn.INDarrow-btn.INDarrow-after-btn > span:after {
+          content: "";
+        }
+
+        #INDmenu-btn.INDarrow-btn > span:before,
+        #INDmenu-btn.INDarrow-btn > span:after {
+          background: transparent !important;
+          position: absolute;
+          top: 26px;
+          height: 11px;
+          width: 11px;
+          border: 2px solid var(--indsecondcolor) !important;
+          border-bottom-left-radius: 2px;
+          border-top: none !important;
+          border-right: none !important;
+        }
+
+        #INDmenu-btn.INDarrow-btn > span:before {
+          left: 15px !important;
+        }
+
+        #INDmenu-btn.INDarrow-btn > span:after {
+          right: 15px !important;
+        }
+
+        #INDmenu-btn.INDarrow-right-btn > span:before,
+        #INDmenu-btn.INDarrow-right-btn > span:after {
+          transform: rotate(225deg);
+        }
+
+        #INDmenu-btn.INDarrow-left-btn > span:before,
+        #INDmenu-btn.INDarrow-left-btn > span:after {
+          transform: rotate(45deg);
+        }
+
+        #INDmenu-btn.INDarrow-up-btn > span:before,
+        #INDmenu-btn.INDarrow-up-btn > span:after {
+          transform: rotate(135deg);
+        }
+        #INDmenu-btn.INDarrow-down-btn > span:before,
+        #INDmenu-btn.INDarrow-down-btn > span:after {
+          transform: rotate(-45deg);
+        }
+
+        /*Outlined btn*/
+        #INDmenu-btn.INDoutline-btn {
+          color: var(--indmaincolor) !important;
+          border: 5px solid var(--indsecondcolor) !important;
+        }
+
+        /*Rounded btn*/
+        #INDmenu-btn.INDrounded-btn {
+          border-radius: 15px !important;
+        }
+
+        /*Circle btn*/
+        #INDmenu-btn.INDcircle-btn {
+          border-radius: 100px !important;
+        }
+
+        /*Semi-Circle btn
+#INDmenu-btn.INDsemicircle-btn{
+	margin: 0 !important;
+}
+*/
+
+        .INDpositionLeft #INDmenu-btn.INDsemicircle-btn {
+          left: 0 !important;
+          border-radius: 0 100px 100px 0 !important;
+          padding-left: 12px !important;
+        }
+        .INDpositionRight #INDmenu-btn.INDsemicircle-btn {
+          right: 0 !important;
+          border-radius: 100px 0 0 100px !important;
+          padding-right: 12px !important;
+        }
+        /*Kano btn :)*/
+        .INDpositionLeft #INDmenu-btn.INDkano-btn {
+          border-radius: 0 100px !important;
+        }
+
+        .INDpositionLeft #INDmenu-btn.INDkano-btn > svg {
+          transform: rotate(-45deg) !important;
+        }
+
+        .INDpositionRight #INDmenu-btn.INDkano-btn {
+          border-radius: 100px 0 !important;
+        }
+
+        .INDpositionRight #INDmenu-btn.INDkano-btn > svg {
+          transform: rotate(45deg) !important;
+        }
+
+        /*Drag tooltip*/
+        .INDhasDragTooltip #INDWrap #INDmenu-btn-moveArrow {
+          display: block !important;
+        }
+
+        .INDhasDragTooltip.INDpositionRight #INDmenu-btn:before {
+          right: 0 !important;
+        }
+
+        .INDhasDragTooltip.INDpositionRight #INDmenu-btn:after {
+          right: 100% !important;
+        }
+
+        .INDhasDragTooltip.INDpositionLeft #INDmenu-btn:before {
+          left: 0 !important;
+        }
+
+        .INDhasDragTooltip.INDpositionLeft #INDmenu-btn:after {
+          left: 100% !important;
+        }
+
+        .INDhasDragTooltip #INDmenu-btn.INDoutline-btn:hover,
+        .INDhasDragTooltip #INDmenu-btn.INDoutline-btn:focus {
+          border: none !important;
+        }
+      </style>
+    </div>
+    <iframe
+      id="_hjSafeContext_95718576"
+      title="_hjSafeContext"
+      tabindex="-1"
+      aria-hidden="true"
+      src="about:blank"
+      style="
+        display: none !important;
+        width: 1px !important;
+        height: 1px !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      "
+    ></iframe>
+    <script type="text/javascript" id="">
+      !(function (b, e, f, g, a, c, d) {
+        b.fbq ||
+          ((a = b.fbq =
+            function () {
+              a.callMethod
+                ? a.callMethod.apply(a, arguments)
+                : a.queue.push(arguments);
+            }),
+          b._fbq || (b._fbq = a),
+          (a.push = a),
+          (a.loaded = !0),
+          (a.version = "2.0"),
+          (a.queue = []),
+          (c = e.createElement(f)),
+          (c.async = !0),
+          (c.src = g),
+          (d = e.getElementsByTagName(f)[0]),
+          d.parentNode.insertBefore(c, d));
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "748471151855542");
+      fbq("set", "agent", "tmgoogletagmanager", "748471151855542");
+      fbq("track", "PageView");
+    </script>
+    <!--<script type="text/javascript" id="">
+      (function () {
+        window.PXo4wPDYYd_asyncInit = function (c) {
+          c.Events.on("score", function (d) {
+            try {
+              ga("send", "pageview", { dimension18: d });
+            } catch (e) {
+              console.log("error: " + e);
+            }
+          });
+        };
+        var b = document.getElementsByTagName("script")[0],
+          a = document.createElement("script");
+        a.async = 1;
+        a.src = "//client.px-cloud.net/PXo4wPDYYd/main.min.js";
+        b.parentNode.insertBefore(a, b);
+      })();
+    </script>
+    <script type="text/javascript" id="">
+      (function (a, e, b, f, g, c, d) {
+        a[b] =
+          a[b] ||
+          function () {
+            (a[b].q = a[b].q || []).push(arguments);
+          };
+        c = e.createElement(f);
+        c.async = 1;
+        c.src = "https://www.clarity.ms/tag/" + g + "?ref\x3dgtm2";
+        d = e.getElementsByTagName(f)[0];
+        d.parentNode.insertBefore(c, d);
+      })(window, document, "clarity", "script", "ipwlpgvioe");
+    </script>
+    <script type="text/javascript" id="">
+      var _zaVerSnippet = google_tag_manager["rm"]["9606011"](4),
+        _zaq = _zaq || [];
+      (function () {
+        var a = window,
+          b = document;
+        a.__za_api = function (c) {
+          _zaq.push(c);
+          "undefined" != typeof __ZA &&
+            "undefined" != typeof __ZA.sendActions &&
+            __ZA.sendActions(c);
+        };
+        a = b.createElement("script");
+        a.type = "text/javascript";
+        a.async = !0;
+        a.src =
+          ("https:" == b.location.protocol
+            ? "https://widgetcdn.zoomengage.com/"
+            : "http://widgetcdn.zoomengage.com/") + "19763687-9236/6/widget.js";
+        b = b.getElementsByTagName("script")[0];
+        b.parentNode.insertBefore(a, b);
+      })();
+    </script>
+    <script type="text/javascript" id="">
+      function setCookie(a, b, c) {
+        a =
+          a +
+          "\x3d" +
+          b +
+          "; path\x3d/; domain\x3d." +
+          location.hostname.replace(/^www\./i, "");
+        "undefined" !== typeof c &&
+          ((b = new Date()),
+          b.setTime(b.getTime() + 864e5 * c),
+          (a += "; expires\x3d" + b.toUTCString()));
+        document.cookie = a;
+      }
+      function getCookie(a) {
+        for (var b = document.cookie.split(";"), c, d = 0; d < b.length; d++) {
+          var e = b[d].trim();
+          0 === e.indexOf(a + "\x3d") &&
+            (c = e.substring((a + "\x3d").length, e.length));
+        }
+        return c;
+      }
+      (function () {
+        var a = getCookie("ten_seconds_sending_flag_name");
+        "undefined" === typeof a && (a = "0");
+        setCookie("ten_seconds_sending_flag_name", a, 1);
+      })();
+    </script>
+  -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

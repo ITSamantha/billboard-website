@@ -1383,21 +1383,21 @@ a.za_click_activate {
 .css-1710dx svg path {
   fill: rgb(48, 48, 48);
 }
-.css-o4u0x9 {
+.content-container {
   margin-top: -32px;
 }
-.css-ix330g {
+.carousel-container {
   display: flex;
   flex-direction: column;
   -webkit-box-align: center;
   align-items: center;
 }
 @media screen and (min-width: 960px) and (max-width: 9999px) {
-  .css-ix330g {
+  .carousel-container {
     margin-bottom: 112px;
   }
 }
-.css-r2ttx8 {
+.carousel-main-container-wrapper{
   position: relative;
   background-image: linear-gradient(rgb(1, 94, 97), rgba(1, 94, 97, 0) 90px),
     url("https://images2.madlan.co.il/objects-images/23426656-3938-4c9d-8a97-a1daeb0ff66b-background-d013902e-bf34-4277-9809-8a4022c937a2");
@@ -1406,18 +1406,18 @@ a.za_click_activate {
   background-size: cover;
   width: 100%;
 }
-.css-xnc71i {
+.carousel-main-container  {
   margin: 0px auto;
   position: relative;
 }
 @media screen and (min-width: 0px) and (max-width: 719px) {
-  .css-xnc71i {
+  .carousel-main-container  {
     height: 400px;
     padding: 88px 24px 0px;
   }
 }
 @media screen and (min-width: 720px) and (max-width: 959px) {
-  .css-xnc71i {
+  .carousel-main-container  {
     height: 500px;
     padding: 99px 40px 0px;
   }
@@ -1425,20 +1425,20 @@ a.za_click_activate {
 
 /* MAX-WIDTH BUG*/
 @media screen and (min-width: 960px) and (max-width: 1279px) {
-  .css-xnc71i {
+  .carousel-main-container  {
     height: 500px;
     width: 864px;
     padding: 99px 0px 0px;
   }
 }
 @media screen and (min-width: 1280px) and (max-width: 9999px) {
-  .css-xnc71i {
+  .carousel-main-container  {
     height: 544px;
     width: 1144px;
     padding: 143px 0px 0px;
   }
 }
-.css-azbki1 {
+.carousel-main-container-header {
   letter-spacing: normal;
   font-family: NovemberHebrew;
   font-weight: 900;
@@ -1449,25 +1449,25 @@ a.za_click_activate {
   color: rgb(255, 255, 255);
 }
 @media screen and (min-width: 720px) and (max-width: 9999px) {
-  .css-azbki1 {
+  .carousel-main-container-header {
     font-size: 24px;
     line-height: 34px;
   }
 }
 @media screen and (min-width: 720px) and (max-width: 1279px) {
-  .css-azbki1 {
+  .carousel-main-container-header {
     font-size: 45px;
     line-height: 1.15;
   }
 }
 @media screen and (min-width: 1280px) and (max-width: 9999px) {
-  .css-azbki1 {
+  .carousel-main-container-header {
     font-size: 52px;
     line-height: 1.15;
   }
 }
 @media screen and (min-width: 0px) and (max-width: 719px) {
-  .css-azbki1 {
+  .carousel-main-container-header {
     text-align: center;
   }
 }
@@ -2886,19 +2886,19 @@ textarea.css-1ucupji {
     margin: 0px 0px 128px;
   }
 }
-.css-4ke7ep {
+.footer-links{
   width: 100%;
   max-width: 1136px;
   margin: 0px auto;
 }
 @media screen and (min-width: 720px) and (max-width: 1279px) {
-  .css-4ke7ep {
+  .footer-links{
     max-width: 100%;
     padding: 0px 48px;
   }
 }
 @media screen and (min-width: 0px) and (max-width: 719px) {
-  .css-4ke7ep {
+  .footer-links{
     padding: 0px 24px;
   }
 }
@@ -3013,18 +3013,18 @@ textarea.css-1ucupji {
 .footer-column-item:focus {
   color: inherit;
 }
-.css-pwzg5p {
+.footer-networks-container{
   padding: 20px 0px 0px;
 }
-.css-19peoj6 {
+.footer-networks {
   margin-bottom: 24px;
   display: flex;
 }
-.css-19peoj6 > a:not(:last-of-type) {
+.footer-networks > a:not(:last-of-type) {
   margin-left: 14px;
 }
 @media screen and (min-width: 720px) and (max-width: 9999px) {
-  .css-19peoj6 {
+  .footer-networks {
     margin-bottom: 48px;
   }
 }
@@ -3050,51 +3050,53 @@ textarea.css-1ucupji {
 .css-196bxl7:hover svg path {
   fill: rgb(48, 48, 48);
 }
-.css-10dtbrx {
+.footer-links-container {
   padding: 24px 0px;
   background-color: rgb(248, 248, 248);
 }
-.css-10dtbrx > div {
+.footer-links-container > div {
   display: flex;
   -webkit-box-pack: justify;
   justify-content: space-between;
 }
 @media screen and (min-width: 0px) and (max-width: 719px) {
-  .css-10dtbrx > div {
+  .footer-links-container > div {
     display: block;
   }
 }
-.css-gr93xn {
+.links {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
 }
-.css-gr93xn > a {
+
+.links > a {
   text-decoration: none;
   color: rgb(118, 118, 118);
 }
-.css-gr93xn > a:not(:last-of-type) {
+
+.links > a:not(:last-of-type) {
   margin-left: 32px;
 }
-.css-gr93xn > a:hover {
+.links > a:hover {
   color: rgb(48, 48, 48);
 }
 @media screen and (min-width: 0px) and (max-width: 719px) {
-  .css-gr93xn {
+  .links {
     margin-bottom: 24px;
   }
-  .css-gr93xn > a {
+  .links > a {
     padding: 0px 14px;
     white-space: nowrap;
   }
-  .css-gr93xn > a:first-of-type {
+  .links > a:first-of-type {
     padding-right: 0px;
   }
-  .css-gr93xn > a:not(:last-of-type) {
+  .links > a:not(:last-of-type) {
     margin: 0px;
     position: relative;
   }
-  .css-gr93xn > a:not(:last-of-type)::after {
+  .links > a:not(:last-of-type)::after {
     content: "";
     position: absolute;
     height: 12px;
@@ -3105,7 +3107,7 @@ textarea.css-1ucupji {
     background: rgb(224, 224, 224);
   }
 }
-.css-7so23d {
+.footer-link {
   letter-spacing: normal;
   color: inherit;
   font-family: NovemberHebrew;
@@ -3114,7 +3116,7 @@ textarea.css-1ucupji {
   line-height: 20px;
   min-height: 20px;
 }
-.css-1rxldqv {
+.footer-title {
   letter-spacing: normal;
   font-family: NovemberHebrew;
   font-weight: 400;
@@ -5136,10 +5138,10 @@ span .footer-span{
 }
 
 @media screen and (min-width: 0px) and (max-width: 719px)
-.css-4ke7ep {
+.footer-links{
   padding: 0 24px;
 }
-.css-4ke7ep {
+.footer-links{
   width: 100%;
   max-width: 1136px;
   margin: 0 auto;
@@ -5247,4 +5249,9 @@ span .footer-span{
   color: inherit;
   -webkit-text-decoration: inherit;
   text-decoration: inherit;
+}
+
+
+.vertical-aligned{
+  vertical-align: inherit;
 }

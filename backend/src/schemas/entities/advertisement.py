@@ -15,7 +15,7 @@ class Advertisement(BaseModel):
     advertisement_status_id: ClassVar[int]
     advertisement_type_id: ClassVar[int]  # booking, sell
 
-    price: float | None
+    price: Union[ClassVar[float], None]
 
     created_at: ClassVar[datetime.datetime]
     updated_at: ClassVar[datetime.datetime]

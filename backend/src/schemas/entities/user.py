@@ -1,14 +1,18 @@
-from pydantic import BaseModel
 from typing import ClassVar
 import datetime
 
+from pydantic import EmailStr
+from pydantic_extra_types.phone_numbers import PhoneNumber
 
-class User(BaseModel):
-    id: ClassVar[int]
+from src.schemas.entities.base import BaseEntity
 
-    email: ClassVar[str]
+
+class User(BaseEntity):
+    user_name: ClassVar[str]
+    email: ClassVar[EmailStr]
+
     user_status_id: ClassVar[int]
-    phone_number: ClassVar[str]
+    phone_number: ClassVar[PhoneNumber]
 
     avatar_id: ClassVar[int]  # photo_id
 

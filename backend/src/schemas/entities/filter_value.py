@@ -1,9 +1,9 @@
-from pydantic import BaseModel
 from typing import ClassVar, Union
 
+from src.schemas.entities.base import BaseEntity
 
-class FilterValue(BaseModel):
-    id: ClassVar[int]
+
+class FilterValue(BaseEntity):
     filter_id: ClassVar[int]
     value: ClassVar[str]
     hint_html: Union[ClassVar[str], None]

@@ -1,4 +1,7 @@
+from typing import ClassVar
 
-class AdvertisementType:
-    id: int
-    title: str
+from src.schemas.characteristics.base import BaseCharacteristic
+
+
+class AdvertisementType(BaseCharacteristic):
+    pass

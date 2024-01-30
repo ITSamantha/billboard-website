@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from typing import ClassVar, Union
+
+from src.schemas.characteristics.base import BaseCharacteristic
 
 
 # checkbox (multiple_select)
@@ -10,9 +11,7 @@ from typing import ClassVar, Union
 
 # в скобках title, отдельная строка -- functional_title
 
-class FilterType(BaseModel):
-    id: ClassVar[int]
-    title: ClassVar[str]
+class FilterType(BaseCharacteristic):
     functional_title: ClassVar[str]
 
     interval_placeholder_from: Union[ClassVar[str], None]

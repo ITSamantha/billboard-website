@@ -1,3 +1,8 @@
-class BookingType:
-    id: int
-    title: str  # paid, not paid, cancelled
+from typing import ClassVar
+
+from src.schemas.characteristics.base import BaseCharacteristic
+
+
+class BookingType(BaseCharacteristic):
+    pass
+    # title: paid, not paid, cancelled

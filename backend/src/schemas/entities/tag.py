@@ -1,7 +1,7 @@
-from pydantic import BaseModel
 from typing import ClassVar
 
+from src.schemas.entities.base import BaseEntity
 
-class AdvertisementTag(BaseModel):
-    id: ClassVar[int]
+
+class AdvertisementTag(BaseEntity):
     title: ClassVar[int]

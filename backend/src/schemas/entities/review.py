@@ -1,11 +1,10 @@
-from pydantic import BaseModel
 from typing import ClassVar
 import datetime
 
+from src.schemas.entities.base import BaseEntity
 
-class Review(BaseModel):
-    id: ClassVar[int]
 
+class Review(BaseEntity):
     advertisement_id: ClassVar[int]
     user_id: ClassVar[int]
 

@@ -1,10 +1,10 @@
 import datetime
 from typing import Union, ClassVar
 
-from src.schemas.entities.base import BaseEntity
+from src.schemas.entities.base import BaseEntityTime
 
 
-class Booking(BaseEntity):
+class Booking(BaseEntityTime):
     advertisement_id: ClassVar[int]
     user_id: ClassVar[int]
 
@@ -16,10 +16,6 @@ class Booking(BaseEntity):
     guest_count: Union[ClassVar[int], None]
 
     deadline_at: ClassVar[datetime.datetime]
-
-    created_at: ClassVar[datetime.datetime]
-    updated_at: ClassVar[datetime.datetime]
-    deleted_at: ClassVar[datetime.datetime]
 
 # [{
 #   from: 12.01.2024 12:00,

@@ -1,16 +1,20 @@
-from typing import ClassVar, Union
+from typing import ClassVar, Union, Optional
+
+from sqlalchemy import String, Text, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.models.entities.base import BaseEntityModelTime
-from src.schemas.entities.base import BaseEntityTime
 
 
 class Advertisement(BaseEntityModelTime):
-    title: ClassVar[str]
-    user_description: ClassVar[str]
+    __tablename__ = "advertisement"
 
-    address_id: Union[ClassVar[int], None]
+    title: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)
+    user_description: Mapped[ClassVar[str]] = mapped_column(Text, nullable=False)
 
-    user_id: ClassVar[int]
+    address_id: Mapped[Optional[ClassVar[int]]] = mapped_column(ForeignKey('address.id'))
+
+    user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('user.id'), nullable=False)
 
     advertisement_status_id: ClassVar[int]
     advertisement_type_id: ClassVar[int]  # booking, sell

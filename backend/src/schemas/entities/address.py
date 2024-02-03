@@ -5,8 +5,8 @@ from src.schemas.entities.base import BaseEntity
 
 class Address(BaseEntity):
     address: ClassVar[str]
-    country: Optional[ClassVar[str]]
-    city: Optional[ClassVar[str]]
+    country: Optional[ClassVar[int]]
+    city: Optional[ClassVar[int]]
     street: Optional[ClassVar[str]]
     house: Optional[ClassVar[str]]
     flat: Optional[ClassVar[str]]

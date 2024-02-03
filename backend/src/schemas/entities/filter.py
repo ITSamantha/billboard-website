@@ -1,9 +1,9 @@
-from pydantic import BaseModel
 from typing import ClassVar
 
+from src.schemas.entities.base import BaseEntity
 
-class Filter(BaseModel):
-    id: ClassVar[int]
+
+class Filter(BaseEntity):
     title: ClassVar[str]
     filter_type_id: ClassVar[int]
     order: ClassVar[int]

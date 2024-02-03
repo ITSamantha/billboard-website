@@ -1,22 +1,21 @@
-from __future__ import annotations
-
 import datetime
+from typing import Union, ClassVar
+
+from src.schemas.entities.base import BaseEntityTime
 
 
-class Booking:
-    advertisement_id: int
-    user_id: int
-    time_from: datetime.datetime
-    time_end: datetime.datetime
-    booking_status_id: int
-    guest_count: int | None
+class Booking(BaseEntityTime):
+    advertisement_id: ClassVar[int]
+    user_id: ClassVar[int]
 
-    deadline_at: datetime.datetime
+    time_from: ClassVar[datetime.datetime]
+    time_end: ClassVar[datetime.datetime]
 
-    created_at: datetime.datetime
-    updated_at: datetime.datetime
-    deleted_at: datetime.datetime
+    booking_status_id: ClassVar[int]
 
+    guest_count: Union[ClassVar[int], None]
+
+    deadline_at: ClassVar[datetime.datetime]
 
 # [{
 #   from: 12.01.2024 12:00,

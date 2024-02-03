@@ -1,16 +1,15 @@
-from pydantic import BaseModel
-from typing import ClassVar, Union
+from typing import ClassVar, Union, Optional
+
+from src.schemas.entities.base import BaseEntity
 
 
-class Address(BaseModel):
-    id: ClassVar[int]
-
+class Address(BaseEntity):
     address: ClassVar[str]
-    country: Union[ClassVar[str], None]
-    city: Union[ClassVar[str], None]
-    street: Union[ClassVar[str], None]
-    house: Union[ClassVar[str], None]
-    flat: Union[ClassVar[str], None]
+    country: Optional[ClassVar[int]]
+    city: Optional[ClassVar[int]]
+    street: Optional[ClassVar[str]]
+    house: Optional[ClassVar[str]]
+    flat: Optional[ClassVar[str]]
 
-    longitude: Union[ClassVar[float], None]
-    latitude: Union[ClassVar[float], None]
+    longitude: Optional[ClassVar[float]]
+    latitude: Optional[ClassVar[float]]

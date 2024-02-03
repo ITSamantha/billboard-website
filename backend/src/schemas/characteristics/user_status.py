@@ -1,8 +1,7 @@
-from pydantic import BaseModel
 from typing import ClassVar
 
+from src.schemas.characteristics.base import BaseCharacteristic
 
-class UserStatus(BaseModel):
-    id: ClassVar[int]
-    title: ClassVar[str]
+
+class UserStatus(BaseCharacteristic):
     is_available: ClassVar[bool]

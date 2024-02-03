@@ -1,10 +1,8 @@
-from pydantic import BaseModel
-from typing import ClassVar, Union
+from typing import ClassVar, Union, Optional
+
+from src.schemas.characteristics.base import BaseCharacteristic
 
 
-class Weekday(BaseModel):
-    id: ClassVar[int]
-    short_title: Union[ClassVar[str], None]
-    title: ClassVar[str]
-    order: int
-
+class Weekday(BaseCharacteristic):
+    short_title: Optional[ClassVar[str]]
+    order: ClassVar[int]

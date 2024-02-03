@@ -2,9 +2,10 @@ import datetime
 from pydantic import BaseModel
 from typing import ClassVar
 
+from src.schemas.entities.base import BaseEntityTime
 
-class UserNotification(BaseModel):
-    id: ClassVar[int]
+
+class UserNotification(BaseEntityTime):
     title: ClassVar[str]
     description: ClassVar[str]
 
@@ -12,7 +13,3 @@ class UserNotification(BaseModel):
     notification_content: ClassVar[int]
 
     user_id: ClassVar[int]
-
-    created_at: ClassVar[datetime.datetime]
-    updated_at: ClassVar[datetime.datetime]
-    deleted_at: ClassVar[datetime.datetime]

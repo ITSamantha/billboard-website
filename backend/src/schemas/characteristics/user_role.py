@@ -1,7 +1,5 @@
-from pydantic import BaseModel
-from typing import ClassVar
+from src.schemas.characteristics.base import BaseCharacteristic
 
 
-class UserRole(BaseModel):
-    id: ClassVar[int]
-    title: ClassVar[str]
+class UserRole(BaseCharacteristic):
+    pass

@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 from typing import ClassVar
 
+from src.schemas.entities.base import BaseEntity
 
-class UserField(BaseModel):
-    id: ClassVar[int]
+
+class UserField(BaseEntity):
     type: ClassVar[str]
     title: ClassVar[str]
 

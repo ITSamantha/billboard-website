@@ -1,8 +1,8 @@
-from pydantic import BaseModel
 from typing import ClassVar
 
+from src.schemas.entities.base import BaseEntity
 
-class Photo(BaseModel):
-    id: ClassVar[int]
+
+class Avatar(BaseEntity):
     photo_path: ClassVar[str]
     photo_thumb: ClassVar[str]

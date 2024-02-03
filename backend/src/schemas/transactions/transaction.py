@@ -1,8 +1,10 @@
-from __future__ import annotations
+from typing import ClassVar, Union
+
+from src.schemas.transactions.base import BaseTransaction
 
 
-class Transaction:
+class Transaction(BaseTransaction):
     transaction_type_id: int  # бронирование, объявление, ...
-    id: str  # uid
-    remote_id: str | None
-    advertisement_id: int | None
+
+    remote_id: Union[ClassVar[str], None]
+    advertisement_id: Union[ClassVar[int], None]

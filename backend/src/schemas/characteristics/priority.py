@@ -1,9 +1,8 @@
-from pydantic import BaseModel
 from typing import ClassVar
+
+from src.schemas.characteristics.base import BaseCharacteristic
 
 
 # ad priority
-class Priority(BaseModel):
-    id: ClassVar[int]
-    title: ClassVar[str]
+class Priority(BaseCharacteristic):
     priority: ClassVar[int]

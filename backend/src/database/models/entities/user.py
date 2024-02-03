@@ -4,10 +4,11 @@ import datetime
 from pydantic import EmailStr
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
+from src.database.models.entities.base import BaseEntityModelTime
 from src.schemas.entities.base import BaseEntity, BaseEntityTime
 
 
-class User(BaseEntityTime):
+class User(BaseEntityModelTime):
     user_name: ClassVar[str]
     email: ClassVar[EmailStr]
 

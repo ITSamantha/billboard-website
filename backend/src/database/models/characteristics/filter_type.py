@@ -1,14 +1,15 @@
-from sqlalchemy import  Column, Integer, String
+from typing import Optional, ClassVar
 
-from backend.src.database.base import engine, AbstractModel
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import mapped_column, Mapped
+
+from src.database.models.base import AbstractModel
 
 
 class FilterType(AbstractModel):
     __tablename__ = "filter_type"
-    id = Column(Integer, autoincrement=True, primary_key=True),
-    title = Column(String(256), unique=True, nullable=False, index=True),
-    functional_title = Column(String(256),  unique=True, nullable=False, index=True),
 
-    interval_placeholder_from: Union[ClassVar[str], None]
-    interval_placeholder_to: Union[ClassVar[str], None]
-    interval_placeholder_to: Union[ClassVar[str], None]
+    functional_title: Mapped[ClassVar[str]] = mapped_column(String(256), unique=True, nullable=False, index=True),
+
+    interval_placeholder_from: Mapped[Optional[ClassVar[str]]] = mapped_column(String(32))
+    interval_placeholder_to: Mapped[Optional[ClassVar[str]]] = mapped_column(String(32))

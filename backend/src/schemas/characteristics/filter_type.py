@@ -1,4 +1,4 @@
-from typing import ClassVar, Union
+from typing import ClassVar, Optional
 
 from src.schemas.characteristics.base import BaseCharacteristic
 
@@ -14,6 +14,5 @@ from src.schemas.characteristics.base import BaseCharacteristic
 class FilterType(BaseCharacteristic):
     functional_title: ClassVar[str]
 
-    interval_placeholder_from: Union[ClassVar[str], None]
-    interval_placeholder_to: Union[ClassVar[str], None]
-    interval_placeholder_to: Union[ClassVar[str], None]
+    interval_placeholder_from: Optional[ClassVar[str]]
+    interval_placeholder_to: Optional[ClassVar[str]]

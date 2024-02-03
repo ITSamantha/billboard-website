@@ -1,11 +1,9 @@
-from pydantic import BaseModel
 from typing import ClassVar
 
 from src.schemas.entities.base import BaseEntity
 
 
-class UserField(BaseEntity):
-    type: ClassVar[str]
+class Filter(BaseEntityModel):
     title: ClassVar[str]
-
+    filter_type_id: ClassVar[int]
     order: ClassVar[int]

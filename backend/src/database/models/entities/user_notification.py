@@ -2,10 +2,11 @@ import datetime
 from pydantic import BaseModel
 from typing import ClassVar
 
+from src.database.models.entities.base import BaseEntityModelTime
 from src.schemas.entities.base import BaseEntityTime
 
 
-class UserNotification(BaseEntityTime):
+class UserNotification(BaseEntityModelTime):
     title: ClassVar[str]
     description: ClassVar[str]
 

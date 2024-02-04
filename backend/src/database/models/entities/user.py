@@ -34,3 +34,14 @@ class User(BaseEntityModelTime):
                                                                  uselist=True)
 
     bookings: Mapped[List["Booking"]] = relationship(back_populates="user", uselist=True)
+
+    reviews: Mapped[List["Review"]] = relationship(back_populates="advertisement", uselist=True)
+
+    notifications: Mapped[List["UserNotification"]] = relationship(back_populates="user", uselist=True)
+
+    user_fields: Mapped[List["UserField"]] = relationship(back_populates="users",
+                                                          uselist=True, secondary="user__user_field")
+
+    def __repr__(self) -> str:
+        return (
+            f"User(id={self.id}, user_name={self.user_name}, email={self.email}, user_status_id={self.user_status_id})")

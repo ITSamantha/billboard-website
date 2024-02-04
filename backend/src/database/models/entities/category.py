@@ -25,6 +25,8 @@ class Category(BaseEntityModel):
     advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="categories",
                                                                  uselist=True,
                                                                  secondary="advertisement__category")
+    filters: Mapped[List["Filter"]] = relationship(back_populates="categories",
+                                                   uselist=True, secondary="category__filter")
 
     def __repr__(self) -> str:
         return (f"Category(id={self.id}, title={self.title}, order={self.order}, meta_title={self.meta_title},"

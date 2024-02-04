@@ -1,4 +1,4 @@
-from typing import ClassVar, Optional
+from typing import ClassVar, Optional, List
 
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import mapped_column, Mapped, relationship
@@ -15,6 +15,9 @@ class FilterValue(BaseEntityModel):
     value: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False)
     hint_html: Mapped[Optional[ClassVar[str]]] = mapped_column(String(256))
     order: Mapped[ClassVar[int]] = mapped_column(nullable=False)
+
+    advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="filter_values",
+                                                                 uselist=True, secondary="advertisement__filter_value")
 
     def __repr__(self) -> str:
         return (f"FilterValue(id={self.id}, value={self.value}, filter_id={self.filter_id},"

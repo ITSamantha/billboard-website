@@ -43,6 +43,14 @@ class Advertisement(BaseEntityModelTime):
 
     categories: Mapped[List["Category"]] = relationship(back_populates="advertisements",
                                                         uselist=True, secondary="advertisement__category")
+    reviews: Mapped[List["Review"]] = relationship(back_populates="advertisement", uselist=True)
+
+    views: Mapped[List["View"]] = relationship(back_populates="advertisement", uselist=True)
+
+    worktimes: Mapped[List["Worktime"]] = relationship(back_populates="advertisement", uselist=True)
+
+    filter_values: Mapped[List["FilterValue"]] = relationship(back_populates="advertisements",
+                                                              uselist=True, secondary="advertisement__filter_value")
 
     def __repr__(self) -> str:
         return (f"Advertisement(id={self.id}, title={self.title}, user_description={self.user_description},"

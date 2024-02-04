@@ -12,4 +12,7 @@ class Photo(BaseEntityModel):
     photo_path: Mapped[ClassVar[str]] = mapped_column(String, nullable=False)
     photo_thumb: Mapped[ClassVar[str]] = mapped_column(String)
 
-    ad_photos: Mapped[List["AdPhoto"]] = relationship(back_populates="photo", uselist=True)
+    ad_photo: Mapped[List["AdPhoto"]] = relationship(back_populates="photo", uselist=False)
+
+    def __repr__(self) -> str:
+        return f"Photo(id={self.id}, photo_path={self.photo_path})"

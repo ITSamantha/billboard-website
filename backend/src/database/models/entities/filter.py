@@ -18,5 +18,7 @@ class Filter(BaseEntityModel):
 
     filter_values: Mapped[List["FilterValue"]] = relationship(back_populates="filter", uselist=True)
 
+    categories: Mapped[List["Category"]] = relationship(back_populates="filters",
+                                                   uselist=True, secondary="category__filter")
     def __repr__(self) -> str:
         return f"Filter(id={self.id}, title={self.title}, filter_type_id={self.filter_type_id}, order={self.order})"

@@ -1,12 +1,14 @@
-from pydantic import BaseModel
 from typing import ClassVar
 
+from sqlalchemy import String
+from sqlalchemy.orm import mapped_column, Mapped
+
 from src.database.models.entities.base import BaseEntityModel
-from src.schemas.entities.base import BaseEntity
 
 
 class UserField(BaseEntityModel):
-    type: ClassVar[str]
-    title: ClassVar[str]
+    __tablename__ = "user_field"
 
-    order: ClassVar[int]
+    type: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)
+    title: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)
+    order: Mapped[ClassVar[int]] = mapped_column(nullable=False)

@@ -5,12 +5,13 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.models.entities.base import BaseEntityModel
-from src.schemas.entities.base import BaseEntity
 
 
 class Worktime(BaseEntityModel):
-    weekday_id: ClassVar[int]
+    __tablename__ = "worktime"
+
+    weekday_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('weekday.id'), nullable=False)
     advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('advertisement.id'), nullable=False)
 
-    start_time: ClassVar[datetime.time]
-    end_time: ClassVar[datetime.time]
+    start_time: Mapped[ClassVar[datetime.time]] = mapped_column(nullable=False)
+    end_time: Mapped[ClassVar[datetime.time]] = mapped_column(nullable=False)

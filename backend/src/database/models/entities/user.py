@@ -3,21 +3,24 @@ import datetime
 
 from pydantic import EmailStr
 from pydantic_extra_types.phone_numbers import PhoneNumber
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.models.entities.base import BaseEntityModelTime
-from src.schemas.entities.base import BaseEntity, BaseEntityTime
 
 
 class User(BaseEntityModelTime):
-    user_name: ClassVar[str]
-    email: ClassVar[EmailStr]
+    __tablename__ = "user"
 
-    user_status_id: ClassVar[int]
-    phone_number: ClassVar[PhoneNumber]
+    user_name: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+    email: Mapped[ClassVar[EmailStr]] = mapped_column(nullable=False, unique=True)
 
-    avatar_id: ClassVar[int]  # photo_id
+    user_status_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('user_status.id'), nullable=False)
+    phone_number: Mapped[ClassVar[PhoneNumber]] = mapped_column()  # TODO: nullable= False?, unique = True?
 
-    # GOOGLE, FACEBOOK...
+    avatar_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('avatar.id'))  # TODO: default avatar? Optional?
 
-    phone_verified_at: Optional[ClassVar[datetime.datetime]]
-    email_verified_at: Optional[ClassVar[datetime.datetime]]
+    # TODO: GOOGLE, FACEBOOK...
+
+    phone_verified_at: Mapped[Optional[ClassVar[datetime.datetime]]] = mapped_column()
+    email_verified_at: Mapped[Optional[ClassVar[datetime.datetime]]] = mapped_column()

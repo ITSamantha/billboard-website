@@ -1,16 +1,20 @@
-import datetime
-from pydantic import BaseModel
 from typing import ClassVar
 
+from sqlalchemy import String, ForeignKey, Text
+from sqlalchemy.orm import mapped_column, Mapped
+
 from src.database.models.entities.base import BaseEntityModelTime
-from src.schemas.entities.base import BaseEntityTime
 
 
 class UserNotification(BaseEntityModelTime):
-    title: ClassVar[str]
-    description: ClassVar[str]
+    __tablename__ = "user_notification"
 
-    notification_type: ClassVar[str]  # 'models/entities/category/booking'
-    notification_content: ClassVar[int]
+    title: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False)
+    description: Mapped[ClassVar[str]] = mapped_column(Text, nullable=False)
 
-    user_id: ClassVar[int]
+    notification_type: Mapped[ClassVar[str]] = mapped_column(Text,
+                                                             nullable=False)  # ПОЛИМОРФНЫЙ. 'models/entities/category/booking'
+    notification_content: Mapped[ClassVar[int]] = mapped_column(Text,
+                                                                nullable=False)  # ПОЛИМОРФНЫЙ  # TODO: Тюм, разберись, пж
+
+    user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('user.id'), nullable=False)

@@ -1,19 +1,22 @@
-from typing import ClassVar
+from typing import ClassVar, Optional
 
-from src.schemas.entities.base import BaseEntity
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import mapped_column, Mapped
+
+from src.database.models.entities.base import BaseEntityModel
 
 
 class Category(BaseEntityModel):
     __tablename__ = "category"
 
-    title: ClassVar[str]
-    order: ClassVar[int]
+    title: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+    order: Mapped[ClassVar[int]] = mapped_column(nullable=False)
 
-    meta_title: ClassVar[str]
-    meta_description: ClassVar[str]
-    url: ClassVar[str]
+    meta_title: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+    meta_description: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+    url: Mapped[ClassVar[str]] = mapped_column(nullable=False)
 
-    parent_id: ClassVar[int]
+    parent_id: Mapped[Optional[ClassVar[int]]] = mapped_column(ForeignKey('category.id'))
 
-    bookable: ClassVar[bool]
-    map_addressable: ClassVar[bool]
+    bookable: Mapped[ClassVar[bool]] = mapped_column(nullable=False, default=False)
+    map_addressable: Mapped[ClassVar[bool]] = mapped_column(nullable=False, default=False)

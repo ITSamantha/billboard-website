@@ -17,11 +17,12 @@ class Booking(BaseEntityModelTime):
     time_from: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
     time_end: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
 
-    booking_status_id: Mapped[ClassVar[int]] = mapped_column(nullable=False)  # booking_type???
+    booking_status_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('booking_status.id'),
+                                                             nullable=False)
 
     guest_count: Mapped[Optional[ClassVar[int]]] = mapped_column()
 
-    deadline_at: Mapped[ClassVar[datetime.datetime]] = mapped_column()
+    deadline_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
 
     # [{
     #   from: 12.01.2024 12:00,

@@ -4,4 +4,4 @@ from src.schemas.entities.base import BaseEntity
 
 
 class AdvertisementTag(BaseEntity):
-    title: ClassVar[int]
+    title: ClassVar[str]

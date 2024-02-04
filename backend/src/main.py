@@ -19,7 +19,7 @@ app = get_application()
 app.include_router(auth.router) 
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run(
         app=settings_app.UVICORN_APP_NAME,
         host=settings_app.UVICORN_HOST,

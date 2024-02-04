@@ -13,8 +13,8 @@ class UserNotification(BaseEntityModelTime):
     description: Mapped[ClassVar[str]] = mapped_column(Text, nullable=False)
 
     notification_type: Mapped[ClassVar[str]] = mapped_column(Text,
-                                                             nullable=False)  # ПОЛИМОРФНЫЙ. 'models/entities/category/booking'
+                                                             nullable=False)  # ПОЛИМОРФНЫЙ. "models/entities/category/booking"
     notification_content: Mapped[ClassVar[int]] = mapped_column(Text,
                                                                 nullable=False)  # ПОЛИМОРФНЫЙ  # TODO: Тюм, разберись, пж
 
-    user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('user.id'), nullable=False)
+    user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("user.id"), nullable=False)

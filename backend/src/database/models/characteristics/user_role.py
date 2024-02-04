@@ -1,5 +1,15 @@
+from typing import List
+
+from sqlalchemy.orm import Mapped, relationship
+
 from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 
 class UserRole(AbstractCharacteristicModel):
     __tablename__ = "user_role"
+
+    # TODO: Найти, где использовали. Дописать relationship
+    # users: Mapped[List["User"]] = relationship(back_populates="user_role", uselist=True)
+
+    def __repr__(self) -> str:
+        return f"UserRole(id={self.id}, title={self.title})"

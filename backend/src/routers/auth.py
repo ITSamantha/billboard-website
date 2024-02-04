@@ -2,21 +2,21 @@ from fastapi import APIRouter, Depends
 from dependencies.router import IsAuthenticated
 
 router = APIRouter(
-    prefix='/auth',
-    tags=['auth'],
+    prefix="/auth",
+    tags=["auth"],
 )
 
 
-@router.post('/register')
+@router.post("/register")
 async def read_items():
-    return 'you registered'
+    return "you registered"
 
 
-@router.post('/login')
+@router.post("/login")
 async def read_items():
-    return 'you logged in'
+    return "you logged in"
 
 
-@router.post('/logout', dependencies=[Depends(IsAuthenticated())])
+@router.post("/logout", dependencies=[Depends(IsAuthenticated())])
 async def read_items():
-    return 'you logged out'
+    return "you logged out"

@@ -9,3 +9,6 @@ class BookingInfo(BaseEntityModel):
     __tablename__ = "booking_info"
 
     field: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+
+    def __repr__(self) -> str:
+        return f"BookingInfo(id={self.id}, field={self.field})"

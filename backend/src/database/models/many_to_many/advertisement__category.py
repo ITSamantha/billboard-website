@@ -9,5 +9,5 @@ from src.database.database import Base
 class AdvertisementCategory(Base):
     __tablename__ = "advertisement__category"
 
-    advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('advertisement.id'), nullable=False)
-    category_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('category.id'), nullable=False)
+    advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
+    category_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("category.id"), nullable=False)

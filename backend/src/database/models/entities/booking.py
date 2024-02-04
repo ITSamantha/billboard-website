@@ -1,5 +1,5 @@
 import datetime
-from typing import Union, ClassVar
+from typing import Union, ClassVar, Optional
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
@@ -9,19 +9,21 @@ from src.schemas.entities.base import BaseEntityTime
 
 
 class Booking(BaseEntityModelTime):
+    __tablename__ = "booking"
+
     advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('advertisement.id'), nullable=False)
-    user_id: ClassVar[int]
+    user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('user.id'), nullable=False)
 
-    time_from: ClassVar[datetime.datetime]
-    time_end: ClassVar[datetime.datetime]
+    time_from: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
+    time_end: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
 
-    booking_status_id: ClassVar[int]
+    booking_status_id: Mapped[ClassVar[int]] = mapped_column(nullable=False)  # booking_type???
 
-    guest_count: Union[ClassVar[int], None]
+    guest_count: Mapped[Optional[ClassVar[int]]] = mapped_column()
 
-    deadline_at: ClassVar[datetime.datetime]
+    deadline_at: Mapped[ClassVar[datetime.datetime]] = mapped_column()
 
-# [{
-#   from: 12.01.2024 12:00,
-#   to: 16.01.2024 15:00
-# }, { ... }]
+    # [{
+    #   from: 12.01.2024 12:00,
+    #   to: 16.01.2024 15:00
+    # }, { ... }]

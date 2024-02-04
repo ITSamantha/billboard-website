@@ -4,6 +4,8 @@ from src.schemas.entities.base import BaseEntity
 
 
 class Category(BaseEntityModel):
+    __tablename__ = "category"
+
     title: ClassVar[str]
     order: ClassVar[int]
 

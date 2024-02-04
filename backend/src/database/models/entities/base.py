@@ -1,14 +1,18 @@
 import datetime
 from typing import ClassVar
 
+from sqlalchemy.orm import mapped_column, Mapped
+
 from src.database.models.base import AbstractModel
 
 
 class BaseEntityModel(AbstractModel):
-    pass
+    __abstract__ = True
 
 
 class BaseEntityModelTime(BaseEntityModel):
-    created_at: ClassVar[datetime.datetime]
-    updated_at: ClassVar[datetime.datetime]
-    deleted_at: ClassVar[datetime.datetime]
+    __abstract__ = True
+
+    created_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
+    updated_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
+    deleted_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)

@@ -5,4 +5,6 @@ from src.schemas.entities.base import BaseEntity
 
 
 class BookingInfo(BaseEntityModel):
+    __tablename__ = "booking_info"
+
     field: ClassVar[str]

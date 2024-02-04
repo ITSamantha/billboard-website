@@ -1,4 +1,4 @@
-from typing import ClassVar, Union, Optional
+from typing import ClassVar, Optional
 
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
@@ -16,7 +16,9 @@ class Advertisement(BaseEntityModelTime):
 
     user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('user.id'), nullable=False)
 
-    advertisement_status_id: ClassVar[int]
-    advertisement_type_id: ClassVar[int]  # booking, sell
+    ad_status_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('ad_status.id'),
+                                                        nullable=False)
+    ad_type_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('ad_type.id'),
+                                                      nullable=False)  # booking, sell
 
-    price: Union[ClassVar[float], None]
+    price: Mapped[Optional[ClassVar[float]]] = mapped_column(nullable=False)

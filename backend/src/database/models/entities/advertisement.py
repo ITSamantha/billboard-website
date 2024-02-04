@@ -1,7 +1,7 @@
 from typing import ClassVar, Optional
 
 from sqlalchemy import String, Text, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models.entities.base import BaseEntityModelTime
 
@@ -18,7 +18,10 @@ class Advertisement(BaseEntityModelTime):
 
     ad_status_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('ad_status.id'),
                                                         nullable=False)
+    ad_status: Mapped["AdStatus"] = relationship(back_populates="advertisements", uselist=False)
+
     ad_type_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('ad_type.id'),
                                                       nullable=False)  # booking, sell
+    ad_type: Mapped["AdType"] = relationship(back_populates="advertisements", uselist=False)
 
     price: Mapped[Optional[ClassVar[float]]] = mapped_column(nullable=False)

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import mapped_column, Mapped
 
-from src.database.base import Base
+from src.database.database import Base
 
 
 class AbstractModel(Base):

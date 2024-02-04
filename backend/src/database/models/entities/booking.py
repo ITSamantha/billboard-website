@@ -2,7 +2,7 @@ import datetime
 from typing import Union, ClassVar, Optional
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.database.models.entities.base import BaseEntityModelTime
 from src.schemas.entities.base import BaseEntityTime
@@ -19,6 +19,7 @@ class Booking(BaseEntityModelTime):
 
     booking_status_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey('booking_status.id'),
                                                              nullable=False)
+    booking_status: Mapped["BookingStatus"] = relationship(back_populates="bookings", uselist=False)
 
     guest_count: Mapped[Optional[ClassVar[int]]] = mapped_column()
 

@@ -1,7 +1,7 @@
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, List
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import String
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.database.models.base import AbstractModel
 
@@ -13,3 +13,8 @@ class FilterType(AbstractModel):
 
     interval_placeholder_from: Mapped[Optional[ClassVar[str]]] = mapped_column(String(32))
     interval_placeholder_to: Mapped[Optional[ClassVar[str]]] = mapped_column(String(32))
+
+    filters: Mapped[List["Filter"]] = relationship(back_populates="filter_type", uselist=True)
+
+    def __repr__(self) -> str:
+        return f"FilterType(id={self.id}, title={self.title}, functional_title={self.functional_title})"

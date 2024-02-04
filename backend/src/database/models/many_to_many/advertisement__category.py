@@ -3,7 +3,7 @@ from typing import ClassVar
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.database.base import Base
+from src.database.database import Base
 
 
 class AdvertisementCategory(Base):

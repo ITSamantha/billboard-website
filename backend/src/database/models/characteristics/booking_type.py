@@ -9,7 +9,7 @@ class BookingType(AbstractCharacteristicModel):
     __tablename__ = "booking_type"
 
     # TODO: Найти, где использовали. Дописать relationship
-    # bookings: Mapped[List["Booking"]] = relationship(back_populates="booking_type", uselist=True)
+    # bookings: Mapped[List["Booking"]] = relationship(back_populates="booking_type", uselist=True, lazy="selectin")
 
     def __repr__(self) -> str:
         return f"BookingType(id={self.id}, title={self.title})"

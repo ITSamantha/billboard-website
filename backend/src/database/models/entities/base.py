@@ -13,6 +13,6 @@ class AbstractBaseEntityModel(AbstractModel):
 class AbstractBaseEntityModelTime(AbstractBaseEntityModel):
     __abstract__ = True
 
-    created_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
-    updated_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
-    deleted_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable=False)
+    updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False)
+    deleted_at: Mapped[datetime.datetime] = mapped_column(nullable=False)

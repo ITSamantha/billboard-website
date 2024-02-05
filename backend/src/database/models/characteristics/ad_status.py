@@ -8,7 +8,7 @@ from src.database.models.characteristics.base import AbstractCharacteristicModel
 class AdStatus(AbstractCharacteristicModel):
     __tablename__ = "ad_status"
 
-    is_shown: Mapped[ClassVar[bool]] = mapped_column(default=False, nullable=False, index=True)
+    is_shown: Mapped[bool] = mapped_column(default=False, nullable=False, index=True)
 
     advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="ad_status", uselist=True,
                                                                  lazy="selectin")

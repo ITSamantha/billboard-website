@@ -10,14 +10,14 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class Worktime(AbstractBaseEntityModel):
     __tablename__ = "worktime"
 
-    weekday_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("weekday.id"), nullable=False)
-    weekday: Mapped["Weekday"] = relationship(back_populates="worktimes", uselist=False)
+    weekday_id: Mapped[int] = mapped_column(ForeignKey("weekday.id"), nullable=False)
+    weekday: Mapped["Weekday"] = relationship(back_populates="worktimes", uselist=False, lazy="selectin")
 
-    advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
-    advertisement: Mapped["Advertisement"] = relationship(back_populates="worktimes", uselist=False)
+    advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
+    advertisement: Mapped["Advertisement"] = relationship(back_populates="worktimes", uselist=False, lazy="selectin")
 
-    start_time: Mapped[ClassVar[datetime.time]] = mapped_column(nullable=False)
-    end_time: Mapped[ClassVar[datetime.time]] = mapped_column(nullable=False)
+    start_time: Mapped[datetime.time] = mapped_column(nullable=False)
+    end_time: Mapped[datetime.time] = mapped_column(nullable=False)
 
     def __repr__(self) -> str:
         return (

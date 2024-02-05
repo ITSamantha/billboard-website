@@ -9,10 +9,10 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class AdTag(AbstractBaseEntityModel):
     __tablename__ = "ad_tag"
 
-    title: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False, unique=True)
+    title: Mapped[str] = mapped_column(String(256), nullable=False, unique=True)
 
     advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="ad_tags",
-                                                                 uselist=True,
+                                                                 uselist=True, lazy="selectin",
                                                                  secondary="advertisement__ad_tag")
 
     def __repr__(self) -> str:

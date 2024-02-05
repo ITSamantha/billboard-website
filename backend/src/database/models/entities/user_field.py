@@ -9,14 +9,14 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class UserField(AbstractBaseEntityModel):
     __tablename__ = "user_field"
 
-    type: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)
+    type: Mapped[str] = mapped_column(String(128), nullable=False)
 
-    title: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)
+    title: Mapped[str] = mapped_column(String(128), nullable=False)
 
-    order: Mapped[ClassVar[int]] = mapped_column(nullable=False)
+    order: Mapped[int] = mapped_column(nullable=False)
 
     users: Mapped[List["User"]] = relationship(back_populates="user_fields",
-                                               uselist=True, secondary="user__user_field")
+                                               uselist=True, lazy="selectin", secondary="user__user_field")
 
     def __repr__(self) -> str:
         return (

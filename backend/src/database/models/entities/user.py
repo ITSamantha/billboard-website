@@ -1,8 +1,7 @@
 from typing import ClassVar, Optional, List
 import datetime
 
-from pydantic import EmailStr
-from pydantic_extra_types.phone_numbers import PhoneNumber
+from sqlalchemy_utils import EmailType, PhoneNumberType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -12,35 +11,35 @@ from src.database.models.entities.base import AbstractBaseEntityModelTime
 class User(AbstractBaseEntityModelTime):
     __tablename__ = "user"
 
-    user_name: Mapped[ClassVar[str]] = mapped_column(nullable=False)
-    email: Mapped[ClassVar[EmailStr]] = mapped_column(nullable=False, unique=True)
+    user_name: Mapped[str] = mapped_column(nullable=False)
+    email: Mapped[str] = mapped_column(EmailType, nullable=False, unique=True)
 
-    user_status_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("user_status.id"), nullable=False)
-    user_status: Mapped["UserStatus"] = relationship(back_populates="users", uselist=False)
+    user_status_id: Mapped[int] = mapped_column(ForeignKey("user_status.id"), nullable=False)
+    user_status: Mapped["UserStatus"] = relationship(back_populates="users", uselist=False, lazy="selectin")
 
-    phone_number: Mapped[ClassVar[PhoneNumber]] = mapped_column()  # TODO: nullable= False?, unique = True?
+    phone_number: Mapped[str] = mapped_column(PhoneNumberType)  # TODO: nullable= False?, unique = True?
 
-    avatar_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("avatar.id"))  # TODO: default avatar? Optional?
-    avatar: Mapped["Avatar"] = relationship(back_populates="user", uselist=False)
+    avatar_id: Mapped[int] = mapped_column(ForeignKey("avatar.id"))  # TODO: default avatar? Optional?
+    avatar: Mapped["Avatar"] = relationship(back_populates="user", uselist=False, lazy="selectin")
 
     # TODO: GOOGLE, FACEBOOK...
 
-    phone_verified_at: Mapped[Optional[ClassVar[datetime.datetime]]] = mapped_column()
-    email_verified_at: Mapped[Optional[ClassVar[datetime.datetime]]] = mapped_column()
+    phone_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
+    email_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
 
     ad_favourites: Mapped[List["AdFavourite"]] = relationship(back_populates="user",
-                                                              uselist=True)
+                                                              uselist=True, lazy="selectin")
     advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="user",
-                                                                 uselist=True)
+                                                                 uselist=True, lazy="selectin")
 
-    bookings: Mapped[List["Booking"]] = relationship(back_populates="user", uselist=True)
+    bookings: Mapped[List["Booking"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
 
-    reviews: Mapped[List["Review"]] = relationship(back_populates="advertisement", uselist=True)
+    reviews: Mapped[List["Review"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
 
-    notifications: Mapped[List["UserNotification"]] = relationship(back_populates="user", uselist=True)
+    notifications: Mapped[List["UserNotification"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
 
     user_fields: Mapped[List["UserField"]] = relationship(back_populates="users",
-                                                          uselist=True, secondary="user__user_field")
+                                                          uselist=True, lazy="selectin", secondary="user__user_field")
 
     def __repr__(self) -> str:
         return (

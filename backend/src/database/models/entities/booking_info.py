@@ -8,7 +8,7 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class BookingInfo(AbstractBaseEntityModel):
     __tablename__ = "booking_info"
 
-    field: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+    field: Mapped[str] = mapped_column(nullable=False)
 
     def __repr__(self) -> str:
         return f"BookingInfo(id={self.id}, field={self.field})"

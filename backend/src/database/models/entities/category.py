@@ -9,24 +9,24 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class Category(AbstractBaseEntityModel):
     __tablename__ = "category"
 
-    title: Mapped[ClassVar[str]] = mapped_column(nullable=False)
-    order: Mapped[ClassVar[int]] = mapped_column(nullable=False)
+    title: Mapped[str] = mapped_column(nullable=False)
+    order: Mapped[int] = mapped_column(nullable=False)
 
-    meta_title: Mapped[ClassVar[str]] = mapped_column(nullable=False)
-    meta_description: Mapped[ClassVar[str]] = mapped_column(nullable=False)
-    url: Mapped[ClassVar[str]] = mapped_column(nullable=False)
+    meta_title: Mapped[str] = mapped_column(nullable=False)
+    meta_description: Mapped[str] = mapped_column(nullable=False)
+    url: Mapped[str] = mapped_column(nullable=False)
 
-    parent_id: Mapped[Optional[ClassVar[int]]] = mapped_column(ForeignKey("category.id"))
+    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("category.id"))
     parent: Mapped["Category"] = relationship()
 
-    bookable: Mapped[ClassVar[bool]] = mapped_column(nullable=False, default=False)
-    map_addressable: Mapped[ClassVar[bool]] = mapped_column(nullable=False, default=False)
+    bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
+    map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)
 
     advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="categories",
-                                                                 uselist=True,
+                                                                 uselist=True, lazy="selectin",
                                                                  secondary="advertisement__category")
     filters: Mapped[List["Filter"]] = relationship(back_populates="categories",
-                                                   uselist=True, secondary="category__filter")
+                                                   uselist=True, lazy="selectin", secondary="category__filter")
 
     def __repr__(self) -> str:
         return (f"Category(id={self.id}, title={self.title}, order={self.order}, meta_title={self.meta_title},"

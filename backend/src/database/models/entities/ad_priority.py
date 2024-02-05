@@ -10,14 +10,14 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class AdPriority(AbstractBaseEntityModel):
     __tablename__ = "ad_priority"
 
-    priority_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("priority.id"), nullable=False)
-    priority: Mapped["Priority"] = relationship(back_populates="ad_priorities", uselist=False)
+    priority_id: Mapped[int] = mapped_column(ForeignKey("priority.id"), nullable=False)
+    priority: Mapped["Priority"] = relationship(back_populates="ad_priorities", uselist=False, lazy="selectin")
 
-    advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
-    advertisement: Mapped["Advertisement"] = relationship(back_populates="ad_priorities", uselist=False)
+    advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
+    advertisement: Mapped["Advertisement"] = relationship(back_populates="ad_priorities", uselist=False, lazy="selectin")
 
-    start_time: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
-    end_time: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)
+    start_time: Mapped[datetime.datetime] = mapped_column(nullable=False)
+    end_time: Mapped[datetime.datetime] = mapped_column(nullable=False)
 
     def __repr__(self) -> str:
         return (

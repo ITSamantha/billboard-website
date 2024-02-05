@@ -1,6 +1,6 @@
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, declarative_base
 
-from src.database.database import Base
+Base = declarative_base()
 
 
 class AbstractModel(Base):

@@ -9,12 +9,12 @@ from src.database.models.base import AbstractModel
 class FilterType(AbstractModel):
     __tablename__ = "filter_type"
 
-    functional_title: Mapped[ClassVar[str]] = mapped_column(String(256), unique=True, nullable=False, index=True),
+    functional_title: Mapped[str] = mapped_column(String(256), unique=True, nullable=False, index=True)
 
-    interval_placeholder_from: Mapped[Optional[ClassVar[str]]] = mapped_column(String(32))
-    interval_placeholder_to: Mapped[Optional[ClassVar[str]]] = mapped_column(String(32))
+    interval_placeholder_from: Mapped[Optional[str]] = mapped_column(String(32))
+    interval_placeholder_to: Mapped[Optional[str]] = mapped_column(String(32))
 
-    filters: Mapped[List["Filter"]] = relationship(back_populates="filter_type", uselist=True)
+    filters: Mapped[List["Filter"]] = relationship(back_populates="filter_type", uselist=True, lazy="selectin")
 
     def __repr__(self) -> str:
         return f"FilterType(id={self.id}, title={self.title}, functional_title={self.functional_title})"

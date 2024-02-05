@@ -10,12 +10,12 @@ from src.database.models.entities.base import AbstractBaseEntityModel
 class View(AbstractBaseEntityModel):
     __tablename__ = "view"
 
-    advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
-    advertisement: Mapped["Advertisement"] = relationship(back_populates="views", uselist=False)
+    advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
+    advertisement: Mapped["Advertisement"] = relationship(back_populates="views", uselist=False, lazy="selectin")
 
-    view_count: Mapped[ClassVar[int]] = mapped_column(nullable=False)
+    view_count: Mapped[int] = mapped_column(nullable=False)
 
-    date: Mapped[ClassVar[datetime.date]] = mapped_column(nullable=False)
+    date: Mapped[datetime.date] = mapped_column(nullable=False)
 
     def __repr__(self) -> str:
         return (

@@ -9,16 +9,16 @@ from src.database.models.entities.base import AbstractBaseEntityModelTime
 class UserNotification(AbstractBaseEntityModelTime):
     __tablename__ = "user_notification"
 
-    title: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False)
-    description: Mapped[ClassVar[str]] = mapped_column(Text, nullable=False)
+    title: Mapped[str] = mapped_column(String(256), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
 
-    notification_type: Mapped[ClassVar[str]] = mapped_column(Text,
+    notification_type: Mapped[str] = mapped_column(Text,
                                                              nullable=False)  # ПОЛИМОРФНЫЙ. "models/entities/category/booking"
-    notification_content: Mapped[ClassVar[int]] = mapped_column(Text,
+    notification_content: Mapped[int] = mapped_column(Text,
                                                                 nullable=False)  # ПОЛИМОРФНЫЙ  # TODO: Тюм, разберись, пж
 
-    user_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("user.id"), nullable=False)
-    user: Mapped["User"] = relationship(back_populates="notifications", uselist=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user: Mapped["User"] = relationship(back_populates="notifications", uselist=False, lazy="selectin")
 
     def __repr__(self) -> str:
         return (

@@ -3,10 +3,10 @@ from typing import ClassVar, Optional, List
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import BaseEntityModelTime
+from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
-class Advertisement(BaseEntityModelTime):
+class Advertisement(AbstractBaseEntityModelTime):
     __tablename__ = "advertisement"
 
     title: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)
@@ -51,6 +51,7 @@ class Advertisement(BaseEntityModelTime):
 
     filter_values: Mapped[List["FilterValue"]] = relationship(back_populates="advertisements",
                                                               uselist=True, secondary="advertisement__filter_value")
+    transactions: Mapped[List["Transaction"]] = relationship(back_populates="advertisemet", uselist=True)
 
     def __repr__(self) -> str:
         return (f"Advertisement(id={self.id}, title={self.title}, user_description={self.user_description},"

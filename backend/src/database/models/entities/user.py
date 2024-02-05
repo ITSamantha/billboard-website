@@ -6,10 +6,10 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import BaseEntityModelTime
+from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
-class User(BaseEntityModelTime):
+class User(AbstractBaseEntityModelTime):
     __tablename__ = "user"
 
     user_name: Mapped[ClassVar[str]] = mapped_column(nullable=False)

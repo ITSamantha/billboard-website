@@ -4,13 +4,13 @@ from typing import ClassVar
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 MIN_BOOKING_TIME = 1
 MAX_BOOKING_TIME = 168
 
 
-class AdBookingAvailable(BaseEntityModel):
+class AdBookingAvailable(AbstractBaseEntityModel):
     __tablename__ = "ad_booking_available"
 
     advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)

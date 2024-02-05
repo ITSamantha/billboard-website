@@ -3,10 +3,10 @@ from typing import ClassVar, List
 from sqlalchemy import String
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class UserField(BaseEntityModel):
+class UserField(AbstractBaseEntityModel):
     __tablename__ = "user_field"
 
     type: Mapped[ClassVar[str]] = mapped_column(String(128), nullable=False)

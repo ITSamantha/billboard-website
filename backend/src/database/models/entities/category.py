@@ -3,10 +3,10 @@ from typing import ClassVar, Optional, List
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class Category(BaseEntityModel):
+class Category(AbstractBaseEntityModel):
     __tablename__ = "category"
 
     title: Mapped[ClassVar[str]] = mapped_column(nullable=False)

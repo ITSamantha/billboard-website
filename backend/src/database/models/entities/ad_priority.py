@@ -4,10 +4,10 @@ from typing import ClassVar
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class AdPriority(BaseEntityModel):
+class AdPriority(AbstractBaseEntityModel):
     __tablename__ = "ad_priority"
 
     priority_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("priority.id"), nullable=False)

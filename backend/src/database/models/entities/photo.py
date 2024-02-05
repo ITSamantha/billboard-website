@@ -3,10 +3,10 @@ from typing import ClassVar, List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class Photo(BaseEntityModel):
+class Photo(AbstractBaseEntityModel):
     __tablename__ = "photo"
 
     photo_path: Mapped[ClassVar[str]] = mapped_column(String, nullable=False)

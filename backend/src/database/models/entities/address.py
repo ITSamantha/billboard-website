@@ -3,10 +3,10 @@ from typing import ClassVar, Optional
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class Address(BaseEntityModel):
+class Address(AbstractBaseEntityModel):
     __tablename__ = "address"
 
     address: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False)

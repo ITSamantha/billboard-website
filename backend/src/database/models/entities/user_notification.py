@@ -3,10 +3,10 @@ from typing import ClassVar
 from sqlalchemy import String, ForeignKey, Text
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModelTime
+from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
-class UserNotification(BaseEntityModelTime):
+class UserNotification(AbstractBaseEntityModelTime):
     __tablename__ = "user_notification"
 
     title: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False)

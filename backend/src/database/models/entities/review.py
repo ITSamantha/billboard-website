@@ -3,10 +3,10 @@ from typing import ClassVar
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModelTime
+from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
-class Review(BaseEntityModelTime):
+class Review(AbstractBaseEntityModelTime):
     __tablename__ = "review"
 
     advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)

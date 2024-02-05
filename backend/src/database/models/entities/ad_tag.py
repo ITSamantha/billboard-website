@@ -3,10 +3,10 @@ from typing import ClassVar, List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class AdTag(BaseEntityModel):
+class AdTag(AbstractBaseEntityModel):
     __tablename__ = "ad_tag"
 
     title: Mapped[ClassVar[str]] = mapped_column(String(256), nullable=False, unique=True)

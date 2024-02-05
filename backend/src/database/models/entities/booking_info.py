@@ -2,10 +2,10 @@ from typing import ClassVar
 
 from sqlalchemy.orm import mapped_column, Mapped
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class BookingInfo(BaseEntityModel):
+class BookingInfo(AbstractBaseEntityModel):
     __tablename__ = "booking_info"
 
     field: Mapped[ClassVar[str]] = mapped_column(nullable=False)

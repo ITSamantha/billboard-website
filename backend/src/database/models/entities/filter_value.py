@@ -3,10 +3,10 @@ from typing import ClassVar, Optional, List
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModel
+from src.database.models.entities.base import AbstractBaseEntityModel
 
 
-class FilterValue(BaseEntityModel):
+class FilterValue(AbstractBaseEntityModel):
     __tablename__ = "filter_value"
 
     filter_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("filter.id"), nullable=False)

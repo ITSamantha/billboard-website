@@ -4,11 +4,10 @@ from typing import Union, ClassVar, Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import BaseEntityModelTime
-from src.schemas.entities.base import BaseEntityTime
+from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
-class Booking(BaseEntityModelTime):
+class Booking(AbstractBaseEntityModelTime):
     __tablename__ = "booking"
 
     advertisement_id: Mapped[ClassVar[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)

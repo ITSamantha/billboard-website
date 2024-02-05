@@ -6,11 +6,11 @@ from sqlalchemy.orm import mapped_column, Mapped
 from src.database.models.base import AbstractModel
 
 
-class BaseEntityModel(AbstractModel):
+class AbstractBaseEntityModel(AbstractModel):
     __abstract__ = True
 
 
-class BaseEntityModelTime(BaseEntityModel):
+class AbstractBaseEntityModelTime(AbstractBaseEntityModel):
     __abstract__ = True
 
     created_at: Mapped[ClassVar[datetime.datetime]] = mapped_column(nullable=False)

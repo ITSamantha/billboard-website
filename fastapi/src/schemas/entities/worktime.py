@@ -5,8 +5,8 @@ from src.schemas.entities.base import BaseEntity
 
 
 class Worktime(BaseEntity):
-    weekday_id: ClassVar[int]
-    advertisement_id: ClassVar[int]
+    weekday_id: int
+    advertisement_id: int
 
-    start_time: ClassVar[datetime.time]
-    end_time: ClassVar[datetime.time]
+    start_time: datetime.time
+    end_time: datetime.time

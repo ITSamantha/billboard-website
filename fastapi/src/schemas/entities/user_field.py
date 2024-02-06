@@ -5,7 +5,7 @@ from src.schemas.entities.base import BaseEntity
 
 
 class UserField(BaseEntity):
-    type: ClassVar[str]
-    title: ClassVar[str]
+    type: str
+    title: str
 
-    order: ClassVar[int]
+    order: int

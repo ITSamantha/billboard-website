@@ -1,8 +1,21 @@
 from typing import ClassVar, Union, Optional
 
+from src.schemas.base import BaseResponseSchema
 from src.schemas.characteristics.base import BaseCharacteristic
 
 
 class Weekday(BaseCharacteristic):
-    short_title: Optional[ClassVar[str]]
-    order: ClassVar[int]
+    short_title: Optional[str]
+    order: int
+
+
+class WeekdayResponse(Weekday, BaseResponseSchema):
+    pass
+
+
+class WeekdayCreate(Weekday):
+    pass
+
+
+class WeekdayUpdate(Weekday):
+    pass

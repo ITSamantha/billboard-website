@@ -4,4 +4,4 @@ from pydantic import BaseModel
 
 
 class BaseTransaction(BaseModel):
-    id: ClassVar[int]
+    id: int

@@ -6,10 +6,10 @@ from src.schemas.entities.base import BaseEntityTime
 
 
 class UserNotification(BaseEntityTime):
-    title: ClassVar[str]
-    description: ClassVar[str]
+    title: str
+    description: str
 
-    notification_type: ClassVar[str]  # "models/entities/category/booking"
-    notification_content: ClassVar[int]
+    notification_type: str  # "models/entities/category/booking"
+    notification_content: int
 
-    user_id: ClassVar[int]
+    user_id: int

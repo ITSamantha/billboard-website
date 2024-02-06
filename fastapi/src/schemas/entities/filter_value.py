@@ -4,7 +4,7 @@ from src.schemas.entities.base import BaseEntity
 
 
 class FilterValue(BaseEntity):
-    filter_id: ClassVar[int]
-    value: ClassVar[str]
-    hint_html: Union[ClassVar[str], None]
-    order: ClassVar[int]
+    filter_id: int
+    value: str
+    hint_html: Union[str, None]
+    order: int

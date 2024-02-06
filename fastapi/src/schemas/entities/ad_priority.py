@@ -5,8 +5,8 @@ from src.schemas.entities.base import BaseEntity
 
 
 class AdPriority(BaseEntity):
-    priority_id: ClassVar[int]
-    advertisement_id: ClassVar[int]
+    priority_id: int
+    advertisement_id: int
 
-    start_time: ClassVar[datetime.datetime]
-    end_time: ClassVar[datetime.datetime]
+    start_time: datetime.datetime
+    end_time: datetime.datetime

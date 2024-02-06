@@ -5,10 +5,10 @@ from pydantic import BaseModel
 
 
 class BaseEntity(BaseModel):
-    id: ClassVar[int]
+    id: int
 
 
 class BaseEntityTime(BaseEntity):
-    created_at: ClassVar[datetime.datetime]
-    updated_at: ClassVar[datetime.datetime]
-    deleted_at: ClassVar[datetime.datetime]
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
+    deleted_at: datetime.datetime

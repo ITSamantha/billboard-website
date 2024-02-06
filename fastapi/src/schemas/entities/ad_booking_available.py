@@ -5,12 +5,12 @@ from src.schemas.entities.base import BaseEntity
 
 
 class AdBookingAvailable(BaseEntity):
-    advertisement_id: ClassVar[int]
+    advertisement_id: int
 
-    time_from: ClassVar[datetime.datetime]
-    time_end: ClassVar[datetime.datetime]
+    time_from: datetime.datetime
+    time_end: datetime.datetime
 
-    min_booking_time: ClassVar[datetime.datetime]
-    max_booking_time: ClassVar[datetime.datetime]
+    min_booking_time: datetime.datetime
+    max_booking_time: datetime.datetime
 
-    price: ClassVar[float]
+    price: float

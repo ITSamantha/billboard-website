@@ -1,5 +1,6 @@
-from typing import ClassVar, Optional
+from typing import Optional
 
+from src.schemas.base import BaseResponseSchema
 from src.schemas.characteristics.base import BaseCharacteristic
 
 
@@ -12,7 +13,19 @@ from src.schemas.characteristics.base import BaseCharacteristic
 # в скобках title, отдельная строка -- functional_title
 
 class FilterType(BaseCharacteristic):
-    functional_title: ClassVar[str]
+    functional_title: str
 
-    interval_placeholder_from: Optional[ClassVar[str]]
-    interval_placeholder_to: Optional[ClassVar[str]]
+    interval_placeholder_from: Optional[str]
+    interval_placeholder_to: Optional[str]
+
+
+class FilterTypeResponse(FilterType, BaseResponseSchema):
+    pass
+
+
+class FilterTypeCreate(FilterType):
+    pass
+
+
+class FilterTypeUpdate(FilterType):
+    pass

@@ -5,17 +5,17 @@ from src.schemas.entities.base import BaseEntityTime
 
 
 class Booking(BaseEntityTime):
-    advertisement_id: ClassVar[int]
-    user_id: ClassVar[int]
+    advertisement_id: int
+    user_id: int
 
-    time_from: ClassVar[datetime.datetime]
-    time_end: ClassVar[datetime.datetime]
+    time_from: datetime.datetime
+    time_end: datetime.datetime
 
-    booking_status_id: ClassVar[int]
+    booking_status_id: int
 
-    guest_count: Union[ClassVar[int], None]
+    guest_count: Union[int, None]
 
-    deadline_at: ClassVar[datetime.datetime]
+    deadline_at: datetime.datetime
 
 # [{
 #   from: 12.01.2024 12:00,

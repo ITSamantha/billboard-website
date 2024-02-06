@@ -5,8 +5,8 @@ from src.schemas.entities.base import BaseEntity, BaseEntityTime
 
 
 class Review(BaseEntityTime):
-    advertisement_id: ClassVar[int]
-    user_id: ClassVar[int]
+    advertisement_id: int
+    user_id: int
 
-    text: ClassVar[str]
-    rating: ClassVar[int]
+    text: str
+    rating: int

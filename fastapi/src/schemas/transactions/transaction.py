@@ -1,4 +1,4 @@
-from typing import ClassVar, Union
+from typing import ClassVar, Union, Optional
 
 from src.schemas.transactions.base import BaseTransaction
 
@@ -6,6 +6,6 @@ from src.schemas.transactions.base import BaseTransaction
 class Transaction(BaseTransaction):
     transaction_type_id: int  # бронирование, объявление, ...
 
-    remote_id: Union[ClassVar[str], None]
+    remote_id: Optional[str]
 
-    advertisement_id: Union[ClassVar[int], None]
+    advertisement_id: Optional[int]

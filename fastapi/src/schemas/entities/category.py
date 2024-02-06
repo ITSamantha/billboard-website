@@ -4,14 +4,14 @@ from src.schemas.entities.base import BaseEntity
 
 
 class Category(BaseEntity):
-    title: ClassVar[str]
-    order: ClassVar[int]
+    title: str
+    order: int
 
-    meta_title: ClassVar[str]
-    meta_description: ClassVar[str]
-    url: ClassVar[str]
+    meta_title: str
+    meta_description: str
+    url: str
 
-    parent_id: ClassVar[int]
+    parent_id: int
 
-    bookable: ClassVar[bool]
-    map_addressable: ClassVar[bool]
+    bookable: bool
+    map_addressable: bool

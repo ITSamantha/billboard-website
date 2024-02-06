@@ -3,5 +3,5 @@ from typing import ClassVar
 
 
 class AdvertisementCategory(BaseModel):
-    advertisement_id: ClassVar[int]
-    category_id: ClassVar[int]
+    advertisement_id: int
+    category_id: int

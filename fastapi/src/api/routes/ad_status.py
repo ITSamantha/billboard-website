@@ -14,6 +14,12 @@ router = APIRouter(
 
 
 @router.post("/")
-async def create_ad_status(ad: src.schemas.characteristics.ad_status.AdStatus):
+async def create_ad_status(ad: src.schemas.characteristics.ad_status.AdStatusCreate):
     res = await ad_status_repository.create(ad)
+    return res
+
+
+@router.get("/{id}")
+async def create_ad_status(id: int):
+    res = await ad_status_repository.get_single(id=id)
     return res

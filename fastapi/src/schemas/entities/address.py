@@ -4,12 +4,12 @@ from src.schemas.entities.base import BaseEntity
 
 
 class Address(BaseEntity):
-    address: ClassVar[str]
-    country: Optional[ClassVar[int]]
-    city: Optional[ClassVar[int]]
-    street: Optional[ClassVar[str]]
-    house: Optional[ClassVar[str]]
-    flat: Optional[ClassVar[str]]
+    address: str
+    country: Optional[int]
+    city: Optional[int]
+    street: Optional[str]
+    house: Optional[str]
+    flat: Optional[str]
 
-    longitude: Optional[ClassVar[float]]
-    latitude: Optional[ClassVar[float]]
+    longitude: Optional[float]
+    latitude: Optional[float]

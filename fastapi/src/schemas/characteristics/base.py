@@ -1,9 +1,5 @@
-from pydantic import BaseModel
+from src.schemas.base import BaseSchema
 
 
-class BaseCharacteristic(BaseModel):
-    id: int
+class BaseCharacteristic(BaseSchema):
     title: str
-
-    def __str__(self):
-        return self.title

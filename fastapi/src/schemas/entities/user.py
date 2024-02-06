@@ -8,15 +8,15 @@ from src.schemas.entities.base import BaseEntity, BaseEntityTime
 
 
 class User(BaseEntityTime):
-    user_name: ClassVar[str]
-    email: ClassVar[EmailStr]
+    user_name: str
+    email: EmailStr
 
-    user_status_id: ClassVar[int]
-    phone_number: ClassVar[PhoneNumber]
+    user_status_id: int
+    phone_number: PhoneNumber
 
-    avatar_id: ClassVar[int]  # photo_id
+    avatar_id: int  # photo_id
 
     # GOOGLE, FACEBOOK...
 
-    phone_verified_at: Optional[ClassVar[datetime.datetime]]
-    email_verified_at: Optional[ClassVar[datetime.datetime]]
+    phone_verified_at: Optional[datetime.datetime]
+    email_verified_at: Optional[datetime.datetime]

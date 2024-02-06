@@ -14,7 +14,6 @@ class ConfigDatabase(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: str
     POSTGRES_NAME: str
-    POSTGRES_ECHO: bool
 
     @property
     def database_url(self) -> Optional[PostgresDsn]:

@@ -1,6 +1,7 @@
 import contextlib
 from typing import AsyncIterator, Optional
 
+from sqlalchemy import exc
 from sqlalchemy.ext.asyncio import (
     AsyncConnection,
     AsyncEngine,
@@ -8,6 +9,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.orm import sessionmaker
 
 from src.config.database.config import settings_db
 
@@ -15,7 +17,7 @@ from src.config.database.config import settings_db
 class DatabaseSessionManager:
     def __init__(self) -> None:
         self._engine: Optional[AsyncEngine] = None
-        self._sessionmaker: Optional[async_sessionmaker[AsyncSession]] = None
+        self.session_factory: Optional[AsyncSession] = None
 
     def init(self) -> None:
         connect_args = {
@@ -28,9 +30,11 @@ class DatabaseSessionManager:
             connect_args=connect_args,
             echo=settings_db.POSTGRES_ECHO
         )
-        self._sessionmaker = async_sessionmaker(
+        self.session_factory = async_sessionmaker(
             bind=self._engine,
-            expire_on_commit=False,
+            autoflush=False,
+            autocommit=False,
+            expire_on_commit=False
         )
 
     async def close(self) -> None:
@@ -38,37 +42,21 @@ class DatabaseSessionManager:
             return
         await self._engine.dispose()
         self._engine = None
-        self._sessionmaker = None
+        self.session_factory = None
 
     @contextlib.asynccontextmanager
-    async def session(self) -> AsyncIterator[AsyncSession]:
-        if self._sessionmaker is None:
+    async def get_session(self) -> AsyncSession:
+        if self.session_factory is None:
             raise IOError("DatabaseSessionManager is not initialized")
-        async with self._sessionmaker() as session:
-            try:
-                yield session
-            except Exception:
-                await session.rollback()
-                raise
+        session: AsyncSession = self.session_factory()
+        try:
+            yield session
+        except exc.SQLAlchemyError as error:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
 
-    @contextlib.asynccontextmanager
-    async def connect(self) -> AsyncIterator[AsyncConnection]:
-        if self._engine is None:
-            raise IOError("DatabaseSessionManager is not initialized")
-        async with self._engine.begin() as connection:
-            try:
-                yield connection
-            except Exception:
-                await connection.rollback()
-                raise
-
-
-async def get_session() -> AsyncSession:
-    async with db_manager.session() as session:
-        yield session
 
 db_manager = DatabaseSessionManager()
 db_manager.init()
-
-
-

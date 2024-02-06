@@ -1,5 +1,6 @@
 from typing import Type, TypeVar, Optional, Generic
 
+from fastapi import Depends
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,13 +16,14 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
-    def __init__(self, model: Type[ModelType], db_session: AsyncSession):
-        self._session_factory = db_session
+    def __init__(self, session: AsyncSession, model: Type[ModelType] = None):
         self.model = model
+        self._session_factory = session
 
     async def create(self, data: CreateSchemaType) -> ModelType:
-        async with self._session_factory as session:
-            instance = self.model(**data)
+        async with self._session_factory() as session:
+            obj_create_data = data.model_dump(exclude_none=True, exclude_unset=True)
+            instance = self.model(**obj_create_data)
             session.add(instance)
             await session.commit()
             await session.refresh(instance)

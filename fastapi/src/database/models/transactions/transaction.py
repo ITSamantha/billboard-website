@@ -16,5 +16,5 @@ class Transaction(AbstractBaseTransactionModel):
 
     remote_id: Mapped[Optional[str]] = mapped_column(nullable=False)
 
-    advertisement_id: Mapped[Optional[int]] = mapped_column(nullable=False)
+    advertisement_id: Mapped[Optional[int]] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
     advertisement: Mapped["Advertisement"] = relationship(back_populates="transactions", uselist=False, lazy="selectin")

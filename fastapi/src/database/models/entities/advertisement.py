@@ -19,11 +19,11 @@ class Advertisement(AbstractBaseEntityModelTime):
     user: Mapped["User"] = relationship(back_populates="advertisements", uselist=False, lazy="selectin")
 
     ad_status_id: Mapped[int] = mapped_column(ForeignKey("ad_status.id"),
-                                                        nullable=False)
+                                              nullable=False)
     ad_status: Mapped["AdStatus"] = relationship(back_populates="advertisements", uselist=False, lazy="selectin")
 
     ad_type_id: Mapped[int] = mapped_column(ForeignKey("ad_type.id"),
-                                                      nullable=False)  # booking, sell
+                                            nullable=False)  # booking, sell
     ad_type: Mapped["AdType"] = relationship(back_populates="advertisements", uselist=False, lazy="selectin")
 
     price: Mapped[Optional[float]] = mapped_column(nullable=False)
@@ -35,14 +35,16 @@ class Advertisement(AbstractBaseEntityModelTime):
 
     ad_photos: Mapped[List["AdPhoto"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
 
-    ad_priorities: Mapped[List["AdPriority"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
+    ad_priorities: Mapped[List["AdPriority"]] = relationship(back_populates="advertisement", uselist=True,
+                                                             lazy="selectin")
 
     ad_tags: Mapped[List["AdTag"]] = relationship(back_populates="advertisements",
                                                   uselist=True, lazy="selectin", secondary="advertisement__ad_tag")
     bookings: Mapped[List["Booking"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
 
     categories: Mapped[List["Category"]] = relationship(back_populates="advertisements",
-                                                        uselist=True, lazy="selectin", secondary="advertisement__category")
+                                                        uselist=True, lazy="selectin",
+                                                        secondary="advertisement__category")
     reviews: Mapped[List["Review"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
 
     views: Mapped[List["View"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
@@ -50,8 +52,10 @@ class Advertisement(AbstractBaseEntityModelTime):
     worktimes: Mapped[List["Worktime"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
 
     filter_values: Mapped[List["FilterValue"]] = relationship(back_populates="advertisements",
-                                                              uselist=True, lazy="selectin", secondary="advertisement__filter_value")
-    transactions: Mapped[List["Transaction"]] = relationship(back_populates="advertisemet", uselist=True, lazy="selectin")
+                                                              uselist=True, lazy="selectin",
+                                                              secondary="advertisement__filter_value")
+    transactions: Mapped[List["Transaction"]] = relationship(back_populates="advertisement", uselist=True,
+                                                             lazy="selectin")
 
     def __repr__(self) -> str:
         return (f"Advertisement(id={self.id}, title={self.title}, user_description={self.user_description},"

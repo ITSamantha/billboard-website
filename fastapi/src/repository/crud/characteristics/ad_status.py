@@ -1,7 +1,16 @@
-from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models import AdStatus
-from ..base_crud_repository import SqlAlchemyRepository
-from src.database.session_manager import get_session
+from src.database.session_manager import db_manager
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 
-ad_status_repository = SqlAlchemyRepository(model=AdStatus, db_session=Depends(get_session))
+
+class AdStatusRepository(SqlAlchemyRepository):
+    def __init__(self, session: AsyncSession):
+        super().__init__(session)
+        self.model = AdStatus
+
+
+db_manager.init()
+
+ad_status_repository = AdStatusRepository(db_manager.get_session)

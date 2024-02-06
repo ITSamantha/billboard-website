@@ -34,7 +34,7 @@ class User(AbstractBaseEntityModelTime):
 
     bookings: Mapped[List["Booking"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
 
-    reviews: Mapped[List["Review"]] = relationship(back_populates="advertisement", uselist=True, lazy="selectin")
+    reviews: Mapped[List["Review"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
 
     notifications: Mapped[List["UserNotification"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
 

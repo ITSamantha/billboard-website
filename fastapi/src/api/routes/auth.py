@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from src.dependencies.router import IsAuthenticated
+from src.api.dependencies.router import IsAuthenticated
 
 router = APIRouter(
     prefix="/auth",

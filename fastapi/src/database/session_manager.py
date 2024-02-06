@@ -8,7 +8,6 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.orm import declarative_base
 
 from src.config.database.config import settings_db
 
@@ -68,6 +67,8 @@ async def get_session() -> AsyncSession:
     async with db_manager.session() as session:
         yield session
 
-
 db_manager = DatabaseSessionManager()
+db_manager.init()
+
+
 

@@ -12,6 +12,11 @@ async def read_items():
     return "you registered"
 
 
+@router.get("/test")
+async def read_items():
+    return "privet"
+
+
 @router.post("/login")
 async def read_items():
     return "you logged in"

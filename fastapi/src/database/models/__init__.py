@@ -33,6 +33,7 @@ from src.database.models.entities.photo import *
 from src.database.models.entities.user_field import *
 from src.database.models.entities.user_notification import *
 from src.database.models.entities.worktime import *
+from src.database.models.entities.token import *
 
 # == MANY TO MANY ==
 from src.database.models.many_to_many.advertisement__category import *

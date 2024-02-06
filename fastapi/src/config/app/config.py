@@ -14,11 +14,11 @@ class AppConfig(BaseSettings):
     UVICORN_PORT: int
     UVICORN_RELOAD: bool
 
-    POSTGRES_USER = str
-    POSTGRES_PASSWORD = str
-    POSTGRES_HOST = str
-    POSTGRES_PORT = int
-    POSTGRES_NAME = str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
+    POSTGRES_NAME: str
 
     class Config:
         env_file = ".env"

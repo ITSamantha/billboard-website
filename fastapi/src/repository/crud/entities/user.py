@@ -7,7 +7,7 @@ from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 
 class AdStatusRepository(SqlAlchemyRepository):
     def __init__(self, session: AsyncSession):
-        super().__init__(model=User, db_session=session)
+        super().__init__(session)
         self.model = User
 
 

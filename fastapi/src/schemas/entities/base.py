@@ -1,14 +1,14 @@
 import datetime
-from typing import ClassVar
 
-from pydantic import BaseModel
+from src.schemas.base import BaseSchema
 
 
-class BaseEntity(BaseModel):
-    id: int
+class BaseEntity(BaseSchema):
+    pass
 
 
 class BaseEntityTime(BaseEntity):
     created_at: datetime.datetime
     updated_at: datetime.datetime
     deleted_at: datetime.datetime
+

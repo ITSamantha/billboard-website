@@ -1,7 +1,6 @@
-from typing import ClassVar
-import datetime
+from src.schemas import BaseResponseSchema
 
-from src.schemas.entities.base import BaseEntity, BaseEntityTime
+from src.schemas.entities.base import BaseEntityTime
 
 
 class Review(BaseEntityTime):
@@ -10,3 +9,15 @@ class Review(BaseEntityTime):
 
     text: str
     rating: int
+
+
+class ReviewResponse(Review, BaseResponseSchema):
+    pass
+
+
+class ReviewCreate(Review):
+    pass
+
+
+class ReviewUpdate(Review):
+    pass

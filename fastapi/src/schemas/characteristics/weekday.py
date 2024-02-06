@@ -1,4 +1,4 @@
-from typing import ClassVar, Union, Optional
+from typing import ClassVar, Optional, Optional
 
 from src.schemas.base import BaseResponseSchema
 from src.schemas.characteristics.base import BaseCharacteristic

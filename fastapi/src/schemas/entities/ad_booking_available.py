@@ -1,6 +1,5 @@
 import datetime
-from typing import ClassVar
-
+from src.schemas import BaseResponseSchema
 from src.schemas.entities.base import BaseEntity
 
 
@@ -14,3 +13,15 @@ class AdBookingAvailable(BaseEntity):
     max_booking_time: datetime.datetime
 
     price: float
+
+
+class AdBookingAvailableResponse(AdBookingAvailable, BaseResponseSchema):
+    pass
+
+
+class AdBookingAvailableCreate(AdBookingAvailable):
+    pass
+
+
+class AdBookingAvailableUpdate(AdBookingAvailable):
+    pass

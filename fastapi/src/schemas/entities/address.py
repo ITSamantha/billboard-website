@@ -1,5 +1,6 @@
-from typing import ClassVar, Union, Optional
+from typing import Optional
 
+from src.schemas import BaseResponseSchema
 from src.schemas.entities.base import BaseEntity
 
 
@@ -13,3 +14,15 @@ class Address(BaseEntity):
 
     longitude: Optional[float]
     latitude: Optional[float]
+
+
+class AddressResponse(Address, BaseResponseSchema):
+    pass
+
+
+class AddressCreate(Address):
+    pass
+
+
+class AddressUpdate(Address):
+    pass

@@ -1,6 +1,6 @@
 import datetime
-from typing import ClassVar
 
+from src.schemas import BaseResponseSchema
 from src.schemas.entities.base import BaseEntity
 
 
@@ -10,3 +10,15 @@ class AdPriority(BaseEntity):
 
     start_time: datetime.datetime
     end_time: datetime.datetime
+
+
+class AdPriorityResponse(AdPriority, BaseResponseSchema):
+    pass
+
+
+class AdPriorityCreate(AdPriority):
+    pass
+
+
+class AdPriorityUpdate(AdPriority):
+    pass

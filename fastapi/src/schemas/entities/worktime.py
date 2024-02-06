@@ -1,5 +1,5 @@
 import datetime
-from typing import ClassVar
+from src.schemas import BaseResponseSchema
 
 from src.schemas.entities.base import BaseEntity
 
@@ -10,3 +10,15 @@ class Worktime(BaseEntity):
 
     start_time: datetime.time
     end_time: datetime.time
+
+
+class WorktimeResponse(Worktime, BaseResponseSchema):
+    pass
+
+
+class WorktimeCreate(Worktime):
+    pass
+
+
+class WorktimeUpdate(Worktime):
+    pass

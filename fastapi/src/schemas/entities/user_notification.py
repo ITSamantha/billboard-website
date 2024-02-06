@@ -1,6 +1,4 @@
-import datetime
-from pydantic import BaseModel
-from typing import ClassVar
+from src.schemas import BaseResponseSchema
 
 from src.schemas.entities.base import BaseEntityTime
 
@@ -13,3 +11,15 @@ class UserNotification(BaseEntityTime):
     notification_content: int
 
     user_id: int
+
+
+class UserNotificationResponse(UserNotification, BaseResponseSchema):
+    pass
+
+
+class UserNotificationCreate(UserNotification):
+    pass
+
+
+class UserNotificationUpdate(UserNotification):
+    pass

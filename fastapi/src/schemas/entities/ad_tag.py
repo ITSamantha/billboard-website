@@ -1,7 +1,18 @@
-from typing import ClassVar
-
+from src.schemas import BaseResponseSchema
 from src.schemas.entities.base import BaseEntity
 
 
-class AdvertisementTag(BaseEntity):
+class AdTag(BaseEntity):
     title: str
+
+
+class AdTagResponse(AdTag, BaseResponseSchema):
+    pass
+
+
+class AdTagCreate(AdTag):
+    pass
+
+
+class AdTagUpdate(AdTag):
+    pass

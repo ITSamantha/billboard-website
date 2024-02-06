@@ -1,6 +1,6 @@
 import datetime
-from typing import Union, ClassVar
-
+from typing import Optional
+from src.schemas import BaseResponseSchema
 from src.schemas.entities.base import BaseEntityTime
 
 
@@ -13,11 +13,23 @@ class Booking(BaseEntityTime):
 
     booking_status_id: int
 
-    guest_count: Union[int, None]
+    guest_count: Optional[int]
 
     deadline_at: datetime.datetime
+
 
 # [{
 #   from: 12.01.2024 12:00,
 #   to: 16.01.2024 15:00
 # }, { ... }]
+
+class BookingResponse(Booking, BaseResponseSchema):
+    pass
+
+
+class BookingCreate(Booking):
+    pass
+
+
+class BookingUpdate(Booking):
+    pass

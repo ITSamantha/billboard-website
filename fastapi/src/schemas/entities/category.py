@@ -1,4 +1,4 @@
-from typing import ClassVar
+from src.schemas import BaseResponseSchema
 
 from src.schemas.entities.base import BaseEntity
 
@@ -15,3 +15,15 @@ class Category(BaseEntity):
 
     bookable: bool
     map_addressable: bool
+
+
+class CategoryResponse(Category, BaseResponseSchema):
+    pass
+
+
+class CategoryCreate(Category):
+    pass
+
+
+class CategoryUpdate(Category):
+    pass

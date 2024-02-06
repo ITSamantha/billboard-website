@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from config.app.config import settings_app
+from src.config.app.config import settings_app
 from routers import auth
 
 

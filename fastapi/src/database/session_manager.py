@@ -70,3 +70,4 @@ async def get_session() -> AsyncSession:
 
 
 db_manager = DatabaseSessionManager()
+

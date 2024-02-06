@@ -1,7 +1,3 @@
-from typing import List
-
-from sqlalchemy.orm import Mapped, relationship
-
 from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 

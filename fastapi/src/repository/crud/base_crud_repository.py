@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models.base import Base
 
-from .base_repository import AbstractRepository
+from src.repository.crud.base_repository import AbstractRepository
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -20,7 +20,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
         self.model = model
 
     async def create(self, data: CreateSchemaType) -> ModelType:
-        async with self._session_factory() as session:
+        async with self._session_factory as session:
             instance = self.model(**data)
             session.add(instance)
             await session.commit()

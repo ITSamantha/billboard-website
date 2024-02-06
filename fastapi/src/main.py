@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from config.app.config import settings_app
 from src.api.routes import auth
+from src.api.routes import ad_status
 
 
 def get_application() -> FastAPI:
@@ -16,7 +17,8 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
-app.include_router(auth.router) 
+app.include_router(auth.router)
+app.include_router(ad_status.router)
 
 
 if __name__ == "__main__":

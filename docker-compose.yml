@@ -3,7 +3,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: app_nginx
+    container_name: otiva_nginx
     restart: unless-stopped
     ports:
       - "80:80"
@@ -14,7 +14,7 @@ services:
       - app
 
   fastapi:
-    container_name: app_fastapi
+    container_name: otiva_fastapi
     restart: unless-stopped
     build:
       context: ./fastapi
@@ -27,7 +27,7 @@ services:
       - app
 
 #  react:
-#    container_name: app_react
+#    container_name: otiva_react
 #    restart: unless-stopped
 #    build:
 #      context: ./react
@@ -36,7 +36,7 @@ services:
 #      - app
 
   postgres:
-    container_name: app_postgres
+    container_name: otiva_postgres
     restart: unless-stopped
     image: postgres:14
     ports:
@@ -44,22 +44,22 @@ services:
     env_file:
       - ./pgsql/.env
     volumes:
-      - pgsql-volume:/var/lib/postgresql/data
+      - otiva-pgsql-volume:/var/lib/postgresql/data
     networks:
       - app
 
   certbot:
     image: certbot/certbot
-    container_name: app_certbot
+    container_name: otiva_certbot
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
 
 
 networks:
-  app:
+  otiva:
     driver: bridge
 
 volumes:
-  pgsql-volume:
+  otiva-pgsql-volume:
     driver: local

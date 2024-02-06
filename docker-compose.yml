@@ -11,7 +11,7 @@ services:
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - app
+      - otiva
 
   fastapi:
     container_name: otiva_fastapi
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./fastapi:/app
     networks:
-      - app
+      - otiva
 
 #  react:
 #    container_name: otiva_react
@@ -33,7 +33,7 @@ services:
 #      context: ./react
 #      dockerfile: Dockerfile
 #    networks:
-#      - app
+#      - otiva
 
   postgres:
     container_name: otiva_postgres
@@ -46,7 +46,7 @@ services:
     volumes:
       - otiva-pgsql-volume:/var/lib/postgresql/data
     networks:
-      - app
+      - otiva
 
   certbot:
     image: certbot/certbot

@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from src.config.app.config import settings_app
-from routers import auth
+from src.routers import auth
 
 
 def get_application() -> FastAPI:

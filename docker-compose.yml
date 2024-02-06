@@ -1,0 +1,65 @@
+version: '3'
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: otiva_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app
+
+  fastapi:
+    container_name: otiva_fastapi
+    restart: unless-stopped
+    build:
+      context: ./fastapi
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./fastapi:/app
+    networks:
+      - app
+
+#  react:
+#    container_name: otiva_react
+#    restart: unless-stopped
+#    build:
+#      context: ./react
+#      dockerfile: Dockerfile
+#    networks:
+#      - app
+
+  postgres:
+    container_name: otiva_postgres
+    restart: unless-stopped
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./pgsql/.env
+    volumes:
+      - otiva-pgsql-volume:/var/lib/postgresql/data
+    networks:
+      - app
+
+  certbot:
+    image: certbot/certbot
+    container_name: otiva_certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+
+networks:
+  otiva:
+    driver: bridge
+
+volumes:
+  otiva-pgsql-volume:
+    driver: local

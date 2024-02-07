@@ -1,4 +1,4 @@
-name: Run tests on push
+name: Deploy on push
 
 # Runs tests on any push in main
 on:
@@ -23,3 +23,4 @@ jobs:
             docker compose build;
             docker compose down;
             docker compose up -d;
+            docker exec otiva_fastapi alembic migrate head

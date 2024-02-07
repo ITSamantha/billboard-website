@@ -34,12 +34,5 @@ from src.schemas.entities.user_field import *
 from src.schemas.entities.user_notification import *
 from src.schemas.entities.worktime import *
 
-# == MANY TO MANY ==
-from src.schemas.many_to_many.advertisement__category import *
-from src.schemas.many_to_many.category__filter import *
-from src.schemas.many_to_many.user__user_field import *
-from src.schemas.many_to_many.advertisement__ad_tag import *
-from src.schemas.many_to_many.advertisement__filter_value import *
-
 # == TRANSACTIONS ==
 from src.schemas.transactions.transaction import *

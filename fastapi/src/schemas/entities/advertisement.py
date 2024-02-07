@@ -8,7 +8,7 @@ class Advertisement(BaseEntityTime):
     title: str
     user_description: str
 
-    address_id: Optional[int,]
+    address_id: Optional[int]
 
     user_id: int
 

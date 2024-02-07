@@ -16,7 +16,7 @@ from src.config.database.config import settings_db
 
 class DatabaseSessionManager:
     def __init__(self) -> None:
-        self._engine: Optional[AsyncEngine] = None
+        self.engine: Optional[AsyncEngine] = None
         self.session_factory: Optional[AsyncSession] = None
 
     def init(self) -> None:
@@ -24,24 +24,24 @@ class DatabaseSessionManager:
             "statement_cache_size": 0,
             "prepared_statement_cache_size": 0,
         }
-        self._engine = create_async_engine(
+        self.engine = create_async_engine(
             url=settings_db.database_url,
             pool_pre_ping=True,
             connect_args=connect_args,
             echo=settings_db.POSTGRES_ECHO
         )
         self.session_factory = async_sessionmaker(
-            bind=self._engine,
+            bind=self.engine,
             autoflush=False,
             autocommit=False,
             expire_on_commit=False
         )
 
     async def close(self) -> None:
-        if self._engine is None:
+        if self.engine is None:
             return
-        await self._engine.dispose()
-        self._engine = None
+        await self.engine.dispose()
+        self.engine = None
         self.session_factory = None
 
     @contextlib.asynccontextmanager

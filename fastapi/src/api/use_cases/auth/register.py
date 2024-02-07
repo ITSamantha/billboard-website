@@ -6,15 +6,14 @@ from src.utils.crypt import Crypt
 
 class RegisterUseCase:
     @staticmethod
-    async def register(payload: RegisterPayload) -> User:
-        res = await user_repo.get_single(email=payload.email)
-        if res:
+    def register(payload: RegisterPayload) -> User:
+        if await user_repo.get_single(email=payload.email):
             raise Exception('This email is already taken')
 
         crypt = Crypt()
         hashed_password = crypt.hash(payload.password)
 
-        user = user_repo.create({
+        user = await user_repo.create({
             'user_name': payload.user_name,
             'email': payload.email,
             'password': hashed_password,

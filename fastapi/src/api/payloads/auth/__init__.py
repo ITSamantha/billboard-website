@@ -1,2 +1,2 @@
-from login import LoginPayload
-from register import RegisterPayload
+from .login import LoginPayload
+from .register import RegisterPayload

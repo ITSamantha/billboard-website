@@ -5,7 +5,7 @@ from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 
 
-class AdStatusRepository(SqlAlchemyRepository):
+class UserRepository(SqlAlchemyRepository):
     def __init__(self, session: AsyncSession):
         super().__init__(session)
         self.model = User
@@ -13,4 +13,4 @@ class AdStatusRepository(SqlAlchemyRepository):
 
 db_manager.init()
 
-user_repo = AdStatusRepository(db_manager.get_session)
+user_repo = UserRepository(db_manager.get_session)

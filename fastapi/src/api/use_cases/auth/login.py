@@ -28,7 +28,7 @@ class LoginUseCase:
 
     @staticmethod
     async def authenticate_user(email: str, password: str):
-        user: User = await user_repo.get_single({'email': email})
+        user: User = await user_repo.get_single(email=email)
         if not user:
             return False
         crypt = Crypt()

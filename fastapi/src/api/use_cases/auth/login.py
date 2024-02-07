@@ -11,7 +11,7 @@ from src.api.payloads.auth.login import LoginPayload
 class LoginUseCase:
     @staticmethod
     async def login(payload: LoginPayload):
-        user = await LoginUseCase.authenticate_user(payload.username, payload.password)
+        user = await LoginUseCase.authenticate_user(payload.email, payload.password)
         if not user:
             raise Exception("Incorrect username or password")
         data = {
@@ -27,8 +27,8 @@ class LoginUseCase:
         }
 
     @staticmethod
-    async def authenticate_user(username: str, password: str):
-        user: User = await user_repo.get_single({'username': username})
+    async def authenticate_user(email: str, password: str):
+        user: User = await user_repo.get_single({'email': email})
         if not user:
             return False
         crypt = Crypt()

@@ -33,9 +33,12 @@ class ApiResponse:
     @staticmethod
     def format_content(message=None, data=None, errors=None):
         content = {}
+
         if message:
             content['message'] = message
         if data:
             content['data'] = data
         if errors:
             content['errors'] = errors
+
+        return content

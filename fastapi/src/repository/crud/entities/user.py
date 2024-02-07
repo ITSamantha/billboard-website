@@ -13,4 +13,4 @@ class AdStatusRepository(SqlAlchemyRepository):
 
 db_manager.init()
 
-ad_status_repository = AdStatusRepository(db_manager.get_session)
+user_repo = AdStatusRepository(db_manager.get_session)

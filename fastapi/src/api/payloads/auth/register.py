@@ -2,5 +2,8 @@ from pydantic import BaseModel
 
 
 class RegisterPayload(BaseModel):
-    username: str
+    user_name: str
+    email: str
     password: str
+    phone_number: str
+    user_status_id: int

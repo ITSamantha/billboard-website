@@ -14,8 +14,14 @@ router = APIRouter(
 @router.post("/register")
 async def register(payload: RegisterPayload):
     # todo check payload here should be validated already
-    user = await RegisterUseCase.register(payload)
-    return ApiResponse.payload(user)  # todo serialize user?
+    try:
+        user = await RegisterUseCase.register(payload)
+    except Exception as e:
+        return ApiResponse.error(str(e))
+    return ApiResponse.payload({
+        'id': user.id,
+        'email': user.email,
+    })  # todo serialize user?
 
 
 @router.post("/login")

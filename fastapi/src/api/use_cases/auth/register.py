@@ -6,7 +6,7 @@ from src.utils.crypt import Crypt
 
 class RegisterUseCase:
     @staticmethod
-    def register(payload: RegisterPayload) -> User:
+    async def register(payload: RegisterPayload) -> User:
         if await user_repo.get_single(email=payload.email):
             raise Exception('This email is already taken')
 

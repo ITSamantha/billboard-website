@@ -1,4 +1,4 @@
-from fastapi import JSONResponse
+from fastapi.responses import JSONResponse
 
 
 class ApiResponse:

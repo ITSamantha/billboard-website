@@ -3,7 +3,6 @@ from fastapi import FastAPI
 
 from src.config.app.config import settings_app
 from src.api.routes import auth, ad_status
-from src.database.models import AdStatus
 
 
 def get_application() -> FastAPI:

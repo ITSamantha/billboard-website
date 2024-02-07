@@ -11,4 +11,4 @@ class UserRepository(SqlAlchemyRepository):
         self.model = User
 
 
-user_repository = UserRepository(db_manager.get_session)
+user_repo = UserRepository(db_manager.get_session)

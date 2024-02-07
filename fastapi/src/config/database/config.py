@@ -5,7 +5,10 @@ from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
 load_dotenv()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0d94c8e7f509735bc494e945b093c96f0bc520d3
 
 
 class ConfigDatabase(BaseSettings):

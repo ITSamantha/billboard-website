@@ -4,7 +4,6 @@ from src.database.models import AdStatus
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 
-
 class AdStatusRepository(SqlAlchemyRepository):
     def __init__(self, session: AsyncSession):
         super().__init__(session)

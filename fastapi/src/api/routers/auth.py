@@ -15,7 +15,7 @@ router = APIRouter(
 async def register(payload: RegisterPayload):
     # todo check payload here should be validated already
     try:
-        user = RegisterUseCase.register(payload)
+        user = await RegisterUseCase.register(payload)
     except Exception as e:
         return ApiResponse.error(str(e))
     return ApiResponse.payload({

@@ -21,6 +21,9 @@ class AppConfig(BaseSettings):
     POSTGRES_NAME: str
     POSTGRES_ECHO: str
 
+    JWT_SECRET_KEY: str
+    JWT_ALGORITHM: str
+
     class Config:
         env_file = ".env"
 

@@ -7,7 +7,8 @@ from src.utils.crypt import Crypt
 class RegisterUseCase:
     @staticmethod
     async def register(payload: RegisterPayload) -> User:
-        if user_repo.get_single(email=payload.email):
+        res = await user_repo.get_single(email=payload.email)
+        if res:
             raise Exception('This email is already taken')
 
         crypt = Crypt()

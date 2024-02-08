@@ -21,10 +21,7 @@ class LoginUseCase:
 
         access_token = jwt.encode(data, settings_jwt.JWT_SECRET_KEY, algorithm=settings_jwt.JWT_ALGORITHM)
 
-        return {
-            'access_token': access_token,
-            'token_type': 'bearer'
-        }
+        return access_token, 'bearer'
 
     @staticmethod
     async def authenticate_user(email: str, password: str):

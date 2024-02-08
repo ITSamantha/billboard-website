@@ -9,7 +9,7 @@ from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
 class User(AbstractBaseEntityModelTime):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)

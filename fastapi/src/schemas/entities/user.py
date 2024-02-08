@@ -9,7 +9,9 @@ from src.schemas import BaseResponseSchema
 
 
 class User(BaseEntityTime):
-    user_name: str
+    first_name: str
+    last_name: str
+
     email: EmailStr
 
     user_status_id: int

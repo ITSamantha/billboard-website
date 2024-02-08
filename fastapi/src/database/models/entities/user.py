@@ -11,7 +11,9 @@ from src.database.models.entities.base import AbstractBaseEntityModelTime
 class User(AbstractBaseEntityModelTime):
     __tablename__ = "user"
 
-    user_name: Mapped[str] = mapped_column(nullable=False)
+    first_name: Mapped[str] = mapped_column(nullable=False)
+    last_name: Mapped[str] = mapped_column(nullable=False)
+
     email: Mapped[str] = mapped_column(EmailType, nullable=False, unique=True)
 
     user_status_id: Mapped[int] = mapped_column(ForeignKey("user_status.id"), nullable=False)

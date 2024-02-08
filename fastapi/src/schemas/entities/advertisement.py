@@ -1,10 +1,10 @@
 from typing import Optional
 
 from src.schemas import BaseResponseSchema
-from src.schemas.entities.base import BaseEntityTime
+from src.schemas.entities.base import BaseEntityTime, BaseEntity
 
 
-class Advertisement(BaseEntityTime):
+class Advertisement(BaseEntity):
     title: str
     user_description: str
 
@@ -12,8 +12,8 @@ class Advertisement(BaseEntityTime):
 
     user_id: int
 
-    advertisement_status_id: int
-    advertisement_type_id: int  # booking, sell
+    ad_status_id: int
+    ad_type_id: int  # booking, sell
 
     price: Optional[float]
 

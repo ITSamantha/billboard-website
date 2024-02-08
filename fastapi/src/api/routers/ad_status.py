@@ -1,11 +1,8 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter
 
 import src.schemas.characteristics.ad_status
-from src.api.dependencies.router import IsAuthenticated
-from src.database.models import AdStatus
-from src.database.session_manager import db_manager
 from src.repository.crud.characteristics.ad_status import ad_status_repository, AdStatusRepository
+from src.schemas.characteristics.ad_status import AdStatusCreate
 
 router = APIRouter(
     prefix="/ad_status",
@@ -14,8 +11,8 @@ router = APIRouter(
 
 
 @router.post("/")
-async def create_ad_status(ad: src.schemas.characteristics.ad_status.AdStatusCreate):
-    res = await ad_status_repository.create(ad)
+async def create_ad_status(ad_status: AdStatusCreate):
+    res = await ad_status_repository.create(ad_status)
     return res
 
 

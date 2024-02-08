@@ -32,6 +32,6 @@ class LoginUseCase:
         if not user:
             return False
         crypt = Crypt()
-        if not crypt.verify(password, user['password']):
+        if not crypt.verify(password, user.password):
             return False
         return user

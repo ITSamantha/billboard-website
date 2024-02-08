@@ -19,8 +19,11 @@ class User(AbstractBaseEntityModelTime):
 
     phone_number: Mapped[str] = mapped_column(PhoneNumberType)  # TODO: nullable= False?, unique = True?
 
-    avatar_id: Mapped[int] = mapped_column(ForeignKey("avatar.id"))  # TODO: default avatar? Optional?
+    avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("avatar.id"),
+                                                     nullable=True)  # TODO: default avatar? Optional?
     avatar: Mapped["Avatar"] = relationship(back_populates="user", uselist=False, lazy="selectin")
+
+    password: Mapped[str] = mapped_column(nullable=True)
 
     # TODO: GOOGLE, FACEBOOK...
 

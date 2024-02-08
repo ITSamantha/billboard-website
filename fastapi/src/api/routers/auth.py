@@ -17,6 +17,7 @@ async def register(payload: RegisterPayload):
     try:
         user = await RegisterUseCase.register(payload)
     except Exception as e:
+        print(e)
         return ApiResponse.error(str(e))
     return ApiResponse.payload({
         'id': user.id,

@@ -1,5 +1,5 @@
 import datetime
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -13,6 +13,6 @@ class AbstractBaseEntityModel(AbstractModel):
 class AbstractBaseEntityModelTime(AbstractBaseEntityModel):
     __abstract__ = True
 
-    created_at: Mapped[datetime.datetime] = mapped_column(nullable=False)
-    updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False)
-    deleted_at: Mapped[datetime.datetime] = mapped_column(nullable=False)
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)

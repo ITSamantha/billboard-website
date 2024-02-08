@@ -7,3 +7,4 @@ class RegisterPayload(BaseModel):
     password: str
     phone_number: str
     user_status_id: int
+    # avatar_id: int

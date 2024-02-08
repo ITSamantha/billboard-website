@@ -9,7 +9,6 @@ from src.config.database.config import settings_db
 
 from alembic import context
 
-from src.database.models.base import Base
 from src.database.models import *
 
 # this is the Alembic Config object, which provides

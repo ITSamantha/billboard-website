@@ -11,14 +11,8 @@ class RegisterUseCase:
             raise Exception('This email is already taken')
 
         crypt = Crypt()
-        hashed_password = crypt.hash(payload.password)
+        # hashed_password = crypt.hash(payload.password)
 
-        user = await user_repo.create(
-            user_name=payload.user_name,
-            email=payload.email,
-            password=hashed_password,
-            phone_number=payload.phone_number,
-            user_status_id=payload.user_status_id,
-        )
+        user = await user_repo.create(payload)
 
         return user

@@ -13,7 +13,7 @@ class Booking(AbstractBaseEntityModelTime):
     advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
     advertisement: Mapped["Advertisement"] = relationship(back_populates="bookings", uselist=False, lazy="selectin")
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="bookings", uselist=False, lazy="selectin")
 
     time_from: Mapped[datetime.datetime] = mapped_column(nullable=False)

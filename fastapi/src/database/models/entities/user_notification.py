@@ -17,7 +17,7 @@ class UserNotification(AbstractBaseEntityModelTime):
     notification_content: Mapped[int] = mapped_column(Text,
                                                                 nullable=False)  # ПОЛИМОРФНЫЙ  # TODO: Тюм, разберись, пж
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="notifications", uselist=False, lazy="selectin")
 
     def __repr__(self) -> str:

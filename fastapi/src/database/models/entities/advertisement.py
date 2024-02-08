@@ -15,7 +15,7 @@ class Advertisement(AbstractBaseEntityModelTime):
     address_id: Mapped[Optional[int]] = mapped_column(ForeignKey("address.id"))
     address: Mapped["Address"] = relationship(back_populates="advertisement", uselist=False, lazy="selectin")
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="advertisements", uselist=False, lazy="selectin")
 
     ad_status_id: Mapped[int] = mapped_column(ForeignKey("ad_status.id"),

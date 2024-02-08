@@ -15,7 +15,7 @@ class LoginUseCase:
         if not user:
             raise Exception("Incorrect username or password")
         data = {
-            "sub": payload.username,
+            "sub": payload.email,
             "exp": datetime.now(timezone.utc) + timedelta(minutes=3600)
         }
 

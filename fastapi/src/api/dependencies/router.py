@@ -14,7 +14,7 @@ class IsAuthenticated:
             detail="Unauthenticated",
         )
         try:
-            payload = jwt.decode(access_token, settings_jwt.JWT_SECRET_KEY, algorithm=settings_jwt.JWT_ALGORITHM)
+            payload = jwt.decode(access_token, settings_jwt.JWT_SECRET_KEY, algorithms=[settings_jwt.JWT_ALGORITHM])
             email: str = payload.get("sub")
             if email is None:
                 raise credentials_exception

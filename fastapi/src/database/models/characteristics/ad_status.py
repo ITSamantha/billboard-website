@@ -1,4 +1,4 @@
-from typing import ClassVar, List
+from typing import List
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

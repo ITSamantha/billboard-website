@@ -25,6 +25,7 @@ async def create_advertisement(advertisement: AdvertisementCreate):
     })
 
 
+"""
 @router.get("/{advertisement_id}")
 async def get_advertisement(advertisement_id: int, short: bool | None = None):
     try:
@@ -36,3 +37,4 @@ async def get_advertisement(advertisement_id: int, short: bool | None = None):
         'advertisement': advertisement.title,
         'short': short,
     })
+"""

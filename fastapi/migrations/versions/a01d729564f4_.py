@@ -1,9 +1,9 @@
 """empty message
 
-Revision ID: 550d4dc5bd1f
+Revision ID: a01d729564f4
 Revises: 
-Create Date: 2024-02-08 14:06:23.694688
-FIRST MAIN VERSION
+Create Date: 2024-02-08 20:54:28.129827
+
 """
 from typing import Sequence, Union
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '550d4dc5bd1f'
+revision: str = 'a01d729564f4'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -176,7 +176,7 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['filter_type_id'], ['filter_type.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('user',
+    op.create_table('users',
     sa.Column('first_name', sa.String(), nullable=False),
     sa.Column('last_name', sa.String(), nullable=False),
     sa.Column('email', sqlalchemy_utils.types.email.EmailType(length=255), nullable=False),
@@ -210,7 +210,7 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['ad_status_id'], ['ad_status.id'], ),
     sa.ForeignKeyConstraint(['ad_type_id'], ['ad_type.id'], ),
     sa.ForeignKeyConstraint(['address_id'], ['address.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('category__filter',
@@ -233,7 +233,7 @@ def upgrade() -> None:
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('user_field_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_field_id'], ['user_field.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('user_id', 'user_field_id')
     )
     op.create_table('user_notification',
@@ -246,7 +246,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('ad_booking_available',
@@ -265,7 +265,7 @@ def upgrade() -> None:
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.ForeignKeyConstraint(['advertisement_id'], ['advertisement.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('ad_photo',
@@ -322,7 +322,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.ForeignKeyConstraint(['advertisement_id'], ['advertisement.id'], ),
     sa.ForeignKeyConstraint(['booking_status_id'], ['booking_status.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('review',
@@ -335,7 +335,7 @@ def upgrade() -> None:
     sa.Column('deleted_at', sa.DateTime(), nullable=True),
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.ForeignKeyConstraint(['advertisement_id'], ['advertisement.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('transaction',
@@ -387,7 +387,7 @@ def downgrade() -> None:
     op.drop_table('filter_value')
     op.drop_table('category__filter')
     op.drop_table('advertisement')
-    op.drop_table('user')
+    op.drop_table('users')
     op.drop_table('filter')
     op.drop_table('address')
     op.drop_index(op.f('ix_weekday_title'), table_name='weekday')

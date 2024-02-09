@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from fastapi import APIRouter
 
@@ -25,9 +26,8 @@ async def create_advertisement(advertisement: AdvertisementCreate):
     })
 
 
-"""
 @router.get("/{advertisement_id}")
-async def get_advertisement(advertisement_id: int, short: bool | None = None):
+async def get_advertisement(advertisement_id: int, short: Optional[bool] = None):
     try:
         advertisement = await advertisement_repository.get_single(id=advertisement_id)
     except Exception as e:
@@ -37,4 +37,3 @@ async def get_advertisement(advertisement_id: int, short: bool | None = None):
         'advertisement': advertisement.title,
         'short': short,
     })
-"""

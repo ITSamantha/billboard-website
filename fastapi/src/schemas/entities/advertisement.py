@@ -26,5 +26,9 @@ class AdvertisementCreate(Advertisement):
     pass
 
 
+class AdvertisementCreateSeller(Advertisement):
+    pass
+
+
 class AdvertisementUpdate(Advertisement):
     pass

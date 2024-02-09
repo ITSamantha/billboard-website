@@ -3,10 +3,10 @@ from typing import Optional, ClassVar, List
 from sqlalchemy import String
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.base import AbstractModel
+from src.database.models import AbstractCharacteristicModel
 
 
-class FilterType(AbstractModel):
+class FilterType(AbstractCharacteristicModel):
     __tablename__ = "filter_type"
 
     functional_title: Mapped[str] = mapped_column(String(256), unique=True, nullable=False, index=True)

@@ -35,7 +35,7 @@ class ApiResponse:
         content = {}
 
         if message:
-            content['message'] = message
+            content['detail'] = message
         if data:
             content['data'] = data
         if errors:

@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
+from src.admin.base import admin
 from src.config.app.config import settings_app
 from src.api.routers import auth, ad_status, advertisement
 
@@ -16,6 +17,8 @@ def get_application() -> FastAPI:
 
 
 app = get_application()
+
+admin.mount_to(app)
 
 app.include_router(auth.router)
 app.include_router(ad_status.router)

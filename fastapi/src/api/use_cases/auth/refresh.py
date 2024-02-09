@@ -8,7 +8,7 @@ class RefreshUseCase:
         # todo check for revoked
         jwt = JWT(settings_jwt)
 
-        access_token = jwt.generate_access_token(payload['email'])
-        refresh_token = jwt.generate_refresh_token(payload['email'])
+        access_token = jwt.generate_access_token(payload['sub'])
+        refresh_token = jwt.generate_refresh_token(payload['sub'])
 
         return access_token, refresh_token

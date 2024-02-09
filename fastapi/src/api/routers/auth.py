@@ -48,7 +48,7 @@ async def logout(request: Request, auth: Auth = Depends()):
 async def refresh(request: Request, auth: Auth = Depends()):
     payload = await auth.check_refresh_token(request)  # todo dto for payload
     try:
-        access_token, refresh_token = RefreshUseCase.refresh(payload)
+        access_token, refresh_token = await RefreshUseCase.refresh(payload)
     except Exception as e:
         return ApiResponse.error(str(e), 401)
 

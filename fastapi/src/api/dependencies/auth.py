@@ -21,7 +21,7 @@ class Auth:
 
     async def check_refresh_token(self, request: Request):
         refresh_token = request.cookies.get('jwt_refresh_token')
-        payload, _ = self.check_token(refresh_token, TokenType.REFRESH)
+        payload, _ = await self.check_token(refresh_token, TokenType.REFRESH)
         return payload
 
     async def check_token(self, token, type):

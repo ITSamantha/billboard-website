@@ -4,7 +4,7 @@ from src.config.jwt.config import settings_jwt
 
 class RefreshUseCase:
     @staticmethod
-    async def refresh(self, payload):
+    async def refresh(payload):
         # todo check for revoked
         jwt = JWT(settings_jwt)
 

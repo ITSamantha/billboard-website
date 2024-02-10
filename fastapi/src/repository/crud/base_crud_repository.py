@@ -22,6 +22,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
     async def create(self, data: CreateSchemaType) -> ModelType:
         async with self._session_factory() as session:
             obj_create_data = data.model_dump(exclude_none=True, exclude_unset=True)
+            print(obj_create_data)
             instance = self.model(**obj_create_data)
             session.add(instance)
             await session.commit()

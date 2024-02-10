@@ -24,7 +24,7 @@ from src.schemas.entities.ad_favourite import *
 from src.schemas.entities.ad_photo import *
 from src.schemas.entities.ad_priority import *
 from src.schemas.entities.ad_tag import *
-from src.schemas.entities.advertisement import *
+
 from src.schemas.entities.avatar import *
 from src.schemas.entities.booking import *
 from src.schemas.entities.booking_info import *
@@ -33,6 +33,7 @@ from src.schemas.entities.photo import *
 from src.schemas.entities.user_field import *
 from src.schemas.entities.user_notification import *
 from src.schemas.entities.worktime import *
+from src.schemas.entities.advertisement import *
 
 # == TRANSACTIONS ==
 from src.schemas.transactions.transaction import *

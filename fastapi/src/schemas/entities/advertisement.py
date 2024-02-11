@@ -23,14 +23,19 @@ class AdvertisementResponse(Advertisement, BaseResponseSchema):
     pass
 
 
-class AdvertisementCreate(BaseModel):
+class AdvertisementCreate(Advertisement):
+    pass
+
+
+class AdvertisementPost(BaseEntity):
     title: str
     user_description: str
     categories: List[int]
     filters: Dict[int, Union[str, int]]  # Filter, FilterValue
     ad_type_id: int
-    address: Optional[Address]
-    address_id: Optional[int]
+    address: Optional[Address] = None
+    address_id: Optional[int] = None
+    price: float
 
 
 class AdvertisementUpdate(Advertisement):

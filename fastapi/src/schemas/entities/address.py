@@ -6,14 +6,14 @@ from src.schemas.entities.base import BaseEntity
 
 class Address(BaseEntity):
     address: str
-    country: Optional[int]
-    city: Optional[int]
-    street: Optional[str]
-    house: Optional[str]
-    flat: Optional[str]
+    country: Optional[int] = None
+    city: Optional[int] = None
+    street: Optional[str] = None
+    house: Optional[str] = None
+    flat: Optional[str] = None
 
-    longitude: Optional[float]
-    latitude: Optional[float]
+    longitude: Optional[float] = None
+    latitude: Optional[float] = None
 
 
 class AddressResponse(Address, BaseResponseSchema):

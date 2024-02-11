@@ -20,11 +20,11 @@ class Advertisement(AbstractBaseEntityModelTime):
 
     ad_status_id: Mapped[int] = mapped_column(ForeignKey("ad_status.id"),
                                               nullable=False)
-    ad_status: Mapped["AdStatus"] = relationship(back_populates="advertisements", uselist=False, lazy="selectin")
+    ad_status: Mapped["AdStatus"] = relationship(uselist=False, lazy="selectin")
 
     ad_type_id: Mapped[int] = mapped_column(ForeignKey("ad_type.id"),
                                             nullable=False)  # booking, sell
-    ad_type: Mapped["AdType"] = relationship(back_populates="advertisements", uselist=False, lazy="selectin")
+    ad_type: Mapped["AdType"] = relationship(uselist=False, lazy="selectin")
 
     price: Mapped[Optional[float]] = mapped_column(nullable=False)
 

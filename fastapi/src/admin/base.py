@@ -1,23 +1,7 @@
-from starlette_admin.contrib.sqla import Admin
-
-from src.admin.characteristics.ad_status import AdStatusView
-from src.database.models import AdStatus
+from src.admin.dropdowns.ad_settings_dropdown import advertisement_dropdown
 from src.database.session_manager import db_manager
+from starlette_admin.contrib.sqla import Admin
 
 admin = Admin(db_manager.engine, title="Otiva Billboard")
 
-admin.add_view(AdStatusView)
-
-"""
-admin.add_view(
-    DropDown(
-        "Resources",
-        icon="fa fa-list",
-        views=[
-            ModelView(User),
-            Link(label="Home Page", url="/"),
-            CustomView(label="Dashboard", path="/dashboard", template_path="dashboard.html"),
-        ],
-    )
-)
-"""
+admin.add_view(advertisement_dropdown)

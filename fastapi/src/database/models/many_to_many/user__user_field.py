@@ -11,3 +11,5 @@ class UserUserField(Base):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False, primary_key=True)
     user_field_id: Mapped[int] = mapped_column(ForeignKey("user_field.id"), nullable=False, primary_key=True)
+    # todo: user_field_value str
+    # todo: move to entities

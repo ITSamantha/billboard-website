@@ -37,3 +37,7 @@ from src.schemas.entities.advertisement import *
 
 # == TRANSACTIONS ==
 from src.schemas.transactions.transaction import *
+
+# == ADVERTISEMENT FILTER VALUE ==
+from src.schemas.many_to_many.advertisement__category import *
+from src.schemas.many_to_many.advertisement__filter_value import *

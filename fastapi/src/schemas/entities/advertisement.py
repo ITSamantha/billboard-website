@@ -2,7 +2,7 @@ from typing import Optional, List, Dict, Union
 
 from pydantic import BaseModel
 
-from src.schemas import BaseResponseSchema, Category, Filter, FilterValue, Address
+from src.schemas import BaseResponseSchema, Category, Filter, FilterValue, Address, AddressCreate
 from src.schemas.entities.base import BaseEntity
 
 
@@ -30,10 +30,10 @@ class AdvertisementCreate(Advertisement):
 class AdvertisementPost(BaseEntity):
     title: str
     user_description: str
-    categories: List[int]
+    categories: Optional[List[int]] = None # essential?
     filters: Dict[int, Union[str, int]]  # Filter, FilterValue
     ad_type_id: int
-    address: Optional[Address] = None
+    address: Optional[AddressCreate] = None
     address_id: Optional[int] = None
     price: float
 

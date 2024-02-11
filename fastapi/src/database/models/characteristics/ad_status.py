@@ -6,8 +6,8 @@ from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 
 class AdStatus(AbstractCharacteristicModel):
-    ACTIVE = 1
-    BLOCKED = 2
+    #ACTIVE = 1
+    #BLOCKED = 2
 
     __tablename__ = "ad_status"
 
@@ -20,5 +20,4 @@ class AdStatus(AbstractCharacteristicModel):
         return f"AdStatus(id={self.id}, title={self.title}, is_shown={self.is_shown})"
 
 
-AdStatus.ACTIVE
-AdStatus.__class__
+

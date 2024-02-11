@@ -1,13 +1,13 @@
-from starlette_admin import DropDown, CustomView
-from starlette_admin.contrib.sqla import Admin, ModelView
-from starlette_admin.views import Link
+from starlette_admin.contrib.sqla import Admin
 
-from src.database.models import AdStatus, User
+from src.admin.characteristics.ad_status import AdStatusView
+from src.database.models import AdStatus
 from src.database.session_manager import db_manager
 
-admin = Admin(db_manager.engine, title="Example: SQLAlchemy")
+admin = Admin(db_manager.engine, title="Otiva Billboard")
 
-admin.add_view(ModelView(AdStatus))
+admin.add_view(AdStatusView)
+
 """
 admin.add_view(
     DropDown(

@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Optional, Generic
+from typing import Type, TypeVar, Optional, Generic, List
 
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
@@ -22,12 +22,18 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
     async def create(self, data: CreateSchemaType) -> ModelType:
         async with self._session_factory() as session:
             obj_create_data = data.model_dump(exclude_none=True, exclude_unset=True)
-            print(obj_create_data)
             instance = self.model(**obj_create_data)
             session.add(instance)
             await session.commit()
             await session.refresh(instance)
             return instance
+
+    async def bulk_create(self, data: List[CreateSchemaType]) -> ModelType:
+        async with self._session_factory() as session:
+            objects = [self.model(**d.model_dump(exclude_none=True, exclude_unset=True)) for d in data]
+            session.add_all(objects)
+            await session.commit()
+            return objects
 
     async def update(self, data: UpdateSchemaType, **filters) -> ModelType:
         async with self._session_factory() as session:

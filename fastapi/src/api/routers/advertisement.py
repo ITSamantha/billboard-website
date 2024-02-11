@@ -18,11 +18,12 @@ router = APIRouter(
 async def create_advertisement(data: AdvertisementPost, request: Request):
     try:
         # todo: create address
+        print(request.state.user)
         advertisement: AdvertisementCreate = AdvertisementCreate(
             title=data.title,
             user_description=data.user_description,
             address_id=data.address_id,  # todo: one to one?
-            user_id=6,  # todo: get_current_user
+            user_id=2,  # todo: get_current_user
             ad_status_id=18,
             ad_type_id=data.ad_type_id,
             price=data.price

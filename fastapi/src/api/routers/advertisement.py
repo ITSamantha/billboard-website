@@ -4,7 +4,6 @@ from typing import Optional
 from fastapi import APIRouter, Depends
 from starlette.requests import Request
 
-from src.api.dependencies.router import IsAuthenticated
 from src.api.responses.api_response import ApiResponse
 from src.schemas.entities.advertisement import AdvertisementCreate, AdvertisementPost
 from src.repository.crud.entities.advertisement import advertisement_repository
@@ -15,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", dependencies=[Depends(IsAuthenticated())])
+@router.post("/")
 async def create_advertisement(data: AdvertisementPost, request: Request):
     try:
         # todo: create address

@@ -1,5 +1,5 @@
 from typing import ClassVar, List
-
+from fastapi import Request
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.database.models.characteristics.base import AbstractCharacteristicModel
@@ -10,7 +10,11 @@ class UserStatus(AbstractCharacteristicModel):
 
     is_available: Mapped[bool] = mapped_column(default=True, nullable=False)
 
-    users: Mapped[List["User"]] = relationship(back_populates="user_status", uselist=True, lazy="selectin")
-
     def __repr__(self) -> str:
         return f"UserStatus(id={self.id}, title={self.title}, is_available={self.is_available})"
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.title}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.title}</span></div>'

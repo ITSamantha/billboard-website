@@ -1,6 +1,6 @@
 from typing import ClassVar, Optional, List
 import datetime
-
+from fastapi import Request
 from sqlalchemy_utils import EmailType, PhoneNumberType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -17,7 +17,7 @@ class User(AbstractBaseEntityModelTime):
     email: Mapped[str] = mapped_column(EmailType, nullable=False, unique=True)
 
     user_status_id: Mapped[int] = mapped_column(ForeignKey("user_status.id"), nullable=False)
-    user_status: Mapped["UserStatus"] = relationship(back_populates="users", uselist=False, lazy="selectin")
+    user_status: Mapped["UserStatus"] = relationship(uselist=False, lazy="selectin")
 
     phone_number: Mapped[str] = mapped_column(PhoneNumberType)  # TODO: nullable= False?, unique = True?
 
@@ -49,3 +49,9 @@ class User(AbstractBaseEntityModelTime):
     def __repr__(self) -> str:
         return (
             f"User(id={self.id}, user_name={self.user_name}, email={self.email}, user_status_id={self.user_status_id})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

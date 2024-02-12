@@ -7,8 +7,6 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.repository.crud.entities.address import address_repository
 from src.repository.crud.many_to_many.advertisement__category import advertisement_category_repository
-from src.repository.crud.many_to_many.advertisement__filter_value import advertisement_filter_value_repository
-from src.schemas import FilterValueCreate
 from src.schemas.entities.advertisement import AdvertisementCreate, AdvertisementPost
 from src.repository.crud.entities.advertisement import advertisement_repository
 from src.schemas.many_to_many.advertisement__category import AdvertisementCategoryCreate

@@ -1,4 +1,4 @@
-from typing import ClassVar
+from fastapi import Request
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
@@ -21,3 +21,9 @@ class Review(AbstractBaseEntityModelTime):
     def __repr__(self) -> str:
         return (f"Review(id={self.id}, advertisement_id={self.advertisement_id}, user_id={self.user_id},"
                 f"text={self.text}, rating={self.rating})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

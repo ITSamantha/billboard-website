@@ -1,5 +1,5 @@
-from typing import ClassVar, Optional, List
-
+from typing import Optional, List
+from fastapi import Request
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
@@ -17,8 +17,15 @@ class FilterValue(AbstractBaseEntityModel):
     order: Mapped[int] = mapped_column(nullable=False)
 
     advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="filter_values",
-                                                                 uselist=True, lazy="selectin", secondary="advertisement__filter_value")
+                                                                 uselist=True, lazy="selectin",
+                                                                 secondary="advertisement__filter_value")
 
     def __repr__(self) -> str:
         return (f"FilterValue(id={self.id}, value={self.value}, filter_id={self.filter_id},"
                 f" order={self.order}, hint_html={self.hint_html})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

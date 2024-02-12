@@ -1,5 +1,5 @@
 import datetime
-from typing import ClassVar
+from fastapi import Request
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -22,3 +22,9 @@ class Worktime(AbstractBaseEntityModel):
     def __repr__(self) -> str:
         return (
             f"Worktime(id={self.id}, advertisement_id={self.advertisement_id}, weekday_id={self.weekday_id}, start_time={self.start_time}, end_time={self.end_time})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

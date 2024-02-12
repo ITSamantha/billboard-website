@@ -1,21 +1,14 @@
-from starlette_admin.contrib.sqla import ModelView
+from sqladmin import ModelView
 
 from src.database.models import AdStatus
 
 
-class AdStatusView(ModelView):
+class AdStatusView(ModelView, model=AdStatus):
     fields = [AdStatus.id, AdStatus.title, AdStatus.is_shown]
-
+    label = "Advertisement Statuses"
+    name = "Advertisement Status"
+    name_plural = "Advertisement Statuses"
     page_size = 10
-
-    def __init__(self):
-        super().__init__(model=AdStatus)
-
-        self.label = "Advertisement Statuses"
-        self.name = "Advertisement Status"
-        self.name_plural = "Advertisement Statuses"
-
-        self.icon = "fa fa-check"
-
-        self.searchable_fields = [AdStatus.id, AdStatus.title, AdStatus.is_shown]
-        self.sortable_fields = [AdStatus.id, AdStatus.title, AdStatus.is_shown]
+    icon = "fa fa-check"
+    column_searchable_list = [AdStatus.id, AdStatus.title, AdStatus.is_shown]
+    column_sortable_list = [AdStatus.id, AdStatus.title, AdStatus.is_shown]

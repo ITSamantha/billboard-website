@@ -1,4 +1,5 @@
-from typing import ClassVar, Optional, List
+from typing import Optional, List
+from fastapi import Request
 
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -61,3 +62,9 @@ class Advertisement(AbstractBaseEntityModelTime):
         return (f"Advertisement(id={self.id}, title={self.title}, user_description={self.user_description},"
                 f"address_id={self.address_id}, user_id={self.user_id}, ad_status_id={self.ad_status_id},"
                 f"ad_type_id={self.ad_type_id}, price={self.price})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.id}|{self.title}|{self.user}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

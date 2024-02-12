@@ -1,5 +1,4 @@
-from starlette_admin import DropDown
-
+"""
 from src.admin.characteristics.ad_type import AdTypeView
 from src.admin.characteristics.ad_status import AdStatusView
 from src.admin.characteristics.booking_status import BookingStatusView
@@ -10,6 +9,7 @@ from src.admin.characteristics.user_role import UserRoleView
 from src.admin.characteristics.user_status import UserStatusView
 from src.admin.characteristics.weekday import WeekdayView
 from src.admin.entities.advertisment import AdvertisementView
+from src.admin.entities.category import CategoryView
 from src.admin.entities.user import UserView
 
 advertisement_dropdown = DropDown(
@@ -18,7 +18,8 @@ advertisement_dropdown = DropDown(
     views=[
         AdStatusView,
         AdTypeView,
-        AdvertisementView
+        AdvertisementView,
+        CategoryView
     ],
     always_open=False
 )
@@ -52,3 +53,4 @@ location_dropdown = DropDown(
            ],
     always_open=False
 )
+"""

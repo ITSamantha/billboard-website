@@ -1,4 +1,5 @@
-from typing import ClassVar, Optional
+from typing import  Optional
+from fastapi import Request
 
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -30,3 +31,9 @@ class Address(AbstractBaseEntityModel):
         return (f"Address(id={self.id}, address={self.address}, country_id={self.country},"
                 f"city_id={self.city_id}, street={self.street}, house={self.house}, flat={self.flat},"
                 f"longitude={self.longitude}, latitude={self.latitude})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

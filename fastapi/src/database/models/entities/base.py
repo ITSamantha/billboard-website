@@ -1,6 +1,6 @@
 import datetime
-from typing import ClassVar, Optional
-
+from typing import Optional
+from fastapi import Request
 from sqlalchemy.orm import mapped_column, Mapped
 
 from src.database.models.base import AbstractModel

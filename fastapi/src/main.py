@@ -1,9 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
+from sqladmin import Admin
 
-from src.admin.base import admin
-from src.config.app.config import settings_app
+from src.admin.characteristics.ad_status import AdStatusView
 from src.api.routers import auth, ad_status, advertisement
+from src.config.app.config import settings_app
+from src.database.session_manager import db_manager
 
 
 def get_application() -> FastAPI:
@@ -18,7 +20,9 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
-admin.mount_to(app)
+admin = Admin(app, db_manager.engine, title="Otiva Billboard")
+
+admin.add_view(AdStatusView)
 
 app.include_router(auth.router)
 app.include_router(ad_status.router)

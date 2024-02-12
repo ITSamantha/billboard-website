@@ -1,10 +1,9 @@
-from typing import ClassVar, Optional, List
+from typing import Optional, List
 import datetime
-from fastapi import Request
 from sqlalchemy_utils import EmailType, PhoneNumberType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
+from fastapi import Request
 from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
@@ -48,7 +47,13 @@ class User(AbstractBaseEntityModelTime):
 
     def __repr__(self) -> str:
         return (
-            f"User(id={self.id}, user_name={self.user_name}, email={self.email}, user_status_id={self.user_status_id})")
+            f"User(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, email={self.email}, user_status_id={self.user_status_id})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'
 
     async def __admin_repr__(self, request: Request):
         return f"{self.last_name} {self.first_name}, {self.email}"

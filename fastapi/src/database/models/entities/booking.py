@@ -1,6 +1,6 @@
 import datetime
-from typing import Union, ClassVar, Optional
-
+from typing import Optional
+from fastapi import Request
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
@@ -20,7 +20,7 @@ class Booking(AbstractBaseEntityModelTime):
     time_end: Mapped[datetime.datetime] = mapped_column(nullable=False)
 
     booking_status_id: Mapped[int] = mapped_column(ForeignKey("booking_status.id"),
-                                                             nullable=False)
+                                                   nullable=False)
     booking_status: Mapped["BookingStatus"] = relationship(back_populates="bookings", uselist=False, lazy="selectin")
 
     guest_count: Mapped[Optional[int]] = mapped_column()
@@ -36,3 +36,9 @@ class Booking(AbstractBaseEntityModelTime):
     #   from: 12.01.2024 12:00,
     #   to: 16.01.2024 15:00
     # }, { ... }]
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

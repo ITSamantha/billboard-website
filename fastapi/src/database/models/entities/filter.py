@@ -1,4 +1,5 @@
-from typing import ClassVar, List
+from typing import List
+from fastapi import Request
 
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -22,3 +23,9 @@ class Filter(AbstractBaseEntityModel):
                                                    uselist=True, lazy="selectin", secondary="category__filter")
     def __repr__(self) -> str:
         return f"Filter(id={self.id}, title={self.title}, filter_type_id={self.filter_type_id}, order={self.order})"
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

@@ -1,5 +1,5 @@
-from typing import ClassVar, Optional, List
-
+from typing import Optional, List
+from fastapi import Request
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
@@ -32,3 +32,9 @@ class Category(AbstractBaseEntityModel):
         return (f"Category(id={self.id}, title={self.title}, order={self.order}, meta_title={self.meta_title},"
                 f"meta_description={self.meta_description}, url={self.url}, parent_id={self.parent_id},"
                 f"bookable={self.bookable}, map_addressable={self.map_addressable})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.title}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span<i>{self.title}</i></span></div>'

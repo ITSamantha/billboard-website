@@ -1,4 +1,4 @@
-from typing import ClassVar
+from fastapi import Request
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -21,3 +21,9 @@ class AdPhoto(AbstractBaseEntityModel):
         return (
             f"AdPhoto(id={self.id}, photo_id={self.photo_id}, "
             f"advertisement_id={self.advertisement_id}, is_main={self.is_main})")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.last_name} {self.first_name}, {self.email}"
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'

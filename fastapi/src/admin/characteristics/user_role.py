@@ -1,4 +1,4 @@
-from starlette_admin.contrib.sqla import ModelView
+from sqladmin import ModelView
 
 from src.database.models import UserRole
 

@@ -7,5 +7,4 @@ RUN apk update && \
     pip install -r requirements.txt
 
 EXPOSE 8000
-CMD ["uvicorn", "src.main:app", "--workers", "4", "--bind", "0.0.0.0:8000", "--forwarded-allow-ips=\"*\"", "--proxy-headers"]
-# CMD ["gunicorn", "src.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "--forwarded-allow-ips=\"*\"", "--proxy-headers"]
+CMD ["gunicorn", "src.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "--forwarded-allow-ips=\"*\""]

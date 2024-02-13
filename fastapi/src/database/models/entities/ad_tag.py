@@ -1,4 +1,4 @@
-from typing import  List
+from typing import List
 from fastapi import Request
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database.models.entities.base import AbstractBaseEntityModel
 
 
+# TODO: ADD TO ADMIN
 class AdTag(AbstractBaseEntityModel):
     __tablename__ = "ad_tag"
 

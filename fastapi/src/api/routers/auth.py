@@ -4,6 +4,7 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.use_cases.auth import *
 from src.api.payloads.auth import *
+from src.database.models import User
 
 router = APIRouter(
     prefix="/auth",
@@ -11,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/register")
+@router.post("/register", response_model=User)
 async def register(payload: RegisterPayload):
     try:
         user = await RegisterUseCase.register(payload)

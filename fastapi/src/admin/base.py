@@ -1,9 +1,12 @@
 from sqladmin import Admin
 
 from src.admin.characteristics.ad_status import AdStatusView
-from src.database.session_manager import db_manager
 
 
+def setup_admin(app, engine):
+    admin = Admin(app, engine, title="Otiva Billboard")
+    admin.add_view(AdStatusView)
+    return admin
 
 
 """

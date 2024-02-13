@@ -1,12 +1,14 @@
 from typing import List
 from fastapi import Request
 
+
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models.entities.base import AbstractBaseEntityModel
 
 
+#TODO: ADD TO ADMIN
 class Filter(AbstractBaseEntityModel):
     __tablename__ = "filter"
 

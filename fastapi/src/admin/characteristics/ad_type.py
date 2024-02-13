@@ -4,18 +4,16 @@ from src.database.models import AdType
 
 
 class AdTypeView(ModelView):
-    fields = [AdType.id, AdType.title]
+    label = "Advertisement Types"
+    name = "Advertisement Type"
+    name_plural = "Advertisement Types"
+
+    column_list = [AdType.id, AdType.title]
+    column_searchable_list = [AdType.id, AdType.title]
+    column_sortable_list = [AdType.id, AdType.title]
+
+    category = "Advertisement"
 
     page_size = 10
 
-    def __init__(self):
-        super().__init__(model=AdType)
-
-        self.label = "Advertisement Types"
-        self.name = "Advertisement Type"
-        self.name_plural = "Advertisement Types"
-
-        self.icon = "fa fa-th-list"
-
-        self.searchable_fields = [AdType.id, AdType.title]
-        self.sortable_fields = [AdType.id, AdType.title]
+    icon = "fa-solid fa-chart-simple"

@@ -7,6 +7,7 @@ from fastapi import Request
 from src.database.models.entities.base import AbstractBaseEntityModelTime
 
 
+#TODO: ADD TO ADMIN
 class User(AbstractBaseEntityModelTime):
     __tablename__ = "users"
 

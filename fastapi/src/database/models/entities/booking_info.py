@@ -5,6 +5,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 from src.database.models.entities.base import AbstractBaseEntityModel
 
 
+
 class BookingInfo(AbstractBaseEntityModel):
     __tablename__ = "booking_info"
 

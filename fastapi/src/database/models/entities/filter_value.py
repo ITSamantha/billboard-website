@@ -5,7 +5,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.database.models.entities.base import AbstractBaseEntityModel
 
-
+#TODO: ADD TO ADMIN
 class FilterValue(AbstractBaseEntityModel):
     __tablename__ = "filter_value"
 

@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database.models.entities.base import AbstractBaseEntityModel
 
 
+
 class View(AbstractBaseEntityModel):
     __tablename__ = "view"
 

@@ -1,4 +1,9 @@
-from src.schemas import BaseResponseSchema
+import datetime
+from typing import Optional
+
+from pydantic import BaseModel
+
+from src.schemas import BaseResponseSchema, User, UserShort
 
 from src.schemas.entities.base import BaseEntityTime
 
@@ -11,8 +16,11 @@ class Review(BaseEntityTime):
     rating: int
 
 
-class ReviewResponse(Review, BaseResponseSchema):
-    pass
+class ReviewResponse(BaseModel, BaseResponseSchema):
+    text: str
+    rating: int
+    user: Optional[UserShort]
+    created_at: datetime.datetime
 
 
 class ReviewCreate(Review):

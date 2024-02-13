@@ -12,16 +12,17 @@ router = APIRouter(
 )
 
 
-@router.post("/register", response_model=User)
+@router.post("/register", response_model=None)
 async def register(payload: RegisterPayload):
     try:
-        user = await RegisterUseCase.register(payload)
+        user: User = await RegisterUseCase.register(payload)
     except Exception as e:
         print(e)
         return ApiResponse.error(str(e))
     return ApiResponse.payload({
-        'id': user.id,
-        'email': user.email,
+        'user', user
+        # 'id': user.id,
+        # 'email': user.email,
     })  # todo serialize user?
 
 

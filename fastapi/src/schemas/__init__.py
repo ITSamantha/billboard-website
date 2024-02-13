@@ -13,6 +13,7 @@ from src.schemas.characteristics.user_status import *
 from src.schemas.characteristics.weekday import *
 
 # == ENTITIES ==
+from src.schemas.entities.avatar import *
 from src.schemas.entities.user import *
 from src.schemas.entities.address import *
 from src.schemas.entities.view import *
@@ -25,7 +26,7 @@ from src.schemas.entities.ad_photo import *
 from src.schemas.entities.ad_priority import *
 from src.schemas.entities.ad_tag import *
 
-from src.schemas.entities.avatar import *
+
 from src.schemas.entities.booking import *
 from src.schemas.entities.booking_info import *
 from src.schemas.entities.filter_value import *

@@ -8,18 +8,18 @@ from src.api.responses.api_response import ApiResponse
 from src.database.models import Advertisement
 from src.repository.crud.entities.address import address_repository
 from src.repository.crud.many_to_many.advertisement__category import advertisement_category_repository
-from src.schemas.entities.advertisement import AdvertisementCreate, AdvertisementPost
+from src.schemas.entities.advertisement import AdvertisementCreate, AdvertisementPost, AdvertisementResponse
 from src.repository.crud.entities.advertisement import advertisement_repository
 from src.schemas.many_to_many.advertisement__category import AdvertisementCategoryCreate
 
 router = APIRouter(
     prefix="/advertisement",
     tags=["advertisement"],
-    
+
 )
 
 
-@router.post("/", response_model=Advertisement)
+@router.post("/", response_model=AdvertisementResponse)
 async def create_advertisement(data: AdvertisementPost, request: Request, auth: Auth = Depends()):
     try:
         await auth.check_access_token(request)
@@ -59,7 +59,7 @@ async def create_advertisement(data: AdvertisementPost, request: Request, auth: 
     })
 
 
-@router.get("/{advertisement_id}", response_model=Advertisement)
+@router.get("/{advertisement_id}", response_model=AdvertisementResponse)
 async def get_advertisement(advertisement_id: int, short: Optional[bool] = None):
     try:
         advertisement: Advertisement = await advertisement_repository.get_single(id=advertisement_id)

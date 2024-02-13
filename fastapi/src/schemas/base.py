@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+import json
+
+from pydantic import BaseModel, ConfigDict
 
 
 class BaseSchema(BaseModel):
@@ -7,3 +9,6 @@ class BaseSchema(BaseModel):
 
 class BaseResponseSchema:
     id: int
+
+    def jsonify(self: BaseModel):
+        return self.model_dump(mode="json")

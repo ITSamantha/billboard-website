@@ -1,11 +1,11 @@
 from typing import Optional
 import datetime
 
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from src.schemas.entities.base import BaseEntityTime
-from src.schemas import BaseResponseSchema
+from src.schemas.entities.base import BaseEntityTime, BaseEntity
+from src.schemas import BaseResponseSchema, Avatar
 
 
 class User(BaseEntityTime):
@@ -25,8 +25,14 @@ class User(BaseEntityTime):
     email_verified_at: Optional[datetime.datetime]
 
 
-class UserResponse(User, BaseResponseSchema):
+class UserResponse(BaseResponseSchema):
     pass
+
+
+class UserShort(BaseEntity, BaseResponseSchema):
+    first_name: str
+    last_name: str
+    avatar: Optional[Avatar]  # todo: remove optional
 
 
 class UserCreate(User):

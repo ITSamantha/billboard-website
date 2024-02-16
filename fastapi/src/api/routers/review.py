@@ -1,12 +1,9 @@
-import json
-
 from fastapi import APIRouter
-from pydantic.json_schema import model_json_schema
 
 from src.api.responses.api_response import ApiResponse
 from src.database.models import Review
 from src.repository.crud import review_repository
-from src.schemas import ReviewResponse, UserShort
+from src.schemas import create_user_short, create_review_response
 
 router = APIRouter(
     prefix="/review",
@@ -23,18 +20,7 @@ async def get_review(review_id: int):
             raise Exception("No review with this id")
     except Exception as e:
         return ApiResponse.error(str(e))
-    user = UserShort(
-        id=review.user.id,
-        first_name=review.user.first_name,
-        last_name=review.user.last_name,
-        avatar=review.user.avatar,
-    )
+    user = create_user_short(review.user)
 
-    result: dict = ReviewResponse(
-        id=review.id,
-        text=review.text,
-        rating=review.rating,
-        user=user,
-        created_at=review.created_at
-    ).jsonify()
+    result: dict = create_review_response(review, user).jsonify()
     return ApiResponse.payload(result)

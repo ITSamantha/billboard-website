@@ -1,4 +1,4 @@
-from fastapi import Request, Depends
+from fastapi import Request, Depends, Body
 from typing import Optional
 
 from fastapi import APIRouter
@@ -19,10 +19,17 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=AdvertisementResponse)
-async def create_advertisement(data: AdvertisementPost, request: Request, auth: Auth = Depends()):
+@router.post("/", response_model=AdvertisementResponse)  # , include_in_schema=False)
+async def create_advertisement(request: Request, data: AdvertisementPost,
+                               auth: Auth = Depends()):
     try:
         await auth.check_access_token(request)
+
+        if not data.title:
+            raise Exception('Title was not specified.')
+
+        if not data.title:
+            raise Exception('Title was not specified.')
 
         if not data.address and not data.address_id:
             raise Exception('Neither address nor address_id was specified.')
@@ -54,8 +61,7 @@ async def create_advertisement(data: AdvertisementPost, request: Request, auth: 
     except Exception as e:
         return ApiResponse.error(str(e))
     return ApiResponse.payload({
-        'id': advertisement.id,
-        'title': advertisement.title,
+        'id': advertisement.id
     })
 
 

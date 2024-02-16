@@ -9,8 +9,9 @@ class StatusesSeeder(GenericSeeder):
         super().__init__(session)
         self.initial_data = {
             AdStatus: {
-                AdStatus.PAID: {"title": "paid", "is_shown": True},
+                AdStatus.PAID: {"title": "PAID      paid", "is_shown": True},
                 AdStatus.NOT_PAID: {"title": "not paid", "is_shown": False},
                 AdStatus.ACTIVE: {"title": "active", "is_shown": True},
                 AdStatus.BLOCKED: {"title": "blocked", "is_shown": False},
+                AdStatus.MEOW: {"title": "smth else", "is_shown": False}
             }}

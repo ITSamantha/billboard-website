@@ -11,6 +11,7 @@ class AdStatus(AbstractCharacteristicModel):
     BLOCKED = 2
     PAID = 3
     NOT_PAID = 4
+    MEOW = 5
 
     __tablename__ = "ad_status"
 

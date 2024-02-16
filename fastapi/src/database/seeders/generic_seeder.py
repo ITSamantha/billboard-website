@@ -1,8 +1,8 @@
-from typing import Type
-
+from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.repository.crud.base_crud_repository import ModelType
+from src.database.models import AdStatus
 
 
 class GenericSeeder:
@@ -16,7 +16,12 @@ class GenericSeeder:
             return
         async with self._session_factory() as session:
             for cls, data in self.initial_data.items():
-                objects = [cls(**value, id=key) for key, value in data.items()]
-                session.add_all(objects)
-                await session.commit()
-                return objects
+                for key, value in data.items():
+                    model = (await session.execute(select(cls).filter_by(id=key))).scalar_one_or_none()
+                    if model:
+                        for attr_name, attr_value in value.items():
+                            setattr(model, attr_name, attr_value)
+                    else:
+                        model: AdStatus = cls(**value, id=key)
+                    session.add(model)
+                    await session.commit()

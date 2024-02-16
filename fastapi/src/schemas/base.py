@@ -4,7 +4,8 @@ from pydantic import BaseModel, ConfigDict
 
 
 class BaseSchema(BaseModel):
-    pass
+    class Config:
+        arbitrary_types_allowed = True
 
 
 class BaseResponseSchema:

@@ -38,8 +38,7 @@ class AdvertisementPost(BaseEntity):
     address_id: Optional[int] = Field(None, validate_default=True)
     price: float = Field(None, validate_default=True)
 
-    class Config:
-        arbitrary_types_allowed = True
+
 
     @model_validator(mode="before")
     def validate_advertisement(self):

@@ -2,6 +2,10 @@ from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 
 class BookingType(AbstractCharacteristicModel):
+    TYPE_1 = 1
+    TYPE_2 = 2
+    TYPE_3 = 3
+
     __tablename__ = "booking_type"
 
     # TODO: Найти, где использовали. Дописать relationship

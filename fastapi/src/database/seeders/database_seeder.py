@@ -2,6 +2,7 @@ from typing import List
 
 from src.database.seeders.generic_seeder import GenericSeeder
 from src.database.seeders.statuses_seeder import StatusesSeeder
+from src.database.seeders.types_seeder import TypesSeeder
 from src.database.session_manager import db_manager
 
 
@@ -9,7 +10,8 @@ class DatabaseSeeder:
 
     def __init__(self):
         self.seeders: List[GenericSeeder] = [
-            StatusesSeeder(db_manager.session_factory)
+            StatusesSeeder(db_manager.session_factory),
+            TypesSeeder(db_manager.session_factory)
         ]
 
     async def run(self):

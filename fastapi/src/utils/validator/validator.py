@@ -64,14 +64,14 @@ class Validator:
 
 class Rules:
     @staticmethod
-    def required(data: dict, key: str, title: str = None) -> str | None:
+    def required(data: dict, key: str, title: str = None):
         if key in data and data[key] is not None:
             return None
 
         return (title if title else key) + ' field is required.'
 
     @staticmethod
-    def nullable(data: dict, key: str, title: str = None) -> str | None:
+    def nullable(data: dict, key: str, title: str = None):
         if key in data:
             return None
 

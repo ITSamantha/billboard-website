@@ -1,6 +1,7 @@
+from pydantic import BaseModel
 
 
-class BasePayload:
+class BasePayload(BaseModel):
     @classmethod
     def get_fields(cls):
         return [attr for attr in dir(cls) if not callable(getattr(cls, attr)) and not attr.startswith("__")]

@@ -3,7 +3,7 @@ from src.api.payloads.base import BasePayload
 
 
 class Validator:
-    def __init__(self, data: dict, rules: dict, titles: dict = {}, dto: BasePayload=None):
+    def __init__(self, data: dict, rules: dict, titles: dict = {}, dto: BasePayload = None):
         self.data = data
         self.rules = rules
         self.titles = titles
@@ -97,5 +97,3 @@ class Rules:
             return None
 
         return (title if title else key) + ' field must be of type float.'
-
-

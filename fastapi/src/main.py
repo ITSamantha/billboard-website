@@ -37,7 +37,7 @@ from src.api.responses.api_response import ApiResponse
 from src.utils.validator import Validator
 from src.utils.validator.exceptions import AppValidationException
 @app.post('/test')
-def test(request: Request):
+async def test(request: Request):
     validator = Validator(await request.json(), {
         'first_name': ['required'],
         'last_name': ['nullable'],

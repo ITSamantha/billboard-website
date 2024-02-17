@@ -37,7 +37,7 @@ class Validator:
             pass
 
         rules_checker = Rules()
-        for field in self.data:
+        for field in self.rules:
             try:
                 rules = self.rules[field]
             except KeyError:
@@ -60,7 +60,6 @@ class Validator:
                 self.validated_data[field] = self.data[field]
 
         self.is_validated = True
-
 
 
 class Rules:

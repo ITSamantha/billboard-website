@@ -42,7 +42,7 @@ async def test(request: Request):
         'first_name': ['required'],
         'last_name': ['nullable'],
     }, {'first_name': 'kek'})
-    print('huy(')
+
     validator.validate()
 
     return ApiResponse.payload({

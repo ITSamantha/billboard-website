@@ -1,18 +1,15 @@
-import asyncio
 
 from fastapi import Request
 import uvicorn
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-from pydantic import ValidationError
-from sqlalchemy import event
-from starlette import status
+
 
 from src.admin.base import setup_admin
 from src.api.responses.api_response import ApiResponse
 from src.api.routers import auth, advertisement, review
 from src.config.app.config import settings_app
 from src.database.session_manager import db_manager
+from src.utils.validator.exceptions import AppValidationException
 
 
 def get_application() -> FastAPI:
@@ -34,9 +31,9 @@ app.include_router(advertisement.router)
 app.include_router(review.router)
 
 
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return ApiResponse.errors(exc.errors(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+@app.exception_handler(AppValidationException)
+async def validation_failed(request: Request, exc: AppValidationException):
+    return ApiResponse.errors(exc.errors, status_code=422)
 
 
 if __name__ == "__main__":

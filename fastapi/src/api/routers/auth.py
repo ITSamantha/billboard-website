@@ -16,12 +16,12 @@ router = APIRouter(
 @router.post("/register", response_model=None)
 async def register(request: Request):
     validator = Validator(await request.json(), {
-        'first_name': ['required'],
-        'last_name': ['required'],
-        'email': ['required'],
-        'password': ['required'],
-        'phone_number': ['required'],
-        'user_status_id': ['required'],
+        'first_name': ['required', 'string'],
+        'last_name': ['required', 'string'],
+        'email': ['required', 'string'],
+        'password': ['required', 'string'],
+        'phone_number': ['required', 'string'],
+        'user_status_id': ['required', 'integer'],
     }, {}, RegisterPayload())
     payload = validator.validated()
     try:

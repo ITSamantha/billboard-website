@@ -76,3 +76,26 @@ class Rules:
             return None
 
         return (title if title else key) + ' field must be present.'
+
+    @staticmethod
+    def integer(data: dict, key: str, title: str = None):
+        if key in data and isinstance(data[key], int):
+            return None
+
+        return (title if title else key) + ' field must be of type integer.'
+
+    @staticmethod
+    def float(data: dict, key: str, title: str = None):
+        if key in data and isinstance(data[key], float):
+            return None
+
+        return (title if title else key) + ' field must be of type float.'
+
+    @staticmethod
+    def string(data: dict, key: str, title: str = None):
+        if key in data and isinstance(data[key], str):
+            return None
+
+        return (title if title else key) + ' field must be of type float.'
+
+

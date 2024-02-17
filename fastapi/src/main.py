@@ -31,7 +31,28 @@ app.include_router(auth.router)
 app.include_router(advertisement.router)
 app.include_router(review.router)
 
+# todo: remove
+from fastapi import Request
+from src.api.responses.api_response import ApiResponse
+from src.utils.validator import Validator
+from src.utils.validator.exceptions import AppValidationException
+@app.post('/test')
+def test(request: Request):
+    validator = Validator(await request.json(), {
+        'first_name': ['required'],
+        'last_name': ['nullable'],
+    }, {'first_name': 'kek'})
 
+    validator.validate()
+
+    return ApiResponse.payload({
+        'test': 'lol',
+        'request': validator.validated(),
+    })
+
+@app.exception_handler(AppValidationException)
+async def validation_failed(exc: AppValidationException):
+    return ApiResponse.errors(exc.errors, status_code=422)
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return ApiResponse.errors(exc.errors(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)

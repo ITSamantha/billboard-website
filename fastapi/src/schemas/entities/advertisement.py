@@ -30,7 +30,7 @@ class AdvertisementCreate(Advertisement):
 
 class AdvertisementPost(BaseEntity):
     title: str = Field(None, validate_default=True)  # for validation
-    user_description: Field(None, validate_default=True)
+    user_description:str =  Field(None, validate_default=True)
     categories: Optional[List[int]] = Field(None, validate_default=True)  # essential?
     filters: Dict[int, Union[str, int]] = Field(None, validate_default=True)  # Filter, FilterValue
     ad_type_id: int = Field(None, validate_default=True)
@@ -39,7 +39,7 @@ class AdvertisementPost(BaseEntity):
     price: float = Field(None, validate_default=True)
 
 
-
+    """
     @model_validator(mode="before")
     def validate_advertisement(self):
         errors = []
@@ -57,7 +57,6 @@ class AdvertisementPost(BaseEntity):
             raise RequestValidationError(errors=errors)
         return self
 
-    """
     @field_validator("*", mode="before")
     def not_none(cls, v, field):
         if all(
@@ -72,5 +71,6 @@ class AdvertisementPost(BaseEntity):
             return v
     """
 
-    class AdvertisementUpdate(Advertisement):
-        pass
+
+class AdvertisementUpdate(Advertisement):
+    pass

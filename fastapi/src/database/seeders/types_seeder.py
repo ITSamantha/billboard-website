@@ -5,8 +5,8 @@ from src.database.seeders.generic_seeder import GenericSeeder
 
 
 class TypesSeeder(GenericSeeder):
-    def __init__(self, session: AsyncSession):
-        super().__init__(session)
+    def __init__(self):
+        super().__init__()
         self.initial_data = {
             AdType: {
                 AdType.TYPE_1: {"title": "type1"},
@@ -18,7 +18,14 @@ class TypesSeeder(GenericSeeder):
                 BookingType.TYPE_2: {"title": "type2"},
                 BookingType.TYPE_3: {"title": "type3"},
             },
-            FilterType: {},
-            TransactionType: {}
-
+            FilterType: {
+                FilterType.TYPE_1: {"title": "type1", "functional_title": "type1"},
+                FilterType.TYPE_2: {"title": "type2", "functional_title": "type2"},
+                FilterType.TYPE_3: {"title": "type3", "functional_title": "type3"},
+            },
+            TransactionType: {
+                TransactionType.TYPE_1: {"title": "type1"},
+                TransactionType.TYPE_2: {"title": "type2"},
+                TransactionType.TYPE_3: {"title": "type3"},
+            }
         }

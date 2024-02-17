@@ -51,7 +51,7 @@ async def test(request: Request):
     })
 
 @app.exception_handler(AppValidationException)
-async def validation_failed(exc: AppValidationException):
+async def validation_failed(request: Request, exc: AppValidationException):
     return ApiResponse.errors(exc.errors, status_code=422)
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):

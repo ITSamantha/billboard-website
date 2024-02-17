@@ -36,18 +36,23 @@ from fastapi import Request
 from src.api.responses.api_response import ApiResponse
 from src.utils.validator import Validator
 from src.utils.validator.exceptions import AppValidationException
+from src.api.payloads.auth import LoginPayload
 @app.post('/test')
 async def test(request: Request):
     validator = Validator(await request.json(), {
-        'first_name': ['required'],
-        'last_name': ['nullable'],
-    }, {'first_name': 'kek'})
+        'email': ['required'],
+        'password': ['nullable'],
+    }, {'first_name': 'kek'}, LoginPayload())
 
     validator.validate()
-
+    dto = validator.validated()
     return ApiResponse.payload({
         'test': 'lol',
-        'request': validator.validated(),
+        'validated': validator.validated_data,
+        'dto': {
+            'email': dto.email,
+            'p': dto.password
+        }
     })
 
 @app.exception_handler(AppValidationException)

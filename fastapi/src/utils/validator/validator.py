@@ -17,7 +17,6 @@ class Validator:
     def validate(self):
         """Validates the data and throws exception if data is not valid"""
         self._validate()
-        print(self.rules, self.validated_data, self.errors)
         if self.errors:
             raise AppValidationException(errors=self.errors)
 

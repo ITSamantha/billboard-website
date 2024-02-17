@@ -24,10 +24,10 @@ async def register(request: Request):
         'user_status_id': ['required'],
     }, {}, RegisterPayload())
     payload = validator.validated()
-    # try:
-    user: User = await RegisterUseCase.register(payload)
-    # except Exception as e:
-    #     return ApiResponse.error(str(e))
+    try:
+        user: User = await RegisterUseCase.register(payload)
+    except Exception as e:
+        return ApiResponse.error(str(e))
     return ApiResponse.payload({
         'user': user
     })

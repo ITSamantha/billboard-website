@@ -15,6 +15,13 @@ class RegisterUseCase:
         hashed_password = crypt.hash(payload.password)
         payload.password = hashed_password
 
-        user = await user_repo.create(payload)
+        user = await user_repo.create(
+            first_name=payload.first_name,
+            last_name=payload.last_name,
+            email=payload.email,
+            password=payload.password,
+            phone_number=payload.phone_number,
+            user_status_id=payload.user_status_id
+        )
 
         return user

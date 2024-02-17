@@ -5,6 +5,7 @@ from src.api.responses.api_response import ApiResponse
 from src.api.use_cases.auth import *
 from src.api.payloads.auth import *
 from src.database.models import User
+from src.utils.validator import Validator
 
 router = APIRouter(
     prefix="/auth",
@@ -13,21 +14,32 @@ router = APIRouter(
 
 
 @router.post("/register", response_model=None)
-async def register(payload: RegisterPayload):
+async def register(request: Request):
+    validator = Validator(await request.json(), {
+        'first_name': ['required', 'string'],
+        'last_name': ['required', 'string'],
+        'email': ['required', 'string'],
+        'password': ['required', 'string'],
+        'phone_number': ['required', 'string'],
+        'user_status_id': ['required', 'integer'],
+    }, {}, RegisterPayload())
+    payload = validator.validated()
     try:
         user: User = await RegisterUseCase.register(payload)
     except Exception as e:
-        print(e)
         return ApiResponse.error(str(e))
     return ApiResponse.payload({
-        'user', user
-        # 'id': user.id,
-        # 'email': user.email,
-    })  # todo serialize user?
+        'user': user
+    })
 
 
 @router.post("/login")
-async def login(payload: LoginPayload):
+async def login(request: Request):
+    validator = Validator(await request.json(), {
+        'email': ['required'],
+        'password': ['nullable'],
+    }, {}, LoginPayload())
+    payload = validator.validated()
     try:
         access_token, refresh_token = await LoginUseCase.login(payload)
     except Exception as e:

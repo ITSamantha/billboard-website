@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from ..base import BasePayload
 
 
-class LoginPayload(BaseModel):
+class LoginPayload(BasePayload):
     email: str
     password: str

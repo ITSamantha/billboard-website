@@ -24,7 +24,7 @@ class ApiResponse:
         )
 
     @staticmethod
-    def errors(errors: list, status_code: int = 400):
+    def errors(errors: dict, status_code: int = 400):
         return JSONResponse(
             content=ApiResponse.format_content(errors=errors),
             status_code=status_code,

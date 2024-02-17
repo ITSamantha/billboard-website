@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 @router.post("/register", response_model=None)
-async def register(payload: RegisterPayload):
+async def register(payload):
     try:
         user: User = await RegisterUseCase.register(payload)
     except Exception as e:
@@ -27,7 +27,7 @@ async def register(payload: RegisterPayload):
 
 
 @router.post("/login")
-async def login(payload: LoginPayload):
+async def login(payload):
     try:
         access_token, refresh_token = await LoginUseCase.login(payload)
     except Exception as e:

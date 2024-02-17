@@ -2,15 +2,14 @@ from fastapi import Request
 import uvicorn
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
-from pydantic import ValidationError
 from starlette import status
-from starlette.middleware.base import BaseHTTPMiddleware
 
 from src.admin.base import setup_admin
 from src.api.responses.api_response import ApiResponse
 from src.api.routers import auth, advertisement, review
 from src.config.app.config import settings_app
 from src.database.session_manager import db_manager
+from src.utils.validator.exceptions import AppValidationException
 
 
 def get_application() -> FastAPI:
@@ -31,36 +30,10 @@ app.include_router(auth.router)
 app.include_router(advertisement.router)
 app.include_router(review.router)
 
-# todo: remove
-from fastapi import Request
-from src.api.responses.api_response import ApiResponse
-from src.utils.validator import Validator
-from src.utils.validator.exceptions import AppValidationException
-from src.api.payloads.auth import LoginPayload
-@app.post('/test')
-async def test(request: Request):
-    validator = Validator(await request.json(), {
-        'email': ['required'],
-        'password': ['nullable'],
-    }, {'first_name': 'kek'}, LoginPayload())
-
-    validator.validate()
-    dto = validator.validated()
-    return ApiResponse.payload({
-        'test': 'lol',
-        'validated': validator.validated_data,
-        'dto': {
-            'email': dto.email,
-            'p': dto.password
-        }
-    })
 
 @app.exception_handler(AppValidationException)
 async def validation_failed(request: Request, exc: AppValidationException):
     return ApiResponse.errors(exc.errors, status_code=422)
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return ApiResponse.errors(exc.errors(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 if __name__ == "__main__":

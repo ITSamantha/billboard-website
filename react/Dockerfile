@@ -9,4 +9,4 @@ FROM nginx:1.25.4-alpine as production-stage
 WORKDIR /var/www/app
 EXPOSE 80
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist /var/www/app
+COPY --from=builder /app/build /var/www/app

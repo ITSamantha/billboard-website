@@ -6,6 +6,10 @@ from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 
 class TransactionType(AbstractCharacteristicModel):
+    TYPE_1 = 1
+    TYPE_2 = 2
+    TYPE_3 = 3
+
     __tablename__ = "transaction_type"
 
     transactions: Mapped[List["Transaction"]] = relationship(back_populates="transaction_type", uselist=True,

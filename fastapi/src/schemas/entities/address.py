@@ -16,6 +16,12 @@ class Address(BaseEntity):
     latitude: Optional[float] = None
 
 
+class AddressShort(BaseEntity, BaseResponseSchema):
+    address: str
+    longitude: float
+    latitude: float
+
+
 class AddressResponse(Address, BaseResponseSchema):
     pass
 

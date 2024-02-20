@@ -8,11 +8,3 @@ class AdTag(BaseEntity):
 
 class AdTagResponse(AdTag, BaseResponseSchema):
     pass
-
-
-class AdTagCreate(AdTag):
-    pass
-
-
-class AdTagUpdate(AdTag):
-    pass

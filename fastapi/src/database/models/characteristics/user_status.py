@@ -6,6 +6,9 @@ from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 
 class UserStatus(AbstractCharacteristicModel):
+    ACTIVE = 1
+    BLOCKED = 2
+
     __tablename__ = "user_status"
 
     is_available: Mapped[bool] = mapped_column(default=True, nullable=False)

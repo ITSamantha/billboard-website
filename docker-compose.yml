@@ -9,6 +9,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - ./certbot/www:/var/www/certbot/
+      - ./certbot/conf:/etc/letsencrypt/
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - otiva
@@ -54,7 +56,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-
+    command: certonly --webroot -w /var/www/certbot/ --email uvuv.space@gmail.com -d api.uvuv643.ru --agree-tos --cert-name otiva
 
 networks:
   otiva:

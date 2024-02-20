@@ -6,6 +6,9 @@ from src.database.models.characteristics.base import AbstractCharacteristicModel
 
 
 class BookingStatus(AbstractCharacteristicModel):
+    PAID = 1
+    NOT_PAID = 2
+
     __tablename__ = "booking_status"
 
     bookings: Mapped[List["Booking"]] = relationship(back_populates="booking_status", uselist=True, lazy="selectin")

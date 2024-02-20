@@ -21,6 +21,10 @@ class CategoryResponse(Category, BaseResponseSchema):
     pass
 
 
+class CategoryShort(BaseEntity, BaseResponseSchema):
+    title: str
+
+
 class CategoryCreate(Category):
     pass
 

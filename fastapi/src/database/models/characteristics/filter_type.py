@@ -7,6 +7,10 @@ from src.database.models import AbstractCharacteristicModel
 
 
 class FilterType(AbstractCharacteristicModel):
+    TYPE_1 = 1
+    TYPE_2 = 2
+    TYPE_3 = 3
+
     __tablename__ = "filter_type"
 
     functional_title: Mapped[str] = mapped_column(String(256), unique=True, nullable=False, index=True)

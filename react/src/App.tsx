@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import RouterWrapper from "./RouterWrapper";
-import Menu from "./components/menu/Menu.tsx";
+import Menu from ".components/menu/Menu";
 import Login from "./components/login/Login";
 
 export const APP_URL = 'http://localhost:3000/'

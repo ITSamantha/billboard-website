@@ -5,7 +5,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM nginx as production-stage
+FROM nginx-alpine as production-stage
 WORKDIR /var/www/app
 EXPOSE 80
 COPY nginx.conf /etc/nginx/conf.d/default.conf

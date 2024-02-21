@@ -15,6 +15,6 @@ class RegisterUseCase:
         hashed_password = crypt.hash(payload.password)
         payload.password = hashed_password
 
-        user = await user_repo.create(payload)  # todo diana он хочет пудантик
+        user = await user_repo.create(payload)
 
         return user

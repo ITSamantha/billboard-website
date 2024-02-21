@@ -29,7 +29,7 @@ async def register(request: Request):
     except Exception as e:
         return ApiResponse.error(str(e))
     return ApiResponse.payload({
-        'user': user
+        'user_id': user.id
     })
 
 

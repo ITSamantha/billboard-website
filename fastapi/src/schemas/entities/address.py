@@ -1,10 +1,11 @@
 from typing import Optional
 
+from src.api.payloads.base import BasePayload
 from src.schemas import BaseResponseSchema
 from src.schemas.entities.base import BaseEntity
 
 
-class Address(BaseEntity):
+class Address(BasePayload):
     address: str
     country: Optional[int] = None
     city: Optional[int] = None

@@ -5,10 +5,10 @@ from fastapi import APIRouter
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
-from src.database.models import Advertisement
+from src.database.models import Advertisement, Address
 from src.database.models import AdStatus
-from src.repository.crud import advertisement_category_repository
-from src.schemas import AdvertisementCategoryCreate
+from src.repository.crud import advertisement_category_repository, address_repository
+from src.schemas import AdvertisementCategoryCreate, AddressCreate
 from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementResponse, AdvertisementCreate
 from src.repository.crud.entities.advertisement import advertisement_repository
 from src.utils.validator import Validator
@@ -40,6 +40,8 @@ async def create_advertisement(request: Request,
     payload: AdvertisementPost = validator.validated()
 
     if not payload.address_id:
+        # address_db: Address = await address_repository.create(payload.address)
+        # payload.address_id = address_db.id
         pass
 
     advertisement: AdvertisementCreate = AdvertisementCreate()

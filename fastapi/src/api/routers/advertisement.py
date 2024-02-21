@@ -6,11 +6,13 @@ from fastapi import APIRouter
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.database.models import Advertisement
-from src.repository.crud.entities.address import address_repository
-from src.repository.crud.many_to_many.advertisement__category import advertisement_category_repository
-from src.schemas.entities.advertisement import AdvertisementCreate, AdvertisementPost, AdvertisementResponse
+from src.database.models import AdStatus
+from src.repository.crud import advertisement_category_repository
+from src.schemas import AdvertisementCategoryCreate
+from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementResponse, AdvertisementCreate
 from src.repository.crud.entities.advertisement import advertisement_repository
-from src.schemas.many_to_many.advertisement__category import AdvertisementCategoryCreate
+from src.utils.validator import Validator
+from src.utils.validator.validator import Rules
 
 router = APIRouter(
     prefix="/advertisement",
@@ -19,56 +21,61 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=AdvertisementResponse)  # , include_in_schema=False)
-async def create_advertisement(request: Request, data: AdvertisementPost,
+@router.post("/")
+async def create_advertisement(request: Request,
                                auth: Auth = Depends()):
-    try:
-        await auth.check_access_token(request)
+    await auth.check_access_token(request)
 
-        if not data.title:
-            raise Exception('Title was not specified.')
+    validator = Validator(await request.json(), {
+        'title': [Rules.REQUIRED, Rules.STRING],
+        'user_description': [Rules.REQUIRED, Rules.STRING],
+        'address_id': [Rules.NULLABLE, Rules.INTEGER, f'{Rules.FIELDS_OR}address_id,address'],
+        'address': [Rules.NULLABLE, f'{Rules.FIELDS_OR}address_id,address'],
+        'ad_type_id': [Rules.REQUIRED, Rules.INTEGER],
+        "price": [Rules.REQUIRED, Rules.FLOAT],
+        "categories": [Rules.REQUIRED, Rules.LIST],
+        "filters": [Rules.NULLABLE]
+    }, {}, AdvertisementPost())
 
-        if not data.title:
-            raise Exception('Title was not specified.')
+    payload: AdvertisementPost = validator.validated()
 
-        if not data.address and not data.address_id:
-            raise Exception('Neither address nor address_id was specified.')
+    if not payload.address_id:
+        pass
 
-        if data.address:
-            address = await address_repository.create(data.address)
+    advertisement: AdvertisementCreate = AdvertisementCreate()
+    advertisement.title = payload.title
+    advertisement.user_description = payload.user_description
+    advertisement.price = payload.price
+    advertisement.ad_type_id = payload.ad_type_id
+    advertisement.ad_status_id = AdStatus.NOT_PAID
+    advertisement.user_id = request.state.user.id
+    advertisement.address_id = payload.address_id
 
-        advertisement: AdvertisementCreate = AdvertisementCreate(
-            title=data.title,
-            user_description=data.user_description,
-            address_id=data.address_id if data.address_id else address.id,
-            user_id=request.state.user.id,
-            ad_status_id=18,
-            ad_type_id=data.ad_type_id,
-            price=data.price
-        )
+    db_advertisement: Advertisement = await advertisement_repository.create(advertisement)
 
-        advertisement = await advertisement_repository.create(advertisement)
+    if payload.categories:
+        objects = []
+        for category_id in payload.categories:
+            ad_category = AdvertisementCategoryCreate()
+            ad_category.category_id = category_id
+            ad_category.advertisement_id = db_advertisement.id
+            objects.append(ad_category)
+        await advertisement_category_repository.bulk_create(objects)
 
-        if data.categories:
-            objects = [AdvertisementCategoryCreate(category_id=category_id, advertisement_id=advertisement.id) for
-                       category_id in data.categories]
-            await advertisement_category_repository.bulk_create(objects)
+    if payload.filters:
+        pass
 
-        """if data.filters:
-            objects = [FilterValueCreate(filter_id=filter_id,  value=) for filter_id, value in data.filters.items()]
-            await advertisement_filter_value_repository.bulk_create(objects)"""
-
-    except Exception as e:
-        return ApiResponse.error(str(e))
     return ApiResponse.payload({
-        'id': advertisement.id
+        'id': db_advertisement.id
     })
 
 
-@router.get("/{advertisement_id}", response_model=AdvertisementResponse)
+@router.get("/{advertisement_id}")
 async def get_advertisement(advertisement_id: int, short: Optional[bool] = None):
     try:
         advertisement: Advertisement = await advertisement_repository.get_single(id=advertisement_id)
+        if not advertisement:
+            raise Exception(f'Advertisement with id={advertisement_id} not found.')
     except Exception as e:
         return ApiResponse.error(str(e))
     return ApiResponse.payload({

@@ -6,6 +6,7 @@ from src.api.use_cases.auth import *
 from src.api.payloads.auth import *
 from src.database.models import User
 from src.utils.validator import Validator
+from src.utils.validator.validator import Rules
 
 router = APIRouter(
     prefix="/auth",
@@ -16,12 +17,12 @@ router = APIRouter(
 @router.post("/register", response_model=None)
 async def register(request: Request):
     validator = Validator(await request.json(), {
-        'first_name': ['required', 'string'],
-        'last_name': ['required', 'string'],
-        'email': ['required', 'string'],
-        'password': ['required', 'string'],
-        'phone_number': ['required', 'string'],
-        'user_status_id': ['required', 'integer'],
+        'first_name': [Rules.REQUIRED, Rules.STRING],
+        'last_name': [Rules.REQUIRED, Rules.STRING],
+        'email': [Rules.REQUIRED, Rules.STRING],
+        'password': [Rules.REQUIRED, Rules.STRING],
+        'phone_number': [Rules.REQUIRED, Rules.STRING],
+        'user_status_id': [Rules.REQUIRED, Rules.INTEGER],
     }, {}, RegisterPayload())
     payload = validator.validated()
     try:
@@ -36,8 +37,8 @@ async def register(request: Request):
 @router.post("/login")
 async def login(request: Request):
     validator = Validator(await request.json(), {
-        'email': ['required'],
-        'password': ['nullable'],
+        'email': [Rules.REQUIRED],
+        'password': [Rules.REQUIRED],
     }, {}, LoginPayload())
     payload = validator.validated()
     try:

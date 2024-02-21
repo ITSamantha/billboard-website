@@ -21,7 +21,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def create(self, data: CreateSchemaType) -> ModelType:
         async with self._session_factory() as session:
-            #obj_create_data = data.model_dump(exclude_none=True, exclude_unset=True)
+            # obj_create_data = data.model_dump(exclude_none=True, exclude_unset=True)
             instance = self.model(**data.__dict__)
             session.add(instance)
             await session.commit()
@@ -30,7 +30,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def bulk_create(self, data: List[CreateSchemaType]) -> ModelType:
         async with self._session_factory() as session:
-            objects = [self.model(**d.model_dump(exclude_none=True, exclude_unset=True)) for d in data]
+            objects = [self.model(**d.__dict__) for d in data]
             session.add_all(objects)
             await session.commit()
             return objects

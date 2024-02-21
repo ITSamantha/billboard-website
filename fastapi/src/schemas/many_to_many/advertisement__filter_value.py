@@ -6,5 +6,3 @@ class AdvertisementFilterValue(BaseSchema):
     filter_value_id: int
 
 
-class AdvertisementCategoryCreate(AdvertisementFilterValue):
-    pass

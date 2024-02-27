@@ -2,7 +2,6 @@ from fastapi import APIRouter
 
 from src.api.responses.api_response import ApiResponse
 from src.database.models import Review
-from src.repository.crud import review_repository
 from src.schemas import create_user_short, create_review_response
 
 router = APIRouter(
@@ -10,7 +9,7 @@ router = APIRouter(
     tags=["review"],
 
 )
-
+"""
 
 @router.get(path='/{review_id}')
 async def get_review(review_id: int):
@@ -24,3 +23,5 @@ async def get_review(review_id: int):
 
     result: dict = create_review_response(review, user).jsonify()
     return ApiResponse.payload(result)
+
+"""

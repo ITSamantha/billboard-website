@@ -2,8 +2,9 @@ from fastapi import Request, HTTPException
 from jose import JWTError
 from typing import Optional
 
-from src.repository.crud.entities.user import user_repo
 from src.database.models.entities.user import User
+from src.database.session_manager import db_manager
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.jwt.jwt_auth import JWT
 from src.utils.jwt.token_type import TokenType
 from src.config.jwt.config import settings_jwt
@@ -40,7 +41,7 @@ class Auth:
         email: str = payload['sub']
         if email is None:
             self.raise_credentials_exception()
-        user: User = await user_repo.get_single(email=email)
+        user: User = await SqlAlchemyRepository(db_manager.get_session, User).get_single(email=email)
         if user is None:
             self.raise_credentials_exception()
 

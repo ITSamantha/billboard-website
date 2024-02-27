@@ -5,12 +5,12 @@ from fastapi import APIRouter
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
-from src.database.models import Advertisement, Address
+from src.database.models import Advertisement, AdvertisementCategory
 from src.database.models import AdStatus
-from src.repository.crud import advertisement_category_repository, address_repository
-from src.schemas import AdvertisementCategoryCreate, AddressCreate
-from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementResponse, AdvertisementCreate
-from src.repository.crud.entities.advertisement import advertisement_repository
+from src.database.session_manager import db_manager
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository
+from src.schemas import AdvertisementCategoryCreate
+from src.schemas.entities.advertisement import  AdvertisementCreate
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -53,7 +53,8 @@ async def create_advertisement(request: Request,
     advertisement.user_id = request.state.user.id
     advertisement.address_id = payload.address_id
 
-    db_advertisement: Advertisement = await advertisement_repository.create(advertisement)
+    db_advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement).create(
+        advertisement)
 
     if payload.categories:
         objects = []
@@ -62,7 +63,7 @@ async def create_advertisement(request: Request,
             ad_category.category_id = category_id
             ad_category.advertisement_id = db_advertisement.id
             objects.append(ad_category)
-        await advertisement_category_repository.bulk_create(objects)
+        await  SqlAlchemyRepository(db_manager.get_session, AdvertisementCategory).bulk_create(objects)
 
     if payload.filters:
         pass

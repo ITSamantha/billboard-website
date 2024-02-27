@@ -1,9 +1,15 @@
+from pydantic import BaseModel
+
 from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
 
 
-class AdType(BaseCharacteristic):
-    pass
+class AdType(BaseModel):
+    id: int
+    title: str
+
+
+def create_ad_type(type):
+    return AdType(id=type.id, title=type.title)
 
 
 class AdTypeResponse(AdType, BaseResponseSchema):

@@ -6,7 +6,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from src.database import models
 from src.schemas.entities.base import BaseEntityTime, BaseEntity
-from src.schemas import BaseResponseSchema, Avatar
+from src.schemas import BaseResponseSchema, Avatar, UserStatus, create_user_status
 
 
 class User(BaseEntityTime):
@@ -24,6 +24,25 @@ class User(BaseEntityTime):
 
     phone_verified_at: Optional[datetime.datetime]
     email_verified_at: Optional[datetime.datetime]
+
+
+class UserShortResponse(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    user_status: UserStatus
+
+
+def create_user_short_response(user):
+    return UserShortResponse(id=user.id, first_name=user.first_name, last_name=user.last_name,
+                             user_status=create_user_status(user.user_status))
+
+
+class UserResponse(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    email: EmailStr
 
 
 class UserResponse(BaseResponseSchema):

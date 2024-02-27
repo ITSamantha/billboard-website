@@ -1,21 +1,14 @@
-from typing import ClassVar, Optional, Optional
+from typing import Optional
 
-from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
-
-
-class Weekday(BaseCharacteristic):
-    short_title: Optional[str]
-    order: int
+from pydantic import BaseModel
 
 
-class WeekdayResponse(Weekday, BaseResponseSchema):
-    pass
+class Weekday(BaseModel):
+    id: int
+    title: str
+    short_title: Optional[str] = None
+    order: Optional[int] = None
 
 
-class WeekdayCreate(Weekday):
-    pass
-
-
-class WeekdayUpdate(Weekday):
-    pass
+def create_weekday(weekday):
+    return Weekday(id=weekday.id, title=weekday.title, short_title=weekday.short_title, order=weekday.order)

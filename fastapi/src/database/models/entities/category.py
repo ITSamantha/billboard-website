@@ -1,7 +1,7 @@
 from typing import Optional, List
 from fastapi import Request
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy.orm import mapped_column, Mapped, relationship, joinedload, selectinload
 
 from src.database.models.base import Base
 
@@ -20,7 +20,26 @@ class Category(Base):
     url: Mapped[str] = mapped_column(nullable=False)
 
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("category.id"))
-    parent: Mapped["Category"] = relationship(lazy="selectin", uselist=False)
+    # parent: Mapped["Category"] = relationship(lazy='subquery', uselist=False)
+
+    # Relationship to represent the parent category
+    parent: Mapped["Category"] = relationship(
+        uselist=False,
+        viewonly=True,
+        innerjoin=True,
+        remote_side=[id],
+        lazy="dynamic",
+        back_populates="children"
+    )
+
+    children: Mapped[List["Category"]] = relationship(
+        uselist=False,
+        viewonly=True,
+        innerjoin=True,
+        remote_side=[id],
+        lazy="dynamic",
+        back_populates="parent"
+    )
 
     bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
     map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)

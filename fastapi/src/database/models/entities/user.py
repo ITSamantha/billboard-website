@@ -3,13 +3,15 @@ import datetime
 from sqlalchemy_utils import EmailType, PhoneNumberType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from fastapi import Request
-from src.database.models.entities.base import AbstractBaseEntityModelTime
+
+from src.database.models.base import Base
 
 
 # TODO: ADD TO ADMIN
-class User(AbstractBaseEntityModelTime):
+class User(Base):
     __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
 
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
@@ -23,7 +25,7 @@ class User(AbstractBaseEntityModelTime):
 
     avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("avatar.id"),
                                                      nullable=True)  # TODO: default avatar? Optional?
-    avatar: Mapped["Avatar"] = relationship(back_populates="user", uselist=False, lazy="selectin")
+    avatar: Mapped["Avatar"] = relationship(uselist=False, lazy="selectin")
 
     password: Mapped[str] = mapped_column(nullable=True)
 
@@ -32,25 +34,21 @@ class User(AbstractBaseEntityModelTime):
     phone_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
     email_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
 
-    ad_favourites: Mapped[List["AdFavourite"]] = relationship(back_populates="user",
-                                                              uselist=True, lazy="selectin")
-    advertisements: Mapped[List["Advertisement"]] = relationship(back_populates="user",
-                                                                 uselist=True, lazy="selectin")
+    ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
 
-    bookings: Mapped[List["Booking"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
+    advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
 
-    reviews: Mapped[List["Review"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
+    bookings: Mapped[List["Booking"]] = relationship(uselist=True, lazy="selectin")
 
-    notifications: Mapped[List["UserNotification"]] = relationship(back_populates="user", uselist=True, lazy="selectin")
+    reviews: Mapped[List["Review"]] = relationship(uselist=True, lazy="selectin")
 
-    user_fields: Mapped[List["UserField"]] = relationship(back_populates="users",
-                                                          uselist=True, lazy="selectin", secondary="user__user_field")
+    notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
 
-    async def __admin_repr__(self, request: Request):
-        return f"{self.last_name} {self.first_name}, {self.email}"
+    user_fields: Mapped[List["UserField"]] = relationship(uselist=True, lazy="selectin", secondary="user__user_field")
 
-    async def __admin_select2_repr__(self, request: Request) -> str:
-        return f'<div><span>{self.last_name} {self.first_name}, <i>{self.email}</i></span></div>'
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
 
     def __repr__(self) -> str:
         return (

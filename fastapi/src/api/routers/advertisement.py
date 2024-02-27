@@ -5,12 +5,11 @@ from fastapi import APIRouter
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
-from src.database.models import Advertisement, AdvertisementCategory
-from src.database.models import AdStatus
+
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.schemas import AdvertisementCategoryCreate
-from src.schemas.entities.advertisement import  AdvertisementCreate
+from src.schemas.entities.advertisement import AdvertisementCreate
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -20,7 +19,7 @@ router = APIRouter(
 
 )
 
-
+"""
 @router.post("/")
 async def create_advertisement(request: Request,
                                auth: Auth = Depends()):
@@ -73,6 +72,8 @@ async def create_advertisement(request: Request,
     })
 
 
+
+
 @router.get("/{advertisement_id}")
 async def get_advertisement(advertisement_id: int, short: Optional[bool] = None):
     try:
@@ -85,3 +86,4 @@ async def get_advertisement(advertisement_id: int, short: Optional[bool] = None)
         'advertisement': advertisement.title,
         'short': short,
     })
+"""

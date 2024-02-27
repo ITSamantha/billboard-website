@@ -3,16 +3,16 @@ from fastapi import Request
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import AbstractBaseEntityModel
+from src.database.models.base import Base
 
 
-class Avatar(AbstractBaseEntityModel):
+class Avatar(Base):
     __tablename__ = "avatar"
+
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
 
     photo_path: Mapped[str] = mapped_column(String, nullable=False)
     photo_thumb: Mapped[str] = mapped_column(String)
-
-    user: Mapped["User"] = relationship(back_populates="avatar", uselist=False, lazy="selectin")
 
     def __repr__(self) -> str:
         return f"Avatar(id={self.id}, photo_path={self.photo_path})"

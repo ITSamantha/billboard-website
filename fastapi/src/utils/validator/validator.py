@@ -72,7 +72,9 @@ class Validator:
             if len(next_field_errors) > 0:
                 self.errors[field] = next_field_errors
             else:
-                self.validated_data[field] = self.data[field]
+                # TODO: TEST
+                if field in self.data:
+                    self.validated_data[field] = self.data[field]
 
         self.is_validated = True
 
@@ -120,7 +122,7 @@ class Rules:
 
     @staticmethod
     def float(data: dict, key: str):
-        if key in data and isinstance(data[key], float):
+        if key in data and (isinstance(data[key], float) or isinstance(data[key], int)):
             return None
 
         return f"{key} field must be of type float."

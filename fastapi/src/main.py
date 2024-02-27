@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 
-from src.admin.base import setup_admin
+# from src.admin.base import setup_admin
 from src.api.responses.api_response import ApiResponse
 from src.api.routers import auth, advertisement, review, worktime
 from src.config.app.config import settings_app
@@ -24,7 +24,7 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
-admin = setup_admin(app, db_manager.engine)
+# admin = setup_admin(app, db_manager.engine)
 
 app.include_router(auth.router)
 app.include_router(advertisement.router)

@@ -4,28 +4,34 @@ from fastapi import Request
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from src.database.models.entities.base import AbstractBaseEntityModelTime
+from src.database.models.base import Base
 
 
-class Booking(AbstractBaseEntityModelTime):
+class Booking(Base):
     __tablename__ = "booking"
 
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
+
     advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
-    advertisement: Mapped["Advertisement"] = relationship(back_populates="bookings", uselist=False, lazy="selectin")
+    advertisement: Mapped["Advertisement"] = relationship(uselist=False, lazy="selectin")
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    user: Mapped["User"] = relationship(back_populates="bookings", uselist=False, lazy="selectin")
+    user: Mapped["User"] = relationship(uselist=False, lazy="selectin")
 
     time_from: Mapped[datetime.datetime] = mapped_column(nullable=False)
     time_end: Mapped[datetime.datetime] = mapped_column(nullable=False)
 
     booking_status_id: Mapped[int] = mapped_column(ForeignKey("booking_status.id"),
                                                    nullable=False)
-    booking_status: Mapped["BookingStatus"] = relationship(back_populates="bookings", uselist=False, lazy="selectin")
+    booking_status: Mapped["BookingStatus"] = relationship(uselist=False, lazy="selectin")
 
     guest_count: Mapped[Optional[int]] = mapped_column()
 
     deadline_at: Mapped[datetime.datetime] = mapped_column(nullable=False)
+
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
 
     def __repr__(self) -> str:
         return (f"Booking(id={self.id}, advertisement_id={self.advertisement_id}, user_id={self.user_id},"

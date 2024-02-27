@@ -1,4 +1,4 @@
-from src.database.models import User
+from src.database.models.entities.user import User
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.crypt import Crypt

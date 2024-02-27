@@ -17,7 +17,6 @@ from src.schemas.entities.avatar import *
 from src.schemas.entities.user import *
 from src.schemas.entities.address import *
 from src.schemas.entities.view import *
-from src.schemas.entities.review import *
 from src.schemas.entities.filter import *
 from src.schemas.entities.category import *
 from src.schemas.entities.ad_booking_available import *
@@ -25,7 +24,7 @@ from src.schemas.entities.ad_favourite import *
 from src.schemas.entities.ad_photo import *
 from src.schemas.entities.ad_priority import *
 from src.schemas.entities.ad_tag import *
-
+from src.schemas.entities.review import *
 from src.schemas.entities.booking import *
 from src.schemas.entities.booking_info import *
 from src.schemas.entities.filter_value import *

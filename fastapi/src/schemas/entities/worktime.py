@@ -1,8 +1,10 @@
 import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
-from src.schemas import Weekday,  AdvertisementResponse, create_advertisement_response, create_weekday
+from src.api.payloads.base import BasePayload
+from src.schemas import Weekday, AdvertisementResponse, create_advertisement_response, create_weekday
 
 
 class Worktime(BaseModel):

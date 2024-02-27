@@ -3,17 +3,19 @@ from fastapi import Request
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import AbstractBaseEntityModel
+from src.database.models.base import Base
 
 
-class AdPhoto(AbstractBaseEntityModel):
+class AdPhoto(Base):
     __tablename__ = "ad_photo"
 
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
+
     photo_id: Mapped[int] = mapped_column(ForeignKey("photo.id"), nullable=False)
-    photo: Mapped["Photo"] = relationship(back_populates="ad_photo", uselist=False, lazy="selectin")
+    photo: Mapped["Photo"] = relationship(uselist=False, lazy="selectin")
 
     advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
-    advertisement: Mapped["Advertisement"] = relationship(back_populates="ad_photos", uselist=False, lazy="selectin")
+    advertisement: Mapped["Advertisement"] = relationship(uselist=False, lazy="selectin")
 
     is_main: Mapped[bool] = mapped_column(default=False, nullable=False)
 

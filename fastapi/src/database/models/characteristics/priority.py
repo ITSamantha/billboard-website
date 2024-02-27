@@ -1,16 +1,17 @@
-from typing import ClassVar, List
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from src.database.models.characteristics.base import AbstractCharacteristicModel
+from src.database.models.base import Base
 
 
-class Priority(AbstractCharacteristicModel):
+
+class Priority(Base):
     __tablename__ = "priority"
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
 
-    priority: Mapped[int] = mapped_column()
+    title: Mapped[str] = mapped_column(String(256), unique=True, nullable=False, index=True)
 
-    ad_priorities: Mapped[List["AdPriority"]] = relationship(back_populates="priority", uselist=True, lazy="selectin")
+    priority: Mapped[int] = mapped_column(nullable=True)
 
     def __repr__(self) -> str:
         return f"Priority(id={self.id}, title={self.title})"

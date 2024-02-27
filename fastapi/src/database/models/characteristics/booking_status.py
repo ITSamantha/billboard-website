@@ -1,17 +1,19 @@
-from typing import List
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sqlalchemy.orm import relationship, Mapped
-
-from src.database.models.characteristics.base import AbstractCharacteristicModel
+from src.database.models.base import Base
 
 
-class BookingStatus(AbstractCharacteristicModel):
+
+class BookingStatus(Base):
     PAID = 1
     NOT_PAID = 2
 
     __tablename__ = "booking_status"
 
-    bookings: Mapped[List["Booking"]] = relationship(back_populates="booking_status", uselist=True, lazy="selectin")
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
+
+    title: Mapped[str] = mapped_column(String(256), unique=True, nullable=False, index=True)
 
     def __repr__(self) -> str:
         return f"BookingStatus(id={self.id}, title={self.title})"

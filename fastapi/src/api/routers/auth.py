@@ -4,7 +4,8 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.use_cases.auth import *
 from src.api.payloads.auth import *
-from src.database.models import User
+from src.database.models.characteristics.user_status import UserStatus
+from src.database.models.entities.user import User
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -21,10 +22,10 @@ async def register(request: Request):
         'last_name': [Rules.REQUIRED, Rules.STRING],
         'email': [Rules.REQUIRED, Rules.STRING],
         'password': [Rules.REQUIRED, Rules.STRING],
-        'phone_number': [Rules.REQUIRED, Rules.STRING],
-        'user_status_id': [Rules.REQUIRED, Rules.INTEGER],
+        'phone_number': [Rules.REQUIRED, Rules.STRING]
     }, {}, RegisterPayload())
     payload = validator.validated()
+    payload.user_status_id = UserStatus.ACTIVE
     try:
         user: User = await RegisterUseCase.register(payload)
     except Exception as e:

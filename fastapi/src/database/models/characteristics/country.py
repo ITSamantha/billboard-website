@@ -1,14 +1,16 @@
-from typing import List, ClassVar
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sqlalchemy.orm import Mapped, relationship
-
-from src.database.models.characteristics.base import AbstractCharacteristicModel
+from src.database.models.base import Base
 
 
-class Country(AbstractCharacteristicModel):
+
+class Country(Base):
     __tablename__ = "country"
 
-    addresses: Mapped[List["Address"]] = relationship(back_populates="country", uselist=True, lazy="selectin")
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
+
+    title: Mapped[str] = mapped_column(String(256), unique=True, nullable=False, index=True)
 
     def __repr__(self) -> str:
         return f"Country(id={self.id}, title={self.title})"

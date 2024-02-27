@@ -17,7 +17,7 @@ router = APIRouter(
 
 
 @router.get("/{advertisement_id}", response_model=Union[List[schemas.WorktimeResponse], ApiResponse])
-async def get_ad_worktime(advertisement_id: int):
+async def get_advertisement_worktime(advertisement_id: int):
     try:
         ad_worktime: List[models.Worktime] = await SqlAlchemyRepository(db_manager.get_session,
                                                                         models.Worktime).get_multi(

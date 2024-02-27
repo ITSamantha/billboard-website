@@ -45,11 +45,7 @@ class UserResponse(BaseModel):
     email: EmailStr
 
 
-class UserResponse(BaseResponseSchema):
-    pass
-
-
-class UserShort(BaseEntity, BaseResponseSchema):
+class UserShort(BaseModel):
     first_name: str
     last_name: str
     avatar: Optional[Avatar]  # todo: remove optional
@@ -63,7 +59,7 @@ class UserUpdate(User):
     pass
 
 
-def create_user_short(user: models.User):
+def create_user_short(user: User):
     user = UserShort(
         id=user.id,
         first_name=user.first_name,

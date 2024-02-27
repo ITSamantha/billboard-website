@@ -4,17 +4,19 @@ from fastapi import Request
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models.entities.base import AbstractBaseEntityModel
+from src.database.models.base import Base
 
 
-class AdPriority(AbstractBaseEntityModel):
+class AdPriority(Base):
     __tablename__ = "ad_priority"
 
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
+
     priority_id: Mapped[int] = mapped_column(ForeignKey("priority.id"), nullable=False)
-    priority: Mapped["Priority"] = relationship(back_populates="ad_priorities", uselist=False, lazy="selectin")
+    priority: Mapped["Priority"] = relationship(uselist=False, lazy="selectin")
 
     advertisement_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False)
-    advertisement: Mapped["Advertisement"] = relationship(back_populates="ad_priorities", uselist=False, lazy="selectin")
+    advertisement: Mapped["Advertisement"] = relationship(uselist=False, lazy="selectin")
 
     start_time: Mapped[datetime.datetime] = mapped_column(nullable=False)
     end_time: Mapped[datetime.datetime] = mapped_column(nullable=False)

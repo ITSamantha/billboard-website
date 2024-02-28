@@ -1,18 +1,25 @@
+from typing import Optional
+
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
 from src.schemas.base import BaseResponseSchema
 from src.schemas.characteristics.base import BaseCharacteristic
 
 
-class City(BaseCharacteristic):
-    pass
+class City(BaseModel):
+    id: int
+    title: str
 
 
-class CityResponse(City, BaseResponseSchema):
-    pass
+class CityResponse(BaseModel):
+    id: int
+    title: str
 
 
-class CityCreate(City):
-    pass
+class CityUpdate(BasePayload):
+    title: Optional[str] = None
 
 
-class CityUpdate(City):
-    pass
+def create_city_response(city):
+    return CityResponse(id=city.id, title=city.title)

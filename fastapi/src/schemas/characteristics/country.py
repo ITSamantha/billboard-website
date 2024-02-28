@@ -1,18 +1,23 @@
-from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
+from typing import Optional
+
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
 
 
-class Country(BaseCharacteristic):
-    pass
+class Country(BaseModel):
+    id: int
+    title: str
 
 
-class CountryResponse(Country, BaseResponseSchema):
-    pass
+class CountryResponse(BaseModel):
+    id: int
+    title: str
 
 
-class CountryCreate(Country):
-    pass
+class CountryUpdate(BasePayload):
+    title: Optional[str] = None
 
 
-class CountryUpdate(Country):
-    pass
+def create_country_response(country):
+    return CountryResponse(id=country.id, title=country.title)

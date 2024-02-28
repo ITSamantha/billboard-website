@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
-from src.schemas import BaseResponseSchema
+from src.schemas import BaseResponseSchema, create_country_response, create_city_response, CityResponse, CountryResponse
 from src.schemas.entities.base import BaseEntity
 
 
@@ -22,8 +22,8 @@ class Address(BasePayload):
 class AddressResponse(BaseModel):
     id: int
     address: str
-    country: Optional[int] = None
-    city: Optional[int] = None
+    country: Optional[CountryResponse] = None
+    city: Optional[CityResponse] = None
     street: Optional[str] = None
     house: Optional[str] = None
     flat: Optional[str] = None
@@ -33,7 +33,9 @@ class AddressResponse(BaseModel):
 
 
 def create_address_response(address):
-    return AddressResponse(id=address.id, address=address.address, country=address.country, city=address.city,
+    return AddressResponse(id=address.id, address=address.address,
+                           country=create_country_response(address.country) if address.country else None,
+                           city=create_city_response(address.city) if address.city else None,
                            street=address.street, house=address.house, flat=address.flat,
                            longitude=address.longitude, latitude=address.latitude)
 

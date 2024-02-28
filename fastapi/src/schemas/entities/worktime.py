@@ -25,6 +25,7 @@ class WorktimeResponse(BaseModel):
 
 
 def create_worktime_response(worktime):
-    return WorktimeResponse(id=worktime.id, weekday=create_weekday(worktime.weekday),
-                            advertisement=create_advertisement_response(worktime.advertisement),
+    return WorktimeResponse(id=worktime.id, weekday=create_weekday(worktime.weekday) if worktime.weekday else None,
+                            advertisement=create_advertisement_response(
+                                worktime.advertisement) if worktime.advertisement else None,
                             start_time=worktime.start_time, end_time=worktime.end_time)

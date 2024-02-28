@@ -21,7 +21,7 @@ class Category(Base):
 
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("category.id"))
     # parent: Mapped["Category"] = relationship(lazy='subquery', uselist=False)
-
+    """
     # Relationship to represent the parent category
     parent: Mapped["Category"] = relationship(
         uselist=False,
@@ -40,7 +40,7 @@ class Category(Base):
         lazy="dynamic",
         back_populates="parent"
     )
-
+    """
     bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
     map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)
 

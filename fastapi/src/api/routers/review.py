@@ -96,13 +96,10 @@ async def update_review(review_id: int, request: Request, auth: Auth = Depends()
     payload: ReviewUpdate = validator.validated()
 
     try:
-
-        if not await SqlAlchemyRepository(db_manager.get_session, models.Review).get_single(
-                id=review_id):
-            raise Exception('Review with this id does not exist.')
-
+        # todo : check existance
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).update(payload, id=review_id)
+
         result: schemas.ReviewResponse = create_review_response(review)
         return result
     except Exception as e:

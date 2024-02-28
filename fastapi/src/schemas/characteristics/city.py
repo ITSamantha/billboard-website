@@ -3,8 +3,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
-from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
 
 
 class City(BaseModel):
@@ -12,14 +10,13 @@ class City(BaseModel):
     title: str
 
 
-class CityResponse(BaseModel):
-    id: int
+class CityUpdate(BasePayload):
     title: str
 
 
-class CityUpdate(BasePayload):
-    title: Optional[str] = None
+class CityCreate(BasePayload):
+    title: str
 
 
-def create_city_response(city):
-    return CityResponse(id=city.id, title=city.title)
+def create_city(city):
+    return City(id=city.id, title=city.title)

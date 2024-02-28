@@ -1,8 +1,9 @@
+from pydantic import BaseModel
+
 from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
 
 
-class TransactionType(BaseCharacteristic):
+class TransactionType(BaseModel):
     pass
 
 

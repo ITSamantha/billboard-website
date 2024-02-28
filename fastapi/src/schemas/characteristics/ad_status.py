@@ -1,9 +1,9 @@
-from typing import ClassVar
+from typing import Optional
 
 from pydantic import BaseModel
 
-from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
 class AdStatus(BaseModel):
@@ -12,17 +12,15 @@ class AdStatus(BaseModel):
     is_shown: bool
 
 
-def create_ad_status(status):
+def create_ad_status(status: models.AdStatus) -> AdStatus:
     return AdStatus(id=status.id, title=status.title, is_shown=status.is_shown)
 
 
-class AdStatusResponse(AdStatus, BaseResponseSchema):
-    pass
+class AdStatusCreate(BasePayload):
+    title: str
+    is_shown: bool
 
 
-class AdStatusCreate(AdStatus):
-    pass
-
-
-class AdStatusUpdate(AdStatus):
-    pass
+class AdStatusUpdate(BasePayload):
+    title: Optional[str] = None
+    is_shown: Optional[bool] = None

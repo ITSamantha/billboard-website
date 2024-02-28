@@ -1,19 +1,23 @@
-from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
+from typing import Optional
+
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
-class BookingType(BaseCharacteristic):
-    pass
-    # title: paid, not paid, cancelled
+class BookingType(BaseModel):
+    id: int
+    title: str
 
 
-class BookingTypeResponse(BookingType, BaseResponseSchema):
-    pass
+def create_booking_type(type: models.BookingType) -> BookingType:
+    return BookingType(id=type.id, title=type.title)
 
 
-class BookingTypeCreate(BookingType):
-    pass
+class BookingTypeCreate(BasePayload):
+    title: str
 
 
-class BookingTypeUpdate(BookingType):
-    pass
+class BookingTypeUpdate(BasePayload):
+    title: str

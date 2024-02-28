@@ -10,14 +10,13 @@ class Country(BaseModel):
     title: str
 
 
-class CountryResponse(BaseModel):
-    id: int
+class CountryUpdate(BasePayload):
     title: str
 
 
-class CountryUpdate(BasePayload):
-    title: Optional[str] = None
+class CountryCreate(BasePayload):
+    title: str
 
 
-def create_country_response(country):
-    return CountryResponse(id=country.id, title=country.title)
+def create_country(country):
+    return Country(id=country.id, title=country.title)

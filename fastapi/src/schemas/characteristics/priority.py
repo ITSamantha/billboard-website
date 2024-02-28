@@ -1,8 +1,9 @@
+from pydantic import BaseModel
+
 from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
 
 
-class Priority(BaseCharacteristic):
+class Priority(BaseModel):
     priority: int
 
 

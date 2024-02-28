@@ -1,18 +1,23 @@
-from src.schemas.base import BaseResponseSchema
-from src.schemas.characteristics.base import BaseCharacteristic
+from typing import Optional
+
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
-class BookingStatus(BaseCharacteristic):
-    pass
+class BookingStatus(BaseModel):
+    id: int
+    title: str
 
 
-class BookingStatusResponse(BookingStatus, BaseResponseSchema):
-    pass
+def create_booking_status(status: models.BookingStatus) -> BookingStatus:
+    return BookingStatus(id=status.id, title=status.title)
 
 
-class BookingStatusCreate(BookingStatus):
-    pass
+class BookingStatusCreate(BasePayload):
+    title: str
 
 
-class BookingStatusUpdate(BookingStatus):
-    pass
+class BookingStatusUpdate(BasePayload):
+    title: str

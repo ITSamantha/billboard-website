@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.schemas.base import BaseResponseSchema
+from src.api.payloads.base import BasePayload
 
 
 class AdType(BaseModel):
@@ -12,13 +12,9 @@ def create_ad_type(type):
     return AdType(id=type.id, title=type.title)
 
 
-class AdTypeResponse(AdType, BaseResponseSchema):
-    pass
+class AdTypeCreate(BasePayload):
+    title: str
 
 
-class AdTypeCreate(AdType):
-    pass
-
-
-class AdTypeUpdate(AdType):
-    pass
+class AdTypeUpdate(BasePayload):
+    title: str

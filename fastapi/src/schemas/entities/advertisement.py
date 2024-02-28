@@ -4,15 +4,15 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
-from src.schemas import AddressResponse, UserShortResponse, AdStatus, AdType, create_address_response, create_ad_status, \
-    create_ad_type, create_user_short_response
+from src.schemas import UserShortResponse, AdStatus, AdType, create_ad_status, create_ad_type, \
+    create_user_short_response, Address, create_address
 
 
 class AdvertisementResponse(BaseModel):
     id: int
     title: str
     user_description: str
-    address: AddressResponse
+    address: Address
     user: UserShortResponse
     ad_status: AdStatus
     ad_type: AdType
@@ -25,7 +25,7 @@ class AdvertisementResponse(BaseModel):
 
 def create_advertisement_response(ad):
     return AdvertisementResponse(id=ad.id, title=ad.title, user_description=ad.user_description,
-                                 address=create_address_response(ad.address), user=create_user_short_response(ad.user),
+                                 address=create_address(ad.address), user=create_user_short_response(ad.user),
                                  ad_status=create_ad_status(ad.ad_status), ad_type=create_ad_type(ad.ad_type),
                                  price=ad.price, created_at=ad.created_at, updated_at=ad.updated_at,
                                  deleted_at=ad.deleted_at)

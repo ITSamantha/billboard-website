@@ -4,16 +4,16 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
-from src.schemas import UserShortResponse, AdStatus, AdType, create_ad_status, create_ad_type, \
-    create_user_short_response, Address, create_address
+from src.schemas import UserShort, AdStatus, AdType, create_ad_status, create_ad_type, \
+    create_user_short, Address, create_address
 
 
-class AdvertisementResponse(BaseModel):
+class Advertisement(BaseModel):
     id: int
     title: str
     user_description: str
     address: Address
-    user: UserShortResponse
+    user: UserShort
     ad_status: AdStatus
     ad_type: AdType
     price: Optional[float]
@@ -24,13 +24,21 @@ class AdvertisementResponse(BaseModel):
 
 
 def create_advertisement(ad):
-    return AdvertisementResponse(id=ad.id, title=ad.title, user_description=ad.user_description,
-                                 address=create_address(ad.address), user=create_user_short_response(ad.user),
-                                 ad_status=create_ad_status(ad.ad_status), ad_type=create_ad_type(ad.ad_type),
-                                 price=ad.price, created_at=ad.created_at, updated_at=ad.updated_at,
-                                 deleted_at=ad.deleted_at)
+    # TODO:  CREATE RELATION ATTRS HERE AS IN MODEL
+    return Advertisement(id=ad.id,
+                         title=ad.title,
+                         user_description=ad.user_description,
+                         address=create_address(ad.address) if ad.address else None,
+                         user=create_user_short(ad.user) if ad.user else None,
+                         ad_status=create_ad_status(ad.ad_status) if ad.ad_status else None,
+                         ad_type=create_ad_type(ad.ad_type) if ad.ad_type else None,
+                         price=ad.price,
+                         created_at=ad.created_at,
+                         updated_at=ad.updated_at,
+                         deleted_at=ad.deleted_at)
 
 
+"""
 class Advertisement(BasePayload):
     title: str
     user_description: str
@@ -48,16 +56,6 @@ class AdvertisementCreate(Advertisement):
     pass
 
 
-"""
-class AdvertisementPost(BasePayload):
-    title: str  # for validation
-    user_description: str
-    categories: Optional[List[int]]  # essential?
-    filters: Optional[Dict[int, Union[str, int]]]  # Filter, FilterValue
-    ad_type_id: int
-    address: Optional[AddressCreate]
-    address_id: Optional[int]
-    price: float
 
 
 class AdvertisementUpdate(Advertisement):

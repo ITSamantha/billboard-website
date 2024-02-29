@@ -1,22 +1,28 @@
+from typing import Optional
+
 from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
 class Photo(BaseModel):
+    id: int
     photo_path: str
-    photo_thumb: str
+    photo_thumb: Optional[str] = None
 
 
-def create_photo(photo):
-    pass
+def create_photo(photo: models.Photo) -> Photo:
+    return Photo(id=photo.id,
+                 photo_path=photo.photo_path,
+                 photo_thimb=photo.photo_thumb)
 
 
-class PhotoResponse(Photo, BaseResponseSchema):
-    pass
+class PhotoCreate(BasePayload):
+    photo_path: str
+    photo_thumb: Optional[str] = None
 
 
-class PhotoCreate(Photo):
-    pass
-
-
-class PhotoUpdate(Photo):
-    pass
+class PhotoUpdate(BasePayload):
+    photo_path: Optional[str] = None
+    photo_thumb: Optional[str] = None

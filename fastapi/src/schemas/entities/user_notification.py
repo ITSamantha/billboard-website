@@ -1,9 +1,11 @@
-
+import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
 
-class UserNotification(BaseModelTime):
+class UserNotification(BaseModel):
+    id: int
     title: str
     description: str
 
@@ -15,15 +17,3 @@ class UserNotification(BaseModelTime):
     created_at: Optional[datetime.datetime] = None
     updated_at: Optional[datetime.datetime] = None
     deleted_at: Optional[datetime.datetime] = None
-
-
-class UserNotificationResponse(UserNotification, BaseResponseSchema):
-    pass
-
-
-class UserNotificationCreate(UserNotification):
-    pass
-
-
-class UserNotificationUpdate(UserNotification):
-    pass

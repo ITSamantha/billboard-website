@@ -6,7 +6,6 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from src.database.models.base import Base
 
 
-
 # TODO: ADD TO ADMIN
 class UserField(Base):
     __tablename__ = "user_field"

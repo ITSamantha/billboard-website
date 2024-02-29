@@ -44,7 +44,8 @@ class User(Base):
 
     notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
 
-    user_fields: Mapped[List["UserField"]] = relationship(uselist=True, lazy="selectin", secondary="user__user_field")
+    # TODO: RELATED MANY TO MANY?
+    # user_fields: Mapped[List["UserField"]] = relationship(uselist=True, lazy="selectin", secondary="user__user_field")
 
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())

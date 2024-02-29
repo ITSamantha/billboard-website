@@ -5,9 +5,8 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import BaseResponseSchema, User, UserShort, create_user_short
 
-from src.schemas.entities.base import BaseEntityTime
+from pydantic import BaseModel
 
 
 class ReviewResponse(BaseModel):
@@ -15,7 +14,9 @@ class ReviewResponse(BaseModel):
     text: str
     rating: float
     user: UserShort
-    created_at: datetime.datetime
+    created_at: Optional[datetime.datetime] = None
+    updated_at: Optional[datetime.datetime] = None
+    deleted_at: Optional[datetime.datetime] = None
 
 
 def create_review_response(review: models.Review):

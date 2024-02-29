@@ -1,10 +1,10 @@
 import datetime
 
-from src.schemas import BaseResponseSchema
-from src.schemas.entities.base import BaseEntity
+
+from pydantic import BaseModel
 
 
-class View(BaseEntity):
+class View(BaseModel):
     advertisement_id: int
     view_count: int
     date: datetime.date

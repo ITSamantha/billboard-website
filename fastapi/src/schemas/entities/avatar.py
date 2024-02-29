@@ -1,19 +1,28 @@
-from src.schemas import BaseResponseSchema
-from src.schemas.entities.base import BaseEntity
+from typing import Optional
+
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
-class Avatar(BaseEntity):
+class Avatar(BaseModel):
+    id: int
     photo_path: str
-    photo_thumb: str
+    photo_thumb: Optional[str] = None
 
 
-class AvatarResponse(Avatar, BaseResponseSchema):
-    pass
+def create_avatar(avatar: models.Avatar) -> Avatar:
+    return Avatar(id=avatar.id,
+                  photo_path=avatar.photo_path,
+                  photo_thumb=avatar.photo_thumb)
 
 
-class AvatarCreate(Avatar):
-    pass
+class AvatarUpdate(BasePayload):
+    photo_path: Optional[str] = None
+    photo_thumb: Optional[str] = None
 
 
-class AvatarUpdate(Avatar):
-    pass
+class AvatarCreate(BaseModel):
+    photo_path: str
+    photo_thumb: Optional[str] = None

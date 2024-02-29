@@ -1,10 +1,21 @@
-from src.schemas import BaseResponseSchema
-from src.schemas.entities.base import BaseEntity
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
-class AdTag(BaseEntity):
+class AdTag(BaseModel):
+    id: int
     title: str
 
 
-class AdTagResponse(AdTag, BaseResponseSchema):
-    pass
+def create_ad_tag(tag: models.AdTag) -> AdTag:
+    return AdTag(id=tag.id, title=tag.title)
+
+
+class AdTagUpdate(BasePayload):
+    title: str
+
+
+class AdTagCreate(BasePayload):
+    title: str

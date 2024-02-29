@@ -1,19 +1,21 @@
-from src.schemas import BaseResponseSchema
+from pydantic import BaseModel
 
-from src.schemas.entities.base import BaseEntity
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
-class BookingInfo(BaseEntity):
+class BookingInfo(BaseModel):
+    id: int
     field: str
 
 
-class BookingInfoResponse(BookingInfo, BaseResponseSchema):
-    pass
+def create_booking_info(info: models.BookingInfo) -> BookingInfo:
+    return BookingInfo(id=info.id, field=info.field)
 
 
-class BookingInfoCreate(BookingInfo):
-    pass
+class BookingInfoCreate(BasePayload):
+    field: str
 
 
-class BookingInfoUpdate(BookingInfo):
-    pass
+class BookingInfoUpdate(BasePayload):
+    field: str

@@ -1,10 +1,10 @@
 from typing import Optional
-from src.schemas import BaseResponseSchema
-
-from src.schemas.entities.base import BaseEntity
 
 
-class FilterValue(BaseEntity):
+from pydantic import BaseModel
+
+
+class FilterValue(BaseModel):
     filter_id: int
     value: str
     hint_html: Optional[str]

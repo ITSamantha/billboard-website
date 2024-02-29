@@ -1,6 +1,5 @@
-from pydantic import BaseModel
-
-from src.schemas.base import BaseResponseSchema
+from typing import Optional
+from src.api.payloads.base import BasePayload
 from pydantic import BaseModel
 
 
@@ -14,13 +13,11 @@ def create_user_status(status):
     return UserStatus(id=status.id, title=status.title, is_available=status.is_available)
 
 
-class UserStatusResponse(UserStatus, BaseResponseSchema):
-    pass
+class UserStatusCreate(BasePayload):
+    title: str
+    is_available: bool
 
 
-class UserStatusCreate(UserStatus):
-    pass
-
-
-class UserStatusUpdate(UserStatus):
-    pass
+class UserStatusUpdate(BasePayload):
+    title: Optional[str] = None
+    is_available: Optional[bool] = None

@@ -1,9 +1,9 @@
-from src.schemas import BaseResponseSchema
-
-from src.schemas.entities.base import BaseEntity
 
 
-class UserField(BaseEntity):
+from pydantic import BaseModel
+
+
+class UserField(BaseModel):
     type: str
     title: str
 

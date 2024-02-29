@@ -1,6 +1,6 @@
-from src.schemas.entities.base import BaseEntity
+from pydantic import BaseModel
 
 
-class Token(BaseEntity):
+class Token(BaseModel):
     access_token: str
     token_type: str

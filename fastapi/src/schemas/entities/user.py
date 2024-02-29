@@ -5,11 +5,10 @@ from pydantic import EmailStr, BaseModel
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from src.database import models
-from src.schemas.entities.base import BaseEntityTime, BaseEntity
-from src.schemas import BaseResponseSchema, Avatar, UserStatus, create_user_status
+from pydantic import BaseModel, BaseModel
 
 
-class User(BaseEntityTime):
+class User(BaseModelTime):
     first_name: str
     last_name: str
 
@@ -25,12 +24,20 @@ class User(BaseEntityTime):
     phone_verified_at: Optional[datetime.datetime]
     email_verified_at: Optional[datetime.datetime]
 
+    created_at: Optional[datetime.datetime] = None
+    updated_at: Optional[datetime.datetime] = None
+    deleted_at: Optional[datetime.datetime] = None
+
 
 class UserShortResponse(BaseModel):
     id: int
     first_name: str
     last_name: str
     user_status: UserStatus
+
+
+def create_user(user):
+    pass
 
 
 def create_user_short_response(user):

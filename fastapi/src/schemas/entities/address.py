@@ -3,6 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
+from src.database import models
 from src.schemas import City, Country, create_country, create_city
 
 """
@@ -32,12 +33,30 @@ class Address(BaseModel):
     latitude: Optional[float] = None
 
 
-def create_address(address):
-    return Address(id=address.id, address=address.address,
+def create_address(address: models.Address) -> Address:
+    return Address(id=address.id,
+                   address=address.address,
                    country=create_country(address.country) if address.country else None,
                    city=create_city(address.city) if address.city else None,
-                   street=address.street, house=address.house, flat=address.flat,
-                   longitude=address.longitude, latitude=address.latitude)
+                   street=address.street,
+                   house=address.house,
+                   flat=address.flat,
+                   longitude=address.longitude,
+                   latitude=address.latitude)
+
+
+class ShortAddress(BaseModel):
+    id: int
+    address: str
+    longitude: Optional[float] = None
+    latitude: Optional[float] = None
+
+
+def create_short_address(address: models.Address) -> ShortAddress:
+    return ShortAddress(id=address.id,
+                        address=address.address,
+                        longitude=address.longitude,
+                        latitude=address.latitude)
 
 
 class AddressCreate(BasePayload):

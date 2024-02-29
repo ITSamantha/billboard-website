@@ -23,7 +23,7 @@ class AdvertisementResponse(BaseModel):
     deleted_at: Optional[datetime.datetime] = None
 
 
-def create_advertisement_response(ad):
+def create_advertisement(ad):
     return AdvertisementResponse(id=ad.id, title=ad.title, user_description=ad.user_description,
                                  address=create_address(ad.address), user=create_user_short_response(ad.user),
                                  ad_status=create_ad_status(ad.ad_status), ad_type=create_ad_type(ad.ad_type),

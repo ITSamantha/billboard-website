@@ -1,9 +1,9 @@
-from src.schemas import BaseResponseSchema
-
-from src.schemas.entities.base import BaseEntity
 
 
-class Filter(BaseEntity):
+from pydantic import BaseModel
+
+
+class Filter(BaseModel):
     title: str
     filter_type_id: int
     order: int

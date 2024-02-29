@@ -1,19 +1,24 @@
-from src.schemas import BaseResponseSchema
-from src.schemas.entities.base import BaseEntity
+from pydantic import BaseModel
+
+from src.api.payloads.base import BasePayload
+from src.database import models
+from src.schemas import Advertisement, User, create_advertisement, create_user
 
 
-class AdFavourite(BaseEntity):
+class AdFavourite(BaseModel):
+    id: int
+    # advertisement_id: int
+    # user_id: int
+    advertisement: Advertisement
+    user: User
+
+
+def create_ad_favourite(fav: models.AdFavourite) -> AdFavourite:
+    return AdFavourite(id=fav.id,
+                       advertisement=create_advertisement(fav.advertisement) if fav.advertisement else None,
+                       user=create_user(fav.user) if fav.user else None)
+
+
+class AdFavouriteCreate(BasePayload):
     advertisement_id: int
     user_id: int
-
-
-class AdFavouriteResponse(AdFavourite, BaseResponseSchema):
-    pass
-
-
-class AdFavouriteCreate(AdFavourite):
-    pass
-
-
-class AdFavouriteUpdate(AdFavourite):
-    pass

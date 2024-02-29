@@ -1,19 +1,21 @@
 from pydantic import BaseModel
 
-from src.schemas.base import BaseResponseSchema
+from src.api.payloads.base import BasePayload
+from src.database import models
 
 
 class TransactionType(BaseModel):
-    pass
+    id: int
+    title: str
 
 
-class TransactionTypeResponse(TransactionType, BaseResponseSchema):
-    pass
+def create_transaction_type(type: models.TransactionType) -> TransactionType:
+    return TransactionType(id=type.id, title=type.title)
 
 
-class TransactionTypeCreate(TransactionType):
-    pass
+class TransactionTypeCreate(BasePayload):
+    title: str
 
 
-class TransactionTypeUpdate(TransactionType):
-    pass
+class TransactionTypeUpdate(BasePayload):
+    title: str

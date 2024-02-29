@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas.base import BaseResponseSchema
 
 
 # checkbox (multiple_select)
@@ -14,7 +13,7 @@ from src.schemas.base import BaseResponseSchema
 # date_interval
 
 # в скобках title, отдельная строка -- functional_title
-# TODO: HERE
+
 class FilterType(BaseModel):
     id: int
     title: str

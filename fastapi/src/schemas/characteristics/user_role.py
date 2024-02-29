@@ -1,18 +1,20 @@
-from src.schemas.base import BaseResponseSchema
+from src.api.payloads.base import BasePayload
+from src.database import models
 from pydantic import BaseModel
 
 
 class UserRole(BaseModel):
-    pass
+    id: int
+    title: str
 
 
-class UserRoleResponse(UserRole, BaseResponseSchema):
-    pass
+def create_user_role(type: models.UserRole) -> UserRole:
+    return UserRole(id=type.id, title=type.title)
 
 
-class UserRoleCreate(UserRole):
-    pass
+class UserRoleCreate(BasePayload):
+    title: str
 
 
-class UserRoleUpdate(UserRole):
-    pass
+class UserRoleUpdate(BasePayload):
+    title: str

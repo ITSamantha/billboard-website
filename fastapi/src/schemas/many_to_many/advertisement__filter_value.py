@@ -1,5 +1,7 @@
-from src.schemas import Advertisement, FilterValue
+
 from src.schemas.base import BaseSchema
+from src.schemas.entities.advertisement import Advertisement
+from src.schemas.entities.filter_value import FilterValue
 
 
 class AdvertisementFilterValue(BaseSchema):

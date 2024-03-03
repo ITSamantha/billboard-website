@@ -2,13 +2,12 @@ from typing import Union
 
 from fastapi import APIRouter, Depends, Request
 
-from src import schemas
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas import create_address, AddressCreate, Address
+from src.schemas.entities import create_address, Address, AddressCreate
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -17,7 +16,7 @@ address_router = APIRouter(
 )
 
 
-@address_router.get(path='/address/{address_id}', response_model=Union[schemas.Address, ApiResponse])
+@address_router.get(path='/address/{address_id}', response_model=Union[Address, ApiResponse])
 async def get_address(address_id: int):
     """Get exact address. """
 
@@ -27,13 +26,13 @@ async def get_address(address_id: int):
         if not address:
             raise Exception(f"This address does not exist.")
 
-        result: schemas.Address = create_address(address)
+        result: Address = create_address(address)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
 
 
-@address_router.post(path='/address', response_model=Union[schemas.Address, ApiResponse])
+@address_router.post(path='/address', response_model=Union[Address, ApiResponse])
 async def create_ad_address(request: Request, auth: Auth = Depends()):
     """Create address. """
 
@@ -56,7 +55,7 @@ async def create_ad_address(request: Request, auth: Auth = Depends()):
 
         address: models.Address = await SqlAlchemyRepository(db_manager.get_session,
                                                              models.Address).create(payload)
-        result: schemas.Address = create_address(address)
+        result: Address = create_address(address)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))

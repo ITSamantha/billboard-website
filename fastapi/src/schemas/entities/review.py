@@ -8,7 +8,7 @@ from src.database import models
 
 from pydantic import BaseModel
 
-from src.schemas import UserShort, create_user_short
+from src.schemas.entities.user import UserShort, create_user_short
 
 
 class Review(BaseModel):

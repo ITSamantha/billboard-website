@@ -14,7 +14,7 @@ class Category(BaseModel):
     meta_description: str
     url: str
 
-    parent: Optional["Category"] = None
+    # parent: Optional["Category"] = None
 
     bookable: bool
     map_addressable: bool
@@ -30,7 +30,7 @@ def create_category(category: models.Category) -> Category:
         url=category.url,
         bookable=category.bookable,
         map_addressable=category.map_addressable,
-        parent=create_category(category.parent) if category.parent else None
+        parent=None  # create_category(category.parent) if category.parent else None
     )
     return category
 

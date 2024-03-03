@@ -4,7 +4,8 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import City, Country, create_country, create_city
+from src.schemas.characteristics.city import City, create_city
+from src.schemas.characteristics.country import Country, create_country
 
 """
 class Address(BasePayload):
@@ -45,15 +46,15 @@ def create_address(address: models.Address) -> Address:
                    latitude=address.latitude)
 
 
-class ShortAddress(BaseModel):
+class AddressShort(BaseModel):
     id: int
     address: str
     longitude: Optional[float] = None
     latitude: Optional[float] = None
 
 
-def create_short_address(address: models.Address) -> ShortAddress:
-    return ShortAddress(id=address.id,
+def create_short_address(address: models.Address) -> AddressShort:
+    return AddressShort(id=address.id,
                         address=address.address,
                         longitude=address.longitude,
                         latitude=address.latitude)
@@ -69,3 +70,16 @@ class AddressCreate(BasePayload):
 
     longitude: Optional[float] = None
     latitude: Optional[float] = None
+
+
+def create_address_create(address):
+    result = AddressCreate()
+    result.address = address.address
+    result.flat = address.flat
+    result.house = address.house
+    result.street = address.street
+    result.latitude = address.latitude
+    result.longitude = address.longitude
+    result.city_id = address.city_id
+    result.country_id = address.country_id
+    return result

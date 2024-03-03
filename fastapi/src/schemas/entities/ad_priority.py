@@ -5,7 +5,8 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import Priority, Advertisement, create_priority, create_advertisement
+from src.schemas.characteristics import Priority, create_priority
+from src.schemas.entities.advertisement import Advertisement, create_advertisement
 
 
 class AdPriority(BaseModel):

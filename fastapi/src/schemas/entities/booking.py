@@ -5,7 +5,9 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import Advertisement, BookingStatus, User, create_advertisement, create_user, create_booking_status
+from src.schemas.characteristics import BookingStatus, create_booking_status
+from src.schemas.entities.advertisement import Advertisement, create_advertisement
+from src.schemas.entities.user import User, create_user
 
 
 #   TODO:

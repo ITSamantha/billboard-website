@@ -2,7 +2,8 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import Category, Advertisement
+from src.schemas.entities.advertisement import Advertisement
+from src.schemas.entities.category import Category
 
 
 class AdvertisementCategory(BaseModel):

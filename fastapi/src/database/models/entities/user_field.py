@@ -18,9 +18,6 @@ class UserField(Base):
 
     order: Mapped[int] = mapped_column(nullable=False)
 
-    users: Mapped[List["User"]] = relationship(back_populates="user_fields",
-                                               uselist=True, lazy="selectin", secondary="user__user_field")
-
     def __repr__(self) -> str:
         return (
             f"UserField(id={self.id}, type={self.type}, title={self.title}, order={self.order})")

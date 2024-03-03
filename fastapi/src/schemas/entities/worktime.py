@@ -4,7 +4,8 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
-from src.schemas import Weekday, create_weekday, Advertisement, create_advertisement
+from src.schemas.characteristics.weekday import Weekday, create_weekday
+from src.schemas.entities.advertisement import Advertisement, create_advertisement
 
 
 class Worktime(BaseModel):

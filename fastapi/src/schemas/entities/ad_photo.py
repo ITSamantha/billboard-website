@@ -2,7 +2,8 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import Photo, Advertisement, create_advertisement, create_photo
+from src.schemas.entities.advertisement import Advertisement, create_advertisement
+from src.schemas.entities.photo import Photo, create_photo
 
 
 class AdPhoto(BaseModel):

@@ -5,7 +5,10 @@ from pydantic import EmailStr, BaseModel
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from src.database import models
-from src.schemas import UserStatus, Avatar, create_user_status, create_avatar, UserField
+from src.schemas.characteristics.user_status import UserStatus, create_user_status
+from src.schemas.entities.avatar import Avatar, create_avatar
+
+
 
 
 class User(BaseModel):

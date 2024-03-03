@@ -8,8 +8,7 @@ from src.api.responses.api_response import ApiResponse
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src import schemas
-from src.schemas import ReviewCreate, create_review, ReviewUpdate
+from src.schemas.entities.review import create_review, Review, ReviewCreate, ReviewUpdate
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -20,20 +19,20 @@ router = APIRouter(
 )
 
 
-@router.get(path='review/{review_id}', response_model=Union[schemas.Review, ApiResponse])
+@router.get(path='/review/{review_id}', response_model=Union[Review, ApiResponse])
 async def get_review(review_id: int):
     """Get exact review information. """
 
     try:
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).get_single(id=review_id)
-        result: schemas.Review = create_review(review)
+        result: Review = create_review(review)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
 
 
-@router.get(path='/{advertisement_id}', response_model=Union[List[schemas.Review], ApiResponse])
+@router.get(path='/{advertisement_id}', response_model=Union[List[Review], ApiResponse])
 async def get_advertisement_reviews(advertisement_id: int):
     """Get all reviews for exact advertisement. """
 
@@ -41,7 +40,7 @@ async def get_advertisement_reviews(advertisement_id: int):
         reviews: List[models.Review] = await SqlAlchemyRepository(db_manager.get_session,
                                                                   models.Review).get_multi(
             advertisement_id=advertisement_id)
-        result: List[schemas.Review] = [create_review(review) for review in reviews]
+        result: List[Review] = [create_review(review) for review in reviews]
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
@@ -51,7 +50,7 @@ async def get_advertisement_reviews(advertisement_id: int):
 # TODO:GET USER REVIEWS
 
 
-@router.post(path='/review', response_model=Union[schemas.Review, ApiResponse])
+@router.post(path='/review', response_model=Union[Review, ApiResponse])
 async def create_advertisement_review(request: Request, auth: Auth = Depends()):
     """Create review on advertisement. """
 
@@ -76,13 +75,13 @@ async def create_advertisement_review(request: Request, auth: Auth = Depends()):
 
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).create(payload)
-        result: schemas.Review = create_review(review)
+        result: Review = create_review(review)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
 
 
-@router.put(path='/review/{review_id}', response_model=Union[schemas.Review, ApiResponse])
+@router.put(path='/review/{review_id}', response_model=Union[Review, ApiResponse])
 async def update_review(review_id: int, request: Request, auth: Auth = Depends()):
     """Update review by id. """
 
@@ -100,7 +99,7 @@ async def update_review(review_id: int, request: Request, auth: Auth = Depends()
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).update(payload, id=review_id)
 
-        result: schemas.Review = create_review(review)
+        result: Review = create_review(review)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))

@@ -59,9 +59,6 @@ class Advertisement(Base):
     filter_values: Mapped[List["FilterValue"]] = relationship(
         uselist=True, lazy="selectin",
         secondary="advertisement__filter_value")
-    
-    transactions: Mapped[List["Transaction"]] = relationship(uselist=True,
-                                                             lazy="selectin")
 
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())

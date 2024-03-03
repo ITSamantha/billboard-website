@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from src.api.payloads.base import BasePayload
 from src.database import models
-from src.schemas import Filter, create_filter
+from src.schemas.entities.filter import Filter, create_filter
 
 
 class FilterValue(BaseModel):

@@ -1,9 +1,7 @@
-from fastapi import Request
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models.base import Base
-
 
 
 class AdFavourite(Base):

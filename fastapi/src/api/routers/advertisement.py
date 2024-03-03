@@ -1,22 +1,77 @@
-from fastapi import Request, Depends, Body
-from typing import Optional
+from typing import Union
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
-
+from src.database import models
+from src.database.models import Address, AdStatus
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas import AdvertisementCategoryCreate
+from src.schemas.entities import create_address_create, AddressCreate
+from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementCreate, create_advertisement_create, \
+    Advertisement, create_advertisement
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
 router = APIRouter(
-    prefix="/advertisement",
-    tags=["advertisement"],
-
+    prefix="/advertisements",
+    tags=["advertisements"],
 )
+
+
+@router.post("/advertisement", response_model=Union[Advertisement, ApiResponse])
+async def create_advertisement_route(request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    validator = Validator(await request.json(), {
+        'title': [Rules.REQUIRED, Rules.STRING],
+        'user_description': [Rules.REQUIRED, Rules.STRING],
+        'address_id': [Rules.NULLABLE, Rules.INTEGER, f'{Rules.FIELDS_OR}address_id,address'],
+        'address': [Rules.NULLABLE, f'{Rules.FIELDS_OR}address_id,address'],
+        'ad_type_id': [Rules.REQUIRED, Rules.INTEGER],
+        "price": [Rules.REQUIRED, Rules.FLOAT],
+        "categories": [Rules.REQUIRED, Rules.LIST],
+        "ad_tags": [Rules.NULLABLE, Rules.LIST],
+        "ad_photos": [Rules.NULLABLE, Rules.LIST],
+        "filters": [Rules.NULLABLE]
+    }, {}, AdvertisementPost())
+
+    payload: AdvertisementPost = validator.validated()
+
+    if not payload.address_id:
+        validator = Validator(payload.address, {
+            'address': [Rules.REQUIRED, Rules.STRING],
+            'city_id': [Rules.INTEGER],
+            'country_id': [Rules.INTEGER],
+            'street': [Rules.STRING],
+            'house': [Rules.STRING],
+            'flat': [Rules.STRING],
+            'longitude': [Rules.FLOAT],
+            'latitude': [Rules.FLOAT]
+        }, {}, AddressCreate())
+
+        address: AddressCreate = validator.validated()
+
+        address_db: Address = await SqlAlchemyRepository(db_manager.get_session,
+                                                         Address).create(address)
+        payload.address_id = address_db.id
+
+    advertisement: AdvertisementCreate = create_advertisement_create(payload)
+
+    advertisement.user_id = request.state.user.id
+    advertisement.ad_status_id = AdStatus.NOT_PAID
+
+    try:
+
+        ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement).create(
+            advertisement)
+
+        result: Advertisement = create_advertisement(ad)
+        return result
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
 
 """
 @router.post("/")

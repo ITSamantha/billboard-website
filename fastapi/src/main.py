@@ -2,12 +2,9 @@ from fastapi import Request
 import uvicorn
 from fastapi import FastAPI
 
-# from src.admin.base import setup_admin
 from src.api.responses.api_response import ApiResponse
-from src.api.routers import auth, advertisement, review, worktime
 from src.api.routers.base import create_app_routers
 from src.config.app.config import settings_app
-from src.database.session_manager import db_manager
 from src.utils.validator.exceptions import AppValidationException
 
 

@@ -7,7 +7,7 @@ from src.api.responses.api_response import ApiResponse
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas import create_country
+from src.schemas.characteristics.country import create_country, Country, CountryUpdate
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -16,7 +16,7 @@ country_router = APIRouter(
 )
 
 
-@country_router.get(path='/country/{country_id}', response_model=Union[schemas.Country, ApiResponse])
+@country_router.get(path='/country/{country_id}', response_model=Union[Country, ApiResponse])
 async def get_country(country_id: int):
     """Get exact country. """
 
@@ -26,28 +26,28 @@ async def get_country(country_id: int):
         if not country:
             raise Exception(f"This country does not exist.")
 
-        result: schemas.Country = create_country(country)
+        result: Country = create_country(country)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
 
 
-@country_router.put(path='/country/{country_id}', response_model=Union[schemas.Country, ApiResponse])
+@country_router.put(path='/country/{country_id}', response_model=Union[Country, ApiResponse])
 async def update_country(country_id: int, request: Request):
     """Update exact Country. """
 
     validator = Validator(await request.json(), {
         'title': [Rules.REQUIRED, Rules.STRING]
-    }, {}, schemas.CountryUpdate())
+    }, {}, CountryUpdate())
 
-    payload: schemas.CountryUpdate = validator.validated()
+    payload: CountryUpdate = validator.validated()
 
     try:
         # todo : check existence
         country: models.Country = await SqlAlchemyRepository(db_manager.get_session,
                                                              models.Country).update(payload, id=country_id)
 
-        result: schemas.Country = create_country(country)
+        result: Country = create_country(country)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))

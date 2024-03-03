@@ -6,7 +6,6 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from src.database.models.base import Base
 
 
-
 class FilterType(Base):
     TYPE_1 = 1
     TYPE_2 = 2
@@ -22,8 +21,6 @@ class FilterType(Base):
 
     interval_placeholder_from: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
     interval_placeholder_to: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
-
-    filters: Mapped[List["Filter"]] = relationship(back_populates="filter_type", uselist=True, lazy="selectin")
 
     def __repr__(self) -> str:
         return f"FilterType(id={self.id}, title={self.title}, functional_title={self.functional_title})"

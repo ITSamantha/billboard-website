@@ -16,3 +16,10 @@ class AdvertisementCategory(BaseModel):
 class AdvertisementCategoryCreate(BasePayload):
     advertisement_id: int
     category_id: int
+
+
+def create_advertisement_category_create(category_id, advertisement_id):
+    result = AdvertisementCategoryCreate()
+    result.category_id = category_id
+    result.advertisement_id = advertisement_id
+    return result

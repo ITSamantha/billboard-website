@@ -6,6 +6,8 @@ from src.api.payloads.base import BasePayload
 from src.database import models
 from src.schemas.characteristics.city import City, create_city
 from src.schemas.characteristics.country import Country, create_country
+from src.utils.validator import Validator
+from src.utils.validator.validator import Rules
 
 """
 class Address(BasePayload):
@@ -83,3 +85,19 @@ def create_address_create(address):
     result.city_id = address.city_id
     result.country_id = address.country_id
     return result
+
+
+def validate_address_create(address):
+    validator = Validator(address, {
+        'address': [Rules.REQUIRED, Rules.STRING],
+        'city_id': [Rules.INTEGER],
+        'country_id': [Rules.INTEGER],
+        'street': [Rules.STRING],
+        'house': [Rules.STRING],
+        'flat': [Rules.STRING],
+        'longitude': [Rules.FLOAT],
+        'latitude': [Rules.FLOAT]
+    }, {}, AddressCreate())
+
+    address: AddressCreate = validator.validated()
+    return address

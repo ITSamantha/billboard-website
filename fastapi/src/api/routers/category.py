@@ -19,6 +19,7 @@ router = APIRouter(
 @router.get("/category/{category_id}", response_model=Union[Category, ApiResponse])
 async def get_categories(category_id: int):
     """Get nested category. """
+
     # TODO: NESTED PARENT
     try:
         category: models.Category = await SqlAlchemyRepository(db_manager.get_session,

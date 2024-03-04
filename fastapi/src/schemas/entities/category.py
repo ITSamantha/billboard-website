@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from src.api.payloads.base import BasePayload
 from src.database import models
 
 
@@ -35,7 +36,16 @@ def create_category(category: models.Category) -> Category:
     return category
 
 
-class CategoryCreate(BaseModel):
+class CategoryShort(BaseModel):
+    id: int
+    title: str
+
+
+def create_category_short(category):
+    return CategoryShort(id=category.id, title=category.title)
+
+
+class CategoryCreate(BasePayload):
     title: str
     order: int
 
@@ -49,7 +59,7 @@ class CategoryCreate(BaseModel):
     map_addressable: bool
 
 
-class CategoryUpdate(BaseModel):
+class CategoryUpdate(BasePayload):
     title: Optional[str] = None
     order: Optional[int] = None
 

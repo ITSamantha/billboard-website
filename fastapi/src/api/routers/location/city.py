@@ -2,7 +2,6 @@ from typing import Union
 
 from fastapi import APIRouter, Request
 
-from src import schemas
 from src.api.responses.api_response import ApiResponse
 from src.database import models
 from src.database.session_manager import db_manager

@@ -137,9 +137,9 @@ class Rules:
     @staticmethod
     def list(data: dict, key: str):
         if key in data and isinstance(data[key], list):
-            if len(data[key]) > 0:
-                return None
-
+            # if len(data[key]) > 0:
+            # return None
+            return None
         return f"{key} field must be non-empty list."
 
     @staticmethod

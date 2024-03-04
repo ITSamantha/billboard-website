@@ -12,5 +12,4 @@ def create_app_routers(app: FastAPI):
     app.include_router(worktime.router)
     app.include_router(category.router)
     app.include_router(location.router)
-
     return app

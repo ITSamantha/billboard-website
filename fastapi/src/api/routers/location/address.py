@@ -7,9 +7,7 @@ from src.api.responses.api_response import ApiResponse
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities import create_address, Address, AddressCreate
-from src.utils.validator import Validator
-from src.utils.validator.validator import Rules
+from src.schemas.entities import create_address, Address, AddressCreate, validate_address_create
 
 address_router = APIRouter(
     prefix="/addresses"
@@ -38,21 +36,9 @@ async def create_ad_address(request: Request, auth: Auth = Depends()):
 
     await auth.check_access_token(request)
 
-    validator = Validator(await request.json(), {
-        'address': [Rules.REQUIRED, Rules.STRING],
-        'city_id': [Rules.INTEGER],
-        'country_id': [Rules.INTEGER],
-        'street': [Rules.STRING],
-        'house': [Rules.STRING],
-        'flat': [Rules.STRING],
-        'longitude': [Rules.FLOAT],
-        'latitude': [Rules.FLOAT]
-    }, {}, AddressCreate())
-
-    payload: AddressCreate = validator.validated()
+    payload: AddressCreate = validate_address_create(await request.json())
 
     try:
-
         address: models.Address = await SqlAlchemyRepository(db_manager.get_session,
                                                              models.Address).create(payload)
         result: Address = create_address(address)

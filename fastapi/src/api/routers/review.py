@@ -1,5 +1,5 @@
 import datetime
-from typing import Union, List
+from typing import Union, List, Optional
 
 from fastapi import APIRouter, Depends, Request
 
@@ -26,7 +26,10 @@ async def get_review(review_id: int):
     try:
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).get_single(id=review_id)
-        result: Review = create_review(review)
+        if review.deleted_at:
+            raise Exception(" This review has been deleted.")
+
+        result: Optional[Review] = create_review(review)
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
@@ -40,7 +43,7 @@ async def get_advertisement_reviews(advertisement_id: int):
         reviews: List[models.Review] = await SqlAlchemyRepository(db_manager.get_session,
                                                                   models.Review).get_multi(
             advertisement_id=advertisement_id)
-        result: List[Review] = [create_review(review) for review in reviews]
+        result: List[Review] = [create_review(review) for review in reviews if not review.deleted_at]
         return result
     except Exception as e:
         return ApiResponse.error(str(e))
@@ -65,10 +68,9 @@ async def create_advertisement_review(request: Request, auth: Auth = Depends()):
     payload: ReviewCreate = validator.validated()
 
     payload.user_id = request.state.user.id
-    payload.date = datetime.datetime.now()
 
     try:
-
+        # TODO: IS IT POSSIBLE FOR ANOTHER USER TO POST? CHECK IT!!!!!!!!!!!!!
         if await SqlAlchemyRepository(db_manager.get_session, models.Review).get_single(
                 advertisement_id=payload.advertisement_id):
             raise Exception('The review on this advertisement has already been published.')
@@ -95,7 +97,7 @@ async def update_review(review_id: int, request: Request, auth: Auth = Depends()
     payload: ReviewUpdate = validator.validated()
 
     try:
-        # todo : check existance
+        # todo : check existence
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).update(payload, id=review_id)
 

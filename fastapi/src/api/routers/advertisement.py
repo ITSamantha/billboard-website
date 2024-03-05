@@ -29,39 +29,29 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
     await auth.check_access_token(request)
-    validator = Validator(await request.json(), {
-        "f1": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}:f2"],
-        "f2": [Rules.NULLABLE, Rules.INTEGER],
-    }, {})
-
-    validator.validate()
-    return ApiResponse.success('lol')
-
 
     validator = Validator(await request.json(), {
-        "title": [Rules.REQUIRED, Rules.STRING],
-        "user_description": [Rules.REQUIRED, Rules.STRING],
-        "ad_type_id": [Rules.REQUIRED, Rules.INTEGER],
-        "price": [Rules.REQUIRED, Rules.FLOAT],
-        "categories": [Rules.REQUIRED, Rules.LIST],
-        "ad_tags": [Rules.REQUIRED, Rules.LIST],
-        "ad_photos": [Rules.REQUIRED, Rules.LIST],
+        "title": ['required', 'string'],
+        "user_description": ['required', 'string'],
+        "ad_type_id": ['required', 'integer'],
+        "price": ['required', 'float'],
+        "categories": ['required', 'list'],
+        "ad_tags": ['required', 'list'],
+        "ad_photos": ['required', 'list'],
 
-        "address_id": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}address_id,address"],
-        "address": [Rules.NULLABLE, f"{Rules.FIELDS_OR}address_id,address"],
-        # 'address': [Rules.REQUIRED, Rules.STRING],
-        'city_id': [Rules.INTEGER],
-        'country_id': [Rules.INTEGER],
-        'street': [Rules.STRING],
-        'house': [Rules.STRING],
-        'flat': [Rules.STRING],
-        'longitude': [Rules.FLOAT],
-        'latitude': [Rules.FLOAT],
-        # "filters": [Rules.NULLABLE]
+        "address_id": ['nullable', 'integer', "required_without:address_id"],
+        "address": ['string', "required_without:address_id"],
+        'city_id': ['integer', "required_without:address_id"],
+        'country_id': ['integer', "required_without:address_id"],
+        'street': ['string', "required_without:address_id"],
+        'house': ['string', "required_without:address_id"],
+        'flat': ['string', "required_without:address_id"],
+        'longitude': ['float', "required_without:address_id"],
+        'latitude': ['float', "required_without:address_id"],
     }, {}, AdvertisementPost())
 
     payload: AdvertisementPost = validator.validated()
-
+    return ApiResponse.success('ke')
     try:
 
         if not payload.address_id:

@@ -86,7 +86,7 @@ class Rules:
     FLOAT = 'float'
     STRING = 'string'
     LIST = 'list'
-    FIELDS_OR = 'fields_or'
+    REQUIRED_WITHOUT = 'required_without'
 
     @staticmethod
     def required(data: dict, key: str, title: str = None):
@@ -131,7 +131,7 @@ class Rules:
         return None
 
     @staticmethod
-    def fields_or(data: dict, key: str, title: str = None, *fields: list):
+    def required_without(data: dict, key: str, title: str = None, *fields: list):
         fields = [key, *fields]
         for field in fields:
             if field in data and data[field] is not None:

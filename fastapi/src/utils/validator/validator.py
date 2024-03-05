@@ -56,7 +56,7 @@ class Validator:
                 except AttributeError:
                     raise Exception(f'Rule {rule} is not defined')  # todo custom?
 
-                custom_title = self.titles[field] if self.titles[field] else None
+                custom_title = self.titles[field] if field in self.titles else None
                 next_rule_error = check_function(self.data, field, title=custom_title, *args)
 
                 if next_rule_error:

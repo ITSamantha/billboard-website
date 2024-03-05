@@ -14,6 +14,9 @@ from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementC
     Advertisement, create_advertisement, validate_advertisement_post
 from src.schemas.many_to_many.advertisement__ad_tag import AdvertisementAdTag
 from src.schemas.many_to_many.advertisement__category import create_advertisement_category_create
+from src.schemas.entities.address import AddressCreate
+from src.utils.validator import Validator
+from src.utils.validator.validator import Rules
 
 router = APIRouter(
     prefix="/advertisements",
@@ -26,13 +29,54 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
     await auth.check_access_token(request)
+    validator = Validator(await request.json(), {
+        "f1": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}:f2"],
+        "f2": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}:f1"],
+    }, {})
 
-    payload: AdvertisementPost = validate_advertisement_post(await request.json())
+    validator.validate()
+    return ApiResponse.success('lol')
+
+
+    validator = Validator(await request.json(), {
+        "title": [Rules.REQUIRED, Rules.STRING],
+        "user_description": [Rules.REQUIRED, Rules.STRING],
+        "ad_type_id": [Rules.REQUIRED, Rules.INTEGER],
+        "price": [Rules.REQUIRED, Rules.FLOAT],
+        "categories": [Rules.REQUIRED, Rules.LIST],
+        "ad_tags": [Rules.REQUIRED, Rules.LIST],
+        "ad_photos": [Rules.REQUIRED, Rules.LIST],
+
+        "address_id": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}address_id,address"],
+        "address": [Rules.NULLABLE, f"{Rules.FIELDS_OR}address_id,address"],
+        # 'address': [Rules.REQUIRED, Rules.STRING],
+        'city_id': [Rules.INTEGER],
+        'country_id': [Rules.INTEGER],
+        'street': [Rules.STRING],
+        'house': [Rules.STRING],
+        'flat': [Rules.STRING],
+        'longitude': [Rules.FLOAT],
+        'latitude': [Rules.FLOAT],
+        # "filters": [Rules.NULLABLE]
+    }, {}, AdvertisementPost())
+
+    payload: AdvertisementPost = validator.validated()
 
     try:
 
         if not payload.address_id:
-            address = validate_address_create(payload.address)
+            validator = Validator(payload.address, {
+                'address': [Rules.REQUIRED, Rules.STRING],
+                'city_id': [Rules.INTEGER],
+                'country_id': [Rules.INTEGER],
+                'street': [Rules.STRING],
+                'house': [Rules.STRING],
+                'flat': [Rules.STRING],
+                'longitude': [Rules.FLOAT],
+                'latitude': [Rules.FLOAT]
+            }, {}, AddressCreate())
+
+            address: AddressCreate = validator.validated()
 
             address_db: Address = await SqlAlchemyRepository(db_manager.get_session,
                                                              Address).create(address)

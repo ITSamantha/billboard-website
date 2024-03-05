@@ -9,7 +9,7 @@ from src.database.models.base import Base
 from src.repository.crud.base_repository import AbstractRepository
 
 ModelType = TypeVar("ModelType", bound=Base)
-CreateSchemaType = TypeVar("CreateSchemaType", bound=Union[BaseModel, dict])
+CreateSchemaType = TypeVar("CreateSchemaType", bound=Union[BaseModel, dict])#todo test
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 

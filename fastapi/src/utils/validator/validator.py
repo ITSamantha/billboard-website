@@ -44,21 +44,15 @@ class Validator:
                 rules = self.rules[field]
             except KeyError:
                 continue
-            # todo parse rules to get additional parameters
 
             if not isinstance(rules, list):
                 raise Exception('Rules must be of type list')  # todo custom?
 
             next_field_errors = []
 
-            field_status = (Rules.REQUIRED in rules) or (Rules.NULLABLE in rules and self.data[field])
-
             for rule in rules:
                 try:
                     rule, kwargs = self._check_rule(rule)
-
-                    if rule == Rules.FIELDS_OR:
-                        field_status = True
 
                     check_function = getattr(rules_checker, rule)
                 except AttributeError:
@@ -66,7 +60,7 @@ class Validator:
 
                 next_rule_error = self._check_function(check_function, field, kwargs)
 
-                if next_rule_error and field_status:
+                if next_rule_error:
                     next_field_errors.append(next_rule_error)
 
             if len(next_field_errors) > 0:
@@ -86,8 +80,7 @@ class Validator:
         return rule, kwargs
 
     def _check_function(self, check_function, field, kwargs):
-        return check_function(self.data, field, kwargs) if kwargs else check_function(self.data,
-                                                                                      field)
+        return check_function(self.data, field, kwargs) if kwargs else check_function(self.data, field)
 
 
 class Rules:
@@ -97,7 +90,7 @@ class Rules:
     FLOAT = 'float'
     STRING = 'string'
     LIST = 'list'
-    FIELDS_OR = 'fields_or:'
+    FIELDS_OR = 'fields_or'
 
     @staticmethod
     def required(data: dict, key: str):
@@ -144,8 +137,9 @@ class Rules:
 
     @staticmethod
     def fields_or(data: dict, key: str, fields: list):
+        fields.append(key)
         for field in fields:
-            if field in data and data[field]:
+            if field in data and data[field] is not None:
                 return None
 
         return f"One of fields {','.join(fields)} must be sent."

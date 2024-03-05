@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Optional, Generic, List
+from typing import Type, TypeVar, Optional, Generic, List, Union
 
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
@@ -9,7 +9,7 @@ from src.database.models.base import Base
 from src.repository.crud.base_repository import AbstractRepository
 
 ModelType = TypeVar("ModelType", bound=Base)
-CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel|dict)
+CreateSchemaType = TypeVar("CreateSchemaType", bound=Union[BaseModel, dict])
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 

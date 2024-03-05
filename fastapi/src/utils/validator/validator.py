@@ -108,32 +108,31 @@ class Rules:
 
     @staticmethod
     def integer(data: dict, key: str):
-        if key in data and isinstance(data[key], int):
-            return None
+        if key in data and not isinstance(data[key], int):
+            return f"{key} field must be of type integer."
 
-        return f"{key} field must be of type integer."
+        return None
 
     @staticmethod
     def float(data: dict, key: str):
-        if key in data and (isinstance(data[key], float) or isinstance(data[key], int)):
-            return None
+        if key in data and not (isinstance(data[key], float) or isinstance(data[key], int)):
+            return f"{key} field must be of type float."
 
-        return f"{key} field must be of type float."
+        return None
 
     @staticmethod
     def string(data: dict, key: str):
-        if key in data and isinstance(data[key], str):
-            return None
+        if key in data and not isinstance(data[key], str):
+            return f"{key} field must be of type string."
 
-        return f"{key} field must be of type string."
+        return None
 
     @staticmethod
     def list(data: dict, key: str):
-        if key in data and isinstance(data[key], list):
-            # if len(data[key]) > 0:
-            # return None
-            return None
-        return f"{key} field must be non-empty list."
+        if key in data and not isinstance(data[key], list):
+            return f"{key} field must of type list."
+
+        return None
 
     @staticmethod
     def fields_or(data: dict, key: str, fields: list):
@@ -142,4 +141,4 @@ class Rules:
             if field in data and data[field] is not None:
                 return None
 
-        return f"One of fields {','.join(fields)} must be sent."
+        return f"One of fields {','.join(fields)} must be present."

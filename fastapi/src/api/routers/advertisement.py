@@ -39,7 +39,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         "ad_tags": ['required', 'list'],
         "ad_photos": ['required', 'list'],
 
-        "address_id": ['nullable', 'integer', "required_without:address_id"],
+        "address_id": ['nullable', 'integer'],
         "address": ['string', "required_without:address_id"],
         'city_id': ['integer', "required_without:address_id"],
         'country_id': ['integer', "required_without:address_id"],

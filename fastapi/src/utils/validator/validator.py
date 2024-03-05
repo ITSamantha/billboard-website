@@ -108,28 +108,28 @@ class Rules:
 
     @staticmethod
     def integer(data: dict, key: str):
-        if key in data and not isinstance(data[key], int):
+        if key in data and not isinstance(data[key], (int, type(None))):
             return f"{key} field must be of type integer."
 
         return None
 
     @staticmethod
     def float(data: dict, key: str):
-        if key in data and not (isinstance(data[key], float) or isinstance(data[key], int)):
+        if key in data and not (isinstance(data[key], (float, type(None))) or isinstance(data[key], (int, type(None)))):
             return f"{key} field must be of type float."
 
         return None
 
     @staticmethod
     def string(data: dict, key: str):
-        if key in data and not isinstance(data[key], str):
+        if key in data and not isinstance(data[key], (str, type(None))):
             return f"{key} field must be of type string."
 
         return None
 
     @staticmethod
     def list(data: dict, key: str):
-        if key in data and not isinstance(data[key], list):
+        if key in data and not isinstance(data[key], (list, type(None))):
             return f"{key} field must of type list."
 
         return None

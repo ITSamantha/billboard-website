@@ -71,12 +71,12 @@ class Validator:
 
         self.is_validated = True
 
-    def _parse_rule(self, rule, separator=":", kwargs_separator=","):
-        kwargs = None
+    def _parse_rule(self, rule, separator=":", args_separator=","):
+        args = []
         if separator in rule:
-            rule, kwargs = rule.split(separator)
-            kwargs = kwargs.split(kwargs_separator)
-        return rule, kwargs
+            rule, args = rule.split(separator)
+            args = args.split(args_separator)
+        return rule, args
 
 
 class Rules:

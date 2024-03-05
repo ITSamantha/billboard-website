@@ -31,7 +31,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     validator = Validator(await request.json(), {
         "f1": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}:f2"],
-        "f2": [Rules.NULLABLE, Rules.INTEGER, f"{Rules.FIELDS_OR}:f1"],
+        "f2": [Rules.NULLABLE, Rules.INTEGER],
     }, {})
 
     validator.validate()

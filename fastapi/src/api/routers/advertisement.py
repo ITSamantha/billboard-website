@@ -24,7 +24,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=Union[Advertisement, ApiResponse])
+@router.post("/", response_model=Union[models.Advertisement, ApiResponse])
 async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
@@ -78,12 +78,13 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
         # ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement).create(
         #     advertisement)
-        advertisement_data = validator.only(['title', 'user_description', 'ad_type_id', 'price'])
-        advertisement_data.update(
-            {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
-             'address_id': payload.address_id if payload.address_id else address.id})
+        # advertisement_data = validator.only(['title', 'user_description', 'ad_type_id', 'price'])
+        # advertisement_data.update(
+        #     {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
+        #      'address_id': payload.address_id if payload.address_id else address.id})
         advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
-            .create(advertisement_data)
+            .create(validator.only(['title', 'user_description', 'ad_type_id', 'price']) | {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
+             'address_id': payload.address_id if payload.address_id else address.id})
         # ad: Advertisement = create_advertisement(ad)
 
         # advertisement_id = ad.id

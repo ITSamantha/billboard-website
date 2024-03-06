@@ -53,41 +53,14 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     payload: AdvertisementPost = validator.validated()
     try:
         if not payload.address_id:
-            # validator = Validator(payload.address, {
-            #     'address': [Rules.REQUIRED, Rules.STRING],
-            #     'city_id': [Rules.INTEGER],
-            #     'country_id': [Rules.INTEGER],
-            #     'street': [Rules.STRING],
-            #     'house': [Rules.STRING],
-            #     'flat': [Rules.STRING],
-            #     'longitude': [Rules.FLOAT],
-            #     'latitude': [Rules.FLOAT]
-            # }, {}, AddressCreate())
-
-            # address: AddressCreate = validator.validated()
-
-            # address_db: Address = await SqlAlchemyRepository(db_manager.get_session, Address).create(address)
-            # payload.address_id = address_db.id
             address: Address = await SqlAlchemyRepository(db_manager.get_session, Address)\
                 .create(validator.only(['address', 'city_id', 'country_id', 'street', 'house', 'flat', 'longitude', 'latitude']))
 
-        # advertisement: AdvertisementCreate = create_advertisement_create(payload)
-
-        # advertisement.user_id = request.state.user.id
-        # advertisement.ad_status_id = AdStatus.NOT_PAID
-
-        # ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement).create(
-        #     advertisement)
-        # advertisement_data = validator.only(['title', 'user_description', 'ad_type_id', 'price'])
-        # advertisement_data.update(
-        #     {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
-        #      'address_id': payload.address_id if payload.address_id else address.id})
         advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
-            .create(validator.only(['title', 'user_description', 'ad_type_id', 'price']) | {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
+            .create(
+            validator.only(['title', 'user_description', 'ad_type_id', 'price']) |
+            {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
              'address_id': payload.address_id if payload.address_id else address.id})
-        # ad: Advertisement = create_advertisement(ad)
-
-        # advertisement_id = ad.id
 
         if len(payload.categories):
             categories = [create_advertisement_category_create(category_id, advertisement.id) for category_id in
@@ -111,7 +84,6 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
             await SqlAlchemyRepository(db_manager.get_session, models.AdvertisementAdTag).bulk_create(tags)
 
-        # return advertisement
         return ApiResponse.payload({
             'title': advertisement.title,
             'user_description': advertisement.user_description,

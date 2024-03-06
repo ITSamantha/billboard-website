@@ -21,7 +21,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=Union[Advertisement, ApiResponse])
+@router.post("", response_model=Union[Advertisement, ApiResponse])
 async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 

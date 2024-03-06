@@ -51,41 +51,41 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     }, {}, AdvertisementPost())
 
     payload: AdvertisementPost = validator.validated()
-    return ApiResponse.success('ke')
     try:
-
         if not payload.address_id:
-            validator = Validator(payload.address, {
-                'address': [Rules.REQUIRED, Rules.STRING],
-                'city_id': [Rules.INTEGER],
-                'country_id': [Rules.INTEGER],
-                'street': [Rules.STRING],
-                'house': [Rules.STRING],
-                'flat': [Rules.STRING],
-                'longitude': [Rules.FLOAT],
-                'latitude': [Rules.FLOAT]
-            }, {}, AddressCreate())
+            # validator = Validator(payload.address, {
+            #     'address': [Rules.REQUIRED, Rules.STRING],
+            #     'city_id': [Rules.INTEGER],
+            #     'country_id': [Rules.INTEGER],
+            #     'street': [Rules.STRING],
+            #     'house': [Rules.STRING],
+            #     'flat': [Rules.STRING],
+            #     'longitude': [Rules.FLOAT],
+            #     'latitude': [Rules.FLOAT]
+            # }, {}, AddressCreate())
 
-            address: AddressCreate = validator.validated()
+            # address: AddressCreate = validator.validated()
 
-            address_db: Address = await SqlAlchemyRepository(db_manager.get_session,
-                                                             Address).create(address)
-            payload.address_id = address_db.id
+            # address_db: Address = await SqlAlchemyRepository(db_manager.get_session, Address).create(address)
+            # payload.address_id = address_db.id
+            address: Address = await SqlAlchemyRepository(db_manager.get_session, Address)\
+                .create(validator.only(['address', 'city_id', 'country_id', 'street', 'house', 'flat', 'longitude', 'latitude']))
 
-        advertisement: AdvertisementCreate = create_advertisement_create(payload)
+        # advertisement: AdvertisementCreate = create_advertisement_create(payload)
 
-        advertisement.user_id = request.state.user.id
-        advertisement.ad_status_id = AdStatus.NOT_PAID
+        # advertisement.user_id = request.state.user.id
+        # advertisement.ad_status_id = AdStatus.NOT_PAID
 
-        ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement).create(
-            advertisement)
+        # ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement).create(
+        #     advertisement)
+        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
+            .create(validator.only('title', 'user_description', 'ad_type_id', 'price').update({'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID, 'address_id': payload.address_id if payload.address_id else address.id}))
+        # ad: Advertisement = create_advertisement(ad)
 
-        ad: Advertisement = create_advertisement(ad)
-
-        advertisement_id = ad.id
+        # advertisement_id = ad.id
 
         if len(payload.categories):
-            categories = [create_advertisement_category_create(category_id, advertisement_id) for category_id in
+            categories = [create_advertisement_category_create(category_id, advertisement.id) for category_id in
                           payload.categories]
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementCategory).bulk_create(categories)
 
@@ -100,13 +100,13 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
                     tag_schema.title = tag
                     ad_tag = await ad_tags_repo.create(tag_schema)
                 advertisement__ad_tag = AdvertisementAdTag()
-                advertisement__ad_tag.advertisement_id = advertisement_id
+                advertisement__ad_tag.advertisement_id = advertisement.id
                 advertisement__ad_tag.ad_tag_id = ad_tag.id
                 tags.append(advertisement__ad_tag)
 
             await SqlAlchemyRepository(db_manager.get_session, models.AdvertisementAdTag).bulk_create(tags)
 
-        return ad
+        return advertisement
     except Exception as e:
         return ApiResponse.error(str(e))
 

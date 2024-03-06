@@ -108,7 +108,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
         return advertisement
     except Exception as e:
-        return ApiResponse.error(e.with_traceback())
+        return ApiResponse.error(str(e))
 
 
 @router.get("/advertisement/{advertisement_id}", response_model=Union[Advertisement, ApiResponse])

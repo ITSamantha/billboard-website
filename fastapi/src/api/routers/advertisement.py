@@ -79,7 +79,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         # ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement).create(
         #     advertisement)
         advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
-            .create(validator.only('title', 'user_description', 'ad_type_id', 'price').update({'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID, 'address_id': payload.address_id if payload.address_id else address.id}))
+            .create(validator.only(['title', 'user_description', 'ad_type_id', 'price']).update({'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID, 'address_id': payload.address_id if payload.address_id else address.id}))
         # ad: Advertisement = create_advertisement(ad)
 
         # advertisement_id = ad.id

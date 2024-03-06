@@ -8,15 +8,12 @@ from src.database import models
 from src.database.models import Address, AdStatus, AdvertisementCategory, AdTag
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities import validate_address_create
 from src.schemas.entities.ad_tag import create_ad_tag, AdTagCreate
 from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementCreate, create_advertisement_create, \
     Advertisement, create_advertisement, validate_advertisement_post
 from src.schemas.many_to_many.advertisement__ad_tag import AdvertisementAdTag
 from src.schemas.many_to_many.advertisement__category import create_advertisement_category_create
-from src.schemas.entities.address import AddressCreate
 from src.utils.validator import Validator
-from src.utils.validator.validator import Rules
 
 router = APIRouter(
     prefix="/advertisements",

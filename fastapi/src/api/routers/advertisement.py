@@ -24,7 +24,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=Union[models.Advertisement, ApiResponse])
+@router.post("/", response_model=Union[Advertisement, ApiResponse])
 async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
@@ -111,7 +111,16 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
             await SqlAlchemyRepository(db_manager.get_session, models.AdvertisementAdTag).bulk_create(tags)
 
-        return advertisement
+        # return advertisement
+        return ApiResponse.payload({
+            'title': advertisement.title,
+            'user_description': advertisement.user_description,
+            'ad_type_id': advertisement.ad_type_id,
+            'price': advertisement.price,
+            'user_id': advertisement.user_id,
+            'ad_status_id': advertisement.ad_status_id,
+            'address_id': advertisement.address_id,
+        })
     except Exception as e:
         return ApiResponse.error(e.with_traceback())
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import Back from '../../icons/Back'
-import Field from '../utils/dropdown/Field'
+import { IoIosArrowRoundBack } from "react-icons/io";
+import InputField from '../InputField'
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 function Login() {
 
@@ -29,42 +30,25 @@ function Login() {
         <div className="page-container">
             <nav id="headerContainer">
                 <div className="uitk-layout-flex uitk-layout-flex-align-items-center uitk-toolbar">
-                    <button type="button" data-icon="tool-arrow_back" id="loginFormHeader" className="uitk-layout-flex-item uitk-layout-flex-item-flex-shrink-0 uitk-toolbar-button">
-                        <Back />
-                    </button>
-                    <section className="uitk-layout-flex-item uitk-layout-flex-item-flex-grow-1 uitk-toolbar-text"></section>
-                </div>
-                <div className="uitk-layout-position uitk-layout-position-relative">
-                    <div className="uitk-layout-position uitk-layout-position-top-minus-twelve uitk-layout-position-left-center uitk-layout-position-zindex-layer2 uitk-layout-position-absolute uitk-spacing uitk-spacing-padding-blockstart-two">
-                        <figure className="uitk-image uitk-image-placeholder">
-                            <div className="uitk-image-placeholder">
-                                <img alt="Expedia" className="uitk-image-media img-logo" src="https://a.travel-assets.com/egds/marks/onekey__expedia.svg"/>
-                            </div>
-                        </figure>
-                    </div>
+                    <Link to="/" className="back-btn-login"><IoIosArrowRoundBack/></Link>
                 </div>
             </nav>
             <div className="uitk-layout-flex uitk-layout-flex-align-content-center uitk-layout-flex-align-items-center uitk-layout-flex-flex-direction-row uitk-layout-flex-justify-content-center">
                 <div className="uitk-spacing uitk-spacing-padding-inline-six uitk-layout-flex-item-align-self-center uitk-layout-flex-item uitk-layout-flex-item-max-width-one_hundred_twelve uitk-layout-flex-item-flex-basis-one_hundred_twelve">
                     <div className="uitk-layout-flex uitk-layout-flex-flex-direction-column uitk-spacing uitk-spacing-padding-block-six">
-                        <h1 className="uitk-heading uitk-heading-4 uitk-layout-flex-item">Sign in or create an account
-                        </h1>
+                        <h1 className="uitk-heading uitk-heading-4 uitk-layout-flex-item">היכנס או צור חשבון</h1>
                     </div>
                     <div id="signin-with-google-container" className="uitk-layout-flex-item-align-self-center uitk-layout-flex-item">
-                        <div className="uitk-text uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-blockend-six">
-                            If you don't have an account you can <a href="/sign-up">create new one</a> or login with other services
-                        </div>
+                        <div className="uitk-text uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-blockend-six">אם אין לך חשבון אתה יכול <a href="/sign-up">ליצור חשבון חדש</a> או להתחבר עם שירותים אחרים</div>
                         <div className="uitk-layout-flex" onClick={handleLogout}>
-                            <button id="social-auth-provider-google-web" title="google" type="button" className="uitk-button uitk-button-medium uitk-button-has-text uitk-button-google-signin">Sign
-                                in with Google
-                            </button>
+                            <button id="social-auth-provider-google-web" title="google" type="button" className="uitk-button uitk-button-medium uitk-button-has-text uitk-button-google-signin">היכנס באמצעות גוגל</button>
                         </div>
-                        <div className="uitk-text uitk-type-center uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-block-six">or</div>
+                        <div className="uitk-text uitk-type-center uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-block-six">אוֹ</div>
                     </div>
                     <div className="uitk-layout-flex uitk-layout-flex-flex-direction-column uitk-layout-flex-gap-six">
-                        <Field label="Email" id="email" type="text" value={email} setValue={setEmail}/>
-                        <Field label="Password" id="password" type="password" value={password} setValue={setPassword}/>
-                        <button onClick={handleLogin} id="loginFormSubmitButton" type="submit" className="uitk-button uitk-button-large uitk-button-has-text uitk-button-primary">Continue</button>
+                        <InputField label="אימייל" id="email" type="text" value={email} setValue={setEmail}/>
+                        <InputField label="סיסמה" id="password" type="password" value={password} setValue={setPassword}/>
+                        <button onClick={handleLogin} id="loginFormSubmitButton" type="submit" className="uitk-button uitk-button-large uitk-button-has-text uitk-button-primary">לְהַמשִׁיך</button>
                     </div>
                 </div>
             </div>
@@ -83,12 +67,8 @@ function Login() {
                 </div>
                 <div className="uitk-spacing uitk-spacing-margin-blockstart-twelve uitk-spacing-margin-blockend-two uitk-spacing-padding-inline-six uitk-layout-flex-item-align-self-center uitk-layout-flex-item uitk-layout-flex-item-max-width-one_hundred_twelve">
                     <div className="uitk-text uitk-type-300 uitk-text-default-theme">
-                        <p id="termsAndConditions">By continuing, you have read and agree to
-                            our <a href="/terms" target="_blank" rel="noopener noreferrer">Terms and
-                                Conditions</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy
-                                Statement</a>,
-                            and <a href="/one-key-terms" target="_blank" rel="noopener noreferrer">One Key Rewards
-                                Terms &amp; Conditions</a>.
+                        <p id="termsAndConditions">
+                            על ידי המשך, קראת והסכמת לתנאים ולהגבלות, להצהרת הפרטיות ולתנאים וההגבלות של One Key Rewards
                         </p>
                     </div>
                 </div>

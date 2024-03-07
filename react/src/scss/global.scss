@@ -1,0 +1,44 @@
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+}
+.uitk-header-brand-logo {
+  margin-left: 30px;
+}
+.header-add-button {
+  display: flex;
+  align-items: center;
+  border: 1px solid #0c4c71;
+  padding: 8px 15px;
+  border-radius: 15px !important;
+  margin-left: 15px;
+  svg {
+    margin: 0 7px;
+  }
+}
+.back-btn-login {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 36px;
+  color: #0d4eaf;
+  cursor: pointer;
+}
+
+#map {
+  height: 100%;
+}
+.map-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 8px solid rgb(1, 113, 117);
+  cursor: pointer;
+  //background: #043f3b;
+}

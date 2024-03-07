@@ -1,12 +1,64 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import InputField from '../InputField';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { Button } from 'antd';
+
+interface Profile {
+  picture: string;
+  name: string;
+  email: string;
+}
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse: any) => setUser(codeResponse),
+    onError: (error: any) => console.log('Login Failed:', error)
+  });
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+          headers: {
+            Authorization: `Bearer ${user.access_token}`,
+            Accept: 'application/json'
+          }
+        })
+        .then((res) => {
+          setProfile(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+          headers: {
+            Authorization: `Bearer ${user.access_token}`,
+            Accept: 'application/json'
+          }
+        })
+        .then((res) => {
+          setProfile(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };
 
   axios.defaults.withCredentials = true;
 
@@ -49,6 +101,7 @@ function Login() {
                 היכנס או צור חשבון
               </h1>
             </div>
+
             <div
               id="signin-with-google-container"
               className="uitk-layout-flex-item-align-self-center uitk-layout-flex-item"
@@ -57,15 +110,8 @@ function Login() {
                 אם אין לך חשבון אתה יכול <a href="/sign-up">ליצור חשבון חדש</a> או להתחבר עם שירותים
                 אחרים
               </div>
-              <div className="uitk-layout-flex" onClick={handleLogout}>
-                <button
-                  id="social-auth-provider-google-web"
-                  title="google"
-                  type="button"
-                  className="uitk-button uitk-button-medium uitk-button-has-text uitk-button-google-signin"
-                >
-                  היכנס באמצעות גוגל
-                </button>
+              <div className="uitk-layout-flex">
+                <Button onClick={() => login()}>Sign in with Google </Button>
               </div>
               <div className="uitk-text uitk-type-center uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-block-six">
                 אוֹ
@@ -88,47 +134,6 @@ function Login() {
               >
                 לְהַמשִׁיך
               </button>
-            </div>
-          </div>
-        </div>
-        <div className="uitk-layout-flex uitk-layout-flex-align-content-center uitk-layout-flex-align-items-center uitk-layout-flex-flex-direction-column uitk-layout-flex-justify-content-center">
-          <div
-            id="socialAuth"
-            className="uitk-spacing uitk-spacing-margin-blockstart-six uitk-spacing-margin-blockend-six uitk-spacing-padding-inline-six uitk-layout-flex-item-align-self-center uitk-layout-flex-item uitk-layout-flex-item-max-width-one_hundred_twelve"
-          >
-            <div className="uitk-layout-flex uitk-layout-flex-align-items-center uitk-layout-flex-flex-direction-column uitk-layout-flex-gap-four uitk-layout-flex-flex-wrap-wrap">
-              <div className="uitk-layout-flex uitk-layout-flex-flex-direction-row uitk-layout-flex-gap-six uitk-layout-flex-item">
-                <button
-                  title="apple"
-                  id="social-auth-provider-apple-web"
-                  className="uitk-link uitk-layout-flex-item uitk-link-align-left uitk-link-layout-inline uitk-link-medium"
-                >
-                  <img
-                    className="uitk-mark uitk-mark-landscape-oriented"
-                    alt=""
-                    src="https://a.travel-assets.com/egds/marks/apple.svg"
-                  />
-                </button>
-                <button
-                  title="facebook"
-                  id="social-auth-provider-facebook-web"
-                  className="uitk-link uitk-layout-flex-item uitk-link-align-left uitk-link-layout-inline uitk-link-medium"
-                >
-                  <img
-                    className="uitk-mark uitk-mark-landscape-oriented"
-                    alt=""
-                    src="https://a.travel-assets.com/egds/marks/facebook.svg"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="uitk-spacing uitk-spacing-margin-blockstart-twelve uitk-spacing-margin-blockend-two uitk-spacing-padding-inline-six uitk-layout-flex-item-align-self-center uitk-layout-flex-item uitk-layout-flex-item-max-width-one_hundred_twelve">
-            <div className="uitk-text uitk-type-300 uitk-text-default-theme">
-              <p id="termsAndConditions">
-                על ידי המשך, קראת והסכמת לתנאים ולהגבלות, להצהרת הפרטיות ולתנאים וההגבלות של One Key
-                Rewards
-              </p>
             </div>
           </div>
         </div>

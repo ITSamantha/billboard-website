@@ -13,7 +13,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     token = await websocket.receive_text()
     await websocket.send_text('token got')
     await websocket.send_text(token)
-    _, user = auth.check_token(token, TokenType.ACCESS)
+    _, user = await auth.check_token(token, TokenType.ACCESS)
     await websocket.send_text('checked authenticato')
     while True:
         data = await websocket.receive_text()

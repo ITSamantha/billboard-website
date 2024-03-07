@@ -2,11 +2,10 @@ from fastapi import WebSocket
 from fastapi import APIRouter
 
 router = APIRouter(
-    prefix="/ws/chat",
 )
 
 
-@router.websocket("/echo")
+@router.websocket("/ws/echo")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:

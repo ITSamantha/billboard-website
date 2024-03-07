@@ -1,11 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const AdvertisementCard = () => {
-    return (
-        <div className="AdvertisementCard">
+  return <div className="AdvertisementCard"></div>;
+};
 
-        </div>
-    )
-}
-
-export default AdvertisementCard
+export default AdvertisementCard;

@@ -37,12 +37,9 @@ function Menu() {
                 </div>
               </div>
               <div>
-                <a
-                  href="/trips"
-                  className="header-add-button uitk-button uitk-button-medium uitk-button-has-text uitk-button-as-link uitk-button-tertiary uitk-layout-flex-item global-navigation-nav-button uitk-layout-flex-item-flex-basis-zero uitk-layout-flex-item-flex-grow-0"
-                >
-                  <Space>העלאת מודעה </Space>
-                </a>
+                <Link to="upload-form">
+                  <Button type="primary">Upload</Button>
+                </Link>
                 <Link to="sign-in">
                   <Button type="primary">הרשמה/התחברות</Button>
                 </Link>

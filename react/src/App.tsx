@@ -6,6 +6,7 @@ import Login from './components/Login/Login';
 import './scss/main.scss';
 import Map from './pages/Map';
 import Home from './pages/Home';
+import Upload from './pages/Upload';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -24,6 +25,14 @@ function App() {
       element: (
         <RouterWrapper>
           <Login />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: 'upload-form',
+      element: (
+        <RouterWrapper>
+          <Upload />
         </RouterWrapper>
       )
     },

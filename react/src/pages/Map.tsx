@@ -50,10 +50,29 @@ const Map = () => {
                 let toLat = currentCenterLat + radius
                 let fromLng = currentCenterLng + radius
                 let toLng = currentCenterLng + radius
-                for (let i = 0; i < 8; i++) {
-                    let currentFromLng = fromLng + (toLng - fromLng) * i / 8
-                    let currentFromLat = fromLat + (toLat - fromLat) * i / 8
 
+                const NUMBER_OF_SECTORS = 8
+
+                let buckets : google.maps.LatLngLiteral[][][] = [...new Array(NUMBER_OF_SECTORS + 1)].map(() => [...new Array(NUMBER_OF_SECTORS + 1)].map(() => []))
+                filteredPoints.forEach(point => {
+                    let nearestLat = Math.round((point.lat - fromLat) * NUMBER_OF_SECTORS / (toLat - fromLat))
+                    let nearestLng = Math.round((point.lng - fromLng) * NUMBER_OF_SECTORS / (toLng - fromLng))
+                    console.log(nearestLng, nearestLat)
+                    buckets[nearestLat][nearestLng].push(point)
+                })
+
+                for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
+                    console.log(buckets[i].map((el) => el.length))
+                }
+
+                for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
+                    let currentFromLng = fromLng + (toLng - fromLng) * i / NUMBER_OF_SECTORS
+                    let currentToLng = fromLng + (toLng - fromLng) * (i + 1) / NUMBER_OF_SECTORS
+                    for (let j = 0; j < NUMBER_OF_SECTORS; j++) {
+                        let currentFromLat = fromLat + (toLat - fromLat) * i / NUMBER_OF_SECTORS
+                        let currentToLat = fromLat + (toLat - fromLat) * (i + 1) / NUMBER_OF_SECTORS
+
+                    }
                 }
                 setDisplayedPoints(filteredPoints.map((point) => {
                     return {

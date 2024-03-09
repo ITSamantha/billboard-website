@@ -1,4 +1,4 @@
-from fastapi import Request, HTTPException
+from fastapi import Request, HTTPException, WebSocket
 from jose import JWTError
 from typing import Optional
 
@@ -21,6 +21,11 @@ class Auth:
             raise HTTPException(detail='Access token is not present', status_code=401)
         _, user = await self.check_token(access_token, TokenType.ACCESS)
         request.state.user = user
+
+    async def check_access_token_websocket(self, websocket: WebSocket):
+        token = await websocket.receive_text()
+        _, user = await self.check_token(token, TokenType.ACCESS)
+        return user
 
     async def check_refresh_token(self, request: Request):
         refresh_token = request.cookies.get('jwt_refresh_token')

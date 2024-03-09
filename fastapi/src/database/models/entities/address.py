@@ -1,5 +1,4 @@
 from typing import Optional
-from fastapi import Request
 
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship

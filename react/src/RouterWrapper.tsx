@@ -1,3 +1,4 @@
+import { Menu } from 'antd';
 import React, { ReactNode } from 'react';
 
 interface RouterWrapperProps {
@@ -5,7 +6,12 @@ interface RouterWrapperProps {
 }
 
 function RouterWrapper(props: RouterWrapperProps) {
-  return <div className="container">{props.children}</div>;
+  return (
+    <div className="container">
+      <Menu />
+      {props.children}
+    </div>
+  );
 }
 
 export default RouterWrapper;

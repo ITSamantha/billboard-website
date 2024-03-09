@@ -7,6 +7,7 @@ import Map from './pages/Map';
 import Home from './pages/Home';
 import Upload from './pages/Upload';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import Register from './components/Register/Register';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -33,6 +34,14 @@ function App() {
       element: (
         <RouterWrapper>
           <Upload />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/register',
+      element: (
+        <RouterWrapper>
+          <Register />
         </RouterWrapper>
       )
     },

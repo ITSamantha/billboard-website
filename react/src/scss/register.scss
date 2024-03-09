@@ -1,0 +1,12 @@
+.register-container{
+    display: grid;
+    place-items: center;
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+
+    .name-field{
+        display: flex;
+    }
+
+}

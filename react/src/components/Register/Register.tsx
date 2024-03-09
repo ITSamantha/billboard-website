@@ -3,7 +3,6 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useState } from 'react';
 import '../../scss/register.scss';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
-import axios from 'axios';
 
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);

@@ -37,10 +37,10 @@ function Menu() {
                 </div>
               </div>
               <div>
-                <Link to="upload-form">
+                <Link to="/upload-form">
                   <Button type="primary">Upload</Button>
                 </Link>
-                <Link to="sign-in">
+                <Link to="/sign-in">
                   <Button type="primary">הרשמה/התחברות</Button>
                 </Link>
               </div>

@@ -24,8 +24,7 @@ const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
         new google.maps.marker.AdvancedMarkerElement({
           ...options,
           gmpClickable: true,
-          gmpDraggable: true,
-          // content: container,
+          content: container,
           map
         })
       );
@@ -37,8 +36,9 @@ const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
   useEffect(() => {
     if (!marker) return;
     if (onClick) {
-      google.maps.event.addListener(marker, 'gmp-click', onClick);
-      console.log('gmpclick', google.maps.event.hasListeners(marker, 'gmp-click'));
+      google.maps.event.addListener(marker, 'gmp-click', () => {
+        console.log(marker.position)
+      });
     }
     return () => {
       if (marker) {

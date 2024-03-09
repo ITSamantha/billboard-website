@@ -1,5 +1,5 @@
-import { Menu } from 'antd';
 import React, { ReactNode } from 'react';
+import Menu from "./components/Menu/Menu";
 
 interface RouterWrapperProps {
   children: ReactNode;

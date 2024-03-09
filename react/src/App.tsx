@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Upload from './pages/Upload';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Register from './components/Register/Register';
+import MapWrapper from "./pages/Map";
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -49,7 +50,7 @@ function App() {
       path: '/map',
       element: (
         <RouterWrapper>
-          <Map />
+          <MapWrapper />
         </RouterWrapper>
       )
     }

@@ -4,6 +4,7 @@ import MapComponent from '../map/MapComponent';
 import AdvancedMarker from "../map/AdvancedMarker";
 import AdvancedMarkerCluster from "../map/AdvancedMarkerCluster";
 import useDeepCompareEffect from "use-deep-compare-effect";
+import {MarkerClusterer} from "@googlemaps/markerclusterer";
 
 
 type DisplayedPoint = {
@@ -20,7 +21,11 @@ const Map = () => {
 
     const [displayedPoints, setDisplayedPoints] = useState<DisplayedPoint[]>([])
 
+    const [markerCluster, setMarkerCluster] = useState<MarkerClusterer>()
+
     useEffect(() => {
+        let a = new MarkerClusterer({ map, markers: [] })
+        setMarkerCluster(a)
         setPoints([...new Array(10000)].map(() => {
                 return {lat: Math.random() * 100, lng: Math.random() * 100}
             }
@@ -33,6 +38,7 @@ const Map = () => {
     }
 
     useEffect(() => {
+        console.log(currentZoom, currentCenter)
         if (currentZoom) {
             let zoomInKm = (40000 / Math.pow(2, currentZoom)) * 2
             let zoomInDeg = zoomInKm / 80
@@ -48,65 +54,76 @@ const Map = () => {
                 })
                 let fromLat = currentCenterLat - radius
                 let toLat = currentCenterLat + radius
-                let fromLng = currentCenterLng + radius
+                let fromLng = currentCenterLng - radius
                 let toLng = currentCenterLng + radius
 
                 const NUMBER_OF_SECTORS = 8
+                const CLUSTER_THRESHOLD = 6
 
-                let buckets : google.maps.LatLngLiteral[][][] = [...new Array(NUMBER_OF_SECTORS + 1)].map(() => [...new Array(NUMBER_OF_SECTORS + 1)].map(() => []))
+                let buckets : google.maps.LatLngLiteral[][][] = [...new Array(NUMBER_OF_SECTORS)].map(() => [...new Array(NUMBER_OF_SECTORS)].map(() => []))
 
                 if (toLat - fromLat != 0 && filteredPoints.length > 0) {
                     filteredPoints.forEach(point => {
-                        let nearestLat = Math.round((point.lat - fromLat) * NUMBER_OF_SECTORS / (toLat - fromLat))
-                        let nearestLng = Math.round((point.lng - fromLng) * NUMBER_OF_SECTORS / (toLng - fromLng))
-                        console.log(nearestLng, nearestLat)
+                        let nearestLat = Math.floor((point.lat - fromLat) * NUMBER_OF_SECTORS / (toLat - fromLat))
+                        let nearestLng = Math.floor((point.lng - fromLng) * NUMBER_OF_SECTORS / (toLng - fromLng))
                         buckets[nearestLat][nearestLng].push(point)
                     })
                 }
 
+                let visiblePoints : DisplayedPoint[] = []
                 for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
-                    console.log(buckets[i].map((el) => el.length))
-                }
-
-                for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
-                    let currentFromLng = fromLng + (toLng - fromLng) * i / NUMBER_OF_SECTORS
-                    let currentToLng = fromLng + (toLng - fromLng) * (i + 1) / NUMBER_OF_SECTORS
                     for (let j = 0; j < NUMBER_OF_SECTORS; j++) {
-                        let currentFromLat = fromLat + (toLat - fromLat) * i / NUMBER_OF_SECTORS
-                        let currentToLat = fromLat + (toLat - fromLat) * (i + 1) / NUMBER_OF_SECTORS
-
+                        if (buckets[i][j].length > CLUSTER_THRESHOLD) {
+                            let centerPoint = buckets[i][j].reduce((acc, current) => {
+                                return {
+                                    lat: acc.lat + current.lat,
+                                    lng: acc.lng + current.lng,
+                                }
+                            }, {lat: 0, lng: 0})
+                            centerPoint.lat /= buckets[i][j].length
+                            centerPoint.lng /= buckets[i][j].length
+                            visiblePoints.push({isCluster: true, count: buckets[i][j].length, point: centerPoint })
+                        } else {
+                            buckets[i][j].forEach(point => visiblePoints.push({point: point}))
+                        }
                     }
                 }
-                setDisplayedPoints(filteredPoints.map((point) => {
-                    return {
-                        point: point
-                    }
-                }))
+
+                console.log('points!!!', radius, visiblePoints.length,filteredPoints.length)
+
+                setDisplayedPoints(visiblePoints)
             }
 
         }
     }, [currentZoom, currentCenter]);
 
+    const [map, setMap] = React.useState<google.maps.Map>();
+
+
+
     return (
         <div className="Map">
             <div className="Map__Content">
                 <Wrapper apiKey={'AIzaSyCllS8bOprdLh7eMPd0DcM2ZNYe2TrNS9I'} libraries={['marker']} version="beta">
-                    <MapComponent center={{lat: 46, lng: 43}} zoom={13} onIdle={handleIdle}>
+                    <MapComponent map={map} setMap={setMap} center={{lat: 46, lng: 43}} zoom={13} onIdle={handleIdle}>
                         {
                             displayedPoints.map((displayedPoint) => {
-                                if (displayedPoint.isCluster) {
-                                    return (
-                                        <AdvancedMarkerCluster onClick={(e: any) => {
-                                            console.log(e)
-                                        }} position={displayedPoint.point} count={displayedPoint.count} ></AdvancedMarkerCluster>
-                                    )
-                                } else {
-                                    return (
-                                        <AdvancedMarker onClick={(e: any) => {
-                                            console.log(e)
-                                        }} position={displayedPoint.point}></AdvancedMarker>
-                                    )
-                                }
+                                // if (displayedPoint.isCluster) {
+                                //     return (
+                                //         <AdvancedMarkerCluster onClick={(e: any) => {
+                                //             console.log(e)
+                                //         }} position={displayedPoint.point} count={displayedPoint.count} map={map}></AdvancedMarkerCluster>
+                                //     )
+                                // } else {
+                                //     return (
+                                return <AdvancedMarker onClick={(e: any) => {
+                                    // e.element = null
+                                    e.map = null
+                                    console.log(e.map)
+
+                                }} markerCluster={markerCluster} position={displayedPoint.point} map={map}></AdvancedMarker>
+                                // )
+                                // }
                             })
                         }
                     </MapComponent>

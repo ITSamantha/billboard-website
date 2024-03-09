@@ -1,4 +1,5 @@
 import { memo, PropsWithChildren, useEffect, useState } from 'react';
+import useDeepCompareEffect from "use-deep-compare-effect";
 
 type AdvancedMarkerClusterProps = {
   onClick?: Function;
@@ -15,12 +16,12 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
 }) => {
   const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement>();
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (!map) return;
 
     if (!marker) {
       const container = document.createElement('div');
-      container.innerHTML = "<span class='map-cluster'>" + count + '</span>';
+      container.innerHTML = "<span class='cluster-icon'>" + count + '</span>';
       setMarker(
         new google.maps.marker.AdvancedMarkerElement({
           ...options,
@@ -30,9 +31,16 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
         })
       );
     }
-  }, [marker, map]);
+  }, [marker, map, options]);
 
-  useEffect(() => {}, [marker]);
+  useEffect(() => {
+    return () => {
+      if (marker) {
+        console.log("CLUSTER V")
+        marker.map = null
+      }
+    };
+  }, [marker])
 
   useEffect(() => {
     if (!marker) return;
@@ -51,4 +59,4 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
   return null;
 };
 
-export default memo(AdvancedMarkerCluster);
+export default (AdvancedMarkerCluster);

@@ -5,60 +5,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { Button } from 'antd';
-
-interface Profile {
-  picture: string;
-  name: string;
-  email: string;
-}
+import GoogleLogin from '../GoogleLogin/GoogleLogin';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse: any) => setUser(codeResponse),
-    onError: (error: any) => console.log('Login Failed:', error)
-  });
-
-  useEffect(() => {
-    if (user) {
-      axios
-        .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-          headers: {
-            Authorization: `Bearer ${user.access_token}`,
-            Accept: 'application/json'
-          }
-        })
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (user) {
-      axios
-        .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-          headers: {
-            Authorization: `Bearer ${user.access_token}`,
-            Accept: 'application/json'
-          }
-        })
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [user]);
-
-  const logOut = () => {
-    googleLogout();
-    setProfile(null);
-  };
 
   axios.defaults.withCredentials = true;
 
@@ -111,7 +62,7 @@ function Login() {
                 אחרים
               </div>
               <div className="uitk-layout-flex">
-                <Button onClick={() => login()}>Sign in with Google </Button>
+                <GoogleLogin />
               </div>
               <div className="uitk-text uitk-type-center uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-block-six">
                 אוֹ
@@ -134,6 +85,9 @@ function Login() {
               >
                 לְהַמשִׁיך
               </button>
+              <Link to={'/register'}>
+                <button>Register</button>
+              </Link>
             </div>
           </div>
         </div>

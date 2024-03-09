@@ -54,12 +54,15 @@ const Map = () => {
                 const NUMBER_OF_SECTORS = 8
 
                 let buckets : google.maps.LatLngLiteral[][][] = [...new Array(NUMBER_OF_SECTORS + 1)].map(() => [...new Array(NUMBER_OF_SECTORS + 1)].map(() => []))
-                filteredPoints.forEach(point => {
-                    let nearestLat = Math.round((point.lat - fromLat) * NUMBER_OF_SECTORS / (toLat - fromLat))
-                    let nearestLng = Math.round((point.lng - fromLng) * NUMBER_OF_SECTORS / (toLng - fromLng))
-                    console.log(nearestLng, nearestLat)
-                    buckets[nearestLat][nearestLng].push(point)
-                })
+
+                if (toLat - fromLat != 0 && filteredPoints.length > 0) {
+                    filteredPoints.forEach(point => {
+                        let nearestLat = Math.round((point.lat - fromLat) * NUMBER_OF_SECTORS / (toLat - fromLat))
+                        let nearestLng = Math.round((point.lng - fromLng) * NUMBER_OF_SECTORS / (toLng - fromLng))
+                        console.log(nearestLng, nearestLat)
+                        buckets[nearestLat][nearestLng].push(point)
+                    })
+                }
 
                 for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
                     console.log(buckets[i].map((el) => el.length))

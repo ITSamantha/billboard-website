@@ -34,9 +34,9 @@ class User(Base):
     phone_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
     email_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
 
-    ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
+    #ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
 
-    advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
+    # advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
 
     bookings: Mapped[List["Booking"]] = relationship(uselist=True, lazy="selectin")
 

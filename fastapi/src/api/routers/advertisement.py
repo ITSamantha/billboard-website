@@ -38,22 +38,23 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
         "address_id": ['nullable', 'integer'],
         "address": ['string', "required_without:address_id"],
-        'city_id': ['integer', "required_without:address_id"],
-        'country_id': ['integer', "required_without:address_id"],
-        'street': ['string', "required_without:address_id"],
-        'house': ['string', "required_without:address_id"],
-        'flat': ['string', "required_without:address_id"],
-        'longitude': ['float', "required_without:address_id"],
-        'latitude': ['float', "required_without:address_id"],
+        'city_id': ["nullable", 'integer'],
+        'country_id': ["nullable", 'integer'],
+        'street': ["nullable", 'string'],
+        'house': ["nullable", 'string'],
+        'flat': ["nullable", 'string'],
+        'longitude': ["nullable", 'float'],
+        'latitude': ["nullable", 'float'],
     }, {}, AdvertisementPost())
 
     payload: AdvertisementPost = validator.validated()
     try:
         if not payload.address_id:
-            address: Address = await SqlAlchemyRepository(db_manager.get_session, Address)\
-                .create(validator.only(['address', 'city_id', 'country_id', 'street', 'house', 'flat', 'longitude', 'latitude']))
+            address: Address = await SqlAlchemyRepository(db_manager.get_session, Address) \
+                .create(validator.only(
+                ['address', 'city_id', 'country_id', 'street', 'house', 'flat', 'longitude', 'latitude']))
 
-        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
+        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement) \
             .create(
             validator.only(['title', 'user_description', 'ad_type_id', 'price']) |
             {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,

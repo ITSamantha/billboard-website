@@ -70,7 +70,6 @@ async def create_advertisement_review(request: Request, auth: Auth = Depends()):
     payload.user_id = request.state.user.id
 
     try:
-        # TODO: IS IT POSSIBLE FOR ANOTHER USER TO POST? CHECK IT!!!!!!!!!!!!!
         if await SqlAlchemyRepository(db_manager.get_session, models.Review).get_single(
                 advertisement_id=payload.advertisement_id):
             raise Exception('The review on this advertisement has already been published.')

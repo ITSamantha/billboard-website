@@ -8,13 +8,13 @@ from src.utils.crypt import Crypt
 class RegisterUseCase:
     @staticmethod
     async def register(payload: RegisterPayload) -> User:
-        if await SqlAlchemyRepository(db_manager.get_session, User).get_single(email=payload.email):
+        if await SqlAlchemyRepository(db_manager.get_session, User).get_single(email=payload["email"]):
             raise Exception('This email is already taken')
 
         crypt = Crypt()
 
-        hashed_password = crypt.hash(payload.password)
-        payload.password = hashed_password
+        #hashed_password = crypt.hash(payload.password)
+        #payload.password = hashed_password
 
         user = await SqlAlchemyRepository(db_manager.get_session, User).create(payload)
 

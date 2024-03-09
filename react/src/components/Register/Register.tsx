@@ -15,20 +15,6 @@ const Register = () => {
 
   const handleRegister = () => {
     console.log(firstName, lastName, email, password, phone);
-    axios
-      .post(
-        'http://localhost/auth/register',
-        {
-          email: email,
-          user_name: 'userNa',
-          password: password,
-          phone_number: phone,
-          last_name: lastName,
-          first_name: firstName
-        },
-        { withCredentials: true }
-      )
-      .then((r) => console.log(r));
   };
 
   return (

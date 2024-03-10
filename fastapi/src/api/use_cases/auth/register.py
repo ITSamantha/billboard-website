@@ -13,8 +13,8 @@ class RegisterUseCase:
 
         crypt = Crypt()
 
-        #hashed_password = crypt.hash(payload.password)
-        #payload.password = hashed_password
+        hashed_password = crypt.hash(payload.password)
+        payload.password = hashed_password
 
         user = await SqlAlchemyRepository(db_manager.get_session, User).create(payload)
 

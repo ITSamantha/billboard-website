@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Upload from './pages/Upload';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Register from './components/Register/Register';
+import Catalog from './components/Catalog/CategoriesBlock';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -26,6 +27,14 @@ function App() {
       element: (
         <RouterWrapper>
           <Login />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: 'category/:categorySlug',
+      element: (
+        <RouterWrapper>
+          <Catalog />
         </RouterWrapper>
       )
     },

@@ -1,0 +1,18 @@
+.categories-container { 
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+
+    .categories{
+        display: flex;
+        justify-content: center;
+        margin: auto;
+    }
+
+    .category-item{
+        padding: 40px;
+        border: solid;
+        border-radius: 5%; 
+        margin: 10px;
+    }
+}   

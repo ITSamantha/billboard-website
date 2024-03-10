@@ -26,23 +26,24 @@ class Validator:
         self._validate()
         return self.errors
 
-    def validated(self):
+    def validated(self, as_dict: bool = False):
         """Validates the data and throws exception if data is not valid else returns validated data"""
         self.validate()
-        if self.dto is None:
+        if self.dto is None or as_dict:
             return self.validated_data
         return self.dto.init(**self.validated_data)
 
     def only(self, keys: list[str]) -> dict:
-        """Returns specified fields as list"""
-        self.validate()
-        data = {}
-        for key in keys:
-            try:
-                data[key] = self.validated_data[key]
-            except KeyError:
-                raise Exception(f'Key {key} is not present in validated data')
-        return data
+        """Returns specified fields as dict"""
+        return {key: value for key, value in self.validated(as_dict=True) if key in keys}
+
+    def all(self) -> dict:
+        """Returns all fields as dict"""
+        return self.validated(as_dict=True)
+
+    def but(self, keys: list[str]) -> dict:
+        """Returns all fields except specified as dict"""
+        return {key: value for key, value in self.validated(as_dict=True) if key not in keys}
 
     def _validate(self):
         if self.is_validated:

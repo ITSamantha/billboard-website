@@ -1,4 +1,4 @@
-import { memo, PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 type AdvancedMarkerClusterProps = {
@@ -8,39 +8,41 @@ type AdvancedMarkerClusterProps = {
 } & google.maps.marker.AdvancedMarkerElementOptions;
 
 const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterProps>> = ({
-  onClick,
-  map,
-  count,
-  children,
-  ...options
-}) => {
+                                                                                          onClick,
+                                                                                          map,
+                                                                                          count,
+                                                                                          children,
+                                                                                          ...options
+                                                                                        }) => {
   const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement>();
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>();
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (!map) return;
 
     if (!marker) {
       const container = document.createElement('div');
-      container.innerHTML = "<span class='cluster-icon'>" + count + '</span>';
-      setMarker(
-        new google.maps.marker.AdvancedMarkerElement({
-          ...options,
-          gmpClickable: true,
-          content: container,
-          map
-        })
-      );
+      container.innerHTML = '<span class=\'cluster-icon\'>' + Math.round(Math.random() * 1000) + '</span>';
+      let currentMarker = new google.maps.marker.AdvancedMarkerElement({
+        ...options,
+        gmpClickable: true,
+        content: container,
+        map
+      });
+      markerRef.current = currentMarker
+      setMarker(currentMarker);
     }
   }, [marker, map, options]);
 
   useEffect(() => {
     return () => {
-      if (marker) {
-        console.log('CLUSTER V');
-        marker.map = null;
+      if (markerRef.current) {
+        markerRef.current.map = null;
+      } else {
+        alert("ALARM")
       }
     };
-  }, [marker]);
+  }, []);
 
   useEffect(() => {
     if (!marker) return;

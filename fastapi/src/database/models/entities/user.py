@@ -50,7 +50,7 @@ class User(Base):
     def chats(self):
         return [cu.chat for cu in self.chats_users]
 
-    # TODO: RELATED MANY TO MANY?
+    # TODO: RELATED MANY TO MANY
     # user_fields: Mapped[List["UserField"]] = relationship(uselist=True, lazy="selectin", secondary="user__user_field")
 
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())

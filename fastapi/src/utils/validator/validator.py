@@ -33,17 +33,6 @@ class Validator:
             return self.validated_data
         return self.dto.init(**self.validated_data)
 
-    def only(self, keys: list[str]) -> dict:
-        """Returns specified fields as list"""
-        self.validate()
-        data = {}
-        for key in keys:
-            try:
-                data[key] = self.validated_data[key]
-            except KeyError:
-                raise Exception(f'Key {key} is not present in validated data')
-        return data
-
     def _validate(self):
         if self.is_validated:
             pass

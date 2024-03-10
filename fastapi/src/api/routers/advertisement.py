@@ -51,12 +51,12 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     try:
         if not payload.address_id:
             address: Address = await SqlAlchemyRepository(db_manager.get_session, Address) \
-                .create(validator.only(
+                .create(payload.only(
                 ['address', 'city_id', 'country_id', 'street', 'house', 'flat', 'longitude', 'latitude']))
 
         advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement) \
             .create(
-            validator.only(['title', 'user_description', 'ad_type_id', 'price']) |
+            payload.only(['title', 'user_description', 'ad_type_id', 'price']) |
             {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
              'address_id': payload.address_id if payload.address_id else address.id})
 

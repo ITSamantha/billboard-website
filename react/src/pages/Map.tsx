@@ -64,16 +64,6 @@ const Map = () => {
                 for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
                     console.log(buckets[i].map((el) => el.length))
                 }
-
-                for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
-                    let currentFromLng = fromLng + (toLng - fromLng) * i / NUMBER_OF_SECTORS
-                    let currentToLng = fromLng + (toLng - fromLng) * (i + 1) / NUMBER_OF_SECTORS
-                    for (let j = 0; j < NUMBER_OF_SECTORS; j++) {
-                        let currentFromLat = fromLat + (toLat - fromLat) * i / NUMBER_OF_SECTORS
-                        let currentToLat = fromLat + (toLat - fromLat) * (i + 1) / NUMBER_OF_SECTORS
-
-                    }
-                }
                 setDisplayedPoints(filteredPoints.map((point) => {
                     return {
                         point: point

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import MapComponent from '../map/MapComponent';
 import AdvancedMarker from '../map/AdvancedMarker';
+import AdvancedMarkerCluster from '../map/AdvancedMarkerCluster';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
 type DisplayedPoint = {

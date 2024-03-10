@@ -59,3 +59,28 @@ export const getProducts = (categorySlug: string | undefined) => {
     { id: 2, title: 'second', description: 'second description' }
   ];
 };
+
+export const getFilters = (categorySlug: string | undefined) => {
+  return [
+    {
+      id: 1,
+      name: 'color',
+      type: 'checkbox',
+      values: [
+        { id: 1, value: 'red' },
+        { id: 2, value: 'green' },
+        { id: 3, value: 'yellow' }
+      ]
+    },
+    {
+      id: 2,
+      name: 'size',
+      type: 'checkbox',
+      values: [
+        { id: 1, value: 's' },
+        { id: 2, value: 'm' },
+        { id: 3, value: 'l' }
+      ]
+    }
+  ];
+};

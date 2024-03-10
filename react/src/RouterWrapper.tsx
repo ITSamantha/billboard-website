@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Menu from "./components/Menu/Menu";
+import Menu from './components/Menu/Menu';
 
 interface RouterWrapperProps {
   children: ReactNode;

@@ -8,7 +8,7 @@ import Upload from './pages/Upload';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Register from './components/Register/Register';
 import Catalog from './components/Catalog/CategoriesBlock';
-import MapWrapper from "./pages/Map";
+import MapWrapper from './pages/Map';
 
 export const APP_URL = 'http://localhost:3000/';
 

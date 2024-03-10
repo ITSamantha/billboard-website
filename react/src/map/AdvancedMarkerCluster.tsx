@@ -1,5 +1,5 @@
 import { memo, PropsWithChildren, useEffect, useState } from 'react';
-import useDeepCompareEffect from "use-deep-compare-effect";
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 type AdvancedMarkerClusterProps = {
   onClick?: Function;
@@ -36,11 +36,11 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
   useEffect(() => {
     return () => {
       if (marker) {
-        console.log("CLUSTER V")
-        marker.map = null
+        console.log('CLUSTER V');
+        marker.map = null;
       }
     };
-  }, [marker])
+  }, [marker]);
 
   useEffect(() => {
     if (!marker) return;
@@ -59,4 +59,4 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
   return null;
 };
 
-export default (AdvancedMarkerCluster);
+export default AdvancedMarkerCluster;

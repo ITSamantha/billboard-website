@@ -1,11 +1,16 @@
-import Menu from '../components/Menu/Menu';
+import Catalog from '../components/Catalog/CategoriesBlock';
 import Search from '../components/Search/Search';
+
+const data = [
+  { id: 1, name: 'first' },
+  { id: 2, name: 'second' }
+];
 
 const Home = () => {
   return (
     <div>
-      <Menu />
       <Search />
+      <Catalog />
     </div>
   );
 };

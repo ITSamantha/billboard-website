@@ -7,30 +7,21 @@ type MapProps = {
     children: React.ReactNode;
     onClick?: (e: google.maps.MapMouseEvent) => void;
     onIdle?: (map: google.maps.Map) => void;
+    map?: google.maps.Map;
+    setMap: (map: google.maps.Map) => void;
 } & google.maps.marker.AdvancedMarkerElementOptions;
 
-function MapComponent({center, zoom, children, onClick, onIdle}: MapProps) {
+function MapComponent({center, zoom, children, onClick, onIdle, map, setMap}: MapProps) {
     const ref = React.useRef<HTMLDivElement>(null);
-    const [map, setMap] = React.useState<google.maps.Map>();
-
-    const [options, setOptions] = useState<any>();
-
-    useEffect(() => {
-        if (map) {
-            map.setOptions(options);
-        }
-    }, [map, options]);
 
     React.useEffect(() => {
         if (map) {
-            ["click", "idle"].forEach((eventName) =>
-                google.maps.event.clearListeners(map, eventName)
-            );
+            ['click', 'idle'].forEach((eventName) => google.maps.event.clearListeners(map, eventName));
             if (onClick) {
-                map.addListener("click", onClick);
+                map.addListener('click', onClick);
             }
             if (onIdle) {
-                map.addListener("idle", () => onIdle(map));
+                map.addListener('idle', () => onIdle(map));
             }
         }
     }, [map, onClick, onIdle]);
@@ -41,7 +32,7 @@ function MapComponent({center, zoom, children, onClick, onIdle}: MapProps) {
                 new window.google.maps.Map(ref.current, {
                     center,
                     zoom,
-                    mapId: 'DEMO_MAP_ID'  // d5f70aa737c73675
+                    mapId: 'DEMO_MAP_ID' // d5f70aa737c73675
                 })
             );
         }
@@ -53,9 +44,7 @@ function MapComponent({center, zoom, children, onClick, onIdle}: MapProps) {
 
             {React.Children.map(children, (child) => {
                 if (React.isValidElement(child)) {
-                    // set the map prop on the child component
-                    // @ts-ignore
-                    return React.cloneElement(child, {map});
+                    return child
                 }
             })}
         </>

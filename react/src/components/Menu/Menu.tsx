@@ -3,7 +3,7 @@ import { Button, Dropdown, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 
-function Menu() {
+const Menu = () => {
   return (
     <header className="global-navigation-site-header">
       <div className="global-navigation-site-header-container">
@@ -37,10 +37,10 @@ function Menu() {
                 </div>
               </div>
               <div>
-                <Link to="upload-form">
+                <Link to="/upload-form">
                   <Button type="primary">Upload</Button>
                 </Link>
-                <Link to="sign-in">
+                <Link to="/sign-in">
                   <Button type="primary">הרשמה/התחברות</Button>
                 </Link>
               </div>
@@ -50,6 +50,6 @@ function Menu() {
       </div>
     </header>
   );
-}
+};
 
 export default Menu;

@@ -3,7 +3,9 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.database.session_manager import db_manager
 from sqlalchemy.orm import joinedload
-from src.database.models.entities import User, ChatUser, Chat
+from src.database.models.entities.user import User, ChatUser, Chat
+from src.database.models.entities.chat_user import ChatUser
+from src.database.models.entities.chat import Chat
 
 router = APIRouter(
     prefix="/chats",

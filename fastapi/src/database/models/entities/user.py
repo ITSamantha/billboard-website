@@ -44,6 +44,12 @@ class User(Base):
 
     notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
 
+    chats_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
+
+    @property
+    def chats(self):
+        return [cu.chat for cu in self.chats_users]
+
     # TODO: RELATED MANY TO MANY?
     # user_fields: Mapped[List["UserField"]] = relationship(uselist=True, lazy="selectin", secondary="user__user_field")
 

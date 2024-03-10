@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.database.session_manager import db_manager
-from sqlalchemy.orm.Load import joinedload
+from sqlalchemy.orm import joinedload
 from src.database.models.entities import User, ChatUser, Chat
 
 router = APIRouter(

@@ -9,5 +9,5 @@ class ChatMessageAttachement(Base):
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
 
-    chat_message_id: Mapped[int] = mapped_column(ForeignKey("chats.id"))
+    chat_message_id: Mapped[int] = mapped_column(ForeignKey("chat_messages.id"))
     # file_id: Mapped[int] = mapped_column(ForeignKey('files.id')) todo

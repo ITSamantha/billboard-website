@@ -3,6 +3,7 @@ import datetime
 from src.database.models.base import Base
 from typing import List
 
+
 class Chat(Base):
     __tablename__ = "chats"
 

@@ -1,4 +1,4 @@
-import Catalog from '../components/Catalog/CategoriesBlock';
+import Catalog from '../components/Catalog/Catalog';
 import Search from '../components/Search/Search';
 
 const data = [

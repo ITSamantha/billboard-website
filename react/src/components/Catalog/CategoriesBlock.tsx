@@ -1,9 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
-import '../../scss/catalog.scss';
+import '../../scss/categories-block.scss';
 import { useEffect, useState } from 'react';
 import { getCategories, getProducts } from '../../service/dataService';
 import ProductsList from './ProductsList';
-import CatalogTree from './CatalogTree';
 
 type ItemData = {
   id: number;
@@ -16,7 +15,7 @@ type Product = {
   description: string;
 };
 
-const Catalog = () => {
+const CategoriesBlock = () => {
   const [categories, setCategories] = useState<ItemData[]>([]);
   const { categorySlug } = useParams<{ categorySlug: string }>();
   const [products, setProducts] = useState<Product[]>([]);
@@ -34,7 +33,6 @@ const Catalog = () => {
 
   return (
     <div className="categories-container">
-      <CatalogTree />
       <div>
         <div className="categories">
           {categories.map((item: any) => (
@@ -53,4 +51,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default CategoriesBlock;

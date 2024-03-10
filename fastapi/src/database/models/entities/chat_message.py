@@ -19,5 +19,5 @@ class ChatMessage(Base):
     seen_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
 
     chat_user: Mapped["ChatUser"] = relationship(uselist=False, lazy="selectin")
-    chat: Mapped["Chat"] = relationship(uselist=False, lazy="selectin")
+    chat: Mapped["Chat"] = relationship(uselist=False, lazy="selectin", back_populates="messages")
     attachements: Mapped[List["ChatMessageAttachement"]] = relationship(uselist=True, lazy="selectin")

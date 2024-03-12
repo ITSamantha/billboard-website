@@ -60,6 +60,7 @@ export const getProducts = (categorySlug: string | undefined) => {
   ];
 };
 
+
 export const getFilters = (categorySlug: string | undefined) => {
   return [
     {

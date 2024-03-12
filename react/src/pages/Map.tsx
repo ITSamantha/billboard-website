@@ -17,7 +17,6 @@ const Map = () => {
 
   const [displayedPoints, setDisplayedPoints] = useState<DisplayedPoint[]>([]);
 
-
   useEffect(() => {
     setPoints(
       [...new Array(10000)].map(() => {
@@ -97,7 +96,7 @@ const Map = () => {
             }
           }
         }
-        console.log(visiblePoints)
+        console.log(visiblePoints);
         setDisplayedPoints(visiblePoints);
       }
     }
@@ -123,9 +122,14 @@ const Map = () => {
             {displayedPoints.map((displayedPoint) => {
               if (displayedPoint.isCluster) {
                 return (
-                  <AdvancedMarkerCluster onClick={(e: any) => {
-                    console.log(e);
-                  }} position={displayedPoint.point} count={displayedPoint.count} map={map}></AdvancedMarkerCluster>
+                  <AdvancedMarkerCluster
+                    onClick={(e: any) => {
+                      console.log(e);
+                    }}
+                    position={displayedPoint.point}
+                    count={displayedPoint.count}
+                    map={map}
+                  ></AdvancedMarkerCluster>
                 );
               } else {
                 return (

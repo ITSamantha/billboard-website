@@ -9,14 +9,12 @@ type AdvancedMarkerProps = {
 } & google.maps.marker.AdvancedMarkerElementOptions;
 
 const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
-                                                                            onClick,
-                                                                            map,
-                                                                            children,
-                                                                            markerCluster,
-                                                                            ...options
-                                                                          }) => {
-
-
+  onClick,
+  map,
+  children,
+  markerCluster,
+  ...options
+}) => {
   const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement>();
   const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>();
 
@@ -25,7 +23,7 @@ const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
 
     if (!marker) {
       const container = document.createElement('div');
-      container.innerHTML = '<span class=\'map-icon\'></span>';
+      container.innerHTML = "<span class='map-icon'></span>";
       let currentMarker = new google.maps.marker.AdvancedMarkerElement({
         ...options,
         gmpClickable: true,
@@ -42,9 +40,9 @@ const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
       if (markerRef.current) {
         markerRef.current.map = null;
       } else {
-        alert("ALARM POINT")
+        alert('ALARM POINT');
       }
-    }
+    };
   }, []);
 
   useEffect(() => {

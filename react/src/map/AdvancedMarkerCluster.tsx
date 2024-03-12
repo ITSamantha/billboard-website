@@ -8,12 +8,12 @@ type AdvancedMarkerClusterProps = {
 } & google.maps.marker.AdvancedMarkerElementOptions;
 
 const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterProps>> = ({
-                                                                                          onClick,
-                                                                                          map,
-                                                                                          count,
-                                                                                          children,
-                                                                                          ...options
-                                                                                        }) => {
+  onClick,
+  map,
+  count,
+  children,
+  ...options
+}) => {
   const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement>();
   const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>();
 
@@ -22,14 +22,15 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
 
     if (!marker) {
       const container = document.createElement('div');
-      container.innerHTML = '<span class=\'cluster-icon\'>' + Math.round(Math.random() * 1000) + '</span>';
+      container.innerHTML =
+        "<span class='cluster-icon'>" + Math.round(Math.random() * 1000) + '</span>';
       let currentMarker = new google.maps.marker.AdvancedMarkerElement({
         ...options,
         gmpClickable: true,
         content: container,
         map
       });
-      markerRef.current = currentMarker
+      markerRef.current = currentMarker;
       setMarker(currentMarker);
     }
   }, [marker, map, options]);
@@ -39,7 +40,7 @@ const AdvancedMarkerCluster: React.FC<PropsWithChildren<AdvancedMarkerClusterPro
       if (markerRef.current) {
         markerRef.current.map = null;
       } else {
-        alert("ALARM")
+        alert('ALARM');
       }
     };
   }, []);

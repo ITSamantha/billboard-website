@@ -18,7 +18,7 @@ const UploadForm = () => {
 
   const handleCreate = () => {
     return;
-  }
+  };
 
   return (
     <div className="upload-form">

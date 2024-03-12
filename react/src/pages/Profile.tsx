@@ -10,21 +10,23 @@ const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      // const userData = await getUserData();
-      // setUser(userData);
-    };
+    setUser({ name: 'name', email: 'test@gmail.com', picture: '' });
+    // const fetchUser = async () => {
+    //   // const userData = await getUserData();
+    //   // setUser(userData);
+    // };
 
-    fetchUser();
+    // fetchUser();
   }, []);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div></div>;
+    // return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <img src={user.picture} alt="User Profile"></img>
+      {/* <img src={user.picture} alt="User Profile"></img> */}
       <div>{user.name}</div>
       <div>{user.email}</div>
     </div>

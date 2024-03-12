@@ -3,8 +3,6 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import MapComponent from '../map/MapComponent';
 import AdvancedMarker from '../map/AdvancedMarker';
 import AdvancedMarkerCluster from '../map/AdvancedMarkerCluster';
-import useDeepCompareEffect from 'use-deep-compare-effect';
-import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
 type DisplayedPoint = {
   point: google.maps.LatLngLiteral;
@@ -19,14 +17,11 @@ const Map = () => {
 
   const [displayedPoints, setDisplayedPoints] = useState<DisplayedPoint[]>([]);
 
-  const [markerCluster, setMarkerCluster] = useState<MarkerClusterer>();
 
   useEffect(() => {
-    let a = new MarkerClusterer({ map, markers: [] });
-    setMarkerCluster(a);
     setPoints(
       [...new Array(10000)].map(() => {
-        return { lat: Math.random() * 100, lng: Math.random() * 100 };
+        return { lng: Math.random() * 100 - 50, lat: Math.random() * 360 - 180 };
       })
     );
   }, []);
@@ -37,7 +32,6 @@ const Map = () => {
   };
 
   useEffect(() => {
-    console.log(currentZoom, currentCenter);
     if (currentZoom) {
       let zoomInKm = (40000 / Math.pow(2, currentZoom)) * 2;
       let zoomInDeg = zoomInKm / 80;
@@ -103,9 +97,7 @@ const Map = () => {
             }
           }
         }
-
-        console.log('points!!!', radius, visiblePoints.length, filteredPoints.length);
-
+        console.log(visiblePoints)
         setDisplayedPoints(visiblePoints);
       }
     }
@@ -117,7 +109,7 @@ const Map = () => {
     <div className="Map">
       <div className="Map__Content">
         <Wrapper
-          apiKey={'AIzaSyCllS8bOprdLh7eMPd0DcM2ZNYe2TrNS9I'}
+          apiKey={''} // AIzaSyCllS8bOprdLh7eMPd0DcM2ZNYe2TrNS9I
           libraries={['marker']}
           version="beta"
         >
@@ -129,28 +121,25 @@ const Map = () => {
             onIdle={handleIdle}
           >
             {displayedPoints.map((displayedPoint) => {
-              // if (displayedPoint.isCluster) {
-              //     return (
-              //         <AdvancedMarkerCluster onClick={(e: any) => {
-              //             console.log(e)
-              //         }} position={displayedPoint.point} count={displayedPoint.count} map={map}></AdvancedMarkerCluster>
-              //     )
-              // } else {
-              //     return (
-              return (
-                <AdvancedMarker
-                  onClick={(e: any) => {
-                    // e.element = null
-                    e.map = null;
-                    console.log(e.map);
-                  }}
-                  markerCluster={markerCluster}
-                  position={displayedPoint.point}
-                  map={map}
-                ></AdvancedMarker>
-              );
-              // )
-              // }
+              if (displayedPoint.isCluster) {
+                return (
+                  <AdvancedMarkerCluster onClick={(e: any) => {
+                    console.log(e);
+                  }} position={displayedPoint.point} count={displayedPoint.count} map={map}></AdvancedMarkerCluster>
+                );
+              } else {
+                return (
+                  <AdvancedMarker
+                    onClick={(e: any) => {
+                      // e.element = null
+                      e.map = null;
+                      console.log(e.map);
+                    }}
+                    position={displayedPoint.point}
+                    map={map}
+                  ></AdvancedMarker>
+                );
+              }
             })}
           </MapComponent>
         </Wrapper>

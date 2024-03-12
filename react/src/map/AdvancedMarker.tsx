@@ -1,5 +1,4 @@
-import { useState, useEffect, memo, useRef, PropsWithChildren } from 'react';
-import { Root, createRoot } from 'react-dom/client';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
@@ -10,37 +9,43 @@ type AdvancedMarkerProps = {
 } & google.maps.marker.AdvancedMarkerElementOptions;
 
 const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
-  onClick,
-  map,
-  children,
-  markerCluster,
-  ...options
-}) => {
-  const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement>();
+                                                                            onClick,
+                                                                            map,
+                                                                            children,
+                                                                            markerCluster,
+                                                                            ...options
+                                                                          }) => {
 
-  const rootRef = useRef<Root | null>(null);
-  useDeepCompareEffect(() => {
+
+  const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement>();
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>();
+
+  useEffect(() => {
     if (!map) return;
 
     if (!marker) {
       const container = document.createElement('div');
-      container.innerHTML = "<span class='map-icon'></span>";
-      setMarker(
-        new google.maps.marker.AdvancedMarkerElement({
-          ...options,
-          gmpClickable: true,
-          content: container,
-          map
-        })
-      );
+      container.innerHTML = '<span class=\'map-icon\'></span>';
+      let currentMarker = new google.maps.marker.AdvancedMarkerElement({
+        ...options,
+        gmpClickable: true,
+        content: container,
+        map
+      });
+      setMarker(currentMarker);
+      markerRef.current = currentMarker;
     }
   }, [marker, map, options]);
 
   useEffect(() => {
-    if (marker && markerCluster) {
-      markerCluster.addMarker(marker);
+    return () => {
+      if (markerRef.current) {
+        markerRef.current.map = null;
+      } else {
+        alert("ALARM POINT")
+      }
     }
-  }, [marker]);
+  }, []);
 
   useEffect(() => {
     if (!marker) return;

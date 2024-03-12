@@ -11,3 +11,4 @@ class ChatMessageAttachement(Base):
 
     chat_message_id: Mapped[int] = mapped_column(ForeignKey("chat_messages.id"))
     # file_id: Mapped[int] = mapped_column(ForeignKey('files.id')) todo
+т

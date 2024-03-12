@@ -48,9 +48,9 @@ const AdvancedMarker: React.FC<PropsWithChildren<AdvancedMarkerProps>> = ({
   }, []);
 
   useEffect(() => {
-    if (!marker) return;
+    if (!marker || !markerRef.current) return;
     if (onClick) {
-      google.maps.event.addListener(marker, 'gmp-click', () => onClick(marker));
+      google.maps.event.addListener(markerRef.current, 'gmp-click', () => onClick(markerRef.current));
     }
     return () => {
       if (marker) {

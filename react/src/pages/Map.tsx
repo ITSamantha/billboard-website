@@ -20,8 +20,8 @@ const Map = () => {
 
   useEffect(() => {
     setPoints(
-      [...new Array(10000)].map(() => {
-        return { lng: Math.random() * 100 - 50, lat: Math.random() * 360 - 180 };
+      [...new Array(10)].map(() => {
+        return { lng: Math.random() * 10 - 5, lat: Math.random() * 36 - 18 };
       })
     );
   }, []);
@@ -110,7 +110,7 @@ const Map = () => {
       <div className="Map__Content">
         <Wrapper
           apiKey={''} // AIzaSyCllS8bOprdLh7eMPd0DcM2ZNYe2TrNS9I
-          libraries={['marker']}
+          libraries={['marker', 'maps']}
           version="beta"
         >
           <MapComponent

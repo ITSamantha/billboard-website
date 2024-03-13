@@ -13,7 +13,8 @@ class ApiResponse(BaseModel):
     @staticmethod
     def payload(data: dict):
         return JSONResponse(
-            content=ApiResponse.format_content(data=data),
+            # content=ApiResponse.format_content(data=data),
+            content=data,
             status_code=200,
         )
 

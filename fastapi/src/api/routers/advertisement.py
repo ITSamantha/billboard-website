@@ -8,7 +8,6 @@ from src.database import models
 from src.database.models import Address, AdStatus, AdvertisementAdTag
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities.advertisement import Advertisement, create_advertisement
 from src.utils.transformers.entities import transform_advertisement
 from src.utils.validator import Validator
 
@@ -18,7 +17,7 @@ router = APIRouter(
 )
 
 
-@router.post("", response_model=Union[ApiResponse])
+@router.post("", response_model=ApiResponse)
 async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
@@ -67,16 +66,15 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(e.with_traceback())
 
 
-@router.get("/advertisement/{advertisement_id}", response_model=Union[Advertisement, ApiResponse])
+@router.get("/{advertisement_id}", response_model=ApiResponse)
 async def get_advertisement(advertisement_id: int, short: bool = False):
     """Get exact advertisement information. """
 
     try:
-        ad: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session,
-                                                              models.Advertisement).get_single(id=advertisement_id)
-        if ad.deleted_at:
-            raise Exception("This advertisement has been deleted.")
-        result: Optional[Advertisement] = create_advertisement(ad)
-        return result
+        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session,
+                                                                         models.Advertisement).get_single(
+            id=advertisement_id)
+
+        return ApiResponse.payload(transform_advertisement(advertisement))
     except Exception as e:
         return ApiResponse.error(str(e))

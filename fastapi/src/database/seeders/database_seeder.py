@@ -11,6 +11,7 @@ from src.database.seeders.utils_seeder import UtilsSeeder
 from src.database.session_manager import db_manager
 
 
+
 class DatabaseSeeder:
 
     def __init__(self):

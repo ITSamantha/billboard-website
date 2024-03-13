@@ -26,3 +26,7 @@ def time_ago_in_words(dt):
     else:
         years = delta.days // 365
         return f'{years} year{"s" if years > 1 else ""} ago'
+
+
+def json_datetime(dt: datetime):
+    return dt.isoformat() if dt else None

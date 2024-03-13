@@ -8,7 +8,7 @@ interface FieldProps {
     setValue: (e: string) => void
 }
 
-function Field(props: FieldProps) {
+function InputField(props: FieldProps) {
     return <>
         <div className="uitk-field has-floatedLabel-label has-no-placeholder">
             <label htmlFor={props.id} className="uitk-field-label is-visually-hidden">{ props.label }</label>
@@ -18,4 +18,4 @@ function Field(props: FieldProps) {
     </>
 }
 
-export default Field
+export default InputField

@@ -9,6 +9,7 @@ from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.schemas.entities.review import create_review, Review, ReviewCreate, ReviewUpdate
+from src.utils.transformers.entities import transform_review
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -19,18 +20,18 @@ router = APIRouter(
 )
 
 
-@router.get(path='/review/{review_id}', response_model=Union[Review, ApiResponse])
+@router.get(path='/{review_id}', response_model=ApiResponse)
 async def get_review(review_id: int):
     """Get exact review information. """
 
     try:
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
                                                            models.Review).get_single(id=review_id)
-        if review.deleted_at:
-            raise Exception(" This review has been deleted.")
 
-        result: Optional[Review] = create_review(review)
-        return result
+        if not review:
+            raise Exception("The review with this data does not exist.")
+
+        return transform_review(review)
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -63,21 +64,20 @@ async def create_advertisement_review(request: Request, auth: Auth = Depends()):
         'advertisement_id': [Rules.REQUIRED, Rules.INTEGER],
         'text': [Rules.REQUIRED, Rules.STRING],
         'rating': [Rules.REQUIRED, Rules.FLOAT],  # TODO: 0<=x<=5
-    }, {}, ReviewCreate())
+    })
 
-    payload: ReviewCreate = validator.validated()
-
-    payload.user_id = request.state.user.id
+    payload = validator.validated()
 
     try:
         if await SqlAlchemyRepository(db_manager.get_session, models.Review).get_single(
-                advertisement_id=payload.advertisement_id):
+                advertisement_id=payload["advertisement_id"]):
             raise Exception('The review on this advertisement has already been published.')
 
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
-                                                           models.Review).create(payload)
-        result: Review = create_review(review)
-        return result
+                                                           models.Review).create(
+            validator.all() | {"user_id": request.state.user.id})
+
+        return transform_review(review)
     except Exception as e:
         return ApiResponse.error(str(e))
 

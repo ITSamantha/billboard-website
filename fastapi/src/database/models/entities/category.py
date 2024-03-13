@@ -20,27 +20,10 @@ class Category(Base):
     url: Mapped[str] = mapped_column(nullable=False)
 
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("category.id"))
-    # parent: Mapped["Category"] = relationship(lazy='subquery', uselist=False)
-    """
-    # Relationship to represent the parent category
-    parent: Mapped["Category"] = relationship(
-        uselist=False,
-        viewonly=True,
-        innerjoin=True,
-        remote_side=[id],
-        lazy="dynamic",
-        back_populates="children"
-    )
+    parent: Mapped["Category"] = relationship(lazy='subquery', uselist=False)
 
-    children: Mapped[List["Category"]] = relationship(
-        uselist=False,
-        viewonly=True,
-        innerjoin=True,
-        remote_side=[id],
-        lazy="dynamic",
-        back_populates="parent"
-    )
-    """
+    children: Mapped[List["Category"]] = relationship("Category", cascade='all, delete-orphan', lazy="selectinload")
+
     bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
     map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)
 

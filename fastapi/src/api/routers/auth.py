@@ -24,11 +24,12 @@ async def register(request: Request):
         'password': [Rules.REQUIRED, Rules.STRING],
         'phone_number': [Rules.REQUIRED, Rules.STRING]
     }, {}, RegisterPayload())
+
     payload = validator.validated()
-    payload.user_status_id = UserStatus.ACTIVE
+
     try:
         user: User = await RegisterUseCase.register(
-            payload.only(['first_name', 'last_name', 'email', 'password', 'phone_number']) | {
+            validator.only(['first_name', 'last_name', 'email', 'password', 'phone_number']) | {
                 "user_status_id": UserStatus.ACTIVE})
     except Exception as e:
         return ApiResponse.error(str(e))

@@ -66,8 +66,6 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(e.with_traceback())
 
 
-
-
 @router.get("/{advertisement_id}", response_model=ApiResponse)
 async def get_advertisement(advertisement_id: int, short: bool = False):
     """Get exact advertisement information. """
@@ -76,6 +74,9 @@ async def get_advertisement(advertisement_id: int, short: bool = False):
         advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session,
                                                                          models.Advertisement).get_single(
             id=advertisement_id)
+        
+        if not advertisement:
+            raise Exception("There is no advertisement with this data.")
 
         return ApiResponse.payload(transform_advertisement(advertisement))
     except Exception as e:

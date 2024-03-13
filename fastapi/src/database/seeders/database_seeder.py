@@ -3,12 +3,12 @@ from typing import List, Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.database.seeders.generic_seeder import GenericSeeder
-from src.database.seeders.permissions_seeder import PermissionsSeeder
-from src.database.seeders.statuses_seeder import StatusesSeeder
-from src.database.seeders.types_seeder import TypesSeeder
-from src.database.seeders.utils_seeder import UtilsSeeder
-from src.database.session_manager import db_manager
+from database.seeders.generic_seeder import GenericSeeder
+from database.seeders.permissions_seeder import PermissionsSeeder
+from database.seeders.statuses_seeder import StatusesSeeder
+from database.seeders.types_seeder import TypesSeeder
+from database.seeders.utils_seeder import UtilsSeeder
+from database.session_manager import db_manager
 
 
 

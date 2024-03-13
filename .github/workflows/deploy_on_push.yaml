@@ -24,4 +24,4 @@ jobs:
             docker compose down;
             docker compose up -d;
             docker exec otiva_fastapi alembic upgrade head;
-            docker exec otiva_fastapi 'export PYTHONPATH=$PYTHONPATH:`pwd` ; python ./src/database/seeders/database_seeder.py'  
+            docker exec otiva_fastapi sh -c "export PYTHONPATH=$PYTHONPATH:`pwd` && python src/database/seeders/database_seeder.py"  

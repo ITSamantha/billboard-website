@@ -36,7 +36,6 @@ from src.database.models.entities.booking_info import BookingInfo
 from src.database.models.entities.filter_value import FilterValue
 
 # ==MANY TO MANY==
-from src.database.models.many_to_many.advertisement__category import AdvertisementCategory
 from src.database.models.many_to_many.user__user_field import UserUserField
 from src.database.models.many_to_many.category__filter import CategoryFilter
 from src.database.models.many_to_many.advertisement__filter_value import AdvertisementFilterValue

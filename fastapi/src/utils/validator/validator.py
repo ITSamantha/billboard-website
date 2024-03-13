@@ -35,7 +35,8 @@ class Validator:
 
     def only(self, keys: list[str]) -> dict:
         """Returns specified fields as dict"""
-        return {key: value for key, value in self.validated(as_dict=True) if key in keys}
+        print(self.validated(as_dict=True))
+        return {key: value for key, value in self.validated(as_dict=True).items() if key in keys}
 
     def all(self) -> dict:
         """Returns all fields as dict"""
@@ -43,11 +44,11 @@ class Validator:
 
     def but(self, keys: list[str]) -> dict:
         """Returns all fields except specified as dict"""
-        return {key: value for key, value in self.validated(as_dict=True) if key not in keys}
+        return {key: value for key, value in self.validated(as_dict=True).items() if key not in keys}
 
     def _validate(self):
         if self.is_validated:
-            pass
+            return
 
         rules_checker = Rules()
         for field in self.rules:
@@ -70,7 +71,7 @@ class Validator:
 
                 custom_title = self.titles[field] if field in self.titles else None
                 next_rule_error = check_function(self.data, field, custom_title, *args)
-                
+
                 if next_rule_error:
                     next_field_errors.append(next_rule_error)
 

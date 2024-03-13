@@ -1,5 +1,5 @@
 from src.database.models import Country, City, AdStatus, AdType, BookingStatus, BookingType, FilterType, Priority, \
-    UserRole, UserStatus, Weekday
+    UserRole, UserStatus, Weekday, TransactionType
 
 
 def transform_city(city: City) -> dict:

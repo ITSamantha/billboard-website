@@ -25,25 +25,6 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
-<<<<<<< HEAD
-        "title": ['required', 'string'],
-        "user_description": ['required', 'string'],
-        "ad_type_id": ['required', 'integer'],
-        "price": ['required', 'float'],
-        "categories": ['required', 'list'],
-        "ad_tags": ['required', 'list'],
-        "ad_photos": ['required', 'list'],
-        "address_id": ['nullable', 'integer'],
-        "address": ['string', "required_without:address_id"],
-        'city_id': ["nullable", 'integer'],
-        'country_id': ["nullable", 'integer'],
-        'street': ["nullable", 'string'],
-        'house': ["nullable", 'string'],
-        'flat': ["nullable", 'string'],
-        'longitude': ["nullable", 'float'],
-        'latitude': ["nullable", 'float'],
-    }, {}, AdvertisementPost())
-=======
         "title": ["required", "string"],
         "user_description": ["required", "string"],
         "ad_type_id": ["required", "integer"],
@@ -62,7 +43,6 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     })
 
     payload = validator.validated()
->>>>>>> feature_endpoints
 
     try:
         if not payload["address_id"]:

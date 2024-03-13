@@ -11,7 +11,7 @@ class StatusesSeeder(GenericSeeder):
                 AdStatus.NOT_PAID: {"title": "not paid", "is_shown": False},
                 AdStatus.ACTIVE: {"title": "active", "is_shown": True},
                 AdStatus.BLOCKED: {"title": "blocked", "is_shown": False},
-                AdStatus.MEOW: {"title": "smth else", "is_shown": False}
+                AdStatus.MEOW: {"title": "smth test", "is_shown": False}
             },
             BookingStatus: {
                 BookingStatus.PAID: {"title": "paid"},

@@ -66,6 +66,8 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(e.with_traceback())
 
 
+
+
 @router.get("/{advertisement_id}", response_model=ApiResponse)
 async def get_advertisement(advertisement_id: int, short: bool = False):
     """Get exact advertisement information. """

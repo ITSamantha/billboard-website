@@ -23,6 +23,9 @@ class Advertisement(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(uselist=False, lazy="selectin")
 
+    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"), nullable=False)
+    category: Mapped["Category"] = relationship(uselist=False, lazy="selectin")
+
     ad_status_id: Mapped[int] = mapped_column(ForeignKey("ad_status.id"),
                                               nullable=False)
     ad_status: Mapped["AdStatus"] = relationship(uselist=False, lazy="selectin")
@@ -47,9 +50,6 @@ class Advertisement(Base):
 
     bookings: Mapped[List["Booking"]] = relationship(uselist=True, lazy="selectin")
 
-    categories: Mapped[List["Category"]] = relationship(
-        uselist=True, lazy="selectin",
-        secondary="advertisement__category")
     reviews: Mapped[List["Review"]] = relationship(uselist=True, lazy="selectin")
 
     views: Mapped[List["View"]] = relationship(uselist=True, lazy="selectin")

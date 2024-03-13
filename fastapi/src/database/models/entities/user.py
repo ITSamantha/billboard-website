@@ -21,7 +21,7 @@ class User(Base):
     user_status_id: Mapped[int] = mapped_column(ForeignKey("user_status.id"), nullable=False)
     user_status: Mapped["UserStatus"] = relationship(uselist=False, lazy="selectin")
 
-    phone_number: Mapped[str] = mapped_column(PhoneNumberType)  # TODO: nullable= False?, unique = True?
+    phone_number: Mapped[str] = mapped_column()  # TODO: nullable= False?, unique = True?
 
     avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("avatar.id"),
                                                      nullable=True)  # TODO: default avatar? Optional?

@@ -30,7 +30,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def bulk_create(self, data: List[CreateSchemaType]) -> ModelType:
         async with self._session_factory() as session:
-            objects = [self.model(**d.__dict__) for d in data]
+            objects = [self.model(**d) for d in data]
             session.add_all(objects)
             await session.commit()
             return objects

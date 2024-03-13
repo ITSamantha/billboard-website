@@ -5,14 +5,11 @@ from fastapi import APIRouter, Depends, Request
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.database import models
-from src.database.models import Address, AdStatus, AdvertisementCategory, AdTag
+from src.database.models import Address, AdStatus, AdvertisementAdTag
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities.ad_tag import create_ad_tag, AdTagCreate
-from src.schemas.entities.advertisement import AdvertisementPost, AdvertisementCreate, create_advertisement_create, \
-    Advertisement, create_advertisement, validate_advertisement_post
-from src.schemas.many_to_many.advertisement__ad_tag import AdvertisementAdTag
-from src.schemas.many_to_many.advertisement__category import create_advertisement_category_create
+from src.schemas.entities.advertisement import Advertisement, create_advertisement
+from src.utils.transformers.entities import transform_advertisement
 from src.utils.validator import Validator
 
 router = APIRouter(
@@ -21,13 +18,14 @@ router = APIRouter(
 )
 
 
-@router.post("", response_model=Union[Advertisement, ApiResponse])
+@router.post("", response_model=Union[ApiResponse])
 async def create_advertisement_route(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
+<<<<<<< HEAD
         "title": ['required', 'string'],
         "user_description": ['required', 'string'],
         "ad_type_id": ['required', 'integer'],
@@ -45,51 +43,46 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         'longitude': ["nullable", 'float'],
         'latitude': ["nullable", 'float'],
     }, {}, AdvertisementPost())
+=======
+        "title": ["required", "string"],
+        "user_description": ["required", "string"],
+        "ad_type_id": ["required", "integer"],
+        "price": ["required", "float"],
+        "category_id": ["required", "integer"],
+        "ad_tags": ["required", "list"],
+        "ad_photos": ["required", "list"],
+        "address_id": ["nullable", "integer"],
+        "city_id": ["required_without:address_id", "integer"],
+        "country_id": ["required_without:address_id", "integer"],
+        "street": ["required_without:address_id", "string"],
+        "house": ["required_without:address_id", "string"],
+        "flat": ["nullable", "string"],
+        "longitude": ["nullable", "float"],
+        "latitude": ["nullable", "float"]
+    })
 
-    payload: AdvertisementPost = validator.validated()
+    payload = validator.validated()
+>>>>>>> feature_endpoints
+
     try:
-        if not payload.address_id:
+        if not payload["address_id"]:
             address: Address = await SqlAlchemyRepository(db_manager.get_session, Address) \
-                .create(payload.only(
-                ['address', 'city_id', 'country_id', 'street', 'house', 'flat', 'longitude', 'latitude']))
+                .create(validator.only(
+                ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude"]))
+            payload["address_id"] = address.id
 
         advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement) \
             .create(
-            payload.only(['title', 'user_description', 'ad_type_id', 'price']) |
-            {'user_id': request.state.user.id, 'ad_status_id': AdStatus.NOT_PAID,
-             'address_id': payload.address_id if payload.address_id else address.id})
+            validator.only(["title", "user_description", "ad_type_id", "price", "category_id"]) |
+            {"user_id": request.state.user.id, "ad_status_id": AdStatus.NOT_PAID,
+             "address_id": payload["address_id"]})
 
-        if len(payload.categories):
-            categories = [create_advertisement_category_create(category_id, advertisement.id) for category_id in
-                          payload.categories]
-            await SqlAlchemyRepository(db_manager.get_session, AdvertisementCategory).bulk_create(categories)
+        if len(payload["ad_tags"]):
+            tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
 
-        if len(payload.ad_tags):
-            ad_tags_repo = SqlAlchemyRepository(db_manager.get_session, AdTag)
+            await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
-            tags = []
-            for tag in payload.ad_tags:
-                ad_tag = await ad_tags_repo.get_single(title=tag)
-                if not ad_tag:
-                    tag_schema = AdTagCreate()
-                    tag_schema.title = tag
-                    ad_tag = await ad_tags_repo.create(tag_schema)
-                advertisement__ad_tag = AdvertisementAdTag()
-                advertisement__ad_tag.advertisement_id = advertisement.id
-                advertisement__ad_tag.ad_tag_id = ad_tag.id
-                tags.append(advertisement__ad_tag)
-
-            await SqlAlchemyRepository(db_manager.get_session, models.AdvertisementAdTag).bulk_create(tags)
-
-        return ApiResponse.payload({
-            'title': advertisement.title,
-            'user_description': advertisement.user_description,
-            'ad_type_id': advertisement.ad_type_id,
-            'price': advertisement.price,
-            'user_id': advertisement.user_id,
-            'ad_status_id': advertisement.ad_status_id,
-            'address_id': advertisement.address_id,
-        })
+        return ApiResponse.payload(transform_advertisement(advertisement))
     except Exception as e:
         return ApiResponse.error(e.with_traceback())
 

@@ -1,6 +1,3 @@
-import datetime
-from typing import Union, List, Optional
-
 from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
@@ -10,7 +7,7 @@ from src.utils.transformer import transform
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities.review import create_review, Review, ReviewCreate, ReviewUpdate
+from src.schemas.entities.review import ReviewUpdate
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -22,31 +19,19 @@ router = APIRouter(
 
 
 @router.get(path='/{review_id}', response_model=ApiResponse)
-async def get_review(review_id: int):
+async def get_review(review_id: int, request: Request, auth: Auth = Depends()):
     """Get exact review information. """
 
+    await auth.check_access_token(request)
+
     try:
-        review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
-                                                           models.Review).get_single(id=review_id)
+        review: models.Review = await SqlAlchemyRepository(db_manager.get_session, models.Review)\
+            .get_single(id=review_id)
 
         if not review:
-            raise Exception("The review with this data does not exist.")
+            raise Exception("Review is not found.")
 
         return ApiResponse.payload(transform(review, ReviewTransformer()))
-    except Exception as e:
-        return ApiResponse.error(str(e))
-
-
-@router.get(path='/{advertisement_id}', response_model=Union[List[Review], ApiResponse])
-async def get_advertisement_reviews(advertisement_id: int):
-    """Get all reviews for exact advertisement. """
-
-    try:
-        reviews: List[models.Review] = await SqlAlchemyRepository(db_manager.get_session,
-                                                                  models.Review).get_multi(
-            advertisement_id=advertisement_id)
-        result: List[Review] = [create_review(review) for review in reviews if not review.deleted_at]
-        return result
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -55,9 +40,9 @@ async def get_advertisement_reviews(advertisement_id: int):
 # TODO:GET USER REVIEWS
 
 
-@router.post(path='/review', response_model=Union[Review, ApiResponse])
+@router.post(path='/')
 async def create_advertisement_review(request: Request, auth: Auth = Depends()):
-    """Create review on advertisement. """
+    """Create review for advertisement. """
 
     await auth.check_access_token(request)
 
@@ -70,20 +55,19 @@ async def create_advertisement_review(request: Request, auth: Auth = Depends()):
     payload = validator.validated()
 
     try:
-        if await SqlAlchemyRepository(db_manager.get_session, models.Review).get_single(
-                advertisement_id=payload["advertisement_id"]):
-            raise Exception('The review on this advertisement has already been published.')
+        if await SqlAlchemyRepository(db_manager.get_session, models.Review)\
+                .get_single(advertisement_id=payload["advertisement_id"]):
+            raise Exception('The review for this advertisement has already been published.')
 
-        review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
-                                                           models.Review).create(
-            validator.all() | {"user_id": request.state.user.id})
+        review: models.Review = await SqlAlchemyRepository(db_manager.get_session, models.Review)\
+            .create(validator.all() | {"user_id": request.state.user.id})
 
-        return transform_review(review)
+        return ApiResponse.payload(transform(review, ReviewTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
 
 
-@router.put(path='/review/{review_id}', response_model=Union[Review, ApiResponse])
+@router.put(path='/{review_id}')
 async def update_review(review_id: int, request: Request, auth: Auth = Depends()):
     """Update review by id. """
 
@@ -98,10 +82,9 @@ async def update_review(review_id: int, request: Request, auth: Auth = Depends()
 
     try:
         # todo : check existence
-        review: models.Review = await SqlAlchemyRepository(db_manager.get_session,
-                                                           models.Review).update(payload, id=review_id)
+        review: models.Review = await SqlAlchemyRepository(db_manager.get_session, models.Review)\
+            .update(payload.all(), id=review_id)
 
-        result: Review = create_review(review)
-        return result
+        return ApiResponse.payload(transform(review, ReviewTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))

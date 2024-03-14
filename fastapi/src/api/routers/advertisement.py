@@ -86,6 +86,15 @@ async def get_advertisement(advertisement_id: int, short: bool = False):
         if not advertisement:
             raise Exception("There is no advertisement with this data.")
 
-        return ApiResponse.payload(transform(advertisement, AdvertisementTransformer().include(['address'])))
+        return ApiResponse.payload(
+            transform(
+                advertisement,
+                AdvertisementTransformer()
+                .include([
+                    'address', 'user', 'ad_tags',
+                    'ad_photos', 'category', 'reviews',
+                ])
+            )
+        )
     except Exception as e:
         return ApiResponse.error(str(e))

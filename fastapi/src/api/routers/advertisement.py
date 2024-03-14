@@ -1,5 +1,3 @@
-from typing import Union, Optional
-
 from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
@@ -8,8 +6,9 @@ from src.database import models
 from src.database.models import Address, AdStatus, AdvertisementAdTag
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.utils.transformers.entities import transform_advertisement
 from src.utils.validator import Validator
+from src.utils.transformer import transform
+from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
 router = APIRouter(
     prefix="/advertisements",
@@ -61,10 +60,9 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
-        return ApiResponse.payload(transform_advertisement(advertisement))
+        return ApiResponse.payload(transform(advertisement, AdvertisementTransformer().include(['address'])))
     except Exception as e:
         return ApiResponse.error(str(e))
-        # return ApiResponse.error(e.with_traceback())
 
 
 @router.get("/{advertisement_id}", response_model=ApiResponse)
@@ -78,9 +76,7 @@ async def get_advertisement(advertisement_id: int, short: bool = False):
 
         if not advertisement:
             raise Exception("There is no advertisement with this data.")
-        from src.utils.transformer import transform
-        from src.api.transformers.advertisement_transformer import AdvertisementTransformer
+
         return ApiResponse.payload(transform(advertisement, AdvertisementTransformer().include(['address'])))
-        return ApiResponse.payload(transform_advertisement(advertisement))
     except Exception as e:
         return ApiResponse.error(str(e))

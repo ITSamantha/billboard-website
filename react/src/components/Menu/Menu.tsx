@@ -37,6 +37,9 @@ const Menu = () => {
                 </div>
               </div>
               <div>
+                <Link to="/profile">
+                  <Button type="primary">Profile</Button>
+                </Link>
                 <Link to="/upload-form">
                   <Button type="primary">Upload</Button>
                 </Link>

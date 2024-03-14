@@ -9,12 +9,10 @@ from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.schemas.entities.review import ReviewUpdate
 from src.utils.validator import Validator
-from src.utils.validator.validator import Rules
 
 router = APIRouter(
     prefix="/reviews",
     tags=["reviews"],
-
 )
 
 
@@ -40,16 +38,16 @@ async def get_review(review_id: int, request: Request, auth: Auth = Depends()):
 # TODO:GET USER REVIEWS
 
 
-@router.post(path='/')
+@router.post(path='')
 async def create_advertisement_review(request: Request, auth: Auth = Depends()):
     """Create review for advertisement. """
 
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
-        'advertisement_id': [Rules.REQUIRED, Rules.INTEGER],
-        'text': [Rules.REQUIRED, Rules.STRING],
-        'rating': [Rules.REQUIRED, Rules.FLOAT],  # TODO: 0<=x<=5
+        'advertisement_id': ['required', 'integer'],
+        'text': ['required', 'string'],
+        'rating': ['required', 'float'],  # TODO: 0<=x<=5
     })
 
     payload = validator.validated()
@@ -74,8 +72,8 @@ async def update_review(review_id: int, request: Request, auth: Auth = Depends()
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
-        'text': [Rules.STRING],
-        'rating': [Rules.FLOAT]  # TODO: 0<=x<=5
+        'text': ['string'],
+        'rating': ['float']  # TODO: 0<=x<=5
     }, {}, ReviewUpdate())
 
     payload: ReviewUpdate = validator.validated()

@@ -1,5 +1,6 @@
 from src.utils.validator.exceptions import AppValidationException
 from src.api.payloads.base import BasePayload
+import re
 
 
 class Validator:
@@ -151,3 +152,12 @@ class Rules:
                 return None
 
         return f"One of fields {', '.join(fields)} must be present."  # todo deal with title (pass titles 4 all fields somehow)
+
+    @staticmethod
+    def email(data: dict, key: str, title: str = None):
+        if key in data and not re.fullmatch(
+                re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'),
+                str(data[key])
+        ):
+            return f"{title if title else key} field must a valid email."
+        return None

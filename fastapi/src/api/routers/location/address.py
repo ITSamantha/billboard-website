@@ -34,7 +34,7 @@ async def get_address(address_id: int, request: Request, auth: Auth = Depends())
         return ApiResponse.error(str(e))
 
 
-@address_router.post(path='/', response_model=Union[Address, ApiResponse])
+@address_router.post(path='', response_model=Union[Address, ApiResponse])
 async def create_ad_address(request: Request, auth: Auth = Depends()):
     """Create address. """
 

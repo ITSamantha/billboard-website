@@ -1,7 +1,7 @@
-from fastapi.src.api.transformers.base_transformer import BaseTransformer
-from fastapi.src.api.transformers.country_transformer import CountryTransformer
+from src.api.transformers.base_transformer import BaseTransformer
+from src.api.transformers.country_transformer import CountryTransformer
 
-from fastapi.src.api.transformers.city_transformer import CityTransformer
+from src.api.transformers.city_transformer import CityTransformer
 
 
 class AddressTransformer(BaseTransformer):

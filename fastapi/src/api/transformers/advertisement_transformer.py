@@ -1,5 +1,5 @@
-from fastapi.src.api.transformers.base_transformer import BaseTransformer
-from fastapi.src.api.transformers.address_transformer import AddressTransformer
+from src.api.transformers.base_transformer import BaseTransformer
+from src.api.transformers.address_transformer import AddressTransformer
 
 
 class AdvertisementTransformer(BaseTransformer):

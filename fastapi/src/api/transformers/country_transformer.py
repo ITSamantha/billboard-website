@@ -1,4 +1,4 @@
-from fastapi.src.api.transformers.base_transformer import BaseTransformer
+from src.api.transformers.base_transformer import BaseTransformer
 
 
 class CountryTransformer(BaseTransformer):

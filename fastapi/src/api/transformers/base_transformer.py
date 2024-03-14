@@ -4,16 +4,8 @@ from abc import ABC, abstractmethod
 class BaseTransformer(ABC):
     def __init__(self):
         self.includes = []
-
-    @property
-    @abstractmethod
-    def available_includes(self):
-        return []
-
-    @property
-    @abstractmethod
-    def default_includes(self):
-        return []
+        self.available_includes = []
+        self.default_includes = []
 
     @abstractmethod
     def transform(self, item):

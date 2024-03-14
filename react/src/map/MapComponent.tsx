@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import AdvancedMarker from './AdvancedMarker';
 
 type MapProps = {
   center: google.maps.LatLngLiteral;
   zoom: number;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onClick?: (e: google.maps.MapMouseEvent) => void;
   onIdle?: (map: google.maps.Map) => void;
   map?: google.maps.Map;
@@ -41,12 +40,6 @@ function MapComponent({ center, zoom, children, onClick, onIdle, map, setMap }: 
   return (
     <>
       <div ref={ref} id="map" />
-
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return child;
-        }
-      })}
     </>
   );
 }

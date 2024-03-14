@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import MapComponent from '../map/MapComponent';
-import AdvancedMarker from '../map/AdvancedMarker';
-import AdvancedMarkerCluster from '../map/AdvancedMarkerCluster';
 
 type DisplayedPoint = {
   point: google.maps.LatLngLiteral;
@@ -15,13 +13,12 @@ const Map = () => {
   const [currentCenter, setCurrentCenter] = useState<google.maps.LatLng>();
   const [points, setPoints] = useState<google.maps.LatLngLiteral[]>([]);
 
-  const [displayedPoints, setDisplayedPoints] = useState<DisplayedPoint[]>([]);
-
+  const displayedPoints = useRef<DisplayedPoint[]>([]);
 
   useEffect(() => {
     setPoints(
-      [...new Array(10)].map(() => {
-        return { lng: Math.random() * 10 - 5, lat: Math.random() * 36 - 18 };
+      [...new Array(10000)].map(() => {
+        return { lng: Math.random() * 360 - 180, lat: Math.random() * 180 - 90 };
       })
     );
   }, []);
@@ -31,6 +28,39 @@ const Map = () => {
     setCurrentCenter(map.getCenter());
   };
 
+  const mapPoints = useRef<any[]>([])
+
+  const handleUpdatePoints = () => {
+    console.log("points will be updated", mapPoints.current)
+    mapPoints.current.forEach(point => point.map = null);
+    mapPoints.current = [];
+    displayedPoints.current.forEach(point => {
+      if (point.isCluster) {
+        const container = document.createElement('div');
+        container.innerHTML = '<span class=\'cluster-icon\'>' + point.count + '</span>';
+        let currentMarker = new google.maps.marker.AdvancedMarkerElement({
+          position: point.point,
+          gmpClickable: true,
+          content: container,
+          map
+        });
+        mapPoints.current.push(currentMarker)
+      } else {
+        const container = document.createElement('div');
+        container.innerHTML = '<span class=\'map-icon\'></span>';
+        let currentMarker = new google.maps.marker.AdvancedMarkerElement({
+          position: point.point,
+          gmpClickable: true,
+          content: container,
+          map
+        });
+        mapPoints.current.push(currentMarker)
+      }
+
+    })
+
+  }
+
   useEffect(() => {
     if (currentZoom) {
       let zoomInKm = (40000 / Math.pow(2, currentZoom)) * 2;
@@ -39,7 +69,8 @@ const Map = () => {
       let currentCenterLng = currentCenter?.lng();
       if (currentCenterLat && currentCenterLng) {
         let radius = zoomInDeg;
-        let filteredPoints = points.filter((point) => {
+        let filteredPoints = points
+          .filter((point) => {
           if (currentCenterLat && currentCenterLng) {
             return (
               Math.abs(point.lat - currentCenterLat) <= radius &&
@@ -48,19 +79,17 @@ const Map = () => {
           }
           return false;
         });
-        let fromLat = currentCenterLat - radius;
-        let toLat = currentCenterLat + radius;
-        let fromLng = currentCenterLng - radius;
-        let toLng = currentCenterLng + radius;
+        let fromLat = -90;
+        let toLat = 90;
+        let fromLng = -180;
+        let toLng = 180;
 
-        const NUMBER_OF_SECTORS = 8;
-        const CLUSTER_THRESHOLD = 6;
+        const NUMBER_OF_SECTORS = 2 * Math.pow(2, currentZoom);
+        const CLUSTER_THRESHOLD = 3;
 
-        let buckets: google.maps.LatLngLiteral[][][] = [...new Array(NUMBER_OF_SECTORS)].map(() =>
-          [...new Array(NUMBER_OF_SECTORS)].map(() => [])
-        );
+        let buckets: any = { };
 
-        if (toLat - fromLat != 0 && filteredPoints.length > 0) {
+        if (toLat - fromLat !== 0 && filteredPoints.length > 0) {
           filteredPoints.forEach((point) => {
             let nearestLat = Math.floor(
               ((point.lat - fromLat) * NUMBER_OF_SECTORS) / (toLat - fromLat)
@@ -68,37 +97,43 @@ const Map = () => {
             let nearestLng = Math.floor(
               ((point.lng - fromLng) * NUMBER_OF_SECTORS) / (toLng - fromLng)
             );
-            buckets[nearestLat][nearestLng].push(point);
+            let key = JSON.stringify(nearestLat) + " " + JSON.stringify(nearestLng)
+            if (!(key in buckets)) {
+              buckets[key] = []
+            }
+            buckets[key].push(point);
           });
         }
 
+        console.log(buckets)
+
         let visiblePoints: DisplayedPoint[] = [];
-        for (let i = 0; i < NUMBER_OF_SECTORS; i++) {
-          for (let j = 0; j < NUMBER_OF_SECTORS; j++) {
-            if (buckets[i][j].length > CLUSTER_THRESHOLD) {
-              let centerPoint = buckets[i][j].reduce(
-                (acc, current) => {
-                  return {
-                    lat: acc.lat + current.lat,
-                    lng: acc.lng + current.lng
-                  };
-                },
-                { lat: 0, lng: 0 }
-              );
-              centerPoint.lat /= buckets[i][j].length;
-              centerPoint.lng /= buckets[i][j].length;
-              visiblePoints.push({
-                isCluster: true,
-                count: buckets[i][j].length,
-                point: centerPoint
-              });
-            } else {
-              buckets[i][j].forEach((point) => visiblePoints.push({ point: point }));
-            }
+        (Object.entries(buckets) as any).forEach((value: [string, any[]]) => {
+          let bucket = value[1]
+          if (bucket.length > CLUSTER_THRESHOLD) {
+            let centerPoint = bucket.reduce(
+              (acc, current) => {
+                return {
+                  lat: acc.lat + current.lat,
+                  lng: acc.lng + current.lng
+                };
+              },
+              { lat: 0, lng: 0 }
+            );
+            centerPoint.lat /= bucket.length;
+            centerPoint.lng /= bucket.length;
+            visiblePoints.push({
+              isCluster: true,
+              count: bucket.length,
+              point: centerPoint
+            });
+          } else {
+            bucket.forEach((point) => visiblePoints.push({ point: point }));
+
           }
-        }
-        console.log(visiblePoints)
-        setDisplayedPoints(visiblePoints);
+        })
+        displayedPoints.current = visiblePoints;
+        handleUpdatePoints()
       }
     }
   }, [currentZoom, currentCenter]);
@@ -120,27 +155,7 @@ const Map = () => {
             zoom={13}
             onIdle={handleIdle}
           >
-            {displayedPoints.map((displayedPoint) => {
-              if (displayedPoint.isCluster) {
-                return (
-                  <AdvancedMarkerCluster onClick={(e: any) => {
-                    console.log(e);
-                  }} position={displayedPoint.point} count={displayedPoint.count} map={map}></AdvancedMarkerCluster>
-                );
-              } else {
-                return (
-                  <AdvancedMarker
-                    onClick={(e: any) => {
-                      // e.element = null
-                      e.map = null;
-                      console.log(e.map);
-                    }}
-                    position={displayedPoint.point}
-                    map={map}
-                  ></AdvancedMarker>
-                );
-              }
-            })}
+
           </MapComponent>
         </Wrapper>
       </div>

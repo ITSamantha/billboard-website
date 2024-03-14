@@ -60,7 +60,16 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
-        return ApiResponse.payload(transform(advertisement, AdvertisementTransformer().include(['address'])))
+        return ApiResponse.payload(
+            transform(
+                advertisement,
+                AdvertisementTransformer()
+                .include([
+                    'address', 'user', 'ad_tags',
+                    'ad_photos', 'category', 'reviews',
+                ])
+            )
+        )
     except Exception as e:
         return ApiResponse.error(str(e))
 

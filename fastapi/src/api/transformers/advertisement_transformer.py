@@ -2,12 +2,14 @@ from fastapi.src.api.transformers.base_transformer import BaseTransformer
 from fastapi.src.api.transformers.address_transformer import AddressTransformer
 
 
-class AdversisementTransformer(BaseTransformer):
+class AdvertisementTransformer(BaseTransformer):
     def __init__(self):
         BaseTransformer.__init__()
-        self.available_includes = []
-        self.default_includes = [
+        self.available_includes = [
             'address',
+        ]
+        self.default_includes = [
+
         ]
 
     def transform(self, ad):

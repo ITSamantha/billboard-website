@@ -78,7 +78,9 @@ async def get_advertisement(advertisement_id: int, short: bool = False):
 
         if not advertisement:
             raise Exception("There is no advertisement with this data.")
-
+        from src.utils.transformer import transform
+        from src.api.transformers.advertisement_transformer import AdvertisementTransformer
+        return ApiResponse.payload(transform(advertisement, AdvertisementTransformer()))
         return ApiResponse.payload(transform_advertisement(advertisement))
     except Exception as e:
         return ApiResponse.error(str(e))

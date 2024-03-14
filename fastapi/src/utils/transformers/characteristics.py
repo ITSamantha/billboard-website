@@ -1,14 +1,14 @@
 from src.database.models import Country, City, AdStatus, AdType, BookingStatus, BookingType, FilterType, Priority, \
     UserRole, UserStatus, Weekday, TransactionType
 
-
+#todo moved to transformers
 def transform_city(city: City) -> dict:
     return {
         "id": city.id,
         "title": city.title
     }
 
-
+#todo moved to transformers
 def transform_country(country: Country) -> dict:
     return {
         "id": country.id,

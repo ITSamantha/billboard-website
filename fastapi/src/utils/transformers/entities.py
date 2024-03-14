@@ -63,7 +63,7 @@ def transform_review(review: Review) -> dict:
 def transform_ad_photo():
     return "photo"
 
-
+#todo moved to transformers
 def transform_advertisement(advertisement: Advertisement) -> dict:
     # TODO:  transform RELATION ATTRS HERE AS IN MODEL
     return {"id": advertisement.id,

@@ -1,5 +1,5 @@
 from src.api.transformers.base_transformer import BaseTransformer
-from src.api.transformers.user import UserStatusTransformer
+from src.api.transformers.user.user_status_transformer import UserStatusTransformer
 from src.utils.time import json_datetime, time_ago_in_words
 
 

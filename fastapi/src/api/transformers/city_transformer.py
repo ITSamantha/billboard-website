@@ -3,7 +3,7 @@ from src.api.transformers.base_transformer import BaseTransformer
 
 class CityTransformer(BaseTransformer):
     def __init__(self):
-        BaseTransformer.__init__()
+        super().__init__()
         self.available_includes = []
         self.default_includes = []
 

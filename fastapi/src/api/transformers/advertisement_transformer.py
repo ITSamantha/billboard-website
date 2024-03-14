@@ -4,7 +4,7 @@ from src.api.transformers.address_transformer import AddressTransformer
 
 class AdvertisementTransformer(BaseTransformer):
     def __init__(self):
-        BaseTransformer.__init__()
+        super().__init__()
         self.available_includes = [
             'address',
         ]

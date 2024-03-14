@@ -1,14 +1,10 @@
 from typing import Union
 
 from fastapi import APIRouter
-from sqlalchemy.orm import selectinload
-
-from src import schemas
 from src.api.responses.api_response import ApiResponse
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.repository.crud.category_repository import CategoryRepository
 from src.schemas.entities.category import create_category, Category
 
 router = APIRouter(

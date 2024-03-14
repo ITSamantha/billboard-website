@@ -5,11 +5,12 @@ from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
+from src.api.transformers.review_transformer import ReviewTransformer
+from src.utils.transformer import transform
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.schemas.entities.review import create_review, Review, ReviewCreate, ReviewUpdate
-from src.utils.transformers.entities import transform_review
 from src.utils.validator import Validator
 from src.utils.validator.validator import Rules
 
@@ -31,7 +32,7 @@ async def get_review(review_id: int):
         if not review:
             raise Exception("The review with this data does not exist.")
 
-        return transform_review(review)
+        return ApiResponse.payload(transform(review, ReviewTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
 

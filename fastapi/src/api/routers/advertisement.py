@@ -80,6 +80,20 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
+@router.get("/ad_type")
+async def get_ad_types():
+    try:
+        ad_types: List[models.AdType] = await SqlAlchemyRepository(db_manager.get_session, models.AdType).get_multi()
+
+        return ApiResponse.payload(transform(
+            ad_types,
+            AdTypeTransformer()
+        ))
+
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
 @router.get("/{advertisement_id}")
 async def get_advertisement(advertisement_id: int, request: Request, short: bool = False, auth: Auth = Depends()):
     """Get exact advertisement information. """
@@ -133,20 +147,6 @@ async def get_advertisement_worktime(advertisement_id: int, request: Request, au
         return ApiResponse.payload(transform(
             worktimes,
             WorktimeTransformer()
-        ))
-
-    except Exception as e:
-        return ApiResponse.error(str(e))
-
-
-@router.get("/ad_type")
-async def get_ad_types():
-    try:
-        ad_types: List[models.AdType] = await SqlAlchemyRepository(db_manager.get_session, models.AdType).get_multi()
-
-        return ApiResponse.payload(transform(
-            ad_types,
-            AdTypeTransformer()
         ))
 
     except Exception as e:

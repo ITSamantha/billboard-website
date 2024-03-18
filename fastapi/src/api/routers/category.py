@@ -20,9 +20,7 @@ router = APIRouter(
 async def get_category_by_id(category_id: int, request: Request, auth: Auth = Depends()):
     """Get nested category. """
 
-    # TODO: NESTED PARENT
     try:
-        # cat_rep = await CategoryRepository(db_manager.get_session).get_children_list(1)
         category: models.Category = await CategoryRepository(db_manager.get_session,
                                                              models.Category).get_single(id=category_id)
 

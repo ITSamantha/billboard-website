@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from fastapi import APIRouter, Request, Depends
 
@@ -24,12 +24,27 @@ async def get_city(city_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     try:
-        city: models.City = await SqlAlchemyRepository(db_manager.get_session, models.City)\
+        city: models.City = await SqlAlchemyRepository(db_manager.get_session, models.City) \
             .get_single(id=city_id)
         if not city:
             raise Exception("City is not found.")
 
         return ApiResponse.payload(transform(city, CityTransformer()))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@city_router.get("")
+async def get_cities():
+    try:
+        cities: List[models.City] = await SqlAlchemyRepository(db_manager.get_session, models.City) \
+            .get_multi()
+
+        return ApiResponse.payload(transform(
+            cities,
+            CityTransformer()
+        ))
+
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -48,7 +63,7 @@ async def update_city(city_id: int, request: Request, auth: Auth = Depends()):
 
     try:
         # todo : check existence
-        city: models.City = await SqlAlchemyRepository(db_manager.get_session, models.City)\
+        city: models.City = await SqlAlchemyRepository(db_manager.get_session, models.City) \
             .update(payload.all(), id=city_id)
 
         return ApiResponse.payload(transform(city, CityTransformer()))

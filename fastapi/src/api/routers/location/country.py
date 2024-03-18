@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Request, Depends
 
 from src.api.dependencies.auth import Auth
@@ -22,12 +24,27 @@ async def get_country(country_id: int, request: Request, auth: Auth = Depends())
     await auth.check_access_token(request)
 
     try:
-        country: models.Country = await SqlAlchemyRepository(db_manager.get_session, models.Country)\
+        country: models.Country = await SqlAlchemyRepository(db_manager.get_session, models.Country) \
             .get_single(id=country_id)
         if not country:
             raise Exception("Country is not found.")
 
         return ApiResponse.payload(transform(country, CountryTransformer()))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@country_router.get("")
+async def get_countries():
+    try:
+        countries: List[models.Country] = await SqlAlchemyRepository(db_manager.get_session, models.Country) \
+            .get_multi()
+
+        return ApiResponse.payload(transform(
+            countries,
+            CountryTransformer()
+        ))
+
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -46,7 +63,7 @@ async def update_country(country_id: int, request: Request, auth: Auth = Depends
 
     try:
         # todo : check existence
-        country: models.Country = await SqlAlchemyRepository(db_manager.get_session, models.Country)\
+        country: models.Country = await SqlAlchemyRepository(db_manager.get_session, models.Country) \
             .update(payload.all(), id=country_id)
 
         return ApiResponse.payload(transform(country, CountryTransformer()))

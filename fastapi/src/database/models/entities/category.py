@@ -22,7 +22,7 @@ class Category(Base):
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("category.id"))
     parent: Mapped["Category"] = relationship(lazy='subquery', uselist=False)
 
-    children: Mapped[List["Category"]] = relationship("Category", cascade='all, delete-orphan', lazy="selectinload")
+    children: Mapped[List["Category"]] = relationship("Category", cascade='all, delete-orphan', lazy="selectin")
 
     bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
     map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)

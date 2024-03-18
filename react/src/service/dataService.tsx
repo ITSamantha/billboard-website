@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const BASE_URL = 'http://localhost/';
+
 export const register = (
   email: string,
   password: string,
@@ -9,10 +11,9 @@ export const register = (
 ) => {
   axios
     .post(
-      'http://localhost/auth/register',
+      BASE_URL + 'auth/register',
       {
         email: email,
-        user_name: 'userNa',
         password: password,
         phone_number: phone,
         last_name: lastName,
@@ -21,6 +22,26 @@ export const register = (
       { withCredentials: true }
     )
     .then((r) => console.log(r));
+};
+
+export const login = (email: string, password: string) => {
+  axios
+    .post(
+      BASE_URL + 'auth/login',
+      {
+        email: email,
+        password: password
+      },
+      { withCredentials: true }
+    )
+    .then((r) => console.log(r));
+};
+
+export const logout = () => {
+  axios
+    .post(BASE_URL + 'auth/logout', {}, { withCredentials: true })
+    .then((r) => console.log(r))
+    .catch((e) => console.log(e));
 };
 
 export const getCategories = (categorySlug: string | undefined) => {

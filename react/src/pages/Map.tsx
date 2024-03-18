@@ -9,7 +9,7 @@ type DisplayedPoint = {
 };
 
 const Map = () => {
-  const [currentZoom, setCurrentZoom] = useState<number>();
+  const [currentZoom, setCurrentZoom] = useState<number | undefined>(13);
   const [currentCenter, setCurrentCenter] = useState<google.maps.LatLng>();
   const [points, setPoints] = useState<google.maps.LatLngLiteral[]>([]);
 
@@ -44,6 +44,12 @@ const Map = () => {
           content: container,
           map
         });
+        google.maps.event.addListener(currentMarker, 'gmp-click', () => {
+          if (currentZoom && currentMarker.position) {
+            map?.setZoom(currentZoom + 2)
+            map?.setCenter(currentMarker.position)
+          }
+        })
         mapPoints.current.push(currentMarker)
       } else {
         const container = document.createElement('div');
@@ -144,8 +150,8 @@ const Map = () => {
     <div className="Map">
       <div className="Map__Content">
         <Wrapper
-          apiKey={''} // AIzaSyCllS8bOprdLh7eMPd0DcM2ZNYe2TrNS9I
-          libraries={['marker', 'maps']}
+          apiKey={'AIzaSyCllS8bOprdLh7eMPd0DcM2ZNYe2TrNS9I'} //
+          libraries={['marker', 'maps', 'geocoding']}
           version="beta"
         >
           <MapComponent

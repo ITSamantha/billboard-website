@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
+from src.api.transformers.advertisement import AdTypeTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
 from src.database import models
@@ -86,7 +87,7 @@ async def get_advertisement(advertisement_id: int, request: Request, short: bool
     await auth.check_access_token(request)
     # TODO: SHORT VERSION
     try:
-        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
+        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement) \
             .get_single(id=advertisement_id)
 
         if not advertisement:
@@ -111,7 +112,7 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
     """Get all reviews for exact advertisement. """
     await auth.check_access_token(request)
     try:
-        reviews: List[models.Review] = await SqlAlchemyRepository(db_manager.get_session, models.Review)\
+        reviews: List[models.Review] = await SqlAlchemyRepository(db_manager.get_session, models.Review) \
             .get_multi(advertisement_id=advertisement_id)
 
         return ApiResponse.payload(transform(
@@ -126,7 +127,7 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
 async def get_advertisement_worktime(advertisement_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     try:
-        worktimes: List[models.Worktime] = await SqlAlchemyRepository(db_manager.get_session, models.Worktime)\
+        worktimes: List[models.Worktime] = await SqlAlchemyRepository(db_manager.get_session, models.Worktime) \
             .get_multi(advertisement_id=advertisement_id)
 
         return ApiResponse.payload(transform(
@@ -138,13 +139,15 @@ async def get_advertisement_worktime(advertisement_id: int, request: Request, au
         return ApiResponse.error(str(e))
 
 
-@router.get("/at_type", response_model=ApiResponse)
-async def get_advertisement():
-    """Get exact ad_types information. """
+@router.get("/ad_type")
+async def get_ad_types():
     try:
-        ad_types: models.AdType = await SqlAlchemyRepository(db_manager.get_session,
-                                                             models.AdType).get_multi()
+        ad_types: List[models.AdType] = await SqlAlchemyRepository(db_manager.get_session, models.AdType).get_multi()
 
-        return ApiResponse.payload(transform_ad_type(ad_types))
+        return ApiResponse.payload(transform(
+            ad_types,
+            AdTypeTransformer()
+        ))
+
     except Exception as e:
         return ApiResponse.error(str(e))

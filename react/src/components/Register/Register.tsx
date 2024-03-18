@@ -3,6 +3,9 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useState } from 'react';
 import '../../scss/register.scss';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
+import axios from 'axios';
+import { register } from '../../service/dataService';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -11,9 +14,13 @@ const Register = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+  const navigate = useNavigate();
 
   const handleRegister = () => {
     console.log(firstName, lastName, email, password, phone);
+    register(email, password, phone, lastName, firstName);
+    // TODO: check if login is successful
+    navigate('/home');
   };
 
   return (

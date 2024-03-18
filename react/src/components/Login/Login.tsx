@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import InputField from '../InputField';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { Button } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
+import { login } from '../../service/dataService';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
 
@@ -17,23 +19,12 @@ function Login() {
   axios.defaults.credentials = 'include';
 
   const handleLogin = () => {
-    axios
-      .post(
-        'https://api.uvuv643.ru/auth/login',
-        {
-          email: email,
-          password: password
-        },
-        { withCredentials: true }
-      )
-      .then((r) => console.log(r));
+    // TODO: check if login is successful
+    login(email, password);
+    navigate('/');
   };
 
-  const handleLogout = () => {
-    axios
-      .post('https://api.uvuv643.ru/auth/logout', {}, { withCredentials: true })
-      .then((r) => console.log(r));
-  };
+  const handleLogout = () => {};
 
   return (
     <>

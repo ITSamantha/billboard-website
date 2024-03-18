@@ -23,8 +23,8 @@ async def get_category_by_id(category_id: int, request: Request, auth: Auth = De
     # TODO: NESTED PARENT
     try:
         # cat_rep = await CategoryRepository(db_manager.get_session).get_children_list(1)
-        category: models.Category = await SqlAlchemyRepository(db_manager.get_session, models.Category) \
-            .get_single(id=category_id)
+        category: models.Category = await CategoryRepository(db_manager.get_session,
+                                                             models.Category).get_single(id=category_id)
 
         return ApiResponse.payload(transform(
             category,

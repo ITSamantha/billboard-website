@@ -14,4 +14,5 @@ def create_app_routers(app: FastAPI):
     app.include_router(location.router)
     app.include_router(ws_chat.router)
     app.include_router(chat.router)
+    app.include_router(user.router)
     return app

@@ -82,3 +82,15 @@ async def get_advertisement(advertisement_id: int, short: bool = False):
         return ApiResponse.payload(transform_advertisement(advertisement))
     except Exception as e:
         return ApiResponse.error(str(e))
+
+
+@router.get("/at_type", response_model=ApiResponse)
+async def get_advertisement():
+    """Get exact ad_types information. """
+    try:
+        ad_types: models.AdType = await SqlAlchemyRepository(db_manager.get_session,
+                                                             models.AdType).get_multi()
+
+        return ApiResponse.payload(transform_ad_type(ad_types))
+    except Exception as e:
+        return ApiResponse.error(str(e))

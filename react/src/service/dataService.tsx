@@ -21,7 +21,10 @@ export const register = (
       },
       { withCredentials: true }
     )
-    .then((r) => console.log(r));
+    .then((r) => {
+      console.log(r);
+      return r.data;
+    });
 };
 
 export const login = (email: string, password: string) => {
@@ -34,7 +37,10 @@ export const login = (email: string, password: string) => {
       },
       { withCredentials: true }
     )
-    .then((r) => console.log(r));
+    .then((r) => {
+      console.log(r);
+      return r.data;
+    });
 };
 
 export const logout = () => {

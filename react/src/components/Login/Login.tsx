@@ -7,11 +7,15 @@ import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { Button } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { login } from '../../service/dataService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLogin, selectUser } from '../../redux/slices/UserSlice';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   axios.defaults.withCredentials = true;
 
@@ -20,8 +24,11 @@ function Login() {
 
   const handleLogin = () => {
     // TODO: check if login is successful
-    login(email, password);
-    navigate('/');
+    dispatch(fetchLogin({ email, password }) as any);
+
+    // navigate('/');
+    setTimeout(() => {}, 1000);
+    console.log(user);
   };
 
   const handleLogout = () => {};

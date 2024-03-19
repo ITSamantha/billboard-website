@@ -1,7 +1,6 @@
 import json
-from typing import List, Annotated
-
-from fastapi import APIRouter, File, UploadFile, Request
+from typing import List
+from fastapi import APIRouter, UploadFile, Request
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.database import models
@@ -49,7 +48,7 @@ async def create_category(request: Request):
         'map_addressable': ['required', 'bool']
     })
 
-    payload = validator.validated()
+    validator.validated()
 
     try:
 
@@ -57,6 +56,30 @@ async def create_category(request: Request):
             .create(validator.all())
 
         return ApiResponse.payload({"category_id": category.id})  # TODO: CHECK?
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.put("/{category_id}")
+async def update_category(category_id: int, request: Request):
+    validator = Validator(await request.json(), {
+        'title': ['nullable', 'string'],
+        'order': ['nullable', 'integer'],
+        'meta_title': ['nullable', 'string'],
+        'meta_description': ['nullable', 'string'],
+        'url': ['nullable', 'string'],
+        'parent_id': ['nullable', 'integer'],
+        'bookable': ['nullable', 'bool'],
+        'map_addressable': ['nullable', 'bool']
+    })
+
+    validator.validated()
+
+    try:
+        review: models.Review = await CategoryRepository(db_manager.get_session, models.Review) \
+            .update(validator.not_null(), id=category_id)
+
+        return ApiResponse.payload(transform(review, CategoryTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -95,7 +118,7 @@ async def create_upload_file(file: UploadFile):
                 'map_addressable': ['required', 'bool']
             })
 
-            payload = validator.validated()
+            validator.validated()
             json_data[i] = validator.all()
 
         categories: List[models.Category] = await CategoryRepository(db_manager.get_session, models.Category) \

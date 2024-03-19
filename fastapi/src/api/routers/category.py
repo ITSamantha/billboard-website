@@ -1,12 +1,10 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Request
-from src.api.dependencies.auth import Auth
+from fastapi import APIRouter
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.database import models
 from src.database.session_manager import db_manager
-from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.repository.crud.category_repository import CategoryRepository
 from src.utils.transformer import transform
 
@@ -17,7 +15,7 @@ router = APIRouter(
 
 
 @router.get("/{category_id}")
-async def get_category_by_id(category_id: int, request: Request, auth: Auth = Depends()):
+async def get_category_by_id(category_id: int):
     """Get nested category. """
 
     try:
@@ -29,6 +27,7 @@ async def get_category_by_id(category_id: int, request: Request, auth: Auth = De
             CategoryTransformer()
         ))
     except Exception as e:
+        print(e.__traceback__)
         return ApiResponse.error(str(e))
 
 

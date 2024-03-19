@@ -4,8 +4,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from src.database import models
 from src.database.models import Category
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository, ModelType
+
+RECURSION_DEPTH = 100
 
 
 class CategoryRepository(SqlAlchemyRepository):
@@ -19,8 +22,7 @@ class CategoryRepository(SqlAlchemyRepository):
             stmt = (
                 select(self.model)
                 .filter_by(**filters)
-                .options(selectinload(self.model.children)
-                         )
+                .options(selectinload(self.model.children, recursion_depth=RECURSION_DEPTH))
             )
             row = await session.execute(stmt)
             result = row.scalars().first()
@@ -52,7 +54,8 @@ class CategoryRepository(SqlAlchemyRepository):
                 .order_by(order_column)
                 .limit(limit)
                 .offset(offset)
-                .options(selectinload(self.model.children))
+                .options(selectinload(self.model.children, recursion_depth=RECURSION_DEPTH))
             )
+            print(stmt)
             row = await session.execute(stmt)
             return row.scalars().all()

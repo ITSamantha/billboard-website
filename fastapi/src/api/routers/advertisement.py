@@ -89,8 +89,12 @@ async def get_advertisements():
 
         return ApiResponse.payload(transform(
             advertisements,
-            AdvertisementTransformer()
-        ))
+            AdvertisementTransformer().include([
+                'address', 'user', 'ad_tags',
+                'ad_photos', 'category', 'reviews'
+            ]
+            ))
+        )
 
     except Exception as e:
         return ApiResponse.error(str(e))

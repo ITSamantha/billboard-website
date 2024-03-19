@@ -13,8 +13,7 @@ class AdvertisementTransformer(BaseTransformer):
         super().__init__()
         self.available_includes = [
             'address', 'user', 'ad_tags',
-            'ad_photos', 'category', 'reviews',
-            'category'
+            'ad_photos', 'category', 'reviews'
         ]
         self.default_includes = [
             'ad_status', 'ad_type'

@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Annotated
 
-from fastapi import APIRouter
+from fastapi import APIRouter, File, UploadFile
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.database import models
@@ -21,7 +21,6 @@ async def get_category_by_id(category_id: int):
     try:
         category: models.Category = await CategoryRepository(db_manager.get_session,
                                                              models.Category).get_single(id=category_id)
-
         return ApiResponse.payload(transform(
             category,
             CategoryTransformer()
@@ -33,13 +32,20 @@ async def get_category_by_id(category_id: int):
 
 @router.get("")
 async def get_categories():
+    """Get all nested category. """
+
     try:
         categories: List[models.Category] = await CategoryRepository(db_manager.get_session,
-                                                                     models.Category).get_multi()
-
+                                                                     models.Category).get_multi(order="order")
+        # TODO: ADD ORDER BY COLUMN
         return ApiResponse.payload(transform(
             categories,
             CategoryTransformer()
         ))
     except Exception as e:
         return ApiResponse.error(str(e))
+
+
+@router.post("/uploadfile/")
+async def create_upload_file(file: UploadFile):
+    return {"filename": file.filename}

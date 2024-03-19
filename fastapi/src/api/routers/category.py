@@ -59,7 +59,7 @@ async def create_category(request: Request):
     except Exception as e:
         return ApiResponse.error(str(e))
 
-
+"""
 @router.put("/{category_id}")
 async def update_category(category_id: int, request: Request):
     validator = Validator(await request.json(), {
@@ -82,12 +82,7 @@ async def update_category(category_id: int, request: Request):
         return ApiResponse.payload(transform(review, CategoryTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
-
-
-
-
-
-
+"""
 
 @router.get("")
 async def get_categories():

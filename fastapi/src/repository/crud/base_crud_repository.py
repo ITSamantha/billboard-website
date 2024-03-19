@@ -60,6 +60,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
     async def get_multi(
             self,
             order: str = "id",
+            order_type=0,
             limit: int = 100,
             offset: int = 0,
             **filters
@@ -70,6 +71,6 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
             if order_column is None:
                 raise ValueError(f"Invalid order column: {order}")
 
-            stmt = select(self.model).filter_by(**filters).order_by(order_column).limit(limit).offset(offset)
+            stmt = select(self.model).filter_by(**filters).order_by(order_column if not order_type else order_column.desc()).limit(limit).offset(offset)
             row = await session.execute(stmt)
             return row.scalars().all()

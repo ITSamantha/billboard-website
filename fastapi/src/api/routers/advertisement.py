@@ -80,24 +80,13 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
 
 @router.get("")
-async def get_advertisements(request: Request):
+async def get_advertisements(request: Request, page: int = 0, per_page: int = 10, category_id: None | int = None):
     """Get all advertisements."""
 
-    validator = Validator(await request.json(), {
-        "page": ["required", "integer"],
-        "per_page": ["required", "integer"],
-        "category_id": ["nullable", "integer"]
-    })
-
-    payload = validator.validated()
-
     try:
-        per_page = validator.validated_data["per_page"]
-        offset = per_page * validator.validated_data["page"]
-
         advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session,
                                                                                 models.Advertisement).get_multi(
-            limit=per_page, offset=offset, **validator.but__not_null(["per_page", "page"]))
+            limit=per_page, offset=per_page * page)
 
         return ApiResponse.payload(transform(
             advertisements,

@@ -7,7 +7,6 @@ from src.utils.transformer import transform
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities.review import ReviewUpdate
 from src.utils.validator import Validator
 
 router = APIRouter(
@@ -74,14 +73,14 @@ async def update_review(review_id: int, request: Request, auth: Auth = Depends()
     validator = Validator(await request.json(), {
         'text': ['string'],
         'rating': ['float']  # TODO: 0<=x<=5
-    }, {}, ReviewUpdate())
+    })
 
-    payload: ReviewUpdate = validator.validated()
+    validator.validated()
 
     try:
         # todo : check existence
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session, models.Review)\
-            .update(payload.all(), id=review_id)
+            .update(validator.all(), id=review_id)
 
         return ApiResponse.payload(transform(review, ReviewTransformer()))
     except Exception as e:

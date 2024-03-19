@@ -9,7 +9,6 @@ from src.utils.transformer import transform
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.entities import Address, AddressCreate
 from src.utils.validator import Validator
 
 address_router = APIRouter(
@@ -34,7 +33,7 @@ async def get_address(address_id: int, request: Request, auth: Auth = Depends())
         return ApiResponse.error(str(e))
 
 
-@address_router.post(path='', response_model=Union[Address, ApiResponse])
+@address_router.post(path='')
 async def create_ad_address(request: Request, auth: Auth = Depends()):
     """Create address. """
 
@@ -49,13 +48,13 @@ async def create_ad_address(request: Request, auth: Auth = Depends()):
         'flat': ['nullable', 'string'],
         'longitude': ['nullable', 'float'],
         'latitude': ['nullable', 'float'],
-    }, {}, AddressCreate())
+    })
 
-    payload: AddressCreate = validator.validated()
+    validator.validated()
 
     try:
         address: models.Address = await SqlAlchemyRepository(db_manager.get_session, models.Address)\
-            .create(payload.all())
+            .create(validator.all())
 
         return ApiResponse.payload(transform(address, AddressTransformer()))
     except Exception as e:

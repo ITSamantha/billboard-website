@@ -9,7 +9,6 @@ from src.utils.transformer import transform
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.characteristics.city import City, CityUpdate
 from src.utils.validator import Validator
 
 city_router = APIRouter(
@@ -49,7 +48,7 @@ async def get_cities():
         return ApiResponse.error(str(e))
 
 
-@city_router.put(path='/{city_id}', response_model=Union[City, ApiResponse])
+@city_router.put(path='/{city_id}', response_model=ApiResponse)
 async def update_city(city_id: int, request: Request, auth: Auth = Depends()):
     """Update exact city. """
 
@@ -57,14 +56,14 @@ async def update_city(city_id: int, request: Request, auth: Auth = Depends()):
 
     validator = Validator(await request.json(), {
         'title': ['required', 'string']
-    }, {}, CityUpdate())
+    })
 
-    payload: CityUpdate = validator.validated()
+    validator.validated()
 
     try:
         # todo : check existence
         city: models.City = await SqlAlchemyRepository(db_manager.get_session, models.City) \
-            .update(payload.all(), id=city_id)
+            .update(validator.all(), id=city_id)
 
         return ApiResponse.payload(transform(city, CityTransformer()))
     except Exception as e:

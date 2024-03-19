@@ -9,7 +9,6 @@ from src.utils.transformer import transform
 from src.database import models
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.schemas.characteristics.country import CountryUpdate
 from src.utils.validator import Validator
 
 country_router = APIRouter(
@@ -57,14 +56,14 @@ async def update_country(country_id: int, request: Request, auth: Auth = Depends
 
     validator = Validator(await request.json(), {
         'title': ['required', 'string']
-    }, {}, CountryUpdate())
+    })
 
-    payload: CountryUpdate = validator.validated()
+    validator.validated()
 
     try:
         # todo : check existence
         country: models.Country = await SqlAlchemyRepository(db_manager.get_session, models.Country) \
-            .update(payload.all(), id=country_id)
+            .update(validator.all(), id=country_id)
 
         return ApiResponse.payload(transform(country, CountryTransformer()))
     except Exception as e:

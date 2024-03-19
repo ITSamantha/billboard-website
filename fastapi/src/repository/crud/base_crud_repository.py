@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Optional, Generic, List, Union
+from typing import Type, TypeVar, Optional, Generic, List, Union, Literal
 
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
@@ -54,8 +54,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def get_single(self, **filters) -> Optional[ModelType]:
         async with self._session_factory() as session:
-            row = await session.execute(select(self.model).filter_by(**filters).options(
-                selectinload(recursion_depth=1)))
+            row = await session.execute(select(self.model).filter_by(**filters))
             return row.scalar_one_or_none()
 
     async def get_multi(
@@ -71,7 +70,6 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
             if order_column is None:
                 raise ValueError(f"Invalid order column: {order}")
 
-            stmt = select(self.model).filter_by(**filters).order_by(order_column).limit(limit).offset(offset).options(
-                selectinload(recursion_depth=1))
+            stmt = select(self.model).filter_by(**filters).order_by(order_column).limit(limit).offset(offset)
             row = await session.execute(stmt)
             return row.scalars().all()

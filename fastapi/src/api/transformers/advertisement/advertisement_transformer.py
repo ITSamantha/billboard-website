@@ -1,6 +1,7 @@
 from src.api.transformers.base_transformer import BaseTransformer
 from src.api.transformers.address_transformer import AddressTransformer
-from src.api.transformers.advertisement import AdTagTransformer, AdTypeTransformer, AdPhotoTransformer, AdStatusTransformer
+from src.api.transformers.advertisement import AdTagTransformer, AdTypeTransformer, AdPhotoTransformer, \
+    AdStatusTransformer
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.user import UserTransformer
@@ -13,6 +14,7 @@ class AdvertisementTransformer(BaseTransformer):
         self.available_includes = [
             'address', 'user', 'ad_tags',
             'ad_photos', 'category', 'reviews',
+            'category'
         ]
         self.default_includes = [
             'ad_status', 'ad_type'
@@ -55,5 +57,3 @@ class AdvertisementTransformer(BaseTransformer):
 
     def include_ad_type(self, ad):
         return self.item(ad.ad_type, AdTypeTransformer())
-
-

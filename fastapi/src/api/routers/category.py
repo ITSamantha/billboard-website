@@ -48,4 +48,4 @@ async def get_categories():
 
 @router.post("/uploadfile/")
 async def create_upload_file(file: UploadFile):
-    return {"filename": file.filename}
+    return {"filename": file.filename, "content": file.content_type}

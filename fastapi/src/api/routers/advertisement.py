@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 from fastapi import APIRouter, Depends, Request
 
@@ -14,7 +14,6 @@ from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.validator import Validator
 from src.utils.transformer import transform
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
-from src.schemas.entities.worktime import create_worktime, Worktime
 
 router = APIRouter(
     prefix="/advertisements",
@@ -81,7 +80,9 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
 
 @router.get("")
-async def get_advertisement():
+async def get_advertisements():
+    """Get all advertisements."""
+
     try:
         advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session,
                                                                                 models.Advertisement).get_multi()
@@ -97,6 +98,7 @@ async def get_advertisement():
 
 @router.get("/ad_type")
 async def get_ad_types():
+    """Get all ad_types."""
     try:
         ad_types: List[models.AdType] = await SqlAlchemyRepository(db_manager.get_session, models.AdType).get_multi()
 

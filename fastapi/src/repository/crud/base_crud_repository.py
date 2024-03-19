@@ -3,6 +3,7 @@ from typing import Type, TypeVar, Optional, Generic, List, Union
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from src.database.models.base import Base
 
@@ -38,9 +39,9 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
         async with self._session_factory() as session:
             if isinstance(data, BaseModel):
                 data = {**data.__dict__}  # todo test
-            stmt = update(self.model)\
-                .values(**data)\
-                .filter_by(**filters)\
+            stmt = update(self.model) \
+                .values(**data) \
+                .filter_by(**filters) \
                 .returning(self.model)
             res = await session.execute(stmt)
             await session.commit()
@@ -53,7 +54,8 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def get_single(self, **filters) -> Optional[ModelType]:
         async with self._session_factory() as session:
-            row = await session.execute(select(self.model).filter_by(**filters))
+            row = await session.execute(select(self.model).filter_by(**filters).options(
+                selectinload(recursion_depth=1)))
             return row.scalar_one_or_none()
 
     async def get_multi(
@@ -69,6 +71,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
             if order_column is None:
                 raise ValueError(f"Invalid order column: {order}")
 
-            stmt = select(self.model).filter_by(**filters).order_by(order_column).limit(limit).offset(offset)
+            stmt = select(self.model).filter_by(**filters).order_by(order_column).limit(limit).offset(offset).options(
+                selectinload(recursion_depth=1))
             row = await session.execute(stmt)
             return row.scalars().all()

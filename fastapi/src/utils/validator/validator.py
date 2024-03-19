@@ -124,6 +124,13 @@ class Rules:
         return None
 
     @staticmethod
+    def bool(data: dict, key: str, title: str = None):
+        if key in data and not isinstance(data[key], (bool, type(None))):
+            return f"{title if title else key} field must be of type integer."
+
+        return None
+
+    @staticmethod
     def float(data: dict, key: str, title: str = None):
         if key in data and not (isinstance(data[key], (float, type(None))) or isinstance(data[key], (int, type(None)))):
             return f"{title if title else key} field must be of type float."

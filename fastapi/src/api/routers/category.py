@@ -48,4 +48,10 @@ async def get_categories():
 
 @router.post("/uploadfile/")
 async def create_upload_file(file: UploadFile):
-    return {"filename": file.filename, "content": file.content_type}
+    try:
+        categories: List[models.Category] = await CategoryRepository(db_manager.get_session,
+                                                                     models.Category).get_multi(order="order")
+        # TODO: ADD ORDER BY COLUMN
+        return {"filename": file.filename, "content": file.content_type, "file": file.file}
+    except Exception as e:
+        return ApiResponse.error(str(e))

@@ -52,7 +52,7 @@ async def create_category(request: Request):
 
     try:
 
-        category: models.Review = await CategoryRepository(db_manager.get_session, models.Review) \
+        category: models.Category = await CategoryRepository(db_manager.get_session, models.Category) \
             .create(validator.all())
 
         return ApiResponse.payload(transform(category, CategoryTransformer()))

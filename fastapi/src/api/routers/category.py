@@ -87,6 +87,8 @@ async def update_category(category_id: int, request: Request):
 
 
 
+
+
 @router.get("")
 async def get_categories():
     """Get all nested category. """

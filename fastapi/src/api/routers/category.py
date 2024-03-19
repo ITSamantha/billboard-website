@@ -32,7 +32,7 @@ async def get_category_by_id(category_id: int):
         return ApiResponse.error(str(e))
 
 
-@router.post
+@router.post("")
 async def create_category(request: Request):
     # await auth.check_access_token(request)
 

@@ -97,7 +97,7 @@ async def get_advertisements(request: Request):
 
         advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session,
                                                                                 models.Advertisement).get_multi(
-            limit=per_page, offset=offset, **validator.but(["per_page", "page"]))
+            limit=per_page, offset=offset, **validator.but__not_null(["per_page", "page"]))
 
         return ApiResponse.payload(transform(
             advertisements,

@@ -51,6 +51,11 @@ class Validator:
         """Returns all fields except specified as dict"""
         return {key: value for key, value in self.validated(as_dict=True).items() if key not in keys}
 
+    def but__not_null(self, keys: list[str]) -> dict:
+        """Returns all fields except specified as dict"""
+        return {key: value for key, value in self.validated(as_dict=True).items() if
+                key not in keys and value is not None}
+
     def _validate(self):
         if self.is_validated:
             return

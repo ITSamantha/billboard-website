@@ -34,6 +34,7 @@ async def get_category_by_id(category_id: int):
 
 @router.post("")
 async def create_category(request: Request):
+    """Create category."""
     # await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
@@ -76,11 +77,30 @@ async def get_categories():
         return ApiResponse.error(str(e))
 
 
-@router.post("/uploadfile/")
+@router.post("/uploadfile")
 async def create_upload_file(file: UploadFile):
     try:
-
         json_data = json.load(file.file)
-        return json_data
+
+        for i, data in enumerate(json_data):
+            validator = Validator(data, {
+                'id': ['nullable', 'integer'],
+                'title': ['required', 'string'],
+                'order': ['required', 'integer'],
+                'meta_title': ['required', 'string'],
+                'meta_description': ['required', 'string'],
+                'url': ['required', 'string'],
+                'parent_id': ['nullable', 'integer'],
+                'bookable': ['required', 'bool'],
+                'map_addressable': ['required', 'bool']
+            })
+
+            payload = validator.validated()
+            json_data[i] = validator.all()
+
+        categories: List[models.Category] = await CategoryRepository(db_manager.get_session, models.Category) \
+            .bulk_create(json_data)
+
+        return {"categories": [category.id for category in categories]}  # TODO: CHECK?
     except Exception as e:
         return ApiResponse.error(str(e))

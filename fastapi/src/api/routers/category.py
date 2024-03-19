@@ -55,7 +55,7 @@ async def create_category(request: Request):
         category: models.Category = await CategoryRepository(db_manager.get_session, models.Category) \
             .create(validator.all())
 
-        return ApiResponse.payload(transform(category, CategoryTransformer()))
+        return ApiResponse.payload({"category_id": category.id})  # TODO: CHECK?
     except Exception as e:
         return ApiResponse.error(str(e))
 

@@ -76,10 +76,10 @@ async def update_category(category_id: int, request: Request):
     validator.validated()
 
     try:
-        review: models.Review = await CategoryRepository(db_manager.get_session, models.Review) \
+        category: models.Category = await CategoryRepository(db_manager.get_session, models.Category) \
             .update(validator.not_null(), id=category_id)
 
-        return ApiResponse.payload(transform(review, CategoryTransformer()))
+        return ApiResponse.payload(transform(category, CategoryTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
 

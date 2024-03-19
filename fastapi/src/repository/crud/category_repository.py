@@ -1,12 +1,13 @@
 from typing import Optional, Type
 
-from sqlalchemy import select
+from pydantic import BaseModel
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from src.database import models
 from src.database.models import Category
-from src.repository.crud.base_crud_repository import SqlAlchemyRepository, ModelType
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository, ModelType, UpdateSchemaType
 
 RECURSION_DEPTH = 100
 
@@ -28,12 +29,17 @@ class CategoryRepository(SqlAlchemyRepository):
             result = row.scalars().first()
             return result
 
-    async def get_children_list(self, id):
+    async def update(self, data: UpdateSchemaType, **filters) -> ModelType:
         async with self._session_factory() as session:
-            async with session.begin():
-                children = await session.execute(select(Category).filter(Category.parent_id == id).options(
-                    selectinload(Category.children)))
-            return [child for child in children.scalars() if child]  # children.all()
+            if isinstance(data, BaseModel):
+                data = {**data.__dict__}  # todo test
+            stmt = update(self.model) \
+                .values(**data) \
+                .filter_by(**filters) \
+                .returning(self.model)
+            res = await session.execute(stmt)
+            await session.commit()
+            return res.scalars().first()
 
     async def get_multi(
             self,

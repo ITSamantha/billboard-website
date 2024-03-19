@@ -80,7 +80,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
 
 @router.get("")
-async def get_advertisements(request: Request, page: int = 0, per_page: int = 10, category_id: None | int = None):
+async def get_advertisements(request: Request, page: int = 0, per_page: int = 10):
     """Get all advertisements."""
 
     try:

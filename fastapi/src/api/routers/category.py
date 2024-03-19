@@ -1,3 +1,4 @@
+import json
 from typing import List, Annotated
 
 from fastapi import APIRouter, File, UploadFile
@@ -49,9 +50,8 @@ async def get_categories():
 @router.post("/uploadfile/")
 async def create_upload_file(file: UploadFile):
     try:
-        categories: List[models.Category] = await CategoryRepository(db_manager.get_session,
-                                                                     models.Category).get_multi(order="order")
-        # TODO: ADD ORDER BY COLUMN
-        return {"filename": file.filename, "content": file.content_type, "file": file.file}
+
+        json_data = json.load(file.file)
+        return json_data
     except Exception as e:
         return ApiResponse.error(str(e))

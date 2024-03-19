@@ -16,20 +16,22 @@ class CategoryRepository(SqlAlchemyRepository):
 
     async def get_single(self, **filters) -> Optional[ModelType]:
         async with self._session_factory() as session:
-            category = await session.execute(
-                select(self.model).filter_by(**filters).options(
-                    selectinload(self.model.children)
-                )
+            stmt = (
+                select(self.model)
+                .filter_by(**filters)
+                .options(selectinload(self.model.children)
+                         )
             )
-            return category.scalar_one_or_none()
+            row = await session.execute(stmt)
+            result = row.scalars().first()
+            return result
 
-    async def get_children_list(self, category_id):
+    async def get_children_list(self, id):
         async with self._session_factory() as session:
             async with session.begin():
-                children = await session.execute(select(Category).filter(Category.parent_id == category_id).options(
+                children = await session.execute(select(Category).filter(Category.parent_id == id).options(
                     selectinload(Category.children)))
             return [child for child in children.scalars() if child]  # children.all()
-
 
     async def get_multi(
             self,

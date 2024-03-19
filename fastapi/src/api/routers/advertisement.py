@@ -80,6 +80,21 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
+@router.get("")
+async def get_advertisement():
+    try:
+        advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session,
+                                                                                models.Advertisement).get_multi()
+
+        return ApiResponse.payload(transform(
+            advertisements,
+            AdvertisementTransformer()
+        ))
+
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
 @router.get("/ad_type")
 async def get_ad_types():
     try:

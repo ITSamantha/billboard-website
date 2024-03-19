@@ -84,6 +84,9 @@ async def update_category(category_id: int, request: Request):
         return ApiResponse.error(str(e))
 
 
+
+
+
 @router.get("")
 async def get_categories():
     """Get all nested category. """

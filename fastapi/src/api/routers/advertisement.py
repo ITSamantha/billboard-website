@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 from fastapi import APIRouter, Depends, Request
 
@@ -14,7 +14,6 @@ from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.validator import Validator
 from src.utils.transformer import transform
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
-from src.schemas.entities.worktime import create_worktime, Worktime
 
 router = APIRouter(
     prefix="/advertisements",
@@ -81,10 +80,21 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
 
 @router.get("")
-async def get_advertisement():
+async def get_advertisement(request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
     try:
-        advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session,
-                                                                                models.Advertisement).get_multi()
+        params = request.query_params
+
+        page = params['page'] if 'page' in params else 1
+        per_page = params['per_page'] if 'per_page' in params else 15
+        category_id = params['category_id'] if 'category_id' in params else None
+        sort = params['sort'] if 'sort' in params else {}
+        filters = params['filters'] if 'filters' in params else {}
+
+        return [page, per_page, category_id, sort, filters]
+
+        advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
+            .get_multi()
 
         return ApiResponse.payload(transform(
             advertisements,
@@ -96,7 +106,8 @@ async def get_advertisement():
 
 
 @router.get("/ad_type")
-async def get_ad_types():
+async def get_ad_types(request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
     try:
         ad_types: List[models.AdType] = await SqlAlchemyRepository(db_manager.get_session, models.AdType).get_multi()
 

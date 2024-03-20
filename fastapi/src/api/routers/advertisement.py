@@ -83,7 +83,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 async def get_advertisement(
         request: Request,
         auth: Auth = Depends(),
-        params: Dict[str, Union[Dict[str, Any]]] = Query(...)
+        params: Dict[str, Dict[str, Any]] = Query(...)
 ):
     return params
     await auth.check_access_token(request)

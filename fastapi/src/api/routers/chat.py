@@ -6,6 +6,7 @@ from sqlalchemy.orm import joinedload
 from src.database.models.entities.user import User
 from src.database.models.entities.chat_user import ChatUser
 from src.database.models.entities.chat import Chat
+from sqlalchemy.future import select
 
 router = APIRouter(
     prefix="/chats",
@@ -16,10 +17,14 @@ router = APIRouter(
 async def index(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     async with db_manager.get_session() as session:
-        user = session.query(User).options(
-            joinedload(User.chat_users)
-            .subqueryload(ChatUser.chat)
-            .subqueryload(Chat.messages)
-        ).get(request.state.user.id)
+        q = select(User)
+        result = await session.execute(q)
+        user = result.scalars()
+        return user
+        # user = session.query(User).options(
+        #     joinedload(User.chat_users)
+        #     .subqueryload(ChatUser.chat)
+        #     .subqueryload(Chat.messages)
+        # ).get(request.state.user.id)
 
     return ApiResponse.payload(user.chats)

@@ -86,9 +86,8 @@ async def get_advertisement(
 ):
     await auth.check_access_token(request)
     try:
-        params = request.query_params
-
-        def parse_params(params: dict) -> dict:
+        # todo: to utils
+        def parse_params(params) -> dict:
             parsed = {}
             for key, value in params.items():
                 parts = key.split('[')
@@ -102,16 +101,14 @@ async def get_advertisement(
                 else:
                     parsed[key] = value
             return parsed
-        parsed_params = parse_params(params)
-        return parsed_params
+
+        parsed_params = parse_params(request.query_params)
         page = int(parsed_params['page']) if 'page' in parsed_params else 1
         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
 
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
         filters = parsed_params['filters'] if 'filters' in parsed_params else {}
-
-        return [page, per_page, category_id, sort, filters]
 
         advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
             .get_multi()

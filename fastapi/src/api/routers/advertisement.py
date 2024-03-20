@@ -1,6 +1,6 @@
-from typing import List
+from typing import Dict, Any, List, Union
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, Query
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
@@ -80,14 +80,20 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 
 
 @router.get("")
-async def get_advertisement(request: Request, auth: Auth = Depends()):
+async def get_advertisement(
+        request: Request,
+        auth: Auth = Depends(),
+        params: Dict[str, Union[Dict[str, Any]]] = Query(...)
+):
+    return params
     await auth.check_access_token(request)
     try:
         params = request.query_params
 
-        page = params['page'] if 'page' in params else 1
-        per_page = params['per_page'] if 'per_page' in params else 15
-        category_id = params['category_id'] if 'category_id' in params else None
+        page = int(params['page']) if 'page' in params else 1
+        per_page = int(params['per_page']) if 'per_page' in params else 15
+        category_id = int(params['category_id']) if 'category_id' in params else None
+
         sort = params['sort'] if 'sort' in params else {}
         filters = params['filters'] if 'filters' in params else {}
 

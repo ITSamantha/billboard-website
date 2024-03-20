@@ -1,4 +1,5 @@
-from typing import Dict, Any, List, Union, Optional
+from typing import Dict, Any, List, Union
+
 from fastapi import APIRouter, Depends, Request, Query
 
 from src.api.dependencies.auth import Auth
@@ -81,17 +82,33 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 @router.get("")
 async def get_advertisement(
         request: Request,
-        auth: Auth = Depends(),
-        page: int = 1,
-        per_page: int = 15,
-        category_id: int = None,
-        sort: Optional[Dict[str, int]] = Query(None),
-        filters: Optional[Dict[str, str]] = Query(None),
+        auth: Auth = Depends()
 ):
     await auth.check_access_token(request)
     try:
-        # params = request.query_params
-        # return params
+        params = request.query_params
+
+        def parse_params(params: dict) -> dict:
+            parsed = {}
+            for key, value in params.items():
+                parts = key.split('[')
+                if len(parts) > 1:
+                    current_dict = parsed
+                    for part in parts[:-1]:
+                        part = part.rstrip(']')
+                        current_dict.setdefault(part, {})
+                        current_dict = current_dict[part]
+                    current_dict[parts[-1].rstrip(']')] = value
+                else:
+                    parsed[key] = value
+            return parsed
+        parsed_params = parse_params(params)
+        page = int(parsed_params['page']) if 'page' in parsed_params else 1
+        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
+        category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
+
+        sort = parsed_params['sort'] if 'sort' in parsed_params else {}
+        filters = parsed_params['filters'] if 'filters' in parsed_params else {}
 
         return [page, per_page, category_id, sort, filters]
 

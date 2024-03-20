@@ -1,5 +1,4 @@
-from typing import Dict, Any, List, Union
-
+from typing import Dict, Any, List, Union, Optional
 from fastapi import APIRouter, Depends, Request, Query
 
 from src.api.dependencies.auth import Auth
@@ -83,16 +82,16 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 async def get_advertisement(
         request: Request,
         auth: Auth = Depends(),
-#         page: int = 1,
-#         per_page: int = 15,
-#         category_id: int = None,
-#         sort: Dict[str, int] = Query(None),
-#         filters: Dict[str, str] = Query(None),
+        page: int = 1,
+        per_page: int = 15,
+        category_id: int = None,
+        sort: Optional[Dict[str, int]] = Query(None),
+        filters: Optional[Dict[str, str]] = Query(None),
 ):
     await auth.check_access_token(request)
     try:
-        params = request.query_params
-        return params
+        # params = request.query_params
+        # return params
 
         return [page, per_page, category_id, sort, filters]
 

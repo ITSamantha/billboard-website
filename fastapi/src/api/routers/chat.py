@@ -15,10 +15,11 @@ router = APIRouter(
 @router.get("")
 async def index(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
-    user = db_manager.get_session().query(User).options(
-        joinedload(User.chat_users)
-        .subqueryload(ChatUser.chat)
-        .subqueryload(Chat.messages)
-    ).get(request.state.user.id)
+    async with db_manager.get_session() as session:
+        user = session.query(User).options(
+            joinedload(User.chat_users)
+            .subqueryload(ChatUser.chat)
+            .subqueryload(Chat.messages)
+        ).get(request.state.user.id)
 
     return ApiResponse.payload(user.chats)

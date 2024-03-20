@@ -103,6 +103,7 @@ async def get_advertisement(
                     parsed[key] = value
             return parsed
         parsed_params = parse_params(params)
+        return parsed_params
         page = int(parsed_params['page']) if 'page' in parsed_params else 1
         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None

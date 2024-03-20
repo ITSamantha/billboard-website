@@ -83,14 +83,17 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
 async def get_advertisement(
         request: Request,
         auth: Auth = Depends(),
-        page: int = 1,
-        per_page: int = 15,
-        category_id: int = None,
-        sort: Dict[str, int] = Query(None),
-        filters: Dict[str, str] = Query(None),
+#         page: int = 1,
+#         per_page: int = 15,
+#         category_id: int = None,
+#         sort: Dict[str, int] = Query(None),
+#         filters: Dict[str, str] = Query(None),
 ):
     await auth.check_access_token(request)
     try:
+        params = request.query_params
+        return params
+
         return [page, per_page, category_id, sort, filters]
 
         advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\

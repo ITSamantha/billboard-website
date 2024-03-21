@@ -56,20 +56,4 @@ async def get_user(user_id: int):
         return ApiResponse.error(str(e))
 
 
-@router.get("/me/favourites")
-async def get_favourites(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
 
-    try:
-        advertisements: List[AdFavourite] = await SqlAlchemyRepository(db_manager.get_session,
-                                                                       AdFavourite) \
-            .get_multi(user_id=request.state.user.id)
-
-        return ApiResponse.payload(
-            transform(
-                [ad.advertisement for ad in advertisements],
-                AdvertisementTransformer()
-            )
-        )
-    except Exception as e:
-        return ApiResponse.error(str(e))

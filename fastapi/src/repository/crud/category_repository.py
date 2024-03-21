@@ -5,7 +5,6 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from src.database import models
 from src.database.models import Category
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository, ModelType, UpdateSchemaType
 

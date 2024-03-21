@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/{advertisement_id}/booking")
+@router.post("/{advertisement_id}")
 async def create_advertisement_booking(advertisement_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 

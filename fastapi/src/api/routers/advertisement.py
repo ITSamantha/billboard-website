@@ -1,6 +1,6 @@
-from typing import Dict, Any, List, Union
+from typing import List
 
-from fastapi import APIRouter, Depends, Request, Query
+from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
@@ -11,6 +11,7 @@ from src.database import models
 from src.database.models import Address, AdStatus, AdvertisementAdTag
 from src.database.session_manager import db_manager
 from src.repository.advertisement_repository import AdvertisementRepository
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.params import parse_params
 from src.utils.validator import Validator
 from src.utils.transformer import transform
@@ -23,7 +24,7 @@ router = APIRouter(
 
 
 @router.post("")
-async def create_advertisement_route(request: Request, auth: Auth = Depends()):
+async def create_advertisement(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
     await auth.check_access_token(request)
@@ -36,6 +37,8 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
         "category_id": ["required", "integer"],
         "ad_tags": ["required", "list"],
         "ad_photos": ["required", "list"],
+
+        # address info
         "address_id": ["nullable", "integer"],
         "city_id": ["required_without:address_id", "integer"],
         "country_id": ["required_without:address_id", "integer"],
@@ -62,19 +65,15 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
             {"user_id": request.state.user.id, "ad_status_id": AdStatus.NOT_PAID,
              "address_id": payload["address_id"]})
 
-        if len(payload["ad_tags"]):
+        if len(payload["ad_tags"]) > 0:
             tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
 
-            await AdvertisementRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
+            await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
         return ApiResponse.payload(
             transform(
                 advertisement,
                 AdvertisementTransformer()
-                .include([
-                    'address', 'user', 'ad_tags',
-                    'ad_photos', 'category', 'reviews',
-                ])
             )
         )
     except Exception as e:

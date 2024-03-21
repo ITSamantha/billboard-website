@@ -34,7 +34,7 @@ class User(Base):
     phone_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
     email_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
 
-    #ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
+    # ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
 
     # advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
 
@@ -45,6 +45,9 @@ class User(Base):
     notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
 
     chats_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
+
+    # user_fields: Mapped[List["AdTag"]] = relationship(
+    # uselist=True, lazy="selectin", secondary="user__user_field", order_by="")
 
     @property
     def chats(self):

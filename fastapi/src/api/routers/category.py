@@ -107,7 +107,7 @@ async def get_categories(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
-@router.post("/uploadfile")
+@router.post("/upload_file")
 async def upload_categories_file(file: UploadFile, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 

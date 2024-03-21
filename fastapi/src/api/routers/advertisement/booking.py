@@ -29,10 +29,10 @@ async def create_advertisement_booking(advertisement_id: int, request: Request, 
 
         # CHECK TYPE
         # DELETE FROM AD_BOOKING_AVAILABLE
-        #TODO: ABLE TO RESTORE IF BOOKING IS CANCELLED
+        # TODO: ABLE TO RESTORE IF BOOKING IS CANCELLED
 
         return ApiResponse.payload(
-            {"ad_booking_id": ad_booking.id}
+            {"ad_booking_available_id": ad_booking.id}
         )
     except Exception as e:
         return ApiResponse.error(str(e))

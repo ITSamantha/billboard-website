@@ -49,10 +49,8 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def delete(self, **filters) -> None:
         async with self._session_factory() as session:
-            res = await session.execute(delete(self.model).filter_by(**filters))
-            print(res)
+            await session.execute(delete(self.model).filter_by(**filters))
             await session.commit()
-            return res.scalar_one()
 
     async def get_single(self, **filters) -> Optional[ModelType]:
         async with self._session_factory() as session:
@@ -73,6 +71,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
             if order_column is None:
                 raise ValueError(f"Invalid order column: {order}")
 
-            stmt = select(self.model).filter_by(**filters).order_by(order_column if not order_type else order_column.desc()).limit(limit).offset(offset)
+            stmt = select(self.model).filter_by(**filters).order_by(
+                order_column if not order_type else order_column.desc()).limit(limit).offset(offset)
             row = await session.execute(stmt)
             return row.scalars().all()

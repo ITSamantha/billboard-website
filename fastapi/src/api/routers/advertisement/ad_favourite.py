@@ -64,9 +64,9 @@ async def delete_favourite(advertisement_id: int, request: Request, auth: Auth =
     await auth.check_access_token(request)
 
     try:
-        ad_fav: AdFavourite = await SqlAlchemyRepository(db_manager.get_session, AdFavourite) \
+        await SqlAlchemyRepository(db_manager.get_session, AdFavourite) \
             .delete(advertisement_id=advertisement_id, user_id=request.state.user.id)
 
-        return ApiResponse.payload(transform(ad_fav.advertisement, AdvertisementTransformer()))
+        return ApiResponse.payload({"advertisement_id": advertisement_id})
     except Exception as e:
         return ApiResponse.error(str(e))

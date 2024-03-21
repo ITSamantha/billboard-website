@@ -86,8 +86,8 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     try:
         parsed_params = parse_params(request.query_params)
-        page = int(parsed_params['page']) if 'page' in parsed_params else 0
-        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15  # TODO: page-1?
+        page = int(parsed_params['page']) if 'page' in parsed_params else 0  # TODO: page-1?
+        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
 
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
@@ -102,7 +102,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
             AdvertisementTransformer().include([
                 'address', 'user', 'ad_tags',
                 'ad_photos', 'category', 'reviews'
-            ]
+            ]  # TODO: INCLUDE CORRECT MODELS
             )))
 
     except Exception as e:

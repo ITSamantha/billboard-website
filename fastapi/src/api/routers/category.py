@@ -35,9 +35,9 @@ async def get_category_by_id(category_id: int, request: Request, auth: Auth = De
 
 
 @router.post("")
-async def create_category(request: Request):
+async def create_category(request: Request, auth: Auth = Depends()):
     """Create category."""
-    # await auth.check_access_token(request)
+    await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
         'id': ['nullable', 'integer'],
@@ -64,7 +64,9 @@ async def create_category(request: Request):
 
 
 @router.put("/{category_id}")
-async def update_category(category_id: int, request: Request):
+async def update_category(category_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
     validator = Validator(await request.json(), {
         'title': ['nullable', 'string'],
         'order': ['nullable', 'integer'],
@@ -89,8 +91,9 @@ async def update_category(category_id: int, request: Request):
 
 @router.get("")
 async def get_categories(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
     """Get all nested category. """
+
+    await auth.check_access_token(request)
 
     try:
         categories: List[models.Category] = await CategoryRepository(db_manager.get_session,

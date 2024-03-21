@@ -50,6 +50,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
     async def delete(self, **filters) -> None:
         async with self._session_factory() as session:
             res = await session.execute(delete(self.model).filter_by(**filters))
+            print(res)
             await session.commit()
             return res.scalar_one()
 

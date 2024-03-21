@@ -108,10 +108,14 @@ async def get_categories(request: Request, auth: Auth = Depends()):
 
 
 @router.post("/uploadfile")
-async def create_upload_file(file: UploadFile, request: Request, auth: Auth = Depends()):
+async def upload_categories_file(file: UploadFile, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     try:
+
+        if "json" not in file.content_type:
+            raise Exception("The file me be a correct json file.")
+
         json_data = json.load(file.file)
 
         for i, data in enumerate(json_data):

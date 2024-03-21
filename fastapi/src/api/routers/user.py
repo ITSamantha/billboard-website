@@ -33,7 +33,7 @@ async def get_user(user_id: int):
         return ApiResponse.error(str(e))
 
 
-@router.get("")
+@router.get("/me")
 async def get_my(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 

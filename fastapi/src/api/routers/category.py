@@ -1,6 +1,8 @@
 import json
 from typing import List
-from fastapi import APIRouter, UploadFile, Request
+
+from fastapi import APIRouter, UploadFile, Request, Depends
+from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.database import models
@@ -16,7 +18,8 @@ router = APIRouter(
 
 
 @router.get("/{category_id}")
-async def get_category_by_id(category_id: int):
+async def get_category_by_id(category_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
     """Get nested category. """
 
     try:
@@ -85,7 +88,8 @@ async def update_category(category_id: int, request: Request):
 
 
 @router.get("")
-async def get_categories():
+async def get_categories(request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
     """Get all nested category. """
 
     try:
@@ -101,7 +105,9 @@ async def get_categories():
 
 
 @router.post("/uploadfile")
-async def create_upload_file(file: UploadFile):
+async def create_upload_file(file: UploadFile, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
     try:
         json_data = json.load(file.file)
 

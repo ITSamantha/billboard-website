@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import (
 from src.config.database.config import settings_db
 
 
+# TODO: CHECK IF THE CONNECTION IS CONSTANT
 class DatabaseSessionManager:
     def __init__(self) -> None:
         self.engine: Optional[AsyncEngine] = None

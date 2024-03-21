@@ -40,7 +40,6 @@ from src.database.models.many_to_many.user__user_field import UserUserField
 from src.database.models.many_to_many.category__filter import CategoryFilter
 from src.database.models.many_to_many.advertisement__filter_value import AdvertisementFilterValue
 from src.database.models.many_to_many.advertisement__ad_tag import AdvertisementAdTag
-from src.database.models.many_to_many.user__ad_booking_available import AdBooking
 # ==TRANSACTIONS==
 from src.database.models.transactions.transaction import Transaction
 

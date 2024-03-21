@@ -55,3 +55,18 @@ async def create_favourite(request: Request, auth: Auth = Depends()):
         return ApiResponse.payload(transform(ad_fav.advertisement, AdvertisementTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
+
+
+@router.delete("/{advertisement_id}")
+async def delete_favourite(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    """Delete favourite advertisement by id. """
+
+    await auth.check_access_token(request)
+
+    try:
+        ad_fav: AdFavourite = await SqlAlchemyRepository(db_manager.get_session, AdFavourite) \
+            .delete(advertisement_id=advertisement_id, user_id=request.state.user.id)
+
+        return ApiResponse.payload(transform(ad_fav.advertisement, AdvertisementTransformer()))
+    except Exception as e:
+        return ApiResponse.error(str(e))

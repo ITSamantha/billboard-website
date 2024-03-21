@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
-from src.api.routers.advertisement import ad_favourite
+from src.api.routers.advertisement import ad_favourite, booking
 from src.api.transformers.advertisement import AdTypeTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
@@ -26,6 +26,7 @@ router = APIRouter(
 )
 
 router.include_router(ad_favourite.router)
+router.include_router(booking.router)
 
 
 @router.post("")

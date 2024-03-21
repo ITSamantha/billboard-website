@@ -5,7 +5,7 @@ from src.database.models.base import Base
 
 
 class AdBooking(Base):
-    __tablename__ = "advertisement__ad_booking_available"
+    __tablename__ = "user__ad_booking_available"
 
     user_id: Mapped[int] = mapped_column(ForeignKey("advertisement.id"), nullable=False, primary_key=True)
 

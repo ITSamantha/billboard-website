@@ -7,7 +7,7 @@ from src.api.responses.api_response import ApiResponse
 from src.api.transformers.advertisement import AdvertisementTransformer
 from src.api.transformers.user import UserTransformer
 from src.database import models
-from src.database.models import Advertisement
+from src.database.models import Advertisement, AdFavourite
 from src.database.session_manager import db_manager
 from src.repository.advertisement_repository import AdvertisementRepository
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
@@ -61,13 +61,13 @@ async def get_favourites(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     try:
-        advertisements: List[Advertisement] = await AdvertisementRepository(db_manager.get_session,
-                                                                            models.Advertisement) \
+        advertisements: List[AdFavourite] = await SqlAlchemyRepository(db_manager.get_session,
+                                                                       AdFavourite) \
             .get_multi(user_id=request.state.user.id)
 
         return ApiResponse.payload(
             transform(
-                advertisements,
+                [ad.advertisement for ad in advertisements],
                 AdvertisementTransformer()
             )
         )

@@ -194,7 +194,7 @@ async def delete_advertisement(advertisement_id: int, request: Request, auth: Au
 
     try:
         advertisement: Advertisement = await AdvertisementRepository(db_manager.get_session, models.Advertisement) \
-            .update(data={"deleted_at": json_datetime(datetime.datetime.now())}, id=advertisement_id)
+            .update(data={"deleted_at": datetime.datetime.now()}, id=advertisement_id)
 
         return ApiResponse.payload({"advertisement_id": advertisement.id})
     except Exception as e:

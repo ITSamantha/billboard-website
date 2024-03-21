@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from fastapi import APIRouter, Depends, Request
@@ -9,11 +10,12 @@ from src.api.transformers.advertisement import AdTypeTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
 from src.database import models
-from src.database.models import Address, AdStatus, AdvertisementAdTag
+from src.database.models import Address, AdStatus, AdvertisementAdTag, Advertisement
 from src.database.session_manager import db_manager
 from src.repository.advertisement_repository import AdvertisementRepository
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.params import parse_params
+from src.utils.time import json_datetime
 from src.utils.validator import Validator
 from src.utils.transformer import transform
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
@@ -97,7 +99,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
 
         advertisements: List[models.Advertisement] = await AdvertisementRepository(db_manager.get_session,
                                                                                    models.Advertisement) \
-            .get_multi(limit=per_page, offset=page * per_page)
+            .get_multi(limit=per_page, offset=page * per_page, deleted_at=None)
 
         return ApiResponse.payload(transform(
             advertisements,
@@ -182,5 +184,18 @@ async def get_advertisement_worktime(advertisement_id: int, request: Request, au
             WorktimeTransformer()
         ))
 
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.delete("/{advertisement_id}")
+async def delete_advertisement(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    try:
+        advertisement: Advertisement = await AdvertisementRepository(db_manager.get_session, models.Advertisement) \
+            .update(data={"deleted_at": json_datetime(datetime.datetime.now())}, id=advertisement_id)
+
+        return ApiResponse.payload({"advertisement_id": advertisement.id})
     except Exception as e:
         return ApiResponse.error(str(e))

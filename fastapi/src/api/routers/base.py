@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-from src.api.routers import auth, advertisement, review, category, chat, user
+from src.api.routers import auth,  review, category, chat, user
+from src.api.routers.advertisement import advertisement
 
 from src.api.routers.location import location
 from src.api.routers.websockets import chat as ws_chat

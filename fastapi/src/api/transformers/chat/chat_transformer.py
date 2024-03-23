@@ -11,7 +11,7 @@ class ChatTransformer(BaseTransformer):
     def transform(self, chat):
         return {
             "id": chat.id,
-            "created_at": chat.created_at
+            "created_at": chat.created_at.isoformat()
         }
 
     def include_messages(self, chat):

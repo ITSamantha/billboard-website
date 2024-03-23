@@ -19,7 +19,7 @@ async def index(request: Request, auth: Auth = Depends()):
     async with db_manager.get_session() as session:
         q = select(User)
         result = await session.execute(q)
-        user = result.scalars()
+        user = result.scalars().all()
         return user
         # user = session.query(User).options(
         #     joinedload(User.chat_users)

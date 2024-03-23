@@ -7,7 +7,6 @@ import datetime
 from src.database.models.base import Base
 
 
-
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
 

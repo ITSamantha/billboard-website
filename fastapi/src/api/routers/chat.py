@@ -20,8 +20,8 @@ async def index(request: Request, auth: Auth = Depends()):
         q = select(Chat)\
             .filter(Chat.id.in_(select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct()))
 
-        res = await session.execute(q).all()
-        return res
+        res = await session.execute(q)
+        return res.all()
         # q = select(User).options(joinedload(User.chat_users).joinedload(ChatUser.chat).joinedload(Chat.messages))
         # result = await session.execute(q)
         # user = result.unique().scalars().all()

@@ -18,7 +18,7 @@ async def index(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     async with db_manager.get_session() as session:
         q = select(User).options(joinedload(User.chat_users).joinedload(ChatUser.chat).joinedload(Chat.messages))
-        result = await session.execute(q)
+        result = await session.execute(q).unique()
         user = result.scalars().all()
         return user
         # user = session.query(User).options(

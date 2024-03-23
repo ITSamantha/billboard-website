@@ -1,5 +1,5 @@
 from src.api.transformers.base_transformer import BaseTransformer
-from src.api.transformers.chat import ChatUserTransformer
+from src.api.transformers.chat.chat_user_transformer import ChatUserTransformer
 
 
 class ChatMessageTransformer(BaseTransformer):

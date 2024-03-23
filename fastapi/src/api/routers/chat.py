@@ -22,7 +22,7 @@ async def index(request: Request, auth: Auth = Depends()):
             .options(joinedload(Chat.messages))
 
         res = await session.execute(q)
-        return res.all()
+        return res.unique().all()
         # q = select(User).options(joinedload(User.chat_users).joinedload(ChatUser.chat).joinedload(Chat.messages))
         # result = await session.execute(q)
         # user = result.unique().scalars().all()

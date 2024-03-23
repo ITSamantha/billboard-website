@@ -18,7 +18,8 @@ async def index(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     async with db_manager.get_session() as session:
         q = select(Chat)\
-            .filter(Chat.id.in_(select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct()))
+            .filter(Chat.id.in_(select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct()))\
+            .options(joinedload(Chat.messages))
 
         res = await session.execute(q)
         return res.all()

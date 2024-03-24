@@ -7,15 +7,21 @@ from src.api.responses.api_response import ApiResponse
 from src.api.transformers.advertisement import AdTypeTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
-from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review,Advertisement
+from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+
+from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review, Advertisement
 from src.database.session_manager import db_manager
+
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
+
 from src.utils.validator import Validator
 from src.utils.transformer import transform
 from src.utils.query_params import get_params
-from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+
 from sqlalchemy.future import select
+from sqlalchemy.orm import joinedload
 from sqlalchemy import desc, asc, func
+
 import math
 
 
@@ -99,7 +105,7 @@ async def get_advertisement(
         filters = parsed_params['filters'] if 'filters' in parsed_params else {}  # todo кастомные филтры
 
         async with db_manager.get_session() as session:
-            q = select(Advertisement)
+            q = select(Advertisement).options(joinedload(Advertisement.category))
             # filtering
             if category_id:
                 q.where(Advertisement.category_id == category_id)

@@ -127,10 +127,6 @@ async def get_advertisement(
             advertisements_count = res.scalar()
 
             pages_total = math.ceil(advertisements_count / per_page)
-        return {
-            'advertisements_count':advertisements_count,
-            'pages_total':pages_total,
-        }
         return ApiResponse.paginated(transform(
             advertisements,
             AdvertisementTransformer().include(['category'])

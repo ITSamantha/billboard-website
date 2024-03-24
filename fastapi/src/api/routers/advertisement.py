@@ -1,19 +1,23 @@
-from typing import Dict, Any, List, Union
+from typing import List
 
-from fastapi import APIRouter, Depends, Request, Query
+from fastapi import APIRouter, Depends, Request
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.advertisement import AdTypeTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
-from src.database import models
-from src.database.models import Address, AdStatus, AdvertisementAdTag
+from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review,Advertisement
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.validator import Validator
 from src.utils.transformer import transform
+from src.utils.query_params import get_params
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+from sqlalchemy.future import select
+from sqlalchemy import desc, asc, func
+import math
+
 
 router = APIRouter(
     prefix="/advertisements",
@@ -54,7 +58,7 @@ async def create_advertisement_route(request: Request, auth: Auth = Depends()):
                 ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude"]))
             payload["address_id"] = address.id
 
-        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement) \
+        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
             .create(
             validator.only(["title", "user_description", "ad_type_id", "price", "category_id"]) |
             {"user_id": request.state.user.id, "ad_status_id": AdStatus.NOT_PAID,
@@ -86,37 +90,38 @@ async def get_advertisement(
 ):
     await auth.check_access_token(request)
     try:
-        # todo: to utils
-        def parse_params(params) -> dict:
-            parsed = {}
-            for key, value in params.items():
-                parts = key.split('[')
-                if len(parts) > 1:
-                    current_dict = parsed
-                    for part in parts[:-1]:
-                        part = part.rstrip(']')
-                        current_dict.setdefault(part, {})
-                        current_dict = current_dict[part]
-                    current_dict[parts[-1].rstrip(']')] = value
-                else:
-                    parsed[key] = value
-            return parsed
-
-        parsed_params = parse_params(request.query_params)
+        parsed_params = get_params(request)
         page = int(parsed_params['page']) if 'page' in parsed_params else 1
         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
-
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
-        filters = parsed_params['filters'] if 'filters' in parsed_params else {}
+        filters = parsed_params['filters'] if 'filters' in parsed_params else {}  # todo these are custom
 
-        advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement)\
-            .get_multi()
+        # advertisements: List[Advertisement] = await SqlAlchemyRepository(db_manager.get_session, Advertisement)\
+        #     .get_multi()
 
-        return ApiResponse.payload(transform(
+        async with db_manager.get_session() as session:
+            q = select(Advertisement)
+            if category_id:
+                q.where(Advertisement.category_id == category_id)
+            for col_name in sort:
+                col = getattr(Advertisement, col_name)
+                q.order_by(asc(col) if sort[col_name] else desc(col))
+            q.limit(per_page)
+            q.offset(per_page * (page - 1))
+
+            res = await session.execute(q)
+            advertisements = res.scalars().all()
+
+            res = await session.query(func.count(Advertisement.id))
+            advertisements_count = res.scalar()
+
+            pages_total = math.ceil(advertisements_count / per_page)
+
+        return ApiResponse.paginated(transform(
             advertisements,
             AdvertisementTransformer()
-        ))
+        ), page, per_page, pages_total)
 
     except Exception as e:
         return ApiResponse.error(str(e))
@@ -126,7 +131,7 @@ async def get_advertisement(
 async def get_ad_types(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     try:
-        ad_types: List[models.AdType] = await SqlAlchemyRepository(db_manager.get_session, models.AdType).get_multi()
+        ad_types: List[AdType] = await SqlAlchemyRepository(db_manager.get_session, AdType).get_multi()
 
         return ApiResponse.payload(transform(
             ad_types,
@@ -144,7 +149,7 @@ async def get_advertisement(advertisement_id: int, request: Request, short: bool
     await auth.check_access_token(request)
     # TODO: SHORT VERSION
     try:
-        advertisement: models.Advertisement = await SqlAlchemyRepository(db_manager.get_session, models.Advertisement) \
+        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
             .get_single(id=advertisement_id)
 
         if not advertisement:
@@ -169,7 +174,7 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
     """Get all reviews for exact advertisement. """
     await auth.check_access_token(request)
     try:
-        reviews: List[models.Review] = await SqlAlchemyRepository(db_manager.get_session, models.Review) \
+        reviews: List[Review] = await SqlAlchemyRepository(db_manager.get_session, Review) \
             .get_multi(advertisement_id=advertisement_id)
 
         return ApiResponse.payload(transform(
@@ -184,7 +189,7 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
 async def get_advertisement_worktime(advertisement_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     try:
-        worktimes: List[models.Worktime] = await SqlAlchemyRepository(db_manager.get_session, models.Worktime) \
+        worktimes: List[Worktime] = await SqlAlchemyRepository(db_manager.get_session, Worktime) \
             .get_multi(advertisement_id=advertisement_id)
 
         return ApiResponse.payload(transform(

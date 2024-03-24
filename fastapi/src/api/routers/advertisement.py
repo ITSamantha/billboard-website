@@ -98,7 +98,7 @@ async def get_advertisement(
         filters = parsed_params['filters'] if 'filters' in parsed_params else {}  # todo these are custom
 
         async with db_manager.get_session() as session:
-            q = select(Advertisement)
+            q = select(Advertisement, func.count(Advertisement.id).label('kek'))
             if category_id:
                 q.where(Advertisement.category_id == category_id)
             for col_name in sort:
@@ -114,6 +114,7 @@ async def get_advertisement(
             advertisements_count = res.scalar()
 
             pages_total = math.ceil(advertisements_count / per_page)
+        return advertisements
         return {
             "pages_total": pages_total,
             "page": page,

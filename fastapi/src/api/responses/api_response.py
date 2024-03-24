@@ -18,7 +18,7 @@ class ApiResponse(BaseModel):
         )
 
     @staticmethod
-    def paginated(data: dict, page: int, per_page: int, pages_count: int):
+    def paginated(data: list, page: int, per_page: int, pages_count: int):
         return JSONResponse(
             content={
                 data: data,

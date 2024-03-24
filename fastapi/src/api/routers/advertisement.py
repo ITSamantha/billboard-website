@@ -89,40 +89,41 @@ async def get_advertisement(
         auth: Auth = Depends()
 ):
     await auth.check_access_token(request)
+    #  todo вынести всю логику с пагнацией для переиспользования
     try:
         parsed_params = get_params(request)
         page = int(parsed_params['page']) if 'page' in parsed_params else 1
         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
-        filters = parsed_params['filters'] if 'filters' in parsed_params else {}  # todo these are custom
+        filters = parsed_params['filters'] if 'filters' in parsed_params else {}  # todo кастомные филтры
 
         async with db_manager.get_session() as session:
-            q = select(Advertisement, func.count(Advertisement.id).label('kek'))
+            q = select(Advertisement)
+            # filtering
             if category_id:
                 q.where(Advertisement.category_id == category_id)
+            # sorting
             for col_name in sort:
                 col = getattr(Advertisement, col_name)
                 q.order_by(asc(col) if sort[col_name] else desc(col))
+            # paginating
             q.limit(per_page)
             q.offset(per_page * (page - 1))
 
             res = await session.execute(q)
             advertisements = res.scalars().all()
 
-            res = await session.execute(select(func.count(Advertisement.id)))
+            res = await session.execute(
+                # todo сломается при добавлении фильтров. Сделать два объекта query и применять фильтры к обоим?
+                select(func.count(Advertisement.id)).where(Advertisement.category_id == category_id)
+            )
             advertisements_count = res.scalar()
 
             pages_total = math.ceil(advertisements_count / per_page)
-        return advertisements
-        return {
-            "pages_total": pages_total,
-            "page": page,
-            "per_page": per_page,
-        }
         return ApiResponse.paginated(transform(
             advertisements,
-            AdvertisementTransformer().include('category')
+            AdvertisementTransformer().include(['category'])
         ), page, per_page, pages_total)
 
     except Exception as e:

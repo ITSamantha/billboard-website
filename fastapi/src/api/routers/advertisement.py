@@ -118,7 +118,7 @@ async def get_advertisement(
             q.offset(per_page * (page - 1))
 
             res = await session.execute(q)
-            advertisements = res.scalars().all()
+            advertisements = res.unique().scalars().all()
 
             res = await session.execute(
                 # todo сломается при добавлении фильтров. Сделать два объекта query и применять фильтры к обоим?

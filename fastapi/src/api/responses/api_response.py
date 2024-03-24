@@ -21,10 +21,10 @@ class ApiResponse(BaseModel):
     def paginated(data: list, page: int, per_page: int, pages_count: int):
         return JSONResponse(
             content={
-                data: data,
-                page: page,
-                per_page: per_page,
-                pages_count: pages_count,
+                "data": data,
+                "page": page,
+                "per_page": per_page,
+                "pages_count": pages_count,
             },
             status_code=200
         )

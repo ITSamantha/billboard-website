@@ -97,9 +97,6 @@ async def get_advertisement(
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
         filters = parsed_params['filters'] if 'filters' in parsed_params else {}  # todo these are custom
 
-        # advertisements: List[Advertisement] = await SqlAlchemyRepository(db_manager.get_session, Advertisement)\
-        #     .get_multi()
-
         async with db_manager.get_session() as session:
             q = select(Advertisement)
             if category_id:
@@ -117,10 +114,14 @@ async def get_advertisement(
             advertisements_count = res.scalar()
 
             pages_total = math.ceil(advertisements_count / per_page)
-
+        return {
+            "pages_total": pages_total,
+            "page": page,
+            "per_page": per_page,
+        }
         return ApiResponse.paginated(transform(
             advertisements,
-            AdvertisementTransformer()
+            AdvertisementTransformer().include('category')
         ), page, per_page, pages_total)
 
     except Exception as e:

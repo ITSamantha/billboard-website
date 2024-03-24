@@ -108,14 +108,14 @@ async def get_advertisement(
             q = select(Advertisement).options(joinedload(Advertisement.category))
             # filtering
             if category_id:
-                q.where(Advertisement.category_id == category_id)
+                q = q.where(Advertisement.category_id == category_id)
             # sorting
             for col_name in sort:
                 col = getattr(Advertisement, col_name)
-                q.order_by(asc(col) if sort[col_name] else desc(col))
+                q = q.order_by(asc(col) if sort[col_name] else desc(col))
             # paginating
-            q.limit(per_page)
-            q.offset(per_page * (page - 1))
+            q = q.limit(per_page)
+            q = q.offset(per_page * (page - 1))
 
             res = await session.execute(q)
             advertisements = res.unique().scalars().all()

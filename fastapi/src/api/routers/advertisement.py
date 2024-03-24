@@ -113,7 +113,7 @@ async def get_advertisement(
             res = await session.execute(q)
             advertisements = res.scalars().all()
 
-            res = await session.query(func.count(Advertisement.id))
+            res = await session.execute(select(func.count(Advertisement.id)))
             advertisements_count = res.scalar()
 
             pages_total = math.ceil(advertisements_count / per_page)

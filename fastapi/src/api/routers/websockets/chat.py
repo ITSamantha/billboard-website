@@ -1,27 +1,41 @@
 from fastapi import WebSocket, APIRouter, Depends
 from src.api.dependencies.auth import Auth
+from src.utils.redis import redis
 
 router = APIRouter()
 
-connected_users = {}
 
-
+# todo check that redis pool is created once
+# todo share pool between workers
 @router.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.accept()
-    try:
-        user = await auth.check_access_token_websocket(websocket)
-    except Exception as e:
-        await websocket.send_text('Unauthenticated')
-        await websocket.close()
-        return
+    # try:
+    #     user = await auth.check_access_token_websocket(websocket)
+    # except Exception as e:
+    #     await websocket.send_text('Unauthenticated')
+    #     await websocket.close()
+    #     return
 
-    connected_users[user.id] = websocket
+    # channel_name = f"user_{user.id}"
+    channel_name = f"user_1"
     while True:
-        await websocket.send_text(str(len(connected_users)))
-        await websocket.send_text('uesr_id: ' + str(user.id))
-        data = await websocket.receive_text()
-        for user_id in connected_users:
-            if user_id == user.id:
-                continue
-            connected_users[user_id].send_text(data)
+        async with redis.pool.get() as redis_connection:
+            # Subscribe to channel
+            channel, = await redis_connection.subscribe(channel_name)
+            try:
+                while await channel.wait_message():
+                    message = await channel.get(encoding='utf-8')
+                    await websocket.send_text(message)
+            finally:
+                await channel.unsubscribe(channel_name)
+
+@router.websocket("/ws/chat/huy")
+async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
+    await websocket.accept()
+    await websocket.send_text('type smth')
+    msg = await websocket.receive_text()
+    channel_name = 'user_1'
+    async with redis.pool.get() as redis_connection:
+        await redis_connection.publish(channel_name, msg)
+

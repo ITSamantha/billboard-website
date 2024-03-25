@@ -13,6 +13,7 @@ class Redis:
     async def close_pool(self):
         if not self.pool:
             return
+        # todo close pool
         # self.pool.close()
         # await self.pool.wait_closed()
         self.pool = None

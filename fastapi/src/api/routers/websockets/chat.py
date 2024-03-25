@@ -22,10 +22,11 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     psub = redis_connection.pubsub()
     async with psub as p:
         await p.subscribe("channel:1")
+        import json
         try:
             while True:
                 msg = await p.get_message()
-                await websocket.send_text(msg)
+                await websocket.send_text(json.dumps(msg))
         finally:
             await p.unsubscribe(channel_name)
 

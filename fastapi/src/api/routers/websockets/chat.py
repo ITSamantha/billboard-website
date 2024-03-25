@@ -24,13 +24,13 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
 
     redis_connection = redis.get_connection()
     psub = redis_connection.pubsub()
-    import json
+
     async def reader(channel: aioredis.client.PubSub, websocket):
         while True:
             try:
                 message = await channel.get_message(ignore_subscribe_messages=True)
                 if message is not None:
-                    await websocket.send_text(json.dumps(message))
+                    await websocket.send_text(message)
                 await asyncio.sleep(1)
             except asyncio.TimeoutError:
                 pass

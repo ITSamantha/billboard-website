@@ -10,12 +10,7 @@ from src.api.transformers.advertisement import AdTypeTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
 from src.database import models
-from src.database.models import Address, AdStatus, AdvertisementAdTag, Advertisement
-from src.database.session_manager import db_manager
 from src.repository.advertisement_repository import AdvertisementRepository
-from src.repository.crud.base_crud_repository import SqlAlchemyRepository
-from src.utils.params import parse_params
-from src.utils.time import json_datetime
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
 from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review, Advertisement

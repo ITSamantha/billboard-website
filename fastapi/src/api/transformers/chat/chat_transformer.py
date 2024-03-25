@@ -5,8 +5,8 @@ from src.api.transformers.chat.chat_message_transformer import ChatMessageTransf
 class ChatTransformer(BaseTransformer):
     def __init__(self):
         super().__init__()
-        self.available_includes = []
-        self.default_includes = ['messages']
+        self.available_includes = ['messages']
+        self.default_includes = []
 
     def transform(self, chat):
         return {

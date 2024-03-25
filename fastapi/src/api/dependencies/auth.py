@@ -24,7 +24,9 @@ class Auth:
 
     async def check_access_token_websocket(self, websocket: WebSocket):
         token = await websocket.receive_text()
+        await websocket.send_text('got token')
         _, user = await self.check_token(token, TokenType.ACCESS)
+        await websocket.send_text('checked token')
         return user
 
     async def check_refresh_token(self, request: Request):

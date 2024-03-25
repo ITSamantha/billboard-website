@@ -101,11 +101,7 @@ async def get_categories(request: Request, auth: Auth = Depends()):
         # TODO: ADD ORDER BY COLUMN
         return ApiResponse.payload(transform(
             categories,
-<<<<<<< HEAD
             CategoryTransformer().include(["children"])
-=======
-            CategoryTransformer().include(['children'])
->>>>>>> dev
         ))
     except Exception as e:
         return ApiResponse.error(str(e))

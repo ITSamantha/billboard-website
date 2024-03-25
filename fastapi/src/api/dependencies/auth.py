@@ -38,9 +38,11 @@ class Auth:
 
     async def check_token(self, token, type, websocket):
         try:
+            await websocket.send_text('trying to get payload')
             payload = self.jwt.verify_token(token)
             await websocket.send_text('got payload')
         except JWTError:
+            await websocket.send_text('here?')
             self.raise_credentials_exception()
 
         if payload['type'] != type:

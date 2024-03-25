@@ -71,7 +71,7 @@ async def store(request: Request, auth: Auth = Depends()):
 
         res = await session.execute(q)
         chats = res.unique().scalars().all()
-    return chats
+
     if chats:
         return ApiResponse.error('Chat between these users already exists')
     #  create chat

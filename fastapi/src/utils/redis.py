@@ -8,7 +8,7 @@ class Redis:
     def init_pool(self):
         self.pool = aioredis.ConnectionPool.from_url("redis://otiva_redis", max_connections=10)
 
-    def close_pool(self):
+    async def close_pool(self):
         if not self.pool:
             return
         self.pool.close()

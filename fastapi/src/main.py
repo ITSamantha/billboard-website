@@ -25,7 +25,7 @@ app = get_application()
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    redis.close_pool()
+    await redis.close_pool()
 
 @app.exception_handler(AppValidationException)
 async def validation_failed(request: Request, exc: AppValidationException):

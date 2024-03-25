@@ -29,14 +29,10 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     async def reader(channel: aioredis.client.PubSub, websocket):
         while True:
             try:
-                async with async_timeout.timeout(1):
-                    message = await channel.get_message(ignore_subscribe_messages=True)
-                    if message is not None:
-                        await websocket.send_text(message)
-                        if message["data"] == STOPWORD:
-                            print("(Reader) STOP")
-                            break
-                    await asyncio.sleep(0.01)
+                message = await channel.get_message(ignore_subscribe_messages=True)
+                if message is not None:
+                    await websocket.send_text(message)
+                await asyncio.sleep(1)
             except asyncio.TimeoutError:
                 pass
 
@@ -45,6 +41,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
         await reader(p, websocket)  # wait for reader to complete
         await p.unsubscribe("channel:1")
     await psub.close()
+    await websocket.close()
 
 
 @router.websocket("/ws/chat/huy")
@@ -56,5 +53,5 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     channel_name = f"user_1"
     pub = redis.get_connection()
     await pub.publish(channel_name, msg)
-    await pub.publish(channel_name, STOPWORD)
     await pub.close()
+    await websocket.close()

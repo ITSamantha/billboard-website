@@ -12,7 +12,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     try:
         user = await auth.check_access_token_websocket(websocket)
     except Exception as e:
-        await websocket.send('Unauthenticated')
+        await websocket.send_text('Unauthenticated')
         await websocket.close()
         return
 

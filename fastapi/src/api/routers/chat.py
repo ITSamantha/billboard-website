@@ -20,7 +20,7 @@ async def index(request: Request, auth: Auth = Depends()):
     async with db_manager.get_session() as session:
         q = select(Chat)\
             .filter(Chat.id.in_(select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct()))\
-            .options(joinedload(Chat.messages))
+            .options(joinedload(Chat.messages))  # todo limit messages
         res = await session.execute(q)
 
         chats = res.unique().scalars().all()
@@ -30,13 +30,14 @@ async def index(request: Request, auth: Auth = Depends()):
     ))
 
 
-@router.get('/chat_id')
+@router.get('/{chat_id}')
 async def find(chat_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     async with db_manager.get_session() as session:
+        #  todo chat must have chat_user with request.state.user.id == user_id
         q = select(Chat)\
             .where(Chat.id == chat_id)\
-            .options(joinedload(Chat.messages))
+            .options(joinedload(Chat.messages))  # todo limit messages
         res = await session.execute(q)
         chat = res.scalar()
 

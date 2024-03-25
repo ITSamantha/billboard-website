@@ -20,15 +20,15 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     # channel_name = f"user_{user.id}"
     channel_name = f"user_1"
     while True:
-        async with redis.pool.get() as redis_connection:
-            # Subscribe to channel
-            channel, = await redis_connection.subscribe(channel_name)
-            try:
-                while await channel.wait_message():
-                    message = await channel.get(encoding='utf-8')
-                    await websocket.send_text(message)
-            finally:
-                await channel.unsubscribe(channel_name)
+        redis_connection = redis.get_connection()
+        # Subscribe to channel
+        channel, = await redis_connection.subscribe(channel_name)
+        try:
+            while await channel.wait_message():
+                message = await channel.get(encoding='utf-8')
+                await websocket.send_text(message)
+        finally:
+            await channel.unsubscribe(channel_name)
 
 @router.websocket("/ws/chat/huy")
 async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
@@ -36,6 +36,6 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.send_text('type smth')
     msg = await websocket.receive_text()
     channel_name = 'user_1'
-    async with redis.pool.get() as redis_connection:
-        await redis_connection.publish(channel_name, msg)
+    redis_connection = redis.get_connection()
+    await redis_connection.publish(channel_name, msg)
 

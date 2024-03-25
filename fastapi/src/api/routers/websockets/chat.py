@@ -31,8 +31,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
                 message = await channel.get_message(ignore_subscribe_messages=True)
                 if message is not None:
                     for key in message:
-                        await websocket.send_text(key)
-                        await websocket.send_text(message[key])
+                        await websocket.send_text(str(type(message['data']))) #data, pattern, message, type
                 await asyncio.sleep(1)
             except asyncio.TimeoutError:
                 pass

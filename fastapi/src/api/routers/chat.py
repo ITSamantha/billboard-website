@@ -54,7 +54,7 @@ async def find(chat_id: int, request: Request, auth: Auth = Depends()):
 
 
 @router.post('')
-def store(request: Request, auth: Auth = Depends()):
+async def store(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     validator = Validator(await request.json(), {
         "user_id": ["required", "integer"],

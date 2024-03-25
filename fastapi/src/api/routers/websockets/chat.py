@@ -11,6 +11,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.accept()
     await websocket.send_text('accepto')
     user = await auth.check_access_token_websocket(websocket)
+    await websocket.send_text('checked auth')
     # connected_users[user.id] = websocket
     while True:
         await websocket.send_text('huy')

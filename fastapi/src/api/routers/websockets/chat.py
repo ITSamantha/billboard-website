@@ -8,9 +8,9 @@ connected_users = {}
 
 @router.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
-    print('here')
+    await websocket.send_text('here')
     await websocket.accept()
-    print('accepotieed')
+    await websocket.send_text('accepto')
     user = await auth.check_access_token_websocket(websocket)
     # connected_users[user.id] = websocket
     while True:

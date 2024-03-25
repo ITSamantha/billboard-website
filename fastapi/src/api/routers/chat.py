@@ -28,3 +28,22 @@ async def index(request: Request, auth: Auth = Depends()):
         chats,
         ChatTransformer()
     ))
+
+
+@router.get('/chat_id')
+async def find(chat_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+    async with db_manager.get_session() as session:
+        q = select(Chat)\
+            .where(Chat.id == chat_id)\
+            .options(joinedload(Chat.messages))
+        res = await session.execute(q)
+        chat = res.scalar()
+
+    if not chat:
+        return ApiResponse.error('Chat is not found', 404)
+
+    return ApiResponse.payload(transform(
+        chat,
+        ChatTransformer()
+    ))

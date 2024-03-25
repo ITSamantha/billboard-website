@@ -22,7 +22,6 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     #     await websocket.close()
     #     return
 
-    channel_name = f"user_1"
     redis_connection = redis.get_connection()
     psub = redis_connection.pubsub()
 
@@ -50,7 +49,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.send_text('type smth')
     msg = await websocket.receive_text()
 
-    channel_name = f"user_1"
+    channel_name = 'channel:1'
     pub = redis.get_connection()
     await pub.publish(channel_name, msg)
     await pub.close()

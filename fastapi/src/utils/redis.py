@@ -1,10 +1,14 @@
 import aioredis
-
+from src.config.app.config import settings_app
 
 class Redis:
 
     async def init_pool(self):
-        self.pool = aioredis.ConnectionPool.from_url("redis://otiva_redis", max_connections=10)
+        self.pool = aioredis.ConnectionPool.from_url(
+            "redis://" + settings_app.REDIS_HOST,
+            password=settings_app.REDIS_PASSWORD,
+            max_connections=10
+        )
 
     async def close_pool(self):
         if not self.pool:

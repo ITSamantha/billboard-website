@@ -5,7 +5,6 @@ class CategoryTransformer(BaseTransformer):
     def __init__(self):
         super().__init__()
         self.available_includes = ["children"]
-        # self.default_includes = ["children"]
         self.default_includes = []
 
     def transform(self, category):

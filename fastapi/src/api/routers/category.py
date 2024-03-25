@@ -27,7 +27,7 @@ async def get_category_by_id(category_id: int, request: Request, auth: Auth = De
                                                              models.Category).get_single(id=category_id)
         return ApiResponse.payload(transform(
             category,
-            CategoryTransformer().include(["children"])
+            CategoryTransformer().include(['children'])
         ))
     except Exception as e:
         print(e.__traceback__)
@@ -101,7 +101,11 @@ async def get_categories(request: Request, auth: Auth = Depends()):
         # TODO: ADD ORDER BY COLUMN
         return ApiResponse.payload(transform(
             categories,
+<<<<<<< HEAD
             CategoryTransformer().include(["children"])
+=======
+            CategoryTransformer().include(['children'])
+>>>>>>> dev
         ))
     except Exception as e:
         return ApiResponse.error(str(e))

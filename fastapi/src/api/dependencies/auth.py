@@ -24,9 +24,7 @@ class Auth:
 
     async def check_access_token_websocket(self, websocket: WebSocket):
         token = await websocket.receive_text()
-        await websocket.send_text('got token')
-        _, user = await self.check_token(token, TokenType.ACCESS, websocket)
-        await websocket.send_text('checked token')
+        _, user = await self.check_token(token, TokenType.ACCESS)
         return user
 
     async def check_refresh_token(self, request: Request):
@@ -36,13 +34,10 @@ class Auth:
         payload, _ = await self.check_token(refresh_token, TokenType.REFRESH)
         return payload
 
-    async def check_token(self, token, type, websocket):
+    async def check_token(self, token, type):
         try:
-            await websocket.send_text('trying to get payload')
             payload = self.jwt.verify_token(token)
-            await websocket.send_text('got payload')
         except JWTError:
-            await websocket.send_text('here?')
             self.raise_credentials_exception()
 
         if payload['type'] != type:
@@ -52,7 +47,6 @@ class Auth:
         if email is None:
             self.raise_credentials_exception()
         user: User = await SqlAlchemyRepository(db_manager.get_session, User).get_single(email=email)
-        await websocket.send_text('got user')
         if user is None:
             self.raise_credentials_exception()
 

@@ -10,7 +10,11 @@ connected_users = {}
 async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.accept()
     await websocket.send_text('accepto')
-    user = await auth.check_access_token_websocket(websocket)
+    try:
+        user = await auth.check_access_token_websocket(websocket)
+    except Exception as e:
+        await websocket.send_text('ahahah')
+
     await websocket.send_text('checked auth')
     # connected_users[user.id] = websocket
     while True:

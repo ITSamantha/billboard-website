@@ -10,10 +10,11 @@ connected_users = {}
 async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.accept()
     user = await auth.check_access_token_websocket(websocket)
-    connected_users[user.id] = websocket
+    # connected_users[user.id] = websocket
     while True:
-        await websocket.send_text(str(len(connected_users)))
-        await websocket.send_text('uesr_id: ' + str(user.id))
+        await websocket.send_text('huy')
+        # await websocket.send_text(str(len(connected_users)))
+        # await websocket.send_text('uesr_id: ' + str(user.id))
         # data = await websocket.receive_text()
         # for user_id in connected_users:
         #     if user_id == user.id:

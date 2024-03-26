@@ -1,6 +1,7 @@
 import aioredis
 from src.config.app.config import settings_app
 
+
 class Redis:
 
     async def init_pool(self):

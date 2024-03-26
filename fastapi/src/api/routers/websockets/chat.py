@@ -1,10 +1,7 @@
 from fastapi import WebSocket, APIRouter, Depends
 from src.api.dependencies.auth import Auth
 from src.utils.redis import redis
-
-import aioredis
-import asyncio
-import async_timeout
+from src.utils.pubsub import PubSub
 
 
 router = APIRouter()
@@ -22,29 +19,9 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     #     await websocket.close()
     #     return
 
-    redis_connection = redis.get_connection()
-    psub = redis_connection.pubsub()
+    async for message in PubSub.subscribe('channel:1'):
+        await websocket.send_text(message.data)
 
-    async def reader(channel: aioredis.client.PubSub, websocket):
-        while True:
-            try:
-                message = await channel.get_message(ignore_subscribe_messages=True)
-                if message is not None:
-                    await websocket.send_text(''.join(message.keys())) #data, pattern, message, type
-
-                    await websocket.send_text(message['data'].decode('utf-8')) #data, pattern, message, type
-                    await websocket.send_text(message['pattern'].decode('utf-8') if message['pattern'] else 'noen') #data, pattern, message, type
-                    await websocket.send_text(message['channel'].decode('utf-8') if message['channel'] else 'noen') #data, pattern, message, type
-                    await websocket.send_text(message['type'] if message['type'] else 'noen') #data, pattern, message, type
-                await asyncio.sleep(1)
-            except asyncio.TimeoutError:
-                pass
-
-    async with psub as p:
-        await p.subscribe("channel:1")
-        await reader(p, websocket)  # wait for reader to complete
-        await p.unsubscribe("channel:1")
-    await psub.close()
     await websocket.close()
 
 
@@ -52,10 +29,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
 async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
     await websocket.accept()
     await websocket.send_text('type smth')
-    msg = await websocket.receive_text()
 
-    channel_name = 'channel:1'
-    pub = redis.get_connection()
-    await pub.publish(channel_name, msg)
-    await pub.close()
+    await PubSub.publish('channel:1', await websocket.receive_text())
+
     await websocket.close()

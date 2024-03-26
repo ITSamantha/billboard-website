@@ -34,7 +34,7 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
 
                     await websocket.send_text(message['data'].decode('utf-8')) #data, pattern, message, type
                     await websocket.send_text(message['pattern'].decode('utf-8') if message['pattern'] else 'noen') #data, pattern, message, type
-                    await websocket.send_text(message['message'].decode('utf-8') if message['message'] else 'noen') #data, pattern, message, type
+                    await websocket.send_text(message['channel'].decode('utf-8') if message['channel'] else 'noen') #data, pattern, message, type
                     await websocket.send_text(message['type'].decode('utf-8') if message['type'] else 'noen') #data, pattern, message, type
                 await asyncio.sleep(1)
             except asyncio.TimeoutError:

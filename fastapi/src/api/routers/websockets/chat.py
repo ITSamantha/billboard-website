@@ -30,6 +30,8 @@ async def websocket_endpoint(websocket: WebSocket, auth: Auth = Depends()):
             try:
                 message = await channel.get_message(ignore_subscribe_messages=True)
                 if message is not None:
+                    await websocket.send_text(''.join(message.keys())) #data, pattern, message, type
+
                     await websocket.send_text(message['data'].decode('utf-8')) #data, pattern, message, type
                     await websocket.send_text(message['pattern'].decode('utf-8') if message['pattern'] else 'noen') #data, pattern, message, type
                     await websocket.send_text(message['message'].decode('utf-8') if message['message'] else 'noen') #data, pattern, message, type

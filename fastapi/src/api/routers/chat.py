@@ -114,10 +114,11 @@ async def store_message(chat_id: int, request: Request, auth: Auth = Depends()):
         res = await session.execute(q)
         chat: Chat = res.scalar()
 
-    current_chat_user: ChatUser = next(filter(lambda cu: cu.user_id == request.state.user.id, chat.chat_users))
-
     if not chat:
         return ApiResponse.error('Chat does not exists.')
+
+    current_chat_user: ChatUser = next(filter(lambda cu: cu.user_id == request.state.user.id, chat.chat_users))
+
     if not current_chat_user:
         return ApiResponse.error('User does not belongs to this chat.')
 

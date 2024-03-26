@@ -11,7 +11,6 @@ class ChatMessageTransformer(BaseTransformer):
     def transform(self, chat_message):
         return {
             "id": chat_message.id,
-            "chat_user_id": chat_message.chat_user_id,
             "chat_id": chat_message.chat_id,
             "text": chat_message.text,
             "created_at": chat_message.created_at.isoformat(),

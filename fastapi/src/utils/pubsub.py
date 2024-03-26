@@ -1,6 +1,11 @@
 from src.utils.redis import redis
 import json
 import asyncio
+from typing import Union
+
+
+class PubSubEvents:
+    NEW_MESSAGE: str = 'new_message'
 
 
 class PubSubMessage:
@@ -11,18 +16,31 @@ class PubSubMessage:
         self.type = type
 
 
+class PubSubEvent:
+    def __init__(self, name, data: Union[list, dict]):
+        self.name = name
+        self.data = data
+
+    def serialize(self) -> str:
+        data = {
+            'name': self.name,
+            'data': self.data,
+        }
+        return json.dumps(data)
+
+
 class PubSub:
     @staticmethod
-    async def publish(channel: str, msg):
-        if type(msg) is not str:
-            try:
-                msg = json.dumps(msg)
-            except Exception:
-                raise Exception('msg must be string or json serializable.')
-
+    async def publish(payload: dict[str, PubSubEvent]):
+        """Accepts dict {channel_name: data} and publishes data to respective channel names"""
+        if not payload:
+            return
         pub = redis.get_connection()
 
-        await pub.publish(channel, msg)
+        for channel in payload:
+            event: PubSubEvent = payload[channel]
+            await pub.publish(channel, event.serialize())
+
         await pub.close()
 
     @staticmethod

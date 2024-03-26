@@ -8,13 +8,15 @@ class ChatMessageTransformer(BaseTransformer):
         self.available_includes = []
         self.default_includes = ['chat_user']
 
-    def transform(self, chat):
+    def transform(self, chat_message):
         return {
-            "id": chat.id,
-            "text": chat.text,
-            "created_at": chat.created_at.isoformat(),
-            "seen_at": chat.seen_at.isoformat() if chat.seen_at else None,
+            "id": chat_message.id,
+            "chat_user_id": chat_message.chat_user_id,
+            "chat_id": chat_message.chat_id,
+            "text": chat_message.text,
+            "created_at": chat_message.created_at.isoformat(),
+            "seen_at": chat_message.seen_at.isoformat() if chat_message.seen_at else None,
         }
 
-    def include_chat_user(self, chat):
-        return self.item(chat.chat_user, ChatUserTransformer())
+    def include_chat_user(self, chat_message):
+        return self.item(chat_message.chat_user, ChatUserTransformer())

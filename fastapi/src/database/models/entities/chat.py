@@ -3,6 +3,7 @@ import datetime
 from src.database.models.base import Base
 from typing import List
 from src.database.models.entities.chat_message import ChatMessage
+from src.database.models.entities.chat_user import ChatUser
 
 
 class Chat(Base):
@@ -12,3 +13,4 @@ class Chat(Base):
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
 
     messages: Mapped[List["ChatMessage"]] = relationship(uselist=True, lazy="selectin", back_populates="chat")
+    chat_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy='selectin', back_populates='chat')

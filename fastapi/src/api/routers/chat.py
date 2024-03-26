@@ -98,7 +98,7 @@ async def store(request: Request, auth: Auth = Depends()):
 
 
 @router.post('/{chat_id}/messages')
-def store_message(chat_id, request: Request, auth: Auth = Depends()):
+async def store_message(chat_id, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     validator = Validator(await request.json() | {'chat_id': chat_id}, {

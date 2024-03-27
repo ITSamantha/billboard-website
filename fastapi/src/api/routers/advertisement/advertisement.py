@@ -250,7 +250,7 @@ async def get_advertisement_worktime(advertisement_id: int, request: Request, au
         return ApiResponse.error(str(e))
 
 
-@router.post("/{advertisement_id}/booking")
+@router.post("/{advertisement_id}/bookings")
 async def create_advertisement_booking(advertisement_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 

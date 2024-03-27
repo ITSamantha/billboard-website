@@ -4,10 +4,12 @@ from sqlalchemy.orm import Mapped, mapped_column
 from src.database.models.base import Base
 
 
-
 class BookingStatus(Base):
     PAID = 1
     NOT_PAID = 2
+    IN_PROCESS = 3
+    APPROVED = 4
+    CANCELED = 5
 
     __tablename__ = "booking_status"
 

@@ -13,7 +13,7 @@ class AccountTransactionTransformer(BaseTransformer):
             "id": transaction.id,
             "account_id": transaction.account_id,
             "amount": transaction.amount,
-            "created_at": transaction.created_at,
+            "created_at": transaction.created_at.isoformat(),
         }
 
     def include_type(self, transaction):

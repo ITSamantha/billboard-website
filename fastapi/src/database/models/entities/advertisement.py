@@ -36,7 +36,7 @@ class Advertisement(Base):
 
     price: Mapped[Optional[float]] = mapped_column(nullable=False)
 
-    auto_booking: Mapped[bool] = mapped_column(nullable=False, insert_default=True)
+    auto_booking: Mapped[bool] = mapped_column(nullable=True, insert_default=True)
 
     ad_bookings_available: Mapped[List["AdBookingAvailable"]] = relationship(uselist=True, lazy="selectin")
 

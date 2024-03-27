@@ -12,6 +12,7 @@ class Account(Base):
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    amount: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
 
     transactions: Mapped[List["AccountTransaction"]] = relationship(uselist=True, lazy="selectin", back_populates="account")

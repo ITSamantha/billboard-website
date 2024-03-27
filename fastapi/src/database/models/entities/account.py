@@ -22,6 +22,7 @@ class Account(Base):
     user: Mapped["User"] = relationship(uselist=False, lazy="selectin", back_populates="_account")
 
     async def add_transaction(self, type_id: int, amount: int):
+        # todo this shit does not raise exceptions except for manually raised
         async with db_manager.get_session() as session:
             q = select(AccountTransactionType).where(AccountTransactionType.id == type_id)
             res = await session.execute(q)

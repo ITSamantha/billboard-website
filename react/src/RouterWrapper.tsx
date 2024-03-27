@@ -1,18 +1,17 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react';
+import Menu from './components/Menu/Menu';
 
 interface RouterWrapperProps {
-    children : ReactNode
+  children: ReactNode;
 }
 
-function RouterWrapper(props : RouterWrapperProps) {
-
-    return (
-        <div className="container">
-            { props.children }
-        </div>
-
-    )
-
+function RouterWrapper(props: RouterWrapperProps) {
+  return (
+    <div className="container">
+      <Menu />
+      {props.children}
+    </div>
+  );
 }
 
-export default RouterWrapper
+export default RouterWrapper;

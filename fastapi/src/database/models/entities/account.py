@@ -19,7 +19,7 @@ class Account(Base):
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
 
     transactions: Mapped[List["AccountTransaction"]] = relationship(uselist=True, lazy="selectin", back_populates="account")
-    user: Mapped["User"] = relationship(uselist=False, lazy="selectin", back_populates="account")
+    user: Mapped["User"] = relationship(uselist=False, lazy="selectin", back_populates="_account")
 
     async def add_transaction(self, type_id: int, amount: int):
         async with db_manager.get_session() as session:

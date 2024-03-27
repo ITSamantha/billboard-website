@@ -9,10 +9,11 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Register from './components/Register/Register';
 import Catalog from './components/Catalog/CategoriesBlock';
 import MapWrapper from './pages/Map';
-import Profile from './pages/Profile';
+import Profile from './pages/profile/Profile';
 import UserVerification from './pages/UserVerification';
 import CodeVerificationInput from './components/Profile/CodeVerificationInput';
-import ProfileEdit from './components/Profile/ProfileEdit';
+import ProfileEdit from './pages/profile/ProfileEdit';
+import ProfilePhone from './pages/profile/ProfilePhone';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -79,6 +80,14 @@ function App() {
       element: (
         <RouterWrapper>
           <ProfileEdit />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/profile/phone',
+      element: (
+        <RouterWrapper>
+          <ProfilePhone />
         </RouterWrapper>
       )
     },

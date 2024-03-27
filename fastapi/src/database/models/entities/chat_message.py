@@ -5,6 +5,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 import datetime
 
 from src.database.models.base import Base
+from src.database.models.entities.chat_message_attachement import ChatMessageAttachement
+
+
+# from src.database.models.entities.chat import Chat
 
 
 
@@ -18,7 +22,7 @@ class ChatMessage(Base):
     text: Mapped[str] = mapped_column(String(256))
     created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
     seen_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
-
-    chat_user: Mapped["ChatUser"] = relationship(uselist=False, lazy="selectin")
     chat: Mapped["Chat"] = relationship(uselist=False, lazy="selectin", back_populates="messages")
-    attachements: Mapped[List["ChatMessageAttachement"]] = relationship(uselist=True, lazy="selectin")
+    chat_user: Mapped["ChatUser"] = relationship(uselist=False, lazy="selectin")
+
+    attachements: Mapped[List[ChatMessageAttachement]] = relationship(uselist=True, lazy="selectin")

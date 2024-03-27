@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models import AdType, BookingType, FilterType, TransactionType
+from src.database.models.entities.account_transaction_type import AccountTransactionType
 from src.database.seeders.generic_seeder import GenericSeeder
 
 
@@ -27,5 +28,9 @@ class TypesSeeder(GenericSeeder):
                 TransactionType.TYPE_1: {"title": "type1"},
                 TransactionType.TYPE_2: {"title": "type2"},
                 TransactionType.TYPE_3: {"title": "type3"},
+            },
+            AccountTransactionType: {
+                AccountTransactionType.REFILL: {'name': 'refill', 'sign': True},
+                AccountTransactionType.WITHDRAWAL: {'name': 'withdrawal', 'sign': False},
             }
         }

@@ -13,9 +13,20 @@ class ApiResponse(BaseModel):
     @staticmethod
     def payload(data: dict):
         return JSONResponse(
-            # content=ApiResponse.format_content(data=data),
             content=data,
             status_code=200,
+        )
+
+    @staticmethod
+    def paginated(data: list, page: int, per_page: int, pages_count: int):
+        return JSONResponse(
+            content={
+                "data": data,
+                "page": page,
+                "per_page": per_page,
+                "pages_count": pages_count,
+            },
+            status_code=200
         )
 
     @staticmethod

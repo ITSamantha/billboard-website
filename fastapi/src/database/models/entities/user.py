@@ -44,7 +44,7 @@ class User(Base):
 
     notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
 
-    chats_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
+    chat_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
 
     # user_fields: Mapped[List["AdTag"]] = relationship(
     # uselist=True, lazy="selectin", secondary="user__user_field", order_by="")

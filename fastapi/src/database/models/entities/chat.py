@@ -2,6 +2,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 import datetime
 from src.database.models.base import Base
 from typing import List
+from src.database.models.entities.chat_message import ChatMessage
 
 from src.database.models.entities.chat_message import ChatMessage
 

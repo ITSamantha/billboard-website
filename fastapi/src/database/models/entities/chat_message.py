@@ -11,7 +11,6 @@ from src.database.models.entities.chat_message_attachement import ChatMessageAtt
 # from src.database.models.entities.chat import Chat
 
 
-
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
 

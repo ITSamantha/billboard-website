@@ -34,6 +34,16 @@ async def me_account(request: Request, auth: Auth = Depends()):
         account,
         AccountTransformer().include(['transactions'])
     ))
+@router.get('/me/account/test')
+async def me_account(request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+    account = await request.state.user.get_account()
+    data = await request.json()
+    type_id = data['type_id']
+    amount = data['amount']
+    await account.add_transaction(type_id, amount)
+
+    return 'good'
 
 
 @router.get("/{user_id}")

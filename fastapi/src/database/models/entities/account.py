@@ -22,7 +22,7 @@ class Account(Base):
     transactions: Mapped[List["AccountTransaction"]] = relationship(uselist=True, lazy="selectin", back_populates="account")
     user: Mapped["User"] = relationship(uselist=False, lazy="selectin", back_populates="account")
 
-    def add_transaction(self, type_id: int, amount: int):
+    async def add_transaction(self, type_id: int, amount: int):
         async with db_manager.get_session() as session:
             q = select(AccountTransactionType).where(AccountTransactionType.id == type_id)
             res = await session.execute(q)

@@ -29,4 +29,4 @@ def time_ago_in_words(dt):
 
 
 def json_datetime(dt: datetime):
-    return dt.isoformat() if dt else None
+    return dt.strftime('%Y-%m-%d %H:%M:%S') if dt else None

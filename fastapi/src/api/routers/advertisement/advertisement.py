@@ -8,6 +8,7 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.routers.advertisement import ad_favourite, booking
 from src.api.transformers.advertisement import AdTypeTransformer
+from src.api.transformers.booking.booking_transformer import BookingTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
 from src.database import models
@@ -15,7 +16,8 @@ from src.repository.advertisement_repository import AdvertisementRepository
 
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
-from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review, Advertisement
+from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review, Advertisement, Booking, \
+    AdBookingAvailable
 from src.database.session_manager import db_manager
 
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
@@ -187,12 +189,44 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
     try:
 
         reviews: List[Review] = await SqlAlchemyRepository(db_manager.get_session, Review).get_multi(
-            advertisement_id=advertisement_id)
+            advertisement_id=advertisement_id, deleted_at=None)
 
         return ApiResponse.payload(transform(
-            [review for review in reviews if not review.deleted_at],
+            reviews,
             ReviewTransformer()
         ))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.get(path='/{advertisement_id}/bookings')
+async def get_advertisement_bookings(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    try:
+
+        bookings: List[Booking] = await SqlAlchemyRepository(db_manager.get_session, Booking).get_multi(
+            advertisement_id=advertisement_id, deleted_at=None)
+
+        return ApiResponse.payload(transform(bookings,
+                                             BookingTransformer()
+                                             ))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.get(path='/{advertisement_id}/bookings_available')
+async def get_advertisement_bookings_available(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    try:
+
+        bookings: List[AdBookingAvailable] = await SqlAlchemyRepository(db_manager.get_session, AdBookingAvailable).get_multi(
+            advertisement_id=advertisement_id, deleted_at=None)
+
+        return ApiResponse.payload(transform(bookings,
+                                             BookingTransformer()
+                                             ))
     except Exception as e:
         return ApiResponse.error(str(e))
 

@@ -1,3 +1,5 @@
+import datetime
+
 from src.utils.validator.exceptions import AppValidationException
 from src.api.payloads.base import BasePayload
 import re
@@ -159,6 +161,14 @@ class Rules:
             return f"{title if title else key} field must of type list."
 
         return None
+    """
+    @staticmethod
+    def datetime(data: dict, key: str, title: str = None):
+        if key in data and not isinstance(data[key], (datetime.datetime, type(None))):
+            return f"{title if title else key} field must be of type datetime."
+
+        return None
+    """
 
     @staticmethod
     def required_without(data: dict, key: str, title: str = None, *fields: list):

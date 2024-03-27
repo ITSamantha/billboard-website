@@ -4,7 +4,10 @@ from sqlalchemy_utils import EmailType, PhoneNumberType
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src.database.models import Account
 from src.database.models.base import Base
+from src.database.session_manager import db_manager
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 
 
 # TODO: ADD TO ADMIN
@@ -33,7 +36,7 @@ class User(Base):
     reviews: Mapped[List["Review"]] = relationship(uselist=True, lazy="selectin")
     notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
     chat_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
-    account: Mapped["Account"] = relationship(uselist=False, lazy='selectin')
+    _account: Mapped["Account"] = relationship(uselist=False, lazy='selectin')
 
     # user_fields: Mapped[List["AdTag"]] = relationship(
     # uselist=True, lazy="selectin", secondary="user__user_field", order_by="")
@@ -44,6 +47,15 @@ class User(Base):
     @property
     def chats(self):
         return [cu.chat for cu in self.chats_users]
+
+    async def get_account(self):
+        if self._account is not None:
+            return self._account
+        account: Account = await SqlAlchemyRepository(db_manager.get_session, Account).create({
+            'user_id': self.id,
+            'balance': 0,
+        })
+        return account
 
     def __repr__(self) -> str:
         return (

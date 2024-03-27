@@ -41,6 +41,6 @@ class Account(Base):
             new_balance = self.balance + (amount if transaction_type.sign else amount * -1)
 
             q = update(Account).filter(Account.id == self.id).values({Account.balance: new_balance})
-            session.execute(q)
+            await session.execute(q)
 
-            session.commit()
+            await session.commit()

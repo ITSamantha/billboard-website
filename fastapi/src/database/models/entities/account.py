@@ -5,7 +5,6 @@ import datetime
 from src.database.models.entities.account_transaction_type import AccountTransactionType
 from src.database.models.base import Base
 from typing import List
-from src.database.models.entities.user import User
 from src.database.models.entities.account_transaction import AccountTransaction
 from src.database.session_manager import db_manager
 from sqlalchemy import update, select

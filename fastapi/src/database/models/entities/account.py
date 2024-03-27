@@ -35,7 +35,7 @@ class Account(Base):
 
             session.begin()
 
-            transaction = AccountTransaction(type_id=type_id, amount=amount)
+            transaction = AccountTransaction(type_id=type_id, amount=amount, account_id=self.id)
             session.add(transaction)
 
             new_balance = self.balance + (amount if transaction_type.sign else amount * -1)

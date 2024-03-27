@@ -34,7 +34,7 @@ async def me_account(request: Request, auth: Auth = Depends()):
         account,
         AccountTransformer().include(['transactions'])
     ))
-@router.get('/me/account/test')
+@router.post('/me/account/test')
 async def me_account(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     account = await request.state.user.get_account()

@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
-import InputField from '../InputField';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-import { Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { Input } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
-import { login } from '../../service/dataService';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin, selectUser } from '../../redux/slices/UserSlice';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
   axios.defaults.withCredentials = true;
-
-  // @ts-ignore
-  axios.defaults.credentials = 'include';
 
   const handleLogin = () => {
     // TODO: check if login is successful
     dispatch(fetchLogin({ email, password }) as any);
 
     // navigate('/');
-    setTimeout(() => {}, 1000);
+    setTimeout(() => {
+    }, 1000);
     console.log(user);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+  };
 
   return (
     <>
@@ -67,14 +62,22 @@ function Login() {
               </div>
             </div>
             <div className="uitk-layout-flex uitk-layout-flex-flex-direction-column uitk-layout-flex-gap-six">
-              <InputField label="אימייל" id="email" type="text" value={email} setValue={setEmail} />
-              <InputField
-                label="סיסמה"
-                id="password"
+
+              <Input
+                placeholder="Email"
+                type="text"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              ></Input>
+              <Input
+                placeholder="Last name"
                 type="password"
-                value={password}
-                setValue={setPassword}
-              />
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              ></Input>
+
               <button
                 onClick={handleLogin}
                 id="loginFormSubmitButton"

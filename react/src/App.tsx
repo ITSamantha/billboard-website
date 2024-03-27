@@ -10,6 +10,9 @@ import Register from './components/Register/Register';
 import Catalog from './components/Catalog/CategoriesBlock';
 import MapWrapper from './pages/Map';
 import Profile from './pages/Profile';
+import UserVerification from './pages/UserVerification';
+import CodeVerificationInput from './components/Profile/CodeVerificationInput';
+import ProfileEdit from './components/Profile/ProfileEdit';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -24,7 +27,7 @@ function App() {
       )
     },
     {
-      path: '/sign-in',
+      path: '/login',
       element: (
         <RouterWrapper>
           <Login />
@@ -70,12 +73,20 @@ function App() {
           <MapWrapper />
         </RouterWrapper>
       )
-    }
+    },
+    {
+      path: '/profile/edit',
+      element: (
+        <RouterWrapper>
+          <ProfileEdit />
+        </RouterWrapper>
+      )
+    },
   ]);
 
   return (
     <>
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID || ''}>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID || '123'}>
         <React.StrictMode>
           <RouterProvider router={router} />
         </React.StrictMode>

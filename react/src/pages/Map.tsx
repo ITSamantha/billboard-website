@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import MapComponent from '../map/MapComponent';
+import MapComponent from '../components/Map/MapComponent';
 
 type DisplayedPoint = {
   point: google.maps.LatLngLiteral;

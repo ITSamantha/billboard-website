@@ -29,6 +29,14 @@
       font-size: 26px;
       font-weight: 500;
       font-family: "Montserrat", sans-serif;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &[type=number] {
+        -moz-appearance: textfield;
+      }
     }
     &._error input {
       border-color: red;

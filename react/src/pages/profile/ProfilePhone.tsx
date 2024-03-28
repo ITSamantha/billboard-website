@@ -47,7 +47,9 @@ const PhoneConfirmation = () => {
   };
 
   useEffect(() => {
-    if (verificationCode.length === NUMBER_OF_DIGITS_IN_CODE) {
+    if (verificationCode.split('').filter((l) => {
+      return /^\d$/.test(l)
+    }).length === NUMBER_OF_DIGITS_IN_CODE) {
       handleSend(null);
     }
   }, [verificationCode]);

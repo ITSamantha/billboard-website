@@ -41,14 +41,17 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
   }, [onChange, verificationCode]);
 
   const focusOnInput = (index: number) => {
-    // @ts-ignore
-    let currentInputRef = inputRefs.current[index].current;
-    if (index >= 0 && index < numberOfDigits && currentInputRef) {
+    if (index >= 0 && index < numberOfDigits) {
       // @ts-ignore
-      currentInputRef.focus();
-      let verificationCodeCopy = JSON.parse(JSON.stringify(verificationCode));
-      verificationCodeCopy[index] = parseInt(verificationCodeCopy[index]);
-      setVerificationCode(verificationCodeCopy)
+      let currentInputRef = inputRefs.current[index].current;
+      if (currentInputRef) {
+        currentInputRef.focus();
+        if (verificationCode.length === numberOfDigits) {
+          let verificationCodeCopy = JSON.parse(JSON.stringify(verificationCode));
+          verificationCodeCopy[index] = parseInt(verificationCodeCopy[index]);
+          setVerificationCode(verificationCodeCopy)
+        }
+      }
     }
   };
 

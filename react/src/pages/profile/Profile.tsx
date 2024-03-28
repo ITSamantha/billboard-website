@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import {
   Avatar,
@@ -11,6 +11,7 @@ import {
   ThemeProvider
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { getMyProfile } from '../../service/dataService';
 
 const useStyles = makeStyles({
   typography: {
@@ -63,6 +64,10 @@ export const THEME = createTheme({
 
 const Profile = () => {
   const classes = useStyles();
+  
+  useEffect(() => {
+    getMyProfile();
+  },[])
 
   return (
     <ThemeProvider theme={THEME}>

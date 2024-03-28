@@ -56,6 +56,7 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
     const BACK_KEYS = ['ArrowLeft', 'Delete', 'Backspace'];
     const APPEND_KEYS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const DELETE_KEYS = ['Delete', 'Backspace'];
+    alert(e.key)
     if (DELETE_KEYS.includes(e.key)) {
       verificationCodeCopy[index] = '';
     }

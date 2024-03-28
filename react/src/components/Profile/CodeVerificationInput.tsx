@@ -42,9 +42,13 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
 
   const focusOnInput = (index: number) => {
     // @ts-ignore
-    if (index >= 0 && index < numberOfDigits && inputRefs.current[index].current) {
+    let currentInputRef = inputRefs.current[index].current;
+    if (index >= 0 && index < numberOfDigits && currentInputRef) {
       // @ts-ignore
-      inputRefs.current[index].current.focus();
+      currentInputRef.focus();
+      let verificationCodeCopy = JSON.parse(JSON.stringify(verificationCode));
+      verificationCodeCopy[index] = parseInt(verificationCodeCopy[index]);
+      setVerificationCode(verificationCodeCopy)
     }
   };
 
@@ -54,13 +58,13 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
       inputRefs.current[index] = createRef<HTMLInputElement>();
     });
     setTimeout(() => {
-      focusOnInput(0)
-    }, 300)
+      focusOnInput(0);
+    }, 300);
   }, [numberOfDigits]);
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLDivElement>) => {
     if (isMobileDevice) return;
-    let key = e.key
+    let key = e.key;
     let verificationCodeCopy = JSON.parse(JSON.stringify(verificationCode));
     const FORWARD_KEYS = ['ArrowRight', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const BACK_KEYS = ['ArrowLeft', 'Delete', 'Backspace'];
@@ -106,12 +110,13 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
     <div className={classes.form}>
       {verificationCode.map((digit, index) => (
         <div className={'CodeVerification__Digit' + (error ? ' _error' : '')}>
-          <input value={digit}
-                 ref={inputRefs.current[index]}
-                 pattern="\d*"
-                 type="number"
-                 onChange={(e) => handleChange(index, e)}
-                 onKeyDown={(e) => handleKeyDown(index, e)}
+          <input
+            value={digit}
+            ref={inputRefs.current[index]}
+            pattern="\d*"
+            type="number"
+            onChange={(e) => handleChange(index, e)}
+            onKeyDown={(e) => handleKeyDown(index, e)}
           />
         </div>
       ))}

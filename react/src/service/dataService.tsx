@@ -111,3 +111,54 @@ export const getFilters = (categorySlug: string | undefined) => {
     }
   ];
 };
+
+export const createAd = (
+  title: string,
+  description: string,
+  price: number,
+  adTypeId: number,
+  categoryId: number,
+  adTags: string[],
+  cityId: number,
+  countryId: number,
+  street: string,
+  house: string,
+  flat: string | undefined
+) => {
+  axios
+    .post(
+      BASE_URL + 'auth/register',
+      {
+        title: title,
+        user_description: description,
+        ad_type_id: adTypeId,
+        price: price,
+        category_id: categoryId,
+        ad_tags: adTags,
+        city_id: cityId,
+        country_id: countryId,
+        street: street,
+        house: house,
+        flat: flat
+      },
+      { withCredentials: true }
+    )
+    .then((r) => {
+      console.log(r);
+      return r.data;
+    });
+};
+
+export const getCountries = async () => {
+  return await axios
+    .get(BASE_URL + 'countries')
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching countries:', error));
+};
+
+export const getCities = async () => {
+  return await axios
+    .get(BASE_URL + 'cities')
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching cities:', error));
+};

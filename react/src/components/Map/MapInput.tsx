@@ -3,64 +3,61 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import MapComponent from './MapComponent';
 
 export interface MapPoint {
-  lat: number,
-  lng: number,
-  address: string,
+  lat: number;
+  lng: number;
+  address: string;
 }
 
 type MapInputProps = {
-  onChange: (point: MapPoint) => void
-}
+  onChange: (point: MapPoint) => void;
+};
 
-const MapInput = ({ onChange } : MapInputProps) => {
-
+const MapInput = ({ onChange }: MapInputProps) => {
   const [map, setMap] = React.useState<google.maps.Map>();
-  const [currentPoint, setCurrentPoint] = useState<google.maps.LatLng>()
-  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>()
+  const [currentPoint, setCurrentPoint] = useState<google.maps.LatLng>();
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement>();
 
-  const [address, setAddress] = useState<string>('')
-  const geocoderRef = useRef<google.maps.Geocoder>()
-
+  const [address, setAddress] = useState<string>('');
+  const geocoderRef = useRef<google.maps.Geocoder>();
 
   const handleClick = (event: google.maps.MapMouseEvent) => {
     if (event.latLng) {
-      setCurrentPoint(event.latLng)
+      setCurrentPoint(event.latLng);
     }
   };
 
   useEffect(() => {
     if (currentPoint && currentPoint?.lat() && currentPoint?.lng()) {
       if (markerRef.current) {
-        markerRef.current.map = null
-        delete markerRef.current
+        markerRef.current.map = null;
+        delete markerRef.current;
       }
-      const targetPointPosition : google.maps.LatLngLiteral = {
+      const targetPointPosition: google.maps.LatLngLiteral = {
         lat: currentPoint?.lat(),
         lng: currentPoint?.lng()
-      }
+      };
       const container = document.createElement('div');
-      container.innerHTML = '<span class=\'map-icon\'></span>';
+      container.innerHTML = "<span class='map-icon'></span>";
       markerRef.current = new google.maps.marker.AdvancedMarkerElement({
         position: targetPointPosition,
         content: container,
         map
-      })
+      });
 
-      geocoderRef.current = new google.maps.Geocoder()
-      geocoderRef.current.geocode({ location: currentPoint })
-        .then(r => {
-          if (r.results.length > 1) {
-            onChange({
-              ...targetPointPosition,
-              address: r.results[1].formatted_address
-            })
-          } else if (r.results.length === 1) {
-            onChange({
-              ...targetPointPosition,
-              address: r.results[0].formatted_address
-            })
-          }
-        })
+      geocoderRef.current = new google.maps.Geocoder();
+      geocoderRef.current.geocode({ location: currentPoint }).then((r) => {
+        if (r.results.length > 1) {
+          onChange({
+            ...targetPointPosition,
+            address: r.results[1].formatted_address
+          });
+        } else if (r.results.length === 1) {
+          onChange({
+            ...targetPointPosition,
+            address: r.results[0].formatted_address
+          });
+        }
+      });
     }
   }, [currentPoint]);
 
@@ -83,12 +80,10 @@ const MapInput = ({ onChange } : MapInputProps) => {
           center={{ lat: 46, lng: 43 }}
           zoom={13}
           onClick={handleClick}
-        >
-        </MapComponent>
+        ></MapComponent>
       </Wrapper>
     </div>
   );
-
 };
 
 export default MapInput;

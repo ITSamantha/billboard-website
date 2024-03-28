@@ -2,10 +2,10 @@ import React, { createRef, Ref, useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 
 type CodeVerificationProps = {
-  error: boolean,
-  numberOfDigits: number,
-  onChange: (code: string) => void
-}
+  error: boolean;
+  numberOfDigits: number;
+  onChange: (code: string) => void;
+};
 
 const useStyles = makeStyles({
   root: {
@@ -25,9 +25,7 @@ const useStyles = makeStyles({
   }
 });
 
-
 const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerificationProps) => {
-
   const isMobileDevice = window.innerWidth <= 992;
 
   const classes = useStyles();
@@ -49,7 +47,7 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
         if (verificationCode.length === numberOfDigits) {
           let verificationCodeCopy = JSON.parse(JSON.stringify(verificationCode));
           verificationCodeCopy[index] = parseInt(verificationCodeCopy[index]);
-          setVerificationCode(verificationCodeCopy)
+          setVerificationCode(verificationCodeCopy);
         }
       }
     }
@@ -101,15 +99,16 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
       verificationCodeCopy[index] = inputtedValue;
       focusOnInput(index + 1);
     } else {
-      if (verificationCodeCopy[index] === inputtedValue[0]) verificationCodeCopy[index] = inputtedValue[1];
-      if (verificationCodeCopy[index] === inputtedValue[1]) verificationCodeCopy[index] = inputtedValue[0];
+      if (verificationCodeCopy[index] === inputtedValue[0])
+        verificationCodeCopy[index] = inputtedValue[1];
+      if (verificationCodeCopy[index] === inputtedValue[1])
+        verificationCodeCopy[index] = inputtedValue[0];
       focusOnInput(index + 1);
     }
     setVerificationCode(verificationCodeCopy);
   };
 
   return (
-
     <div className={classes.form}>
       {verificationCode.map((digit, index) => (
         <div className={'CodeVerification__Digit' + (error ? ' _error' : '')}>
@@ -123,10 +122,8 @@ const CodeVerificationInput = ({ numberOfDigits, onChange, error }: CodeVerifica
           />
         </div>
       ))}
-
     </div>
   );
-
 };
 
 export default CodeVerificationInput;

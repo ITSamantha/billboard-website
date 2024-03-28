@@ -20,13 +20,11 @@ function Login() {
     dispatch(fetchLogin({ email, password }) as any);
 
     // navigate('/');
-    setTimeout(() => {
-    }, 1000);
+    setTimeout(() => {}, 1000);
     console.log(user);
   };
 
-  const handleLogout = () => {
-  };
+  const handleLogout = () => {};
 
   return (
     <>
@@ -62,7 +60,6 @@ function Login() {
               </div>
             </div>
             <div className="uitk-layout-flex uitk-layout-flex-flex-direction-column uitk-layout-flex-gap-six">
-
               <Input
                 placeholder="Email"
                 type="text"

@@ -1,6 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Autocomplete, Button, Container, Grid, TextField, ThemeProvider, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  ThemeProvider,
+  Typography
+} from '@mui/material';
 import { THEME } from './Profile';
 import { Link } from 'react-router-dom';
 
@@ -36,9 +44,10 @@ const EditProfile = () => {
 
   return (
     <ThemeProvider theme={THEME}>
-
       <Container maxWidth="lg" className={classes.root} style={{ paddingBottom: 50 }}>
-        <Typography fontWeight={600} variant="h4" component="h1" gutterBottom>Edit Profile</Typography>
+        <Typography fontWeight={600} variant="h4" component="h1" gutterBottom>
+          Edit Profile
+        </Typography>
 
         <form className={classes.form}>
           <Grid container spacing={2}>
@@ -55,7 +64,6 @@ const EditProfile = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -89,21 +97,28 @@ const EditProfile = () => {
                 autoComplete="tel"
               />
               <Link to="/profile/phone">
-                <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>Confirm Phone</Typography>
+                <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>
+                  Confirm Phone
+                </Typography>
               </Link>
             </Grid>
             <Grid item xs={12} sm={6}>
-
               <Autocomplete
                 options={cities}
                 getOptionLabel={(option) => option.label}
-                renderInput={(params) =>
-                  <TextField {...params} label="City" variant="outlined" margin="normal" fullWidth />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="City"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
                 style={{ marginBottom: '1rem' }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -116,7 +131,6 @@ const EditProfile = () => {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-
               <Button
                 type="submit"
                 fullWidth

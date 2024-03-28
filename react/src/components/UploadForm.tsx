@@ -1,24 +1,46 @@
 import { Input, Select, Button } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../scss/upload-form.scss';
+import { createAd, getCities, getCountries } from '../service/dataService';
 
 const UploadForm = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [adType, setAdType] = useState<number>(0);
   const [price, setPrice] = useState<number>(0);
-  const [tags, setTags] = useState<[]>([]);
-  const [categories, setCategoris] = useState();
+  const [adTags, setAdTags] = useState<[]>([]);
+  const [categoryId, setCategoryId] = useState<number>(0);
   const [adPhotos, setAdPhotos] = useState();
   const [city, setCity] = useState<string>('');
+  const [country, setCountry] = useState<string>('');
   const [street, setStreet] = useState<string>('');
   const [house, setHouse] = useState<string>('');
   const [flat, setFlat] = useState<string>('');
+  const [cities, setCities] = useState<object[]>([]);
+  const [countries, setCountries] = useState<object[]>([]);
 
   const handleCreate = () => {
-    return;
+    // createAd(title,description, price, adType, categoryId, adTags, city, country, street, house, flat);
   };
+
+  type Country = {
+    id: number;
+    title: string;
+  };
+
+  useEffect(() => {
+    getCountries().then((response) => {
+      let temp = [];
+      response.map((item: Country) => {
+        temp.push({ value: item.title, label: item.title, id: item.id });
+      });
+      setCountries(response);
+    });
+    getCities().then((response) => setCountries(response));
+    console.log(cities);
+    console.log(countries);
+  }, []);
 
   return (
     <div className="upload-form">
@@ -56,12 +78,21 @@ const UploadForm = () => {
           setTitle(e.target.value);
         }}
       />
-      <Input
-        placeholder="City"
-        type="text"
+      <Select
+        placeholder="Country"
+        style={{ width: '400px' }}
         onChange={(e) => {
           setCity(e.target.value);
         }}
+        options={countries}
+      />
+      <Select
+        placeholder="City"
+        style={{ width: '400px' }}
+        onChange={(e) => {
+          setCity(e.target.value);
+        }}
+        options={[{ value: 'lucy', label: 'Lucy' }]}
       />
       <Input
         placeholder="Street"

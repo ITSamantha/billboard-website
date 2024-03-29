@@ -144,10 +144,18 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
 
 
 @router.get("/search")
-async def search_advertisements(search_text: str):
+async def search_advertisements(request: Request):
     try:
-        advertisement: Advertisement = await AdvertisementRepository(db_manager.get_session, Advertisement).search_multi(
-            )
+        parsed_params = get_params(request)
+        page = int(parsed_params['page']) if 'page' in parsed_params else 1
+        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
+        query = parsed_params['query'] if 'query' in parsed_params else None
+
+        advertisement: Advertisement = await AdvertisementRepository(db_manager.get_session,
+                                                                     Advertisement).search_multi(
+            per_page, per_page * (page - 1),
+            Advertisement.title.match(query)
+        )
 
         if not advertisement:
             raise Exception("There is no advertisement with this data.")

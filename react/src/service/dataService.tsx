@@ -123,7 +123,7 @@ export const createAd = (
 ) => {
   axios
     .post(
-      BASE_URL + 'auth/register',
+      BASE_URL + 'advertisements',
       {
         title: title,
         user_description: description,
@@ -178,4 +178,11 @@ export const getAdvertisementById = async (id: number) => {
     .get(BASE_URL + `advertisements/${id}`)
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching advertisement:', error));
+};
+
+export const getAdvertisementTypes = async () => {
+  return await axios
+    .get(BASE_URL + `advertisements/ad_type`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching advertisement types:', error));
 };

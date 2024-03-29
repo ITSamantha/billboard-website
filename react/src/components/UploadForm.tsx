@@ -2,7 +2,13 @@ import { Input, Select, Button } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
 import '../scss/upload-form.scss';
-import { createAd, getCities, getCountries } from '../service/dataService';
+import { createAd, getAdvertisementTypes, getCities, getCountries } from '../service/dataService';
+import { Autocomplete, TextField } from '@mui/material';
+
+type Data = {
+  id: number;
+  title: string;
+};
 
 const UploadForm = () => {
   const [title, setTitle] = useState<string>('');
@@ -12,35 +18,46 @@ const UploadForm = () => {
   const [adTags, setAdTags] = useState<[]>([]);
   const [categoryId, setCategoryId] = useState<number>(0);
   const [adPhotos, setAdPhotos] = useState();
-  const [city, setCity] = useState<string>('');
-  const [country, setCountry] = useState<string>('');
+  const [city, setCity] = useState<number>(0);
+  const [country, setCountry] = useState<number>(0);
   const [street, setStreet] = useState<string>('');
   const [house, setHouse] = useState<string>('');
   const [flat, setFlat] = useState<string>('');
-  const [cities, setCities] = useState<object[]>([]);
-  const [countries, setCountries] = useState<object[]>([]);
-
-  const handleCreate = () => {
-    // createAd(title,description, price, adType, categoryId, adTags, city, country, street, house, flat);
-  };
-
-  type Country = {
-    id: number;
-    title: string;
-  };
+  const [cities, setCities] = useState<Data[]>([]);
+  const [countries, setCountries] = useState<Data[]>([]);
+  const [adTypes, setAdTypes] = useState<Data[]>([]);
 
   useEffect(() => {
-    getCountries().then((response) => {
-      let temp = [];
-      response.map((item: Country) => {
-        temp.push({ value: item.title, label: item.title, id: item.id });
-      });
-      setCountries(response);
-    });
-    getCities().then((response) => setCountries(response));
-    console.log(cities);
-    console.log(countries);
+    async function fetchData() {
+      let countries = await getCountries();
+      let cities = await getCities();
+      let types = await getAdvertisementTypes();
+      setCities(cities);
+      setCountries(countries);
+      setAdTypes(types);
+    }
+    fetchData();
   }, []);
+
+  const handleCreate = () => {
+    createAd(
+      title,
+      description,
+      price,
+      adType,
+      categoryId,
+      adTags,
+      city,
+      country,
+      street,
+      house,
+      flat
+    );
+  };
+
+  if (!cities && !countries && !adTypes) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="upload-form">
@@ -60,13 +77,19 @@ const UploadForm = () => {
           setDescription(e.target.value);
         }}
       />
-      <Select
-        placeholder="Advertisement type"
-        style={{ width: '400px' }}
-        onChange={(e) => {
-          setAdType(e.target.value);
-        }}
-        options={[{ value: 'lucy', label: 'Lucy' }]}
+      <Autocomplete
+        id=""
+        options={adTypes}
+        getOptionLabel={(option) => option?.title}
+        style={{ width: 500, color: 'white' }}
+        onChange={(event, value) => console.log(value)}
+        renderInput={(params) => (
+          <TextField
+            style={{ width: 500, background: 'white' }}
+            {...params}
+            placeholder="Advertisement type"
+          />
+        )}
       />
       <Input
         prefix="₪"
@@ -78,21 +101,29 @@ const UploadForm = () => {
           setTitle(e.target.value);
         }}
       />
-      <Select
-        placeholder="Country"
-        style={{ width: '400px' }}
-        onChange={(e) => {
-          setCity(e.target.value);
-        }}
+      <Autocomplete
+        id=""
         options={countries}
+        getOptionLabel={(option) => option?.title}
+        style={{ width: 500, color: 'white' }}
+        onChange={(event, value) => console.log(value)}
+        renderInput={(params) => (
+          <TextField
+            style={{ width: 500, background: 'white' }}
+            {...params}
+            placeholder="Country"
+          />
+        )}
       />
-      <Select
-        placeholder="City"
-        style={{ width: '400px' }}
-        onChange={(e) => {
-          setCity(e.target.value);
-        }}
-        options={[{ value: 'lucy', label: 'Lucy' }]}
+      <Autocomplete
+        id=""
+        options={cities}
+        getOptionLabel={(option) => option?.title}
+        style={{ width: 500, color: 'white' }}
+        onChange={(event, value) => console.log(value)}
+        renderInput={(params) => (
+          <TextField style={{ width: 500, background: 'white' }} {...params} placeholder="City" />
+        )}
       />
       <Input
         placeholder="Street"

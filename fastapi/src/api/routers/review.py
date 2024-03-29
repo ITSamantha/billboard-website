@@ -19,7 +19,7 @@ router = APIRouter(
 async def get_review(review_id: int, request: Request, auth: Auth = Depends()):
     """Get exact review information. """
 
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
 
     try:
         review: models.Review = await SqlAlchemyRepository(db_manager.get_session, models.Review)\

@@ -24,5 +24,5 @@ class ReviewTransformer(BaseTransformer):
             "deleted_at": json_datetime(review.deleted_at)
         }
 
-    def include_user(self, user):
-        return self.item(user, UserTransformer())
+    def include_user(self, review):
+        return self.item(review.user, UserTransformer())

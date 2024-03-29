@@ -7,13 +7,16 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.routers.advertisement import ad_favourite, booking
 from src.api.transformers.advertisement import AdTypeTransformer
+from src.api.transformers.booking.ad_booking_available_transformer import AdBookingAvailableTransformer
+from src.api.transformers.booking.booking_transformer import BookingTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
 from src.database import models
 from src.repository.advertisement_repository import AdvertisementRepository
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
-from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Worktime, Review, Advertisement
+from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Advertisement, Booking, \
+    AdBookingAvailable, BookingStatus, Review, Worktime
 from src.database.session_manager import db_manager
 
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
@@ -27,7 +30,6 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy import desc, asc, func
 
 import math
-
 
 router = APIRouter(
     prefix="/advertisements",
@@ -130,6 +132,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
             pages_total = math.ceil(advertisements_count / per_page)
         return ApiResponse.paginated(transform(
             advertisements,
+
             AdvertisementTransformer().include([
                 'address', 'user', 'ad_tags',
                 'ad_photos', 'category', 'reviews'
@@ -145,7 +148,6 @@ async def get_ad_types(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     try:
         ad_types: List[AdType] = await SqlAlchemyRepository(db_manager.get_session, AdType).get_multi()
-
         return ApiResponse.payload(transform(
             ad_types,
             AdTypeTransformer()
@@ -162,8 +164,8 @@ async def get_advertisement(advertisement_id: int, request: Request, short: bool
     await auth.check_access_token(request)
     # TODO: SHORT VERSION
     try:
-        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
-            .get_single(id=advertisement_id)
+        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement).get_single(
+            id=advertisement_id)
 
         if not advertisement:
             raise Exception("There is no advertisement with this data.")
@@ -187,13 +189,46 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
     """Get all reviews for exact advertisement. """
     await auth.check_access_token(request)
     try:
-        reviews: List[Review] = await SqlAlchemyRepository(db_manager.get_session, Review) \
-            .get_multi(advertisement_id=advertisement_id)
+        reviews: List[Review] = await SqlAlchemyRepository(db_manager.get_session, Review).get_multi(
+            advertisement_id=advertisement_id, deleted_at=None)
 
         return ApiResponse.payload(transform(
-            [review for review in reviews if not review.deleted_at],
+            reviews,
             ReviewTransformer()
         ))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.get(path='/{advertisement_id}/bookings')
+async def get_advertisement_bookings(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    try:
+
+        bookings: List[Booking] = await SqlAlchemyRepository(db_manager.get_session, Booking).get_multi(
+            advertisement_id=advertisement_id, deleted_at=None)
+
+        return ApiResponse.payload(transform(bookings,
+                                             BookingTransformer()
+                                             ))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.get(path='/{advertisement_id}/bookings_available')
+async def get_advertisement_bookings_available(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    try:
+
+        available_bookings: List[AdBookingAvailable] = await SqlAlchemyRepository(db_manager.get_session,
+                                                                                  AdBookingAvailable).get_multi(
+            advertisement_id=advertisement_id, deleted_at=None)
+
+        return ApiResponse.payload(transform(available_bookings,
+                                             AdBookingAvailableTransformer()
+                                             ))
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -202,14 +237,61 @@ async def get_advertisement_reviews(advertisement_id: int, request: Request, aut
 async def get_advertisement_worktime(advertisement_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     try:
-        worktimes: List[Worktime] = await SqlAlchemyRepository(db_manager.get_session, Worktime) \
-            .get_multi(advertisement_id=advertisement_id)
+        worktimes: List[Worktime] = await SqlAlchemyRepository(db_manager.get_session, Worktime).get_multi(
+            advertisement_id=advertisement_id)
+
 
         return ApiResponse.payload(transform(
             worktimes,
             WorktimeTransformer()
         ))
 
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.post("/{advertisement_id}/bookings")
+async def create_advertisement_booking(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    validator = Validator(await request.json(), {
+        # 'advertisement_id': ['required', 'integer'],
+        'time_from': ['required', 'string'],
+        'time_end': ['required', 'string'],
+        # 'time_from': ['required', 'datetime'],
+        # 'time_end': ['required', 'datetime'],
+        # 'deadline_at': ['required', 'datetime']
+        'deadline_at': ['required', 'string'],
+        'guest_count': ['required', 'integer']
+    })
+
+    validator.validated()
+
+    validator.validated_data["time_from"] = datetime.datetime.strptime(validator.validated_data["time_from"],
+                                                                       '%Y-%m-%d %H:%M:%S')
+
+    validator.validated_data["time_end"] = datetime.datetime.strptime(validator.validated_data["time_end"],
+                                                                      '%Y-%m-%d %H:%M:%S')
+
+    validator.validated_data["deadline_at"] = datetime.datetime.strptime(validator.validated_data["deadline_at"],
+                                                                         '%Y-%m-%d %H:%M:%S')
+
+    try:
+        booking: Booking = await SqlAlchemyRepository(db_manager.get_session,
+                                                      Booking) \
+            .create(validator.all() | {"user_id": request.state.user.id, "booking_status_id": BookingStatus.NOT_PAID,
+                                       "advertisement_id": advertisement_id})
+
+        # CHECK TYPE
+        # DELETE FROM AD_BOOKING_AVAILABLE
+        # TODO: ABLE TO RESTORE IF BOOKING IS CANCELLED
+        # TODO: CALCULATE AVAILABLE DATES
+
+        return ApiResponse.payload(
+            transform(booking,
+                      BookingTransformer()
+                      )
+        )
     except Exception as e:
         return ApiResponse.error(str(e))
 

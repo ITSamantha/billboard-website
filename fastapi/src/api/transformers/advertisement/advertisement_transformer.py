@@ -23,6 +23,7 @@ class AdvertisementTransformer(BaseTransformer):
         return {
             "id": ad.id,
             "title": ad.title,
+            "auto_booking": ad.auto_booking,
             "user_description": ad.user_description,
             "price": ad.price,
             "bookable": ad.category.bookable,

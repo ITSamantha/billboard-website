@@ -66,7 +66,7 @@ async def me_account(request: Request, auth: Auth = Depends()):
     from src.api.transformers.file_transformer import FileTransformer
     data = await request.json()
     try:
-        path, ext = storage.save_from_base64(data.image, Disk.IMAGES)
+        path, ext = storage.save_from_base64(data['image'], Disk.IMAGES)
     except Exception as e:
         return ApiResponse.error(str(e))
     file = await SqlAlchemyRepository(db_manager.get_session, model=File) \

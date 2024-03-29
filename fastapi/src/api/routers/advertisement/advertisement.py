@@ -167,9 +167,8 @@ async def search_advertisements(request: Request):
 
         advertisement: List[Advertisement] = await AdvertisementRepository(db_manager.get_session,
                                                                            Advertisement).search_multi(
-            per_page, per_page * (page - 1),
-
-            Advertisement.title.match(query), Advertisement.category.has(Category.title.match(query))
+            query,
+            per_page, per_page * (page - 1)
         )
 
         if not advertisement:

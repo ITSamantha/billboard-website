@@ -162,3 +162,8 @@ export const getCities = async () => {
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching cities:', error));
 };
+
+export const getMyProfile = async () => {
+  return await axios.get(BASE_URL + 'users/me').then((response) => response.data)
+  .catch((error) => console.error('Error fetching my profile:', error));
+}

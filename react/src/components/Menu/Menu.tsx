@@ -43,8 +43,8 @@ const Menu = () => {
                 <Link to="/upload-form">
                   <Button type="primary">Upload</Button>
                 </Link>
-                <Link to="/sign-in">
-                  <Button type="primary">הרשמה/התחברות</Button>
+                <Link to="/login">
+                  <Button type="primary">login</Button>
                 </Link>
               </div>
             </div>

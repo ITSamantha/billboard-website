@@ -61,19 +61,10 @@ async def me_account(request: Request, auth: Auth = Depends()):
 @router.get("/me")
 async def get_my(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
-
-    try:
-        user: models.User = await SqlAlchemyRepository(db_manager.get_session, models.User) \
-            .get_single(id=request.state.user.id)
-
-        return ApiResponse.payload(
-            transform(
-                user,
-                UserTransformer()
-            )
-        )
-    except Exception as e:
-        return ApiResponse.error(str(e))
+    return ApiResponse.payload(transform(
+        request.state.user,
+        UserTransformer()
+    ))
 
 
 @router.get("/{user_id}")

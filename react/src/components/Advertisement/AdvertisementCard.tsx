@@ -1,8 +1,9 @@
 import { Button } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { getAdvertisementById } from '../../service/dataService';
 
-type Props = {
+type AdInfo = {
   title: string;
   description: string;
   address: string;
@@ -16,10 +17,25 @@ type Props = {
   photosPaths: string[];
 };
 
-const AdvertisementCard = ({ title, description, address }: Props) => {
+const AdvertisementCard = () => {
+  const { id } = useParams();
+  const [ad, setAd] = useState<AdInfo | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      let data = await getAdvertisementById(Number(id));
+      setAd(data);
+    }
+    fetchData();
+  }, [id]);
+
+  if (!ad) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="AdvertisementCard">
-      <div>{title}</div>
+      <div>{}</div>
       <Link to={'/chat'}>
         <Button>Contact the seller</Button>
       </Link>

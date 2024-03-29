@@ -10,10 +10,9 @@ import Register from './components/Register/Register';
 import Catalog from './components/Catalog/CategoriesBlock';
 import MapWrapper from './pages/Map';
 import Profile from './pages/profile/Profile';
-import UserVerification from './pages/UserVerification';
-import CodeVerificationInput from './components/Profile/CodeVerificationInput';
 import ProfileEdit from './pages/profile/ProfileEdit';
 import ProfilePhone from './pages/profile/ProfilePhone';
+import AdvertisementCard from './components/Advertisement/AdvertisementCard';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -40,6 +39,14 @@ function App() {
       element: (
         <RouterWrapper>
           <Catalog />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: 'advertisement/:id',
+      element: (
+        <RouterWrapper>
+          <AdvertisementCard />
         </RouterWrapper>
       )
     },

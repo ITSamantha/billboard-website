@@ -172,3 +172,10 @@ export const getUserById = async (id: number) => {
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching user:', error));
 };
+
+export const getAdvertisementById = async (id: number) => {
+  return await axios
+    .get(BASE_URL + `advertisements/${id}`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching advertisement:', error));
+};

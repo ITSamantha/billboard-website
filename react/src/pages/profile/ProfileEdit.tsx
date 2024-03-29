@@ -51,8 +51,7 @@ const EditProfile = () => {
   const classes = useStyles();
   const user = useSelector(selectMyUser);
 
-  useEffect(() => {
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <ThemeProvider theme={THEME}>

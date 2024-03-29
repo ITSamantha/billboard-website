@@ -19,6 +19,25 @@ router = APIRouter(
 )
 
 
+@router.get("/{user_id}")
+async def get_user(user_id: int):
+    try:
+        user: models.User = await SqlAlchemyRepository(db_manager.get_session, models.User) \
+            .get_single(id=user_id)
+
+        if not user:
+            raise Exception("There is no user with this data.")
+
+        return ApiResponse.payload(
+            transform(
+                user,
+                UserTransformer())
+        )
+
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
 @router.get("/me")
 async def get_my(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
@@ -110,20 +129,3 @@ async def get_my_reviews(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
-@router.get("/{user_id}")
-async def get_user(user_id: int):
-    try:
-        user: models.User = await SqlAlchemyRepository(db_manager.get_session, models.User) \
-            .get_single(id=user_id)
-
-        if not user:
-            raise Exception("There is no user with this data.")
-
-        return ApiResponse.payload(
-            transform(
-                user,
-                UserTransformer())
-        )
-
-    except Exception as e:
-        return ApiResponse.error(str(e))

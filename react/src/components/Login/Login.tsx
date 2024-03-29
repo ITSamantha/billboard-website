@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Input } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin, fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
+import { fetchLogin, fetchMyUser, selectError, selectLoading, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
 
 function Login() {
@@ -14,23 +14,31 @@ function Login() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectMyUser);
   const navigate = useNavigate();
+  const error = useSelector(selectError);
+  const loading = useSelector(selectLoading);
 
   axios.defaults.withCredentials = true;
 
   const handleLogin = async () => {
-    // TODO: check if login is successful
     await dispatch(fetchLogin({ email, password }) as any);
     await dispatch(fetchMyUser());
   };
 
   useEffect(() => {
-    if (user && user.id) {
+    if (user && user.id && !error) {
       const id = user.id;
       navigate(`/profile/${id}`);
     }
   }, [user, navigate]);
 
   const handleLogout = () => {};
+
+  if(error){
+    return(<div>Error. Reload page</div>)
+  }
+  if(loading){
+    return(<div>Loading...</div>)
+  }
 
   return (
     <>

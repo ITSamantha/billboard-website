@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin, selectUser } from '../../redux/slices/UserSlice';
+import { fetchLogin, fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
+import { AppDispatch } from '../../redux/store';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector(selectMyUser);
+  const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // TODO: check if login is successful
-    dispatch(fetchLogin({ email, password }) as any);
-
-    // navigate('/');
-    setTimeout(() => {}, 1000);
-    console.log(user);
+    await dispatch(fetchLogin({ email, password }) as any);
+    await dispatch(fetchMyUser());
   };
+
+  useEffect(() => {
+    if (user && user.id) {
+      const id = user.id;
+      navigate(`/profile/${id}`);
+    }
+  }, [user, navigate]);
 
   const handleLogout = () => {};
 

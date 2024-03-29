@@ -34,14 +34,29 @@ type Filter = {
 };
 
 const Filter = () => {
-
   const [filters, setFilters] = useState<Filter[]>([]);
 
   useEffect(() => {
     // Mock data for testing
     const mockFilters = [
-      { id: 1, name: 'Filter 1', type: 'type1', values: [{ id: 1, value: 'Value 1' }, { id: 2, value: 'Value 2' }] },
-      { id: 2, name: 'Filter 2', type: 'type2', values: [{ id: 3, value: 'Value 3' }, { id: 4, value: 'Value 4' }] }
+      {
+        id: 1,
+        name: 'Filter 1',
+        type: 'type1',
+        values: [
+          { id: 1, value: 'Value 1' },
+          { id: 2, value: 'Value 2' }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Filter 2',
+        type: 'type2',
+        values: [
+          { id: 3, value: 'Value 3' },
+          { id: 4, value: 'Value 4' }
+        ]
+      }
     ];
     setFilters(mockFilters);
   }, []);
@@ -64,7 +79,8 @@ const Filter = () => {
             {item.values.map((value) => (
               <div key={value.id} style={{ display: 'flex', alignItems: 'center' }}>
                 <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <Checkbox size={'small'}
+                  <Checkbox
+                    size={'small'}
                     onChange={handleChange(value.id)}
                     color="primary"
                     inputProps={{ 'aria-label': 'Checkbox' }}
@@ -75,7 +91,9 @@ const Filter = () => {
             ))}
           </Box>
         ))}
-        <Button variant="contained" color="primary" onClick={handleFiltersSet}>Apply</Button>
+        <Button variant="contained" color="primary" onClick={handleFiltersSet}>
+          Apply
+        </Button>
       </Container>
     </ThemeProvider>
   );

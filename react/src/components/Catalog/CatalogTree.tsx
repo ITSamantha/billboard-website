@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Container, List, ListItem, ListItemText, Collapse } from '@mui/material';
-import { RiArrowDropUpLine } from "react-icons/ri";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropUpLine } from 'react-icons/ri';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 interface Category {
   id: number;
@@ -28,7 +28,8 @@ const CategoryTree: React.FC<{ categories: Category[] }> = ({ categories }) => {
         <React.Fragment key={node.id}>
           <ListItem onClick={() => handleClick(node.id)}>
             <ListItemText primary={node.name} />
-            {node.children && (openIds.includes(node.id) ? <RiArrowDropUpLine /> : <RiArrowDropDownLine /> )}
+            {node.children &&
+              (openIds.includes(node.id) ? <RiArrowDropUpLine /> : <RiArrowDropDownLine />)}
           </ListItem>
           {node.children && (
             <Collapse in={openIds.includes(node.id)} timeout="auto" unmountOnExit>

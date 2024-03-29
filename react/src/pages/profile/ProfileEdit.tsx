@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import {
   Autocomplete,
@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import { THEME } from './Profile';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectMyUser } from '../../redux/slices/MyUserSlice';
 
 const cities = [
   { id: 1, label: 'New York' },
@@ -40,7 +42,17 @@ const useStyles = makeStyles({
 });
 
 const EditProfile = () => {
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [city, setCity] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const classes = useStyles();
+  const user = useSelector(selectMyUser);
+
+  useEffect(() => {
+  }, [user]);
 
   return (
     <ThemeProvider theme={THEME}>
@@ -61,6 +73,7 @@ const EditProfile = () => {
                 name="firstName"
                 autoComplete="given-name"
                 autoFocus
+                onChange={(event) => setFirstName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

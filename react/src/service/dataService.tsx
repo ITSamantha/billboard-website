@@ -21,10 +21,8 @@ export const register = (
       },
       { withCredentials: true }
     )
-    .then((r) => {
-      console.log(r);
-      return r.data;
-    });
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching register:', error));
 };
 
 export const login = (email: string, password: string) => {
@@ -37,17 +35,15 @@ export const login = (email: string, password: string) => {
       },
       { withCredentials: true }
     )
-    .then((r) => {
-      console.log(r);
-      return r.data;
-    });
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching login:', error));
 };
 
 export const logout = () => {
   axios
     .post(BASE_URL + 'auth/logout', {}, { withCredentials: true })
-    .then((r) => console.log(r))
-    .catch((e) => console.log(e));
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching logout:', error));
 };
 
 export const getCategories = (categorySlug: string | undefined) => {
@@ -163,7 +159,16 @@ export const getCities = async () => {
     .catch((error) => console.error('Error fetching cities:', error));
 };
 
-export const getMyProfile = async () => {
-  return await axios.get(BASE_URL + 'users/me').then((response) => response.data)
-  .catch((error) => console.error('Error fetching my profile:', error));
-}
+export const getMyUser = async () => {
+  return await axios
+    .get(BASE_URL + 'users/me')
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching my user:', error));
+};
+
+export const getUserById = async (id: number) => {
+  return await axios
+    .get(BASE_URL + `users/${id}`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching user:', error));
+};

@@ -9,7 +9,7 @@ const Catalog = () => {
   return (
     <div className="catalog-container">
       <div>
-        <CatalogTree categories={getCategoriesList()}/>
+        <CatalogTree categories={getCategoriesList()} />
         <Filter />
       </div>
       <CategoriesBlock />

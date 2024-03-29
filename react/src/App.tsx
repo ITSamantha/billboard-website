@@ -52,7 +52,7 @@ function App() {
       )
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       element: (
         <RouterWrapper>
           <Profile />

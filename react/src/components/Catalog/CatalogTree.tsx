@@ -1,47 +1,55 @@
-import { useEffect, useState } from 'react';
-import { getCategoriesList } from '../../service/dataService';
-import { Link } from 'react-router-dom';
-import '../../scss/catalog-tree.scss';
+import React from 'react';
+import { Typography, Container, List, ListItem, ListItemText, Collapse } from '@mui/material';
+import { RiArrowDropUpLine } from "react-icons/ri";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
-type Item = {
+interface Category {
   id: number;
   name: string;
-  children: Item[];
-};
+  children?: Category[];
+}
 
-const CatalogTree = () => {
-  const [tree, setTree] = useState<Item[]>([]);
+const CategoryTree: React.FC<{ categories: Category[] }> = ({ categories }) => {
+  const [openIds, setOpenIds] = React.useState<number[]>([]);
 
-  useEffect(() => {
-    const data = getCategoriesList();
-    setTree(data);
-  }, []);
-
-  const renderChild = (obj: Item[], depth: number) => {
-    return obj.map((item) => (
-      <div style={{ paddingRight: `${depth * 15}px` }}>
-        <Link to={`/categories/${item.name}`} key={item.id}>
-          <div>{item.name}</div>
-        </Link>
-
-        {item.children.length > 0 && <div>{renderChild(item.children, depth + 1)}</div>}
-      </div>
-    ));
+  const handleClick = (id: number) => {
+    setOpenIds((prevOpenIds) => {
+      if (prevOpenIds.includes(id)) {
+        return prevOpenIds.filter((openId) => openId !== id);
+      } else {
+        return [...prevOpenIds, id];
+      }
+    });
   };
 
-  return (
-    <div className="catalog-tree-container">
-      <h3> Categories</h3>
-      {tree.map((item) => (
-        <div>
-          <Link to={`/categories/${item.name}`} key={item.id}>
-            <div>{item.name}</div>
-          </Link>
-          <div>{renderChild(item.children, 1)}</div>
-        </div>
+  const renderTree = (nodes: Category[]) => (
+    <List>
+      {nodes.map((node) => (
+        <React.Fragment key={node.id}>
+          <ListItem onClick={() => handleClick(node.id)}>
+            <ListItemText primary={node.name} />
+            {node.children && (openIds.includes(node.id) ? <RiArrowDropUpLine /> : <RiArrowDropDownLine /> )}
+          </ListItem>
+          {node.children && (
+            <Collapse in={openIds.includes(node.id)} timeout="auto" unmountOnExit>
+              {renderTree(node.children)}
+            </Collapse>
+          )}
+        </React.Fragment>
       ))}
-    </div>
+    </List>
+  );
+
+  return (
+    <Container maxWidth="md">
+      <Typography variant="h6" gutterBottom>
+        Select Category
+      </Typography>
+      {renderTree(categories)}
+    </Container>
   );
 };
 
-export default CatalogTree;
+// Usage: <CategoryTree categories={categoriesData} />
+
+export default CategoryTree;

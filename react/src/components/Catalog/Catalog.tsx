@@ -3,12 +3,13 @@ import CategoriesBlock from './CategoriesBlock';
 import '../../scss/catalog.scss';
 import Filter from './Filter';
 import { Pagination } from 'antd';
+import { getCategoriesList } from '../../service/dataService';
 
 const Catalog = () => {
   return (
     <div className="catalog-container">
       <div>
-        <CatalogTree />
+        <CatalogTree categories={getCategoriesList()}/>
         <Filter />
       </div>
       <CategoriesBlock />

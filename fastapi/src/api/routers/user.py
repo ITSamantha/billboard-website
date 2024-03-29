@@ -68,7 +68,7 @@ async def me_account(request: Request, auth: Auth = Depends()):
     try:
         path, ext = storage.save_from_base64(data.image, Disk.IMAGES)
     except Exception as e:
-        return ApiResponse.error('Wrong image format')
+        return ApiResponse.error(str(e))
     file = await SqlAlchemyRepository(db_manager.get_session, model=File) \
         .create({
             'path': path,

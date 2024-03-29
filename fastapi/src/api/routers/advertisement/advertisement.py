@@ -143,6 +143,29 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
+@router.get("/search")
+async def search_advertisements(search_text: str):
+    try:
+        advertisement: Advertisement = await AdvertisementRepository(db_manager.get_session, Advertisement).search_multi(
+            )
+
+        if not advertisement:
+            raise Exception("There is no advertisement with this data.")
+
+        return ApiResponse.payload(
+            transform(
+                advertisement,
+                AdvertisementTransformer()
+                .include([
+                    'address', 'user', 'ad_tags',
+                    'ad_photos', 'category', 'reviews',
+                ])
+            )
+        )
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
 @router.get("/ad_type")
 async def get_ad_types(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
@@ -239,7 +262,6 @@ async def get_advertisement_worktime(advertisement_id: int, request: Request, au
     try:
         worktimes: List[Worktime] = await SqlAlchemyRepository(db_manager.get_session, Worktime).get_multi(
             advertisement_id=advertisement_id)
-
 
         return ApiResponse.payload(transform(
             worktimes,

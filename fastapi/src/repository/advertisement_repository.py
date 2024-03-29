@@ -22,3 +22,6 @@ class AdvertisementRepository(SqlAlchemyRepository):
                 order_column.asc() if not order_type else order_column.desc()).limit(limit).offset(offset)
             row = await session.execute(stmt)
             return row.scalars().all()
+
+
+    async def get

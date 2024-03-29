@@ -5,8 +5,11 @@ from fastapi import APIRouter, UploadFile, Request, Depends
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
+from src.api.transformers.filter.filter_transformer import FilterTransformer
 from src.database import models
+from src.database.models import CategoryFilter
 from src.database.session_manager import db_manager
+from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.repository.crud.category_repository import CategoryRepository
 from src.utils.transformer import transform
 from src.utils.validator import Validator
@@ -102,6 +105,20 @@ async def get_categories(request: Request, auth: Auth = Depends()):
             categories,
             CategoryTransformer().include(["children"])
         ))
+
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.get("/{category_id}/filters")
+async def get_filters_by_category_id(category_id: int, request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    try:
+        filters: List[CategoryFilter] = await SqlAlchemyRepository(db_manager.get_session, CategoryFilter) \
+            .get_multi(order="filter_id", category_id=category_id)
+
+        return ApiResponse.payload(transform([filter.filter for filter in filters], FilterTransformer().include(["filter_values"])))
     except Exception as e:
         return ApiResponse.error(str(e))
 

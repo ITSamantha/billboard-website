@@ -1,4 +1,4 @@
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, func
 
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository, ModelType
 
@@ -22,9 +22,9 @@ class AdvertisementRepository(SqlAlchemyRepository):
             row = await session.execute(stmt)
             return row.scalars().all()
 
-    async def search_multi(self, limit: int = 100,
-                           offset: int = 0, *filters):
+    async def search_multi(self, columns, query, limit: int = 100,
+                           offset: int = 0):
         async with self._session_factory() as session:
-            stmt = select(self.model).filter(or_(*filters)).limit(limit).offset(offset)
+            stmt = select(self.model, func.similarity(columns, query)).filter(column).limit(limit).offset(offset)
             row = await session.execute(stmt)
             return row.scalars().all()

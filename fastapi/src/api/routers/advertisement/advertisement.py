@@ -16,7 +16,7 @@ from src.repository.advertisement_repository import AdvertisementRepository
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
 from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Advertisement, Booking, \
-    AdBookingAvailable, BookingStatus, Review, Worktime
+    AdBookingAvailable, BookingStatus, Review, Worktime, Category
 from src.database.session_manager import db_manager
 
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
@@ -143,9 +143,6 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
-
-
-
 @router.get("/ad_type")
 async def get_ad_types(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
@@ -157,6 +154,39 @@ async def get_ad_types(request: Request, auth: Auth = Depends()):
         ))
 
     except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.get("/search")
+async def search_advertisements(request: Request):
+    try:
+        parsed_params = get_params(request)
+        page = int(parsed_params['page']) if 'page' in parsed_params else 1
+        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
+        query = parsed_params['query'] if 'query' in parsed_params else None
+
+        advertisement: List[Advertisement] = await AdvertisementRepository(db_manager.get_session,
+                                                                           Advertisement).search_multi(
+            per_page, per_page * (page - 1),
+
+            Advertisement.title.match(query), Advertisement.category.has(Category.title.match(query))
+        )
+
+        if not advertisement:
+            raise Exception("There is no advertisement with this data.")
+
+        return ApiResponse.payload(
+            transform(
+                advertisement,
+                AdvertisementTransformer()
+                .include([
+                    'address', 'user', 'ad_tags',
+                    'ad_photos', 'category', 'reviews',
+                ])
+            )
+        )
+    except Exception as e:
+        return ApiResponse.error(str(e))
         return ApiResponse.error(str(e))
 
 
@@ -307,36 +337,5 @@ async def delete_advertisement(advertisement_id: int, request: Request, auth: Au
             .update(data={"deleted_at": datetime.datetime.now()}, id=advertisement_id)
 
         return ApiResponse.payload({"advertisement_id": advertisement.id})
-    except Exception as e:
-        return ApiResponse.error(str(e))
-
-
-@router.get("/search")
-async def search_advertisements(request: Request):
-    try:
-        parsed_params = get_params(request)
-        page = int(parsed_params['page']) if 'page' in parsed_params else 1
-        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
-        query = parsed_params['query'] if 'query' in parsed_params else None
-
-        advertisement: Advertisement = await AdvertisementRepository(db_manager.get_session,
-                                                                     Advertisement).search_multi(
-            per_page, per_page * (page - 1),
-            Advertisement.title.match(query)
-        )
-
-        if not advertisement:
-            raise Exception("There is no advertisement with this data.")
-
-        return ApiResponse.payload(
-            transform(
-                advertisement,
-                AdvertisementTransformer()
-                .include([
-                    'address', 'user', 'ad_tags',
-                    'ad_photos', 'category', 'reviews',
-                ])
-            )
-        )
     except Exception as e:
         return ApiResponse.error(str(e))

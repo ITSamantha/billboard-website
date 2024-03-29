@@ -22,7 +22,7 @@ class Storage:
         try:
             meta, image = image.split(',')
             mime = meta.split(':')[1].split(';')[0]
-        except Exception as e:
+        except Exception:
             raise Exception('Wrong file format.')
 
         file_data = base64.b64decode(image)

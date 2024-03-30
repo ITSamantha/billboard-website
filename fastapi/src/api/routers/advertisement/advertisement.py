@@ -98,7 +98,7 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
 
 @router.get("")
 async def get_advertisements(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    #await auth.check_access_token(request)
     #  todo вынести всю логику с пагнацией для переиспользования
     try:
         parsed_params = get_params(request)

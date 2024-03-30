@@ -6,8 +6,6 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 
 from src.api.transformers.account.account_transformer import AccountTransformer
-from src.api.transformers.user import UserTransformer
-from src.database import models
 
 from src.api.transformers.advertisement import AdvertisementTransformer
 from src.api.transformers.booking.booking_transformer import BookingTransformer
@@ -31,7 +29,7 @@ async def get_my(request: Request, auth: Auth = Depends()):
     return ApiResponse.payload(
         transform(
             request.state.user,
-            UserTransformer()
+            UserTransformer().include(["ad_favourites", "advertisements"])
         )
     )
 
@@ -58,24 +56,6 @@ async def me_account(request: Request, auth: Auth = Depends()):
     return 'good'
 
 
-@router.get("/me")
-async def get_my(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
-
-    try:
-        user: models.User = await SqlAlchemyRepository(db_manager.get_session, models.User) \
-            .get_single(id=request.state.user.id)
-
-        return ApiResponse.payload(
-            transform(
-                user,
-                UserTransformer()
-            )
-        )
-    except Exception as e:
-        return ApiResponse.error(str(e))
-
-
 @router.get("/{user_id}")
 async def get_user(user_id: int):
     try:
@@ -88,7 +68,7 @@ async def get_user(user_id: int):
         return ApiResponse.payload(
             transform(
                 user,
-                UserTransformer())
+                UserTransformer().include(["advertisements"]))
         )
 
     except Exception as e:

@@ -22,7 +22,7 @@ router = APIRouter(
 
 @router.get("/{category_id}")
 async def get_category_by_id(category_id: int, request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
     """Get nested category. """
 
     try:
@@ -95,7 +95,7 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
 async def get_categories(request: Request, auth: Auth = Depends()):
     """Get all nested category. """
 
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
 
     try:
         categories: List[models.Category] = await CategoryRepository(db_manager.get_session,
@@ -112,7 +112,7 @@ async def get_categories(request: Request, auth: Auth = Depends()):
 
 @router.get("/{category_id}/filters")
 async def get_filters_by_category_id(category_id: int, request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
 
     try:
         filters: List[CategoryFilter] = await SqlAlchemyRepository(db_manager.get_session, CategoryFilter) \

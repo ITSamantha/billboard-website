@@ -85,7 +85,7 @@ class Validator:
         log('log.txt', 'parsed rules')
         log('log.txt', 'base_rules: ' + json.dumps(base_rules))
         log('log.txt', 'nested_rules: ' + json.dumps(nested_rules))
-        log('log.txt', 'title_prefix: ' + self.title_prefix if self.title_prefix else 'none')
+        # log('log.txt', 'title_prefix: ' + self.title_prefix if self.title_prefix else 'none')
 
         for field in base_rules:
             try:
@@ -137,6 +137,8 @@ class Validator:
                 """Traverse through nested objects and validate each one"""
                 for key, nested_object in enumerate(nested_data):
                     title_prefix = (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
+                    log('log.txt', 'title_prefix ' + title_prefix)
+                    log('log.txt', 'nested_data ' + json.dumps(nested_data))
                     if not isinstance(nested_object, dict):
                         nested_object_errors = [title_prefix[:-1] + ' must be an object.']
                     else:

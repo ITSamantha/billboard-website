@@ -94,13 +94,11 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
 @router.get("")
 async def get_categories(request: Request, auth: Auth = Depends()):
     """Get all nested category. """
-
     await auth.check_access_token(request)
-
+    # todo join all levels to make only one query
     try:
-        categories: List[models.Category] = await CategoryRepository(db_manager.get_session,
-                                                                     models.Category).get_multi(order="order")
-        # TODO: ADD ORDER BY COLUMN
+        categories: List[models.Category] = await CategoryRepository(db_manager.get_session, models.Category)\
+            .get_multi(order="order", parent_id=None)
         return ApiResponse.payload(transform(
             categories,
             CategoryTransformer().include(["children"])

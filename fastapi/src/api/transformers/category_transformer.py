@@ -21,4 +21,4 @@ class CategoryTransformer(BaseTransformer):
         }
 
     def include_children(self, category):
-        return self.collection(category.children, CategoryTransformer())
+        return self.collection(category.children, CategoryTransformer().include(['children']))

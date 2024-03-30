@@ -94,9 +94,11 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
 @router.get("")
 async def get_categories():
     """Get all nested category. """
+
     # todo join all levels to make only one query
+    # await auth.check_access_token(request)
     try:
-        categories: List[models.Category] = await CategoryRepository(db_manager.get_session, models.Category)\
+        categories: List[models.Category] = await CategoryRepository(db_manager.get_session, models.Category) \
             .get_multi(order="order", parent_id=None)
         return ApiResponse.payload(transform(
             categories,
@@ -115,7 +117,8 @@ async def get_filters_by_category_id(category_id: int, request: Request, auth: A
         filters: List[CategoryFilter] = await SqlAlchemyRepository(db_manager.get_session, CategoryFilter) \
             .get_multi(order="filter_id", category_id=category_id)
 
-        return ApiResponse.payload(transform([filter.filter for filter in filters], FilterTransformer().include(["filter_values"])))
+        return ApiResponse.payload(
+            transform([filter.filter for filter in filters], FilterTransformer().include(["filter_values"])))
     except Exception as e:
         return ApiResponse.error(str(e))
 

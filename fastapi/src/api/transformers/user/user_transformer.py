@@ -9,6 +9,8 @@ class UserTransformer(BaseTransformer):
         self.available_includes = []
         self.default_includes = [
             'user_status',
+            "advertisements",
+            "ad_favourites"
         ]
 
     def transform(self, user):
@@ -30,3 +32,11 @@ class UserTransformer(BaseTransformer):
 
     def include_user_status(self, user):
         return self.item(user.user_status, UserStatusTransformer())
+
+    def include_advertisements(self, user):
+        from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+        return self.collection(user.advertisements, AdvertisementTransformer())
+
+    def include_ad_favourites(self, user):
+        from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+        return self.collection([ad.advertisement for ad in user.ad_favourites], AdvertisementTransformer())

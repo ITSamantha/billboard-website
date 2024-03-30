@@ -98,7 +98,7 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
 
 @router.get("")
 async def get_advertisements(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
     #  todo вынести всю логику с пагнацией для переиспользования
     try:
         parsed_params = get_params(request)
@@ -145,7 +145,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
 
 @router.get("/ad_type")
 async def get_ad_types(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
     try:
         ad_types: List[AdType] = await SqlAlchemyRepository(db_manager.get_session, AdType).get_multi()
         return ApiResponse.payload(transform(
@@ -167,9 +167,8 @@ async def search_advertisements(request: Request):
 
         advertisement: List[Advertisement] = await AdvertisementRepository(db_manager.get_session,
                                                                            Advertisement).search_multi(
-            per_page, per_page * (page - 1),
-
-            Advertisement.title.match(query), Advertisement.category.has(Category.title.match(query))
+            query,
+            per_page, per_page * (page - 1)
         )
 
         if not advertisement:
@@ -187,14 +186,13 @@ async def search_advertisements(request: Request):
         )
     except Exception as e:
         return ApiResponse.error(str(e))
-        return ApiResponse.error(str(e))
 
 
 @router.get("/{advertisement_id}")
 async def get_advertisement(advertisement_id: int, request: Request, short: bool = False, auth: Auth = Depends()):
     """Get exact advertisement information. """
 
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
     # TODO: SHORT VERSION
     try:
         advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement).get_single(
@@ -268,7 +266,7 @@ async def get_advertisement_bookings_available(advertisement_id: int, request: R
 
 @router.get("/{advertisement_id}/worktimes")
 async def get_advertisement_worktime(advertisement_id: int, request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
     try:
         worktimes: List[Worktime] = await SqlAlchemyRepository(db_manager.get_session, Worktime).get_multi(
             advertisement_id=advertisement_id)

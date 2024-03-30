@@ -10,9 +10,9 @@ class TypesSeeder(GenericSeeder):
         super().__init__()
         self.initial_data = {
             AdType: {
-                AdType.TYPE_1: {"title": "type1"},
-                AdType.TYPE_2: {"title": "type2"},
-                AdType.TYPE_3: {"title": "type3"},
+                AdType.TYPE_1: {"title": "selling"},
+                AdType.TYPE_2: {"title": "booking"},
+                AdType.TYPE_3: {"title": "renting"}
             },
             BookingType: {
                 BookingType.TYPE_1: {"title": "type1"},

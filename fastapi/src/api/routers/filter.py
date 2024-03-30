@@ -20,7 +20,7 @@ router = APIRouter(
 
 @router.get("")
 async def get_filters(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
 
     try:
         filters: List[Filter] = await SqlAlchemyRepository(db_manager.get_session, Filter) \
@@ -32,8 +32,8 @@ async def get_filters(request: Request, auth: Auth = Depends()):
 
 
 @router.get("/filter_types")
-async def get_filters(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+async def get_filter_types(request: Request, auth: Auth = Depends()):
+    # await auth.check_access_token(request)
 
     try:
         filter_types: List[FilterType] = await SqlAlchemyRepository(db_manager.get_session, FilterType) \
@@ -46,7 +46,7 @@ async def get_filters(request: Request, auth: Auth = Depends()):
 
 @router.get("/{filter_id}/filter_values")
 async def get_filter_values(filter_id: int, request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
+    # await auth.check_access_token(request)
 
     try:
         filter_values: List[FilterValue] = await SqlAlchemyRepository(db_manager.get_session, FilterValue) \

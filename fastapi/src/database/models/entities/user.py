@@ -40,8 +40,8 @@ class User(Base):
 
     # user_fields: Mapped[List["AdTag"]] = relationship(
     # uselist=True, lazy="selectin", secondary="user__user_field", order_by="")
-    # ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
-    # advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
+    ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
+    advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
     # user_fields: Mapped[List["UserField"]] = relationship(uselist=True, lazy="selectin", secondary="user__user_field")
 
     @property

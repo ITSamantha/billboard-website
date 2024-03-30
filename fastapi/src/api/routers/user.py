@@ -6,8 +6,6 @@ from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 
 from src.api.transformers.account.account_transformer import AccountTransformer
-from src.api.transformers.user import UserTransformer
-from src.database import models
 
 from src.api.transformers.advertisement import AdvertisementTransformer
 from src.api.transformers.booking.booking_transformer import BookingTransformer
@@ -31,7 +29,7 @@ async def get_my(request: Request, auth: Auth = Depends()):
     return ApiResponse.payload(
         transform(
             request.state.user,
-            UserTransformer()
+            UserTransformer().include(["ad_favourites", "advertisements"])
         )
     )
 
@@ -71,10 +69,10 @@ async def me_account(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
     file = await SqlAlchemyRepository(db_manager.get_session, model=File) \
         .create({
-            'path': path,
-            'extension': ext,
-            'disk': Disk.IMAGES,
-        })
+        'path': path,
+        'extension': ext,
+        'disk': Disk.IMAGES,
+    })
 
     return ApiResponse.payload(transform(file, FileTransformer()))
 
@@ -100,7 +98,7 @@ async def get_user(user_id: int):
         return ApiResponse.payload(
             transform(
                 user,
-                UserTransformer())
+                UserTransformer().include(["advertisements"]))
         )
 
     except Exception as e:

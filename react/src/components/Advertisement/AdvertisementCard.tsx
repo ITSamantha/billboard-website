@@ -1,7 +1,8 @@
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getAdvertisementById } from '../../service/dataService';
+import Loader from '../Loader';
 
 type Status = {
   id: number;
@@ -48,7 +49,7 @@ const AdvertisementCard = () => {
   }, [id]);
 
   if (!ad) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (

@@ -15,7 +15,6 @@ const Catalog = ({ categoryId} : CatalogProps ) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    getCategoriesList().then(r => console.error(r));
     getCategoriesList().then(r => setCategories(r));
   }, []);
 

@@ -3,22 +3,49 @@ import { Typography, Container, List, ListItem, ListItemText, Collapse } from '@
 import { RiArrowDropUpLine } from 'react-icons/ri';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import Loader from '../Loader';
 
 export type Category = {
-  id: number;
+  id: string;
   title: string;
   url: string;
   children?: Category[];
 }
 
 const CategoryTree: React.FC<{ categories: Category[], categoryId?: string }> = ({ categories, categoryId }) => {
-  const [openIds, setOpenIds] = React.useState<number[]>([]);
+  const [openIds, setOpenIds] = React.useState<string[]>([]);
+
+  const propagateCategory = (targetId: string, category: Category, categoryIdStack: string[]) => {
+    console.log("C", targetId, category, categoryIdStack)
+    category.children?.forEach(child => {
+      if (child.id === targetId) {
+        console.log(categoryIdStack)
+        setOpenIds(categoryIdStack)
+        return;
+      }
+      let currentStack = JSON.parse(JSON.stringify(categoryIdStack))
+      currentStack.push(category.id)
+      propagateCategory(targetId, child, currentStack)
+    })
+  }
+
+  const openIdsWithCategory = (categoryId: string) => {
+    console.log("B", categories, categoryId)
+    categories.forEach(x => propagateCategory(categoryId, x, []))
+  }
 
   useEffect(() => {
-    console.log(categoryId)
-  }, [categoryId]);
+    if (categoryId) {
+      // page like /category/:categoryID
+      console.log("A", categoryId)
+      openIdsWithCategory(categoryId)
+    } else {
+      // home page
+      setOpenIds([])
+    }
+  }, [categoryId, categories]);
 
-  const handleClick = (id: number) => {
+  const handleClick = (id: string) => {
     setOpenIds((prevOpenIds) => {
       if (prevOpenIds.includes(id)) {
         return prevOpenIds.filter((openId) => openId !== id);
@@ -28,7 +55,7 @@ const CategoryTree: React.FC<{ categories: Category[], categoryId?: string }> = 
     });
   };
 
-  const renderTree = (nodes: Category[], level: number) => (
+  const renderTree = (nodes: Category[], level: number, openIds: string[]) => (
     <List>
       {nodes.map((node, index) => (
         <React.Fragment key={index}>
@@ -47,7 +74,7 @@ const CategoryTree: React.FC<{ categories: Category[], categoryId?: string }> = 
           </ListItem>
           {(node.children && node.children.length) ? (
             <Collapse in={openIds.includes(node.id)} timeout="auto" unmountOnExit>
-              {renderTree(node.children, level + 1)}
+              {renderTree(node.children, level + 1, openIds)}
             </Collapse>
           ) : ''}
         </React.Fragment>
@@ -60,7 +87,7 @@ const CategoryTree: React.FC<{ categories: Category[], categoryId?: string }> = 
       <Typography variant="h6" gutterBottom>
         Выберите категорию
       </Typography>
-      {renderTree(categories, 0)}
+      { !categories.length ? (<Loader />) : renderTree(categories, 0, openIds) }
     </Container>
   );
 };

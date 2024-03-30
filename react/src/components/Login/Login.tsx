@@ -5,7 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Input } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin, fetchMyUser, selectError, selectLoading, selectMyUser } from '../../redux/slices/MyUserSlice';
+import {
+  fetchLogin,
+  fetchMyUser,
+  selectError,
+  selectLoading,
+  selectMyUser
+} from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
 
 function Login() {
@@ -33,11 +39,11 @@ function Login() {
 
   const handleLogout = () => {};
 
-  if(error){
-    return(<div>Error. Reload page</div>)
+  if (error) {
+    return <div>Error. Reload page</div>;
   }
-  if(loading){
-    return(<div>Loading...</div>)
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (

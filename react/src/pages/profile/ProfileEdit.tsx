@@ -13,6 +13,7 @@ import { THEME } from './Profile';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectMyUser } from '../../redux/slices/MyUserSlice';
+import { getCities } from '../../service/dataService';
 
 const cities = [
   { id: 1, label: 'New York' },
@@ -41,17 +42,37 @@ const useStyles = makeStyles({
   }
 });
 
+type City = {
+  id: number;
+  title: string;
+};
+
 const EditProfile = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [city, setCity] = useState<string>('');
+  const [city, setCity] = useState<string | null>('');
   const [password, setPassword] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+  const [cities, setCities] = useState<City[]>([]);
   const classes = useStyles();
   const user = useSelector(selectMyUser);
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    async function fetchData() {
+      let cities = await getCities();
+      setCities(cities);
+    }
+    fetchData();
+  }, [user]);
+
+  const handleProfileInfoChange = () => {
+    return;
+  };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <ThemeProvider theme={THEME}>
@@ -71,6 +92,7 @@ const EditProfile = () => {
                 label="First Name"
                 name="firstName"
                 autoComplete="given-name"
+                defaultValue={user.first_name}
                 autoFocus
                 onChange={(event) => setFirstName(event.target.value)}
               />
@@ -82,7 +104,9 @@ const EditProfile = () => {
                 fullWidth
                 id="lastName"
                 label="Last Name"
+                defaultValue={user.last_name}
                 name="lastName"
+                onChange={(event) => setLastName(event.target.value)}
                 autoComplete="family-name"
               />
             </Grid>
@@ -95,6 +119,8 @@ const EditProfile = () => {
                 id="email"
                 label="Email Address"
                 name="email"
+                defaultValue={user.email}
+                onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
               />
             </Grid>
@@ -105,7 +131,9 @@ const EditProfile = () => {
                 fullWidth
                 id="phoneNumber"
                 label="Phone Number"
+                defaultValue={user.phone_number}
                 name="phoneNumber"
+                onChange={(event) => setPhone(event.target.value)}
                 autoComplete="tel"
               />
               <Link to="/profile/phone">
@@ -117,7 +145,8 @@ const EditProfile = () => {
             <Grid item xs={12} sm={6}>
               <Autocomplete
                 options={cities}
-                getOptionLabel={(option) => option.label}
+                getOptionLabel={(option) => option?.title}
+                onChange={(event, value) => setCity(value!.title)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -136,8 +165,10 @@ const EditProfile = () => {
                 margin="normal"
                 fullWidth
                 id="password"
+                defaultValue={user.password}
                 label="Password"
                 name="password"
+                onChange={(event) => setPassword(event.target.value)}
                 type="password"
                 autoComplete="current-password"
               />
@@ -150,6 +181,7 @@ const EditProfile = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onChange={handleProfileInfoChange}
               >
                 Save Changes
               </Button>

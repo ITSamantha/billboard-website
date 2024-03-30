@@ -132,6 +132,7 @@ class Validator:
                     raise Exception('Nested validation is available only for arrays')
                 """Created validator for nested objects"""
                 nested_validator = Validator({}, nested_rules[field])
+                log('log.txt', 'nested validator created')
                 """Traverse through nested objects and validate each one"""
                 for key, nested_object in enumerate(nested_data):
                     title_prefix = (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'

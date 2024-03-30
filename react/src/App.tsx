@@ -13,6 +13,7 @@ import Profile from './pages/profile/Profile';
 import ProfileEdit from './pages/profile/ProfileEdit';
 import ProfilePhone from './pages/profile/ProfilePhone';
 import AdvertisementCard from './components/Advertisement/AdvertisementCard';
+import Category from './pages/Category';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -23,6 +24,14 @@ function App() {
       element: (
         <RouterWrapper>
           <Home />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/category/:id',
+      element: (
+        <RouterWrapper>
+          <Category />
         </RouterWrapper>
       )
     },

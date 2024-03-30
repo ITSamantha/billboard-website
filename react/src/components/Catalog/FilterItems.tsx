@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { THEME } from '../../pages/profile/Profile';
 import { Button, Checkbox, Typography, Container, Box, ThemeProvider } from '@mui/material';
+import { getCategoriesList, getFilterList } from '../../service/dataService';
 
 const useStyles = makeStyles({
   container: {
@@ -28,55 +29,38 @@ type Value = {
 
 type Filter = {
   id: number;
-  name: string;
+  title: string;
   type: string;
-  values: Value[];
+  filter_values: Value[];
 };
 
-const Filter = () => {
+type FilterProps = {
+  categoryId: string
+}
+
+const FilterItems = ({categoryId} : FilterProps) => {
+
   const [filters, setFilters] = useState<Filter[]>([]);
 
   useEffect(() => {
-    // Mock data for testing
-    const mockFilters = [
-      {
-        id: 1,
-        name: 'Filter 1',
-        type: 'type1',
-        values: [
-          { id: 1, value: 'Value 1' },
-          { id: 2, value: 'Value 2' }
-        ]
-      },
-      {
-        id: 2,
-        name: 'Filter 2',
-        type: 'type2',
-        values: [
-          { id: 3, value: 'Value 3' },
-          { id: 4, value: 'Value 4' }
-        ]
-      }
-    ];
-    setFilters(mockFilters);
-  }, []);
+    getFilterList(categoryId).then(r => setFilters(r));
+  }, [categoryId]);
 
   const handleChange = (filterId: number) => (event: any) => {
     console.log(`Filter ${filterId} changed: `, event.target.checked);
-    // Handle filter changes here
   };
 
   const handleFiltersSet = () => {
-    // sendFilters();
-  };
+    console.log("SET")
+  }
 
   return (
     <ThemeProvider theme={THEME}>
       <Container maxWidth="md">
         {filters.map((item) => (
           <Box key={item.id} mb={2} p={2} bgcolor="#f5f5f5" borderRadius="8px">
-            <Typography variant="h6">{item.name}</Typography>
-            {item.values.map((value) => (
+            <Typography variant="h6">{item.title}</Typography>
+            {item.filter_values.map((value) => (
               <div key={value.id} style={{ display: 'flex', alignItems: 'center' }}>
                 <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                   <Checkbox
@@ -99,4 +83,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default FilterItems;

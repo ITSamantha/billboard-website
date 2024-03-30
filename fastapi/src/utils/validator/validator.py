@@ -66,6 +66,7 @@ class Validator:
             return
 
         from src.utils.logger import log
+        import json
         log('log.txt', 'got into _validate')
 
         rules_checker = Rules()
@@ -82,6 +83,8 @@ class Validator:
                 nested_rules[prefix][rest_key] = self.rules[key]
 
         log('log.txt', 'parsed rules')
+        log('log.txt', 'base_rules: ' + json.dumps(base_rules))
+        log('log.txt', 'nested_rules: ' + json.dumps(nested_rules))
 
         for field in base_rules:
             try:

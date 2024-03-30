@@ -139,7 +139,7 @@ class Validator:
                 for key, nested_object in enumerate(nested_data):
                     title_prefix = (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
                     if not isinstance(nested_object, dict):
-                        nested_object_errors = [title_prefix + ' must be an object.']
+                        nested_object_errors = [title_prefix[:-1] + ' must be an object.']
                     else:
                         nested_validator.data = nested_object
                         """Set prefix to identify specific object errors"""

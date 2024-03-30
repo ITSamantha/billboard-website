@@ -131,7 +131,7 @@ class Validator:
                 except KeyError:
                     continue
                 if not isinstance(nested_data, list):
-                    continue  # todo ?
+                    continue  # todo?
                     raise Exception('Nested validation is available only for arrays')
                 """Created validator for nested objects"""
                 nested_validator = Validator({}, nested_rules[field])

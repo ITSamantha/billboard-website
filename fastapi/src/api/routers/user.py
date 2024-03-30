@@ -46,39 +46,6 @@ async def me_account(request: Request, auth: Auth = Depends()):
     ))
 
 
-@router.post('/me/account/test')
-async def me_account(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
-    account = await request.state.user.get_account()
-    data = await request.json()
-    type_id = data['type_id']
-    amount = data['amount']
-    await account.add_transaction(type_id, amount)
-
-    return 'good'
-
-
-@router.post('/me/account/testo')
-async def me_account(request: Request, auth: Auth = Depends()):
-    await auth.check_access_token(request)
-    from src.utils.storage import storage
-    from src.database.models.entities.file import File, Disk
-    from src.api.transformers.file_transformer import FileTransformer
-    data = await request.json()
-    try:
-        path, ext = storage.save_from_base64(data['image'], Disk.IMAGES)
-    except Exception as e:
-        return ApiResponse.error(str(e))
-    file = await SqlAlchemyRepository(db_manager.get_session, model=File) \
-        .create({
-            'path': path,
-            'extension': ext,
-            'disk': Disk.IMAGES,
-        })
-
-    return ApiResponse.payload(transform(file, FileTransformer()))
-
-
 @router.get("/me")
 async def get_my(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)

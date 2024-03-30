@@ -8,7 +8,6 @@ from src.utils.transformer import transform
 
 router = APIRouter(
     prefix="/test",
-    tags=["users"],
 )
 
 

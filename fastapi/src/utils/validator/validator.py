@@ -67,45 +67,29 @@ class Validator:
 
         rules_checker = Rules()
 
-        """Split rules by '.' to have nested structure"""
-        parsed_rules = {}
-        for key, value in self.rules.items():
-            nested_keys = key.split('.')
-            current_dict = parsed_rules
-            for nested_key in nested_keys[:-1]:
-                current_dict.setdefault(nested_key, {})
-                current_dict = current_dict[nested_key]
-            current_dict[nested_keys[-1]] = value
+        # """Split rules by '.' to have nested structure"""
+        # parsed_rules = {}
+        # for key, value in self.rules.items():
+        #     nested_keys = key.split('.')
+        #     current_dict = parsed_rules
+        #     for nested_key in nested_keys[:-1]:
+        #         current_dict.setdefault(nested_key, {})
+        #         current_dict = current_dict[nested_key]
+        #     current_dict[nested_keys[-1]] = value
 
-        for field in parsed_rules:
-            """Check if field is array of objects, that required nested validation"""
-            if isinstance(parsed_rules[field], dict):
-                try:
-                    nested_data = self.data[field]
-                except KeyError:
-                    continue
-                if not isinstance(nested_data, list):
-                    raise Exception('Nested validation is available only for arrays')
-                """Created validator for nested objects"""
-                nested_validator = Validator({}, parsed_rules[field])
-                """Traverse through nested objects and validate each one"""
-                for key, nested_object in enumerate(nested_data):
-                    nested_validator.data = nested_object
-                    """Set prefix to identify specific object errors"""
-                    nested_validator.title_prefix = \
-                        (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
-                    nested_validator.reset_is_validated()
-                    nested_object_errors = nested_validator.get_errors()
-                    if nested_object_errors:
-                        if field not in self.errors:
-                            self.errors[field] = []
-                        self.errors[field].append(nested_object_errors)
-                    else:
-                        if field not in self.validated_data:
-                            self.validated_data[field] = []
-                        self.validated_data[field].append(nested_validator.validated())
-                continue
-            """If field does not require nested validation, proceed with regular field validation"""
+        """Split base and nested rules"""
+        base_rules = {}
+        nested_rules = {}
+        for key in self.rules:
+            if '.' not in key:
+                base_rules[key] = self.rules[key]
+            else:
+                prefix, rest_key = key.split('.', 1)
+                if prefix not in nested_rules:
+                    nested_rules[prefix] = {}
+                nested_rules[prefix][rest_key] = self.rules[key]
+
+        for field in base_rules:
             try:
                 rules = self.rules[field]
             except KeyError:
@@ -138,6 +122,35 @@ class Validator:
             else:
                 if field in self.data:
                     self.validated_data[field] = self.data[field]
+
+        for field in nested_rules:
+            """Check if field is array of objects, that required nested validation"""
+            if isinstance(nested_rules[field], dict):
+                try:
+                    nested_data = self.data[field]
+                except KeyError:
+                    continue
+                if not isinstance(nested_data, list):
+                    raise Exception('Nested validation is available only for arrays')
+                """Created validator for nested objects"""
+                nested_validator = Validator({}, nested_rules[field])
+                """Traverse through nested objects and validate each one"""
+                for key, nested_object in enumerate(nested_data):
+                    nested_validator.data = nested_object
+                    """Set prefix to identify specific object errors"""
+                    nested_validator.title_prefix = \
+                        (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
+                    nested_validator.reset_is_validated()
+                    nested_object_errors = nested_validator.get_errors()
+                    if nested_object_errors:
+                        if field not in self.errors:
+                            self.errors[field] = []
+                        self.errors[field].append(nested_object_errors)
+                    else:
+                        if field not in self.validated_data:
+                            self.validated_data[field] = []
+                        self.validated_data[field].append(nested_validator.validated())
+                continue
 
         self.is_validated = True
 

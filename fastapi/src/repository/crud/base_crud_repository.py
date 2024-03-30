@@ -23,7 +23,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
     async def create(self, data: CreateSchemaType) -> ModelType:
         async with self._session_factory() as session:
             instance = self.model(**data.__dict__) if isinstance(data, BaseModel) else self.model(**data)
-            instance = session.merge(instance)
+            instance = await session.merge(instance)
             session.add(instance)
             await session.commit()
             await session.refresh(instance)

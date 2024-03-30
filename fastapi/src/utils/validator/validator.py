@@ -153,13 +153,18 @@ class Validator:
                         nested_object_errors = nested_validator.get_errors()
                         log('log.txt', '6nested_data ' + str(len(nested_data)))
                     if nested_object_errors:
+                        log('log.txt', '7nested_data ' + str(len(nested_data)))
                         if field not in self.errors:
                             self.errors[field] = []
+                        log('log.txt', '8nested_data ' + str(len(nested_data)))
                         self.errors[field].append(nested_object_errors)
+                        log('log.txt', '9nested_data ' + str(len(nested_data)))
                     else:
                         if field not in self.validated_data:
                             self.validated_data[field] = []
+                        log('log.txt', '10nested_data ' + str(len(nested_data)))
                         self.validated_data[field].append(nested_validator.validated())
+                        log('log.txt', '11nested_data ' + str(len(nested_data)))
                 continue
         log('log.txt', 'nested rules done')
         self.is_validated = True

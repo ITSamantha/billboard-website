@@ -138,7 +138,7 @@ class Validator:
                 for key, nested_object in enumerate(nested_data):
                     title_prefix = (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
                     log('log.txt', 'title_prefix ' + title_prefix)
-                    log('log.txt', 'nested_data ' + json.dumps(nested_data))
+                    log('log.txt', 'nested_data ' + str(len(nested_data)))
                     if not isinstance(nested_object, dict):
                         nested_object_errors = [title_prefix[:-1] + ' must be an object.']
                     else:

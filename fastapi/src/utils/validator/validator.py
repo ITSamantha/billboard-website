@@ -137,12 +137,15 @@ class Validator:
                 nested_validator = Validator({}, nested_rules[field])
                 """Traverse through nested objects and validate each one"""
                 for key, nested_object in enumerate(nested_data):
-                    nested_validator.data = nested_object
-                    """Set prefix to identify specific object errors"""
-                    nested_validator.title_prefix = \
-                        (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
-                    nested_validator.reset_is_validated()
-                    nested_object_errors = nested_validator.get_errors()
+                    title_prefix = (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
+                    if isinstance(nested_object, dict):
+                        nested_object_errors = [title_prefix + ' must be an object.']
+                    else:
+                        nested_validator.data = nested_object
+                        """Set prefix to identify specific object errors"""
+                        nested_validator.title_prefix = title_prefix
+                        nested_validator.reset_is_validated()
+                        nested_object_errors = nested_validator.get_errors()
                     if nested_object_errors:
                         if field not in self.errors:
                             self.errors[field] = []

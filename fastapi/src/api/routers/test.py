@@ -57,6 +57,8 @@ async def me_account(request: Request, auth: Auth = Depends()):
         'images.id': ['required', 'integer'],
         'images.path': ['required', 'string'],
     })
+    log('log.txt', 'prevalidate')
     validator.validate()
+    log('log.txt', 'validated')
 
     return validator.validated()

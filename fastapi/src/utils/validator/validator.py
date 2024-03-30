@@ -65,18 +65,10 @@ class Validator:
         if self.is_validated:
             return
 
+        from src.utils.logger import log
+        log('log.txt', 'got into _validate')
+
         rules_checker = Rules()
-
-        # """Split rules by '.' to have nested structure"""
-        # parsed_rules = {}
-        # for key, value in self.rules.items():
-        #     nested_keys = key.split('.')
-        #     current_dict = parsed_rules
-        #     for nested_key in nested_keys[:-1]:
-        #         current_dict.setdefault(nested_key, {})
-        #         current_dict = current_dict[nested_key]
-        #     current_dict[nested_keys[-1]] = value
-
         """Split base and nested rules"""
         base_rules = {}
         nested_rules = {}
@@ -88,6 +80,8 @@ class Validator:
                 if prefix not in nested_rules:
                     nested_rules[prefix] = {}
                 nested_rules[prefix][rest_key] = self.rules[key]
+
+        log('log.txt', 'parsed rules')
 
         for field in base_rules:
             try:
@@ -122,7 +116,7 @@ class Validator:
             else:
                 if field in self.data:
                     self.validated_data[field] = self.data[field]
-
+        log('log.txt', 'base rules done')
         for field in nested_rules:
             """Check if field is array of objects, that required nested validation"""
             if isinstance(nested_rules[field], dict):
@@ -155,7 +149,7 @@ class Validator:
                             self.validated_data[field] = []
                         self.validated_data[field].append(nested_validator.validated())
                 continue
-
+        log('log.txt', 'nested rules done')
         self.is_validated = True
 
     def _parse_rule(self, rule, separator=":", args_separator=","):

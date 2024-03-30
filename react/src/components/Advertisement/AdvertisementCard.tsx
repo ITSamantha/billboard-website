@@ -3,18 +3,36 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getAdvertisementById } from '../../service/dataService';
 
-type AdInfo = {
+type Status = {
+  id: number;
   title: string;
-  description: string;
-  address: string;
-  tags: string[];
-  isBooking: boolean;
+  is_shown: boolean;
+};
+type AdType = {
+  id: number;
+  title: string;
+};
+
+type AdInfo = {
+  id: number;
+  title: string;
+  user_description: string;
+  auto_booking: boolean;
+  bookable: boolean;
+  created_at_str: string;
   reviews: string[];
+  deleted_at: string | null;
+  updated_at: string;
+  created_at: string;
+  ad_photos: string[];
+  ad_tags: string[];
   creationDate: string;
   price: number;
   userId: number;
-  status: string;
-  photosPaths: string[];
+  ad_status: Status;
+  ad_type: AdType;
+  address: object;
+  user: object;
 };
 
 const AdvertisementCard = () => {
@@ -35,7 +53,12 @@ const AdvertisementCard = () => {
 
   return (
     <div className="AdvertisementCard">
-      <div>{}</div>
+      <div>{ad.title}</div>
+      <div>{ad.user_description}</div>
+      <div>Price: {ad.price}</div>
+      <div>{ad.created_at_str}</div>
+      <div>{ad.reviews}</div>
+
       <Link to={'/chat'}>
         <Button>Contact the seller</Button>
       </Link>

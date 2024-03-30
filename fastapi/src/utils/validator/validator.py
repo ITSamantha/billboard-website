@@ -1,5 +1,3 @@
-import datetime
-
 from src.utils.validator.exceptions import AppValidationException
 from src.api.payloads.base import BasePayload
 import re
@@ -7,16 +5,21 @@ import re
 
 class Validator:
 
-    def __init__(self, data: dict, rules: dict, titles: dict = {}, dto: BasePayload = None):
+    def __init__(self, data: dict, rules: dict, titles: dict = None, dto: BasePayload = None, title_prefix: str =None):
         self.data = data
         self.rules = rules
-        self.titles = titles
+        self.titles = titles if titles else {}
         self.dto = dto
+        self.title_prefix = title_prefix
 
         self.is_validated = False
 
         self.errors = {}
         self.validated_data = {}
+
+    def reset_is_validated(self):
+        self.is_validated = False
+        return self
 
     def validate(self):
         """Validates the data and throws exception if data is not valid"""
@@ -63,14 +66,53 @@ class Validator:
             return
 
         rules_checker = Rules()
-        for field in self.rules:
+
+        """Split rules by '.' to have nested structure"""
+        parsed_rules = {}
+        for key, value in self.rules.items():
+            nested_keys = key.split('.')
+            current_dict = parsed_rules
+            for nested_key in nested_keys[:-1]:
+                current_dict.setdefault(nested_key, {})
+                current_dict = current_dict[nested_key]
+            current_dict[nested_keys[-1]] = value
+
+        for field in parsed_rules:
+            """Check if field is array of objects, that required nested validation"""
+            if isinstance(parsed_rules[field], dict):
+                try:
+                    nested_data = self.data[field]
+                except KeyError:
+                    continue
+                if not isinstance(nested_data, list):
+                    raise Exception('Nested validation is available only for arrays')
+                """Created validator for nested objects"""
+                nested_validator = Validator({}, parsed_rules[field])
+                """Traverse through nested objects and validate each one"""
+                for key, nested_object in enumerate(nested_data):
+                    nested_validator.data = nested_object
+                    """Set prefix to identify specific object errors"""
+                    nested_validator.title_prefix = \
+                        (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
+                    nested_validator.reset_is_validated()
+                    nested_object_errors = nested_validator.get_errors()
+                    if nested_object_errors:
+                        if field not in self.errors:
+                            self.errors[field] = []
+                        self.errors[field].append(nested_object_errors)
+                    else:
+                        if field not in self.validated_data:
+                            self.validated_data[field] = []
+                        self.validated_data[field].append(nested_validator.validated())
+                continue
+            """If field does not require nested validation, proceed with regular field validation"""
             try:
                 rules = self.rules[field]
             except KeyError:
                 continue
 
             if not isinstance(rules, list):
-                raise Exception('Rules must be of type list')  # todo custom?
+                raise Exception('Rules must be of type list')
 
             next_field_errors = []
 
@@ -79,9 +121,13 @@ class Validator:
                     rule, args = self._parse_rule(rule)
                     check_function = getattr(rules_checker, rule)
                 except AttributeError:
-                    raise Exception(f'Rule {rule} is not defined')  # todo custom?
+                    raise Exception(f'Rule {rule} is not defined')
 
-                custom_title = self.titles[field] if field in self.titles else None
+                custom_title = None
+                if field in self.titles:
+                    custom_title = self.titles[field]
+                elif self.title_prefix:
+                    custom_title = self.title_prefix + field
                 next_rule_error = check_function(self.data, field, custom_title, *args)
 
                 if next_rule_error:
@@ -90,7 +136,6 @@ class Validator:
             if len(next_field_errors) > 0:
                 self.errors[field] = next_field_errors
             else:
-                # TODO: TEST
                 if field in self.data:
                     self.validated_data[field] = self.data[field]
 

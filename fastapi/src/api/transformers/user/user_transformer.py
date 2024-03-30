@@ -6,11 +6,10 @@ from src.utils.time import json_datetime, time_ago_in_words
 class UserTransformer(BaseTransformer):
     def __init__(self):
         super().__init__()
-        self.available_includes = []
+        self.available_includes = ["advertisements",
+                                   "ad_favourites"]
         self.default_includes = [
-            'user_status',
-            "advertisements",
-            "ad_favourites"
+            'user_status'
         ]
 
     def transform(self, user):

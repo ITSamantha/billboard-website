@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import '../scss/upload-form.scss';
 import { createAd, getAdvertisementTypes, getCities, getCountries } from '../service/dataService';
 import { Autocomplete, Button, Input, TextField } from '@mui/material';
+import Loader from './Loader';
 
 type Data = {
   id: number;
@@ -54,7 +55,11 @@ const UploadForm = () => {
   };
 
   if (!cities && !countries && !adTypes) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

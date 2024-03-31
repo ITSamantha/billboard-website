@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectMyUser } from '../../redux/slices/MyUserSlice';
 import { getCities } from '../../service/dataService';
+import Loader from '../../components/Loader';
 
 const cities = [
   { id: 1, label: 'New York' },
@@ -71,7 +72,11 @@ const EditProfile = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createNextState, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getMyUser, register, login as enter } from '../../service/dataService';
 
 interface MyUserState {
@@ -38,7 +38,8 @@ const MyUserSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.user = {};
+      state.user = null;
+      state.token = null;
       state.isLoading = false;
       state.hasError = false;
     }

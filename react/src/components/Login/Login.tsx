@@ -13,6 +13,7 @@ import {
 } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
 import { Input } from '@mui/material';
+import Loader from '../Loader';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -43,7 +44,11 @@ function Login() {
     return <div>Error. Reload page</div>;
   }
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

@@ -6,7 +6,6 @@ import {
   Container,
   createTheme,
   Grid,
-  Paper,
   Typography,
   ThemeProvider
 } from '@mui/material';
@@ -16,6 +15,7 @@ import { fetchUser, selectUser } from '../../redux/slices/UserSlice';
 import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
 import AdvertisementBlock from '../../components/Advertisement/AdvertisementBlock';
+import Loader from '../../components/Loader';
 
 type ProfileInfo = {
   id: number;
@@ -53,7 +53,11 @@ const Profile = () => {
   }, [user]);
 
   if (!profile || !profile.advertisements) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

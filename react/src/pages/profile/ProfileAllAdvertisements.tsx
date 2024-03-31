@@ -4,6 +4,7 @@ import { fetchUser, selectUser } from '../../redux/slices/UserSlice';
 import { useEffect } from 'react';
 import { AppDispatch } from '../../redux/store';
 import { useParams } from 'react-router-dom';
+import Loader from '../../components/Loader';
 
 const ProfileAllAdvertisements = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,7 +17,11 @@ const ProfileAllAdvertisements = () => {
   }, [dispatch, id]);
 
   if (!user || !user.advertisements) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
   return (
     <div>

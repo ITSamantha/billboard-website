@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, selectUser } from '../../redux/slices/UserSlice';
 import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
+import AdvertisementBlock from '../../components/Advertisement/AdvertisementBlock';
 
 type ProfileInfo = {
   id: number;
@@ -23,6 +24,7 @@ type ProfileInfo = {
   phone_number: string;
   last_name: string;
   first_name: string;
+  advertisements: AdInfo[];
 };
 const Profile = () => {
   const classes = useStyles();
@@ -49,8 +51,8 @@ const Profile = () => {
     setProfile(user);
   }, [user]);
 
-  if (!profile) {
-    return <div></div>;
+  if (!profile || !profile.advertisements) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -76,62 +78,16 @@ const Profile = () => {
             </Grid>
           </Grid>
         </section>
-
-        <section className={classes.section}>
-          <Typography variant="h5" component="h5" className={classes.sectionTitle}>
-            Advertisements
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.advertisement}>
-                <img
-                  className={classes.advertisementImage}
-                  src="https://http.cat/300"
-                  alt="Advertisement"
-                />
-                <Typography variant="h6" component="h6">
-                  Advertisement Title
-                </Typography>
-                <Typography variant="body1">Advertisement Description</Typography>
-                <Typography variant="body2" className={classes.advertisementAddress}>
-                  Advertisement Address
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.advertisement}>
-                <img
-                  className={classes.advertisementImage}
-                  src="https://http.cat/500"
-                  alt="Advertisement"
-                />
-                <Typography variant="h6" component="h6">
-                  Advertisement Title
-                </Typography>
-                <Typography variant="body1">Advertisement Description</Typography>
-                <Typography variant="body2" className={classes.advertisementAddress}>
-                  Advertisement Address
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.advertisement}>
-                <img
-                  className={classes.advertisementImage}
-                  src="https://http.cat/400"
-                  alt="Advertisement"
-                />
-                <Typography variant="h6" component="h6">
-                  Advertisement Title
-                </Typography>
-                <Typography variant="body1">Advertisement Description</Typography>
-                <Typography variant="body2" className={classes.advertisementAddress}>
-                  Advertisement Address
-                </Typography>
-              </Paper>
-            </Grid>
-          </Grid>
-        </section>
+        <AdvertisementBlock
+          advertisements={profile.advertisements}
+          advertisementsInRow={3}
+          maxAdvertisements={6}
+        />
+        {profile.advertisements.length > 6 && (
+          <Link to={`/profile/${id}/advertisements`}>
+            <Button>See all</Button>
+          </Link>
+        )}
         {isMyProfile && (
           <section className={classes.section}>
             <Link to="/profile/edit">

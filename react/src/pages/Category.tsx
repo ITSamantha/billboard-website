@@ -1,16 +1,15 @@
-import React from 'react'
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Search from '../components/Search/Search';
 import Catalog from '../components/Catalog/Catalog';
 
 const Category = () => {
+  const params = useParams();
 
-  const params = useParams()
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   if (params.id === undefined) {
-    navigate('/404')
-    return <></>
+    navigate('/404');
+    return <></>;
   }
 
   return (
@@ -19,7 +18,6 @@ const Category = () => {
       <Catalog categoryId={params.id} />
     </div>
   );
+};
 
-}
-
-export default Category
+export default Category;

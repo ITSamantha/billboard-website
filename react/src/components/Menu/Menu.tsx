@@ -1,9 +1,13 @@
-import React from 'react';
 import { Button, Dropdown, Space } from 'antd';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa';
+import { selectMyUser } from '../../redux/slices/MyUserSlice';
+import { useEffect } from 'react';
 
 const Menu = () => {
+  const user = useSelector(selectMyUser);
+
+  useEffect(() => {}, [user]);
   return (
     <header className="global-navigation-site-header">
       <div className="global-navigation-site-header-container">
@@ -36,17 +40,23 @@ const Menu = () => {
                   </Dropdown>
                 </div>
               </div>
-              <div>
-                <Link to="/profile">
-                  <Button type="primary">Profile</Button>
-                </Link>
-                <Link to="/upload-form">
-                  <Button type="primary">Upload</Button>
-                </Link>
+              {user && (
+                <div>
+                  <Link to={`/profile/${user.id}`}>
+                    <Button type="primary">Profile</Button>
+                  </Link>
+                  <Link to="/upload-form">
+                    <Button type="primary">Upload</Button>
+                  </Link>
+                  <Button type="primary">Logout</Button>
+                </div>
+              )}
+
+              {!user && (
                 <Link to="/login">
-                  <Button type="primary">login</Button>
+                  <Button type="primary">Login</Button>
                 </Link>
-              </div>
+              )}
             </div>
           </div>
         </section>

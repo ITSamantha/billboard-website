@@ -35,15 +35,14 @@ type Filter = {
 };
 
 type FilterProps = {
-  categoryId: string
-}
+  categoryId: string;
+};
 
-const FilterItems = ({categoryId} : FilterProps) => {
-
+const FilterItems = ({ categoryId }: FilterProps) => {
   const [filters, setFilters] = useState<Filter[]>([]);
 
   useEffect(() => {
-    getFilterList(categoryId).then(r => setFilters(r));
+    getFilterList(categoryId).then((r) => setFilters(r));
   }, [categoryId]);
 
   const handleChange = (filterId: number) => (event: any) => {
@@ -51,8 +50,8 @@ const FilterItems = ({categoryId} : FilterProps) => {
   };
 
   const handleFiltersSet = () => {
-    console.log("SET")
-  }
+    console.log('SET');
+  };
 
   return (
     <ThemeProvider theme={THEME}>

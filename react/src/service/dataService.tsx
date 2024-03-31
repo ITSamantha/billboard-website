@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://api.uvuv643.ru/';
-const ENV = 'local';
+const BASE_URL = 'http://localhost/';
 
 export const register = (
   email: string,
@@ -55,63 +54,23 @@ export const getCategories = (categorySlug: string | undefined) => {
 };
 
 export const getCategoriesList = async () => {
-  // @ts-ignore
-  if (ENV === 'test') {
-    return [
-      {
-        id: 1,
-        name: 'clothes',
-        children: [
-          { id: 2, name: 'men', children: [] },
-          {
-            id: 3,
-            name: 'women',
-            children: [
-              { id: 4, name: 'dresses', children: [] },
-              { id: 5, name: 'skirts', children: [] }
-            ]
-          }
-        ]
-      },
-      { id: 6, name: 'pets', children: [] }
-    ];
-  }
-  return await axios.get(BASE_URL + 'categories')
-    .then(response => {
+  return await axios
+    .get(BASE_URL + 'categories')
+    .then((response) => {
       return response.data;
-    }).catch(error => {
+    })
+    .catch((error) => {
       throw error;
     });
 };
 
 export const getFilterList = async (categoryId: string) => {
-  // @ts-ignore
-  if (ENV === 'test') {
-    return [
-      {
-        id: 1,
-        name: 'Filter 1',
-        type: 'type1',
-        values: [
-          { id: 1, value: 'Value 1' },
-          { id: 2, value: 'Value 2' }
-        ]
-      },
-      {
-        id: 2,
-        name: 'Filter 2',
-        type: 'type2',
-        values: [
-          { id: 3, value: 'Value 3' },
-          { id: 4, value: 'Value 4' }
-        ]
-      }
-    ];
-  }
-  return await axios.get(BASE_URL + 'categories/' + categoryId + '/filters')
-    .then(response => {
+  return await axios
+    .get(BASE_URL + 'categories/' + categoryId + '/filters')
+    .then((response) => {
       return response.data;
-    }).catch(error => {
+    })
+    .catch((error) => {
       throw error;
     });
 };

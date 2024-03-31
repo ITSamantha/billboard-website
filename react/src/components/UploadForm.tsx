@@ -1,9 +1,7 @@
-import { Input, Select, Button } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
 import '../scss/upload-form.scss';
 import { createAd, getAdvertisementTypes, getCities, getCountries } from '../service/dataService';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Button, Input, TextField } from '@mui/material';
 
 type Data = {
   id: number;
@@ -69,9 +67,11 @@ const UploadForm = () => {
           setTitle(e.target.value);
         }}
       />
-      <TextArea
-        autoSize={{ minRows: 2, maxRows: 6 }}
-        placeholder="Description"
+      <TextField
+        id="outlined-multiline-static"
+        label="Description"
+        multiline
+        rows={4}
         value={description}
         onChange={(e) => {
           setDescription(e.target.value);
@@ -93,10 +93,10 @@ const UploadForm = () => {
       />
       <Input
         prefix="₪"
-        suffix="ILS"
+        // suffix="ILS"
         placeholder="Price"
         type="number"
-        min="0"
+        // min="0"
         onChange={(e) => {
           setTitle(e.target.value);
         }}

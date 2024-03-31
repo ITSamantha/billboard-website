@@ -1,8 +1,8 @@
-import { Button, Dropdown, Space } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMyUser } from '../../redux/slices/MyUserSlice';
 import { useEffect } from 'react';
+import { Button } from '@mui/material';
 
 const Menu = () => {
   const user = useSelector(selectMyUser);
@@ -24,37 +24,23 @@ const Menu = () => {
                 <div
                   className="uitk-layout-flex uitk-layout-flex-align-items-center uitk-layout-flex-justify-content-flex-start uitk-layout-flex-flex-wrap-nowrap uitk-spacing uitk-spacing-padding-inlinestart-one uitk-layout-flex-item uitk-layout-flex-item-flex-basis-half_width uitk-layout-flex-item-flex-grow-1"
                   id="primary-navigation"
-                >
-                  <Dropdown
-                    menu={{
-                      items: [
-                        {
-                          key: '4',
-                          danger: true,
-                          label: 'a danger item'
-                        }
-                      ]
-                    }}
-                  >
-                    <Space>קטגוריות מוצרים</Space>
-                  </Dropdown>
-                </div>
+                ></div>
               </div>
               {user && (
                 <div>
                   <Link to={`/profile/${user.id}`}>
-                    <Button type="primary">Profile</Button>
+                    <Button variant="contained">Profile</Button>
                   </Link>
                   <Link to="/upload-form">
-                    <Button type="primary">Upload</Button>
+                    <Button variant="contained">Upload</Button>
                   </Link>
-                  <Button type="primary">Logout</Button>
+                  <Button variant="contained">Logout</Button>
                 </div>
               )}
 
               {!user && (
                 <Link to="/login">
-                  <Button type="primary">Login</Button>
+                  <Button variant="contained">Login</Button>
                 </Link>
               )}
             </div>

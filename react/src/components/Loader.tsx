@@ -1,5 +1,4 @@
-import React from 'react';
-import { Spin } from 'antd';
+import { CircularProgress } from '@mui/material';
 
 interface LoaderProps {
   fullscreen?: boolean;
@@ -7,7 +6,7 @@ interface LoaderProps {
 
 const Loader = ({ fullscreen }: LoaderProps) => {
   if (fullscreen) {
-    return <Spin spinning size="large" fullscreen />;
+    return <CircularProgress />;
   }
   return (
     <div
@@ -20,7 +19,7 @@ const Loader = ({ fullscreen }: LoaderProps) => {
         alignItems: 'center'
       }}
     >
-      <Spin spinning size="large" />
+      <CircularProgress />
     </div>
   );
 };

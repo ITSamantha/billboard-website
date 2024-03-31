@@ -1,5 +1,4 @@
-import { Button } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
+import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 
 const Chat = () => {
@@ -7,8 +6,9 @@ const Chat = () => {
 
   return (
     <div>
-      <TextArea
-        autoSize={{ minRows: 2, maxRows: 6 }}
+      <TextField
+        rows={2}
+        maxRows={6}
         value={message}
         onChange={(e) => {
           setMessage(e.target.value);

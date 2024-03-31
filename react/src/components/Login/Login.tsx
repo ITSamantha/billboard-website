@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { Input } from 'antd';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,6 +12,7 @@ import {
   selectMyUser
 } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
+import { Input } from '@mui/material';
 
 function Login() {
   const [email, setEmail] = useState<string>('');

@@ -1,8 +1,8 @@
-import { Button, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getAdvertisementById } from '../../service/dataService';
 import Loader from '../Loader';
+import { Button } from '@mui/material';
 
 const AdvertisementCard = () => {
   const { id } = useParams();

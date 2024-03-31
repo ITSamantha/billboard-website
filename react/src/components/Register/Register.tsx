@@ -1,11 +1,11 @@
-import { Button, Input } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useState } from 'react';
 import '../../scss/register.scss';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
-import axios from 'axios';
 import { register } from '../../service/dataService';
 import { useNavigate } from 'react-router-dom';
+import { Button, IconButton, Input, InputAdornment, OutlinedInput } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -15,6 +15,12 @@ const Register = () => {
   const [password, setPassword] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const navigate = useNavigate();
+
+  const handleClickShowPassword = () => setPasswordVisible((show) => !show);
+
+  const handleMouseDownPassword = (event: any) => {
+    event.preventDefault();
+  };
 
   const handleRegister = () => {
     console.log(firstName, lastName, email, password, phone);
@@ -51,21 +57,32 @@ const Register = () => {
             setEmail(e.target.value);
           }}
         ></Input>
-        <Input.Password
-          placeholder="input password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+        <OutlinedInput
+          id="outlined-adornment-password"
+          type={passwordVisible ? 'text' : 'password'}
+          onChange={(event) => setPassword(event.target.value)}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {passwordVisible ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+          label="Password"
         />
-        <Input
+        {/* <Input
           placeholder="phone number"
           type="tel"
           pattern="[0-9]{3} [0-9]{3} [0-9]{4}"
           onChange={(e) => {
             setPhone(e.target.value);
           }}
-        ></Input>
+        ></Input> */}
       </div>
       <Button onClick={handleRegister}>Register</Button>
       <div>or</div>

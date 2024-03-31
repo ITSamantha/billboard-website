@@ -2,7 +2,6 @@ import CatalogTree, { Category } from './CatalogTree';
 import CategoriesBlock from './CategoriesBlock';
 import '../../scss/catalog.scss';
 import FilterItems from './FilterItems';
-import { Pagination } from 'antd';
 import { getCategoriesList } from '../../service/dataService';
 import { useEffect, useState } from 'react';
 
@@ -23,10 +22,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
         <CatalogTree categories={categories} categoryId={categoryId} />
         {categoryId && <FilterItems categoryId={categoryId} />}
       </div>
-      <div>
-        {/*<CategoriesBlock />*/}
-        <Pagination defaultCurrent={6} total={500} />
-      </div>
+      <div>{/*<CategoriesBlock />*/}</div>
     </div>
   );
 };

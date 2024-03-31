@@ -24,6 +24,7 @@ type ProfileInfo = {
   phone_number: string;
   last_name: string;
   first_name: string;
+  ad_favourites: AdInfo[];
   advertisements: AdInfo[];
 };
 const Profile = () => {
@@ -93,6 +94,11 @@ const Profile = () => {
             <Link to="/profile/edit">
               <Button style={{ marginRight: '15px' }} variant="contained" color="primary">
                 Edit Personal Information
+              </Button>
+            </Link>
+            <Link to="/profile/favorites">
+              <Button style={{ marginRight: '15px' }} variant="contained" color="primary">
+                Favorites
               </Button>
             </Link>
           </section>

@@ -8,8 +8,8 @@ type Props = {
 };
 
 const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisements }: Props) => {
-  if (!advertisements) {
-    return <div> No advertisements!</div>;
+  if (!advertisements || advertisements.length === 0) {
+    return <div> No advertisements found!</div>;
   }
 
   return (

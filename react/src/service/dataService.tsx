@@ -187,3 +187,17 @@ export const getAdvertisementTypes = async () => {
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching advertisement types:', error));
 };
+
+export const addToFavorites = async (id: number) => {
+  return await axios
+    .post(BASE_URL + `advertisements/favourites`, { advertisement_id: id })
+    .then((response) => response.data)
+    .catch((error) => console.error('Error add to favorites:', error));
+};
+
+export const deleteFromFavorites = async (id: number) => {
+  return await axios
+    .delete(BASE_URL + `advertisements/favourites/${id}`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error delete from favorites:', error));
+};

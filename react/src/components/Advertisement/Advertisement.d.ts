@@ -17,7 +17,7 @@ type AdInfo = {
   ad_status: Status;
   ad_type: AdType;
   address: object;
-  user: object;
+  user: ProfileInfo;
 };
 
 type Status = {
@@ -28,4 +28,15 @@ type Status = {
 type AdType = {
   id: number;
   title: string;
+};
+
+type ProfileInfo = {
+  id: number;
+  avatar: string;
+  email: string;
+  phone_number: string;
+  last_name: string;
+  first_name: string;
+  ad_favourites: AdInfo[];
+  advertisements: AdInfo[];
 };

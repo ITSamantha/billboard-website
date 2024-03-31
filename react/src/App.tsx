@@ -15,6 +15,7 @@ import ProfilePhone from './pages/profile/ProfilePhone';
 import AdvertisementCard from './components/Advertisement/AdvertisementCard';
 import Category from './pages/Category';
 import ProfileAllAdvertisements from './pages/profile/ProfileAllAdvertisements';
+import Favorites from './pages/profile/Favorites';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -89,6 +90,14 @@ function App() {
       element: (
         <RouterWrapper>
           <Register />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/profile/favorites',
+      element: (
+        <RouterWrapper>
+          <Favorites />
         </RouterWrapper>
       )
     },

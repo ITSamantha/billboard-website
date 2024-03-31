@@ -32,6 +32,7 @@ const initialState: MyUserState = {
   hasError: false
 };
 
+// TODO: fix token
 const MyUserSlice = createSlice({
   name: 'myUser',
   initialState,
@@ -50,8 +51,6 @@ const MyUserSlice = createSlice({
       })
       .addCase(fetchLogin.fulfilled, (state, action: PayloadAction<any>) => {
         state.token = action.payload;
-        console.log(action.payload);
-        console.log(state.token);
         state.isLoading = false;
         state.hasError = false;
       })
@@ -65,8 +64,6 @@ const MyUserSlice = createSlice({
       })
       .addCase(fetchRegister.fulfilled, (state, action: PayloadAction<any>) => {
         state.token = action.payload;
-        console.log(action.payload);
-        console.log(state.token);
         state.isLoading = false;
         state.hasError = false;
       })
@@ -80,8 +77,6 @@ const MyUserSlice = createSlice({
       })
       .addCase(fetchMyUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.user = action.payload;
-        console.log(state.user);
-        console.log(action.payload);
         state.isLoading = false;
         state.hasError = false;
       })

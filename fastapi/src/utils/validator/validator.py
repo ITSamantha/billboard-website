@@ -163,7 +163,7 @@ class Validator:
                         if field not in self.validated_data:
                             self.validated_data[field] = []
                         log('log.txt', '10nested_data ' + str(len(nested_data)))
-                        self.validated_data[field].append(nested_validator.validated())
+                        #self.validated_data[field].append(nested_validator.validated())
                         log('log.txt', '11nested_data ' + str(len(nested_data)))
                 continue
         log('log.txt', 'nested rules done')

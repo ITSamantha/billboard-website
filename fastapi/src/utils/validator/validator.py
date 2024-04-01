@@ -133,40 +133,27 @@ class Validator:
                     raise Exception('Nested validation is available only for arrays')
                 """Created validator for nested objects"""
                 nested_validator = Validator({}, nested_rules[field])
-                log('log.txt', 'nested validator created')
                 """Traverse through nested objects and validate each one"""
                 for key, nested_object in enumerate(nested_data):
                     title_prefix = (self.title_prefix + '_' if self.title_prefix else '') + field + '_' + str(key) + '_'
-                    log('log.txt', 'title_prefix ' + title_prefix)
-                    log('log.txt', '1nested_data ' + str(len(nested_data)))
                     if not isinstance(nested_object, dict):
                         nested_object_errors = [title_prefix[:-1] + ' must be an object.']
                     else:
-                        log('log.txt', '2nested_data ' + str(len(nested_data)))
                         nested_validator.data = nested_object
-                        log('log.txt', '3nested_data ' + str(len(nested_data)))
                         """Set prefix to identify specific object errors"""
                         nested_validator.title_prefix = title_prefix
-                        log('log.txt', '4nested_data ' + str(len(nested_data)))
                         nested_validator.reset_is_validated()
-                        log('log.txt', '5nested_data ' + str(len(nested_data)))
                         nested_object_errors = nested_validator.get_errors()
-                        log('log.txt', '6nested_data ' + str(len(nested_data)))
                     if nested_object_errors:
                         log('log.txt', '7nested_data ' + str(len(nested_data)))
                         if field not in self.errors:
                             self.errors[field] = []
-                        log('log.txt', '8nested_data ' + str(len(nested_data)))
                         self.errors[field].append(nested_object_errors)
-                        log('log.txt', '9nested_data ' + str(len(nested_data)))
                     else:
                         if field not in self.validated_data:
                             self.validated_data[field] = []
-                        log('log.txt', '10nested_data ' + str(len(nested_data)))
                         #self.validated_data[field].append(nested_validator.validated())
-                        log('log.txt', '11nested_data ' + str(len(nested_data)))
                 continue
-        log('log.txt', 'nested rules done')
         self.is_validated = True
 
     def _parse_rule(self, rule, separator=":", args_separator=","):

@@ -82,11 +82,6 @@ class Validator:
                     nested_rules[prefix] = {}
                 nested_rules[prefix][rest_key] = self.rules[key]
 
-        log('log.txt', 'parsed rules')
-        log('log.txt', 'base_rules: ' + json.dumps(base_rules))
-        log('log.txt', 'nested_rules: ' + json.dumps(nested_rules))
-        # log('log.txt', 'title_prefix: ' + self.title_prefix if self.title_prefix else 'none')
-
         for field in base_rules:
             try:
                 rules = self.rules[field]

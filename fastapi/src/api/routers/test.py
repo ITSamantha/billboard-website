@@ -48,16 +48,13 @@ async def me_account(request: Request, auth: Auth = Depends()):
 async def me_account(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     from src.utils.validator import Validator
-    from src.utils.logger import log
-    log('log.txt', 'here')
     validator = Validator(await request.json(), {
         'id': ['required', 'integer'],
         'str': ['required', 'string'],
+        'images': ['required', 'list'],
         'images.id': ['required', 'integer'],
         'images.path': ['required', 'string'],
     })
-    log('log.txt', 'prevalidate')
-    validator.validate()
-    log('log.txt', 'validated')
+    # validator.validate()
 
     return validator.validated()

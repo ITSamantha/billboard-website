@@ -58,6 +58,6 @@ async def me_account(request: Request, auth: Auth = Depends()):
         'images.smth.id': ['required', 'integer'],
         'images.smth.path': ['required', 'string'],
     })
-    # validator.validate()
+    validator.validate()
 
     return validator.validated()

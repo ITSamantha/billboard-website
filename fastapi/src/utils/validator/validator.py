@@ -34,7 +34,7 @@ class Validator:
 
     def validated(self, as_dict: bool = False):
         """Validates the data and throws exception if data is not valid else returns validated data"""
-        self._validate()
+        self._validate()  # todo critical? refactored from validate() to _validate(). No more exceptions raised
         if self.dto is None or as_dict:
             return self.validated_data
         return self.dto.init(**self.validated_data)
@@ -152,7 +152,7 @@ class Validator:
                         log('log.txt', 'nested_validator.validated(): ' + json.dumps(nested_validator.validated()))
                         log('log.txt', 'self.title_prefix: ' + self.title_prefix if self.title_prefix else 'noen')
                         log('log.txt', 'self.validated_data[field] ' + json.dumps(self.validated_data[field]))
-                        #self.validated_data[field].append(nested_validator.validated())
+                        self.validated_data[field].append(nested_validator.validated())
                 continue
         self.is_validated = True
 

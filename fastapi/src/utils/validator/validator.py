@@ -149,7 +149,8 @@ class Validator:
                         if field not in self.validated_data:
                             self.validated_data[field] = []
                         # todo увеличивает len(nested_data) на 1 из-за чего впадает в бесконечный цикл....
-                        log('log.txt','nested_validator.validated(): ' + json.dumps(nested_validator.validated()))
+                        log('log.txt', 'nested_validator.validated(): ' + json.dumps(nested_validator.validated()))
+                        log('log.txt', 'self.validated_data[field] ' + json.dumps(self.validated_data[field]))
                         #self.validated_data[field].append(nested_validator.validated())
                 continue
         self.is_validated = True

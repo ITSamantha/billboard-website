@@ -113,7 +113,8 @@ class Validator:
             if len(next_field_errors) > 0:
                 self.errors[field] = next_field_errors
             else:
-                if field in self.data:
+                """Check if field not in nested rules to not add all nested objects to validated data at once"""
+                if field in self.data and field not in nested_rules:
                     self.validated_data[field] = self.data[field]
         log('log.txt', 'base rules done')
         for field in nested_rules:

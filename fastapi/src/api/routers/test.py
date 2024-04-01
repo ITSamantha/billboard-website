@@ -51,7 +51,7 @@ async def me_account(request: Request, auth: Auth = Depends()):
     validator = Validator(await request.json(), {
         'id': ['required', 'integer'],
         'str': ['required', 'string'],
-        # 'images': ['required', 'list'],
+        'images': ['required', 'list'],
         'images.id': ['required', 'integer'],
         'images.path': ['required', 'string'],
     })

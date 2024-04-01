@@ -23,6 +23,6 @@ class ReviewTransformer(BaseTransformer):
             "updated_at_str": time_ago_in_words(review.updated_at),
             "deleted_at": json_datetime(review.deleted_at)
         }
-
+    
     def include_user(self, review):
         return self.item(review.user, UserTransformer())

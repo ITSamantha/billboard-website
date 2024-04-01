@@ -34,7 +34,7 @@ class Validator:
 
     def validated(self, as_dict: bool = False):
         """Validates the data and throws exception if data is not valid else returns validated data"""
-        self.validate()
+        self._validate()
         if self.dto is None or as_dict:
             return self.validated_data
         return self.dto.init(**self.validated_data)

@@ -54,7 +54,7 @@ async def me_account(request: Request, auth: Auth = Depends()):
         'images': ['required', 'list'],
         'images.id': ['required', 'integer'],
         'images.path': ['required', 'string'],
-        'images.smth': ['required', 'array'],
+        'images.smth': ['required', 'list'],
         'images.smth.id': ['required', 'integer'],
         'images.smth.path': ['required', 'string'],
     })

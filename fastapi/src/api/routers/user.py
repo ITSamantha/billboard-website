@@ -34,9 +34,6 @@ async def get_my(request: Request, auth: Auth = Depends()):
     )
 
 
-
-
-
 @router.get('/me/account')
 async def me_account(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
@@ -58,6 +55,7 @@ async def me_account(request: Request, auth: Auth = Depends()):
 
     return 'good'
 
+
 @router.post('/me/account/testo')
 async def me_account(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
@@ -71,10 +69,10 @@ async def me_account(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
     file = await SqlAlchemyRepository(db_manager.get_session, model=File) \
         .create({
-            'path': path,
-            'extension': ext,
-            'disk': Disk.IMAGES,
-        })
+        'path': path,
+        'extension': ext,
+        'disk': Disk.IMAGES,
+    })
 
     return ApiResponse.payload(transform(file, FileTransformer()))
 
@@ -88,7 +86,6 @@ async def get_my(request: Request, auth: Auth = Depends()):
     ))
 
 
->>>>>>> origin/feature_uploads
 @router.get("/{user_id}")
 async def get_user(user_id: int):
     try:

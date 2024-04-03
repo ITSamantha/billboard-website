@@ -1,4 +1,5 @@
 from src.api.transformers.base_transformer import BaseTransformer
+from src.api.transformers.user import UserTransformer
 
 
 class ChatUserTransformer(BaseTransformer):
@@ -13,3 +14,6 @@ class ChatUserTransformer(BaseTransformer):
             "chat_id": chat_message.chat_id,
             "user_id": chat_message.user_id,
         }
+
+    def include_user(self, chat):
+        return self.item(chat.user, UserTransformer())

@@ -1,5 +1,6 @@
 from src.utils.validator.exceptions import AppValidationException
 from src.api.payloads.base import BasePayload
+import re
 
 
 class Validator:
@@ -26,27 +27,38 @@ class Validator:
         self._validate()
         return self.errors
 
-    def validated(self):
+    def validated(self, as_dict: bool = False):
         """Validates the data and throws exception if data is not valid else returns validated data"""
         self.validate()
-        if self.dto is None:
+        if self.dto is None or as_dict:
             return self.validated_data
         return self.dto.init(**self.validated_data)
 
     def only(self, keys: list[str]) -> dict:
-        """Returns specified fields as list"""
-        self.validate()
-        data = {}
-        for key in keys:
-            try:
-                data[key] = self.validated_data[key]
-            except KeyError:
-                raise Exception(f'Key {key} is not present in validated data')
-        return data
+        """Returns specified fields as dict"""
+        print(self.validated(as_dict=True))
+        return {key: value for key, value in self.validated(as_dict=True).items() if key in keys}
+
+    def all(self) -> dict:
+        """Returns all fields as dict"""
+        return self.validated(as_dict=True)
+
+    def not_null(self) -> dict:
+        """Returns all fields as dict"""
+        return {key: value for key, value in self.validated(as_dict=True).items() if value is not None}
+
+    def but(self, keys: list[str]) -> dict:
+        """Returns all fields except specified as dict"""
+        return {key: value for key, value in self.validated(as_dict=True).items() if key not in keys}
+
+    def but__not_null(self, keys: list[str]) -> dict:
+        """Returns all fields except specified as dict"""
+        return {key: value for key, value in self.validated(as_dict=True).items() if
+                key not in keys and value is not None}
 
     def _validate(self):
         if self.is_validated:
-            pass
+            return
 
         rules_checker = Rules()
         for field in self.rules:
@@ -69,7 +81,7 @@ class Validator:
 
                 custom_title = self.titles[field] if field in self.titles else None
                 next_rule_error = check_function(self.data, field, custom_title, *args)
-                
+
                 if next_rule_error:
                     next_field_errors.append(next_rule_error)
 
@@ -121,6 +133,13 @@ class Rules:
         return None
 
     @staticmethod
+    def bool(data: dict, key: str, title: str = None):
+        if key in data and not isinstance(data[key], (bool, type(None))):
+            return f"{title if title else key} field must be of type integer."
+
+        return None
+
+    @staticmethod
     def float(data: dict, key: str, title: str = None):
         if key in data and not (isinstance(data[key], (float, type(None))) or isinstance(data[key], (int, type(None)))):
             return f"{title if title else key} field must be of type float."
@@ -149,3 +168,12 @@ class Rules:
                 return None
 
         return f"One of fields {', '.join(fields)} must be present."  # todo deal with title (pass titles 4 all fields somehow)
+
+    @staticmethod
+    def email(data: dict, key: str, title: str = None):
+        if key in data and not re.fullmatch(
+                re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'),
+                str(data[key])
+        ):
+            return f"{title if title else key} field must a valid email."
+        return None

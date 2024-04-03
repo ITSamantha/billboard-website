@@ -36,11 +36,14 @@ from src.database.models.entities.booking_info import BookingInfo
 from src.database.models.entities.filter_value import FilterValue
 
 # ==MANY TO MANY==
-from src.database.models.many_to_many.advertisement__category import AdvertisementCategory
 from src.database.models.many_to_many.user__user_field import UserUserField
 from src.database.models.many_to_many.category__filter import CategoryFilter
 from src.database.models.many_to_many.advertisement__filter_value import AdvertisementFilterValue
 from src.database.models.many_to_many.advertisement__ad_tag import AdvertisementAdTag
-
 # ==TRANSACTIONS==
 from src.database.models.transactions.transaction import Transaction
+
+from src.database.models.entities.chat import Chat
+from src.database.models.entities.chat_message import ChatMessage
+from src.database.models.entities.chat_message_attachement import ChatMessageAttachement
+from src.database.models.entities.chat_user import ChatUser

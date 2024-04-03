@@ -11,21 +11,18 @@ class Address(Base):
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
 
-    address: Mapped[str] = mapped_column(String(256), nullable=False)
+    country_id: Mapped[int] = mapped_column(ForeignKey("country.id"), nullable=False)
+    country: Mapped["Country"] = relationship(uselist=False, lazy="selectin")
 
-    country_id: Mapped[Optional[int]] = mapped_column(ForeignKey("country.id"))
-    country: Mapped[Optional["Country"]] = relationship(uselist=False, lazy="selectin")
+    city_id: Mapped[int] = mapped_column(ForeignKey("city.id"), nullable=False)
+    city: Mapped["City"] = relationship(uselist=False, lazy="selectin")
 
-    city_id: Mapped[Optional[int]] = mapped_column(ForeignKey("city.id"))
-    city: Mapped[Optional["City"]] = relationship(uselist=False, lazy="selectin")
+    street: Mapped[str] = mapped_column(String(64), nullable=False)
+    house: Mapped[str] = mapped_column(String(32), nullable=False)
+    flat: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
 
-    street: Mapped[Optional[str]] = mapped_column(String(64))
-    house: Mapped[Optional[str]] = mapped_column(String(32))
-    flat: Mapped[Optional[str]] = mapped_column(String(16))
-
-    longitude: Mapped[Optional[float]] = mapped_column()
-    latitude: Mapped[Optional[float]] = mapped_column()
-
+    longitude: Mapped[Optional[float]] = mapped_column(nullable=True)
+    latitude: Mapped[Optional[float]] = mapped_column(nullable=True)
 
     def __repr__(self) -> str:
         return (f"Address(id={self.id}, address={self.address}, country_id={self.country},"

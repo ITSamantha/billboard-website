@@ -1,16 +1,17 @@
-from typing import Type, TypeVar, Optional, Generic, List, Union
+from typing import Type, TypeVar, Optional, Generic, List, Union, Literal
 
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from src.database.models.base import Base
 
 from src.repository.crud.base_repository import AbstractRepository
 
 ModelType = TypeVar("ModelType", bound=Base)
-CreateSchemaType = TypeVar("CreateSchemaType", bound=Union[BaseModel, dict])#todo test
-UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
+CreateSchemaType = TypeVar("CreateSchemaType", bound=Union[BaseModel, dict])
+UpdateSchemaType = TypeVar("UpdateSchemaType", bound=Union[BaseModel, dict])
 
 
 class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
@@ -21,7 +22,6 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def create(self, data: CreateSchemaType) -> ModelType:
         async with self._session_factory() as session:
-            # obj_create_data = data.model_dump(exclude_none=True, exclude_unset=True)
             instance = self.model(**data.__dict__) if isinstance(data, BaseModel) else self.model(**data)
             session.add(instance)
             await session.commit()
@@ -30,16 +30,19 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
 
     async def bulk_create(self, data: List[CreateSchemaType]) -> ModelType:
         async with self._session_factory() as session:
-            objects = [self.model(**d.__dict__) for d in data]
+            objects = [self.model(**d) for d in data]
             session.add_all(objects)
             await session.commit()
             return objects
 
     async def update(self, data: UpdateSchemaType, **filters) -> ModelType:
         async with self._session_factory() as session:
-            stmt = update(self.model).values(
-                **data.__dict__).filter_by(**filters).returning(
-                self.model)
+            if isinstance(data, BaseModel):
+                data = {**data.__dict__}  # todo test
+            stmt = update(self.model) \
+                .values(**data) \
+                .filter_by(**filters) \
+                .returning(self.model)
             res = await session.execute(stmt)
             await session.commit()
             return res.scalar_one()
@@ -57,6 +60,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
     async def get_multi(
             self,
             order: str = "id",
+            order_type=0,
             limit: int = 100,
             offset: int = 0,
             **filters
@@ -67,6 +71,7 @@ class SqlAlchemyRepository(AbstractRepository, Generic[ModelType, CreateSchemaTy
             if order_column is None:
                 raise ValueError(f"Invalid order column: {order}")
 
-            stmt = select(self.model).filter_by(**filters).order_by(order_column).limit(limit).offset(offset)
+            stmt = select(self.model).filter_by(**filters).order_by(
+                order_column if not order_type else order_column.desc()).limit(limit).offset(offset)
             row = await session.execute(stmt)
             return row.scalars().all()

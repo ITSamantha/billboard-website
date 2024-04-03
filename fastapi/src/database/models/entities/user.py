@@ -21,7 +21,7 @@ class User(Base):
     user_status_id: Mapped[int] = mapped_column(ForeignKey("user_status.id"), nullable=False)
     user_status: Mapped["UserStatus"] = relationship(uselist=False, lazy="selectin")
 
-    phone_number: Mapped[str] = mapped_column(PhoneNumberType)  # TODO: nullable= False?, unique = True?
+    phone_number: Mapped[str] = mapped_column()  # TODO: nullable= False?, unique = True?
 
     avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("avatar.id"),
                                                      nullable=True)  # TODO: default avatar? Optional?
@@ -34,9 +34,9 @@ class User(Base):
     phone_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
     email_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
 
-    ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
+    # ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
 
-    advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
+    # advertisements: Mapped[List["Advertisement"]] = relationship(uselist=True, lazy="selectin")
 
     bookings: Mapped[List["Booking"]] = relationship(uselist=True, lazy="selectin")
 
@@ -44,7 +44,10 @@ class User(Base):
 
     notifications: Mapped[List["UserNotification"]] = relationship(uselist=True, lazy="selectin")
 
-    chats_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
+    chat_users: Mapped[List["ChatUser"]] = relationship(uselist=True, lazy="selectin")
+
+    # user_fields: Mapped[List["AdTag"]] = relationship(
+    # uselist=True, lazy="selectin", secondary="user__user_field", order_by="")
 
     @property
     def chats(self):

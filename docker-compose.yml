@@ -50,6 +50,19 @@ services:
     networks:
       - otiva
 
+  redis:
+    image: redis:alpine
+    container_name: otiva_redis
+    restart: unless-stopped
+    volumes:
+      - otiva-redis-volume:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - otiva
+
   certbot:
     image: certbot/certbot
     container_name: otiva_certbot
@@ -64,4 +77,6 @@ networks:
 
 volumes:
   otiva-pgsql-volume:
+    driver: local
+  otiva-redis-volume:
     driver: local

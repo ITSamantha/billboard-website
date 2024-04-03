@@ -7,7 +7,6 @@ from src.api.payloads.auth import *
 from src.database.models.characteristics.user_status import UserStatus
 from src.database.models.entities.user import User
 from src.utils.validator import Validator
-from src.utils.validator.validator import Rules
 
 router = APIRouter(
     prefix="/auth",
@@ -18,16 +17,19 @@ router = APIRouter(
 @router.post("/register", response_model=None)
 async def register(request: Request):
     validator = Validator(await request.json(), {
-        'first_name': [Rules.REQUIRED, Rules.STRING],
-        'last_name': [Rules.REQUIRED, Rules.STRING],
-        'email': [Rules.REQUIRED, Rules.STRING],
-        'password': [Rules.REQUIRED, Rules.STRING],
-        'phone_number': [Rules.REQUIRED, Rules.STRING]
+        'first_name': ['required', 'string'],
+        'last_name': ['required', 'string'],
+        'email': ['required', 'email'],
+        'password': ['required', 'string'],
+        'phone_number': ['required', 'string']
     }, {}, RegisterPayload())
+
     payload = validator.validated()
-    payload.user_status_id = UserStatus.ACTIVE
+
     try:
-        user: User = await RegisterUseCase.register(payload)
+        user: User = await RegisterUseCase.register(
+            payload.only(['first_name', 'last_name', 'email', 'password', 'phone_number']) | {
+                "user_status_id": UserStatus.ACTIVE})
     except Exception as e:
         return ApiResponse.error(str(e))
     return ApiResponse.payload({
@@ -38,8 +40,8 @@ async def register(request: Request):
 @router.post("/login")
 async def login(request: Request):
     validator = Validator(await request.json(), {
-        'email': [Rules.REQUIRED],
-        'password': [Rules.REQUIRED],
+        'email': ['required'],
+        'password': ['required'],
     }, {}, LoginPayload())
     payload = validator.validated()
     try:
@@ -62,7 +64,7 @@ async def logout(request: Request, auth: Auth = Depends()):
 
 @router.post('/refresh')
 async def refresh(request: Request, auth: Auth = Depends()):
-    payload = await auth.check_refresh_token(request)  # todo dto for payload
+    payload = await auth.check_refresh_token(request)
     try:
         access_token, refresh_token = await RefreshUseCase.refresh(payload)
     except Exception as e:

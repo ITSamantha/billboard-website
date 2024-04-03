@@ -24,6 +24,9 @@ class AppConfig(BaseSettings):
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str
 
+    REDIS_PASSWORD: str
+    REDIS_HOST: str
+
     class Config:
         env_file = ".env"
 

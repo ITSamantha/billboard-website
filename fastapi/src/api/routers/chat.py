@@ -75,8 +75,12 @@ async def store(request: Request, auth: Auth = Depends()):
         res = await session.execute(q)
         chats = res.unique().scalars().all()
 
-    if chats:
-        return ApiResponse.error('Chat between these users already exists')
+    if chats and len(chats) > 0:
+        return ApiResponse.payload(transform(
+            chats[0],
+            ChatTransformer()
+        ))
+        # return ApiResponse.error('Chat between these users already exists')
     #  create chat
     chat: Chat = await SqlAlchemyRepository(db_manager.get_session, Chat).create({})
     #  add users to chat

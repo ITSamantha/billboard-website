@@ -128,7 +128,7 @@ class Validator:
                 if not isinstance(nested_data, list):
                     continue  # todo?
                     raise Exception('Nested validation is available only for arrays')
-                """Created validator for nested objects"""
+                """Create validator for nested objects"""
                 nested_validator = Validator({}, nested_rules[field])
                 """Traverse through nested objects and validate each one"""
                 for key, nested_object in enumerate(nested_data):
@@ -139,17 +139,21 @@ class Validator:
                         nested_validator.data = nested_object
                         """Set prefix to identify specific object errors"""
                         nested_validator.title_prefix = title_prefix
+                        nested_validator.errors = {}
+                        nested_validator.validated_data = {}
+
                         nested_validator.reset_is_validated()
                         nested_object_errors = nested_validator.get_errors()
                     if nested_object_errors:
-                        log('log.txt', '7nested_data ' + str(len(nested_data)))
                         if field not in self.errors:
                             self.errors[field] = []
                         self.errors[field].append(nested_object_errors)
                     else:
                         if field not in self.validated_data:
                             self.validated_data[field] = []
-                        # todo увеличивает len(nested_data) на 1 из-за чего впадает в бесконечный цикл....
+                        # todo увеличивает len(nested_data) на 1 из-за чего впадает в бесконечный цикл.... 117 строка фиксед.. почему???
+                        # todo перетираются индексы в префиксах ошибок вложенных штук
+                        # todo перетираются вложенные объекты в целом (постман!)
                         log('log.txt', 'nested_validator.validated(): ' + json.dumps(nested_validator.validated()))
                         log('log.txt', 'self.title_prefix: ' + self.title_prefix if self.title_prefix else 'noen')
                         log('log.txt', 'self.validated_data[field] ' + json.dumps(self.validated_data[field]))

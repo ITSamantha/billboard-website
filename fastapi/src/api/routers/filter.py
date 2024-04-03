@@ -33,7 +33,6 @@ async def get_filters(request: Request, auth: Auth = Depends()):
 
 @router.get("/filter_types")
 async def get_filter_types(request: Request, auth: Auth = Depends()):
-
     # await auth.check_access_token(request)
 
     try:

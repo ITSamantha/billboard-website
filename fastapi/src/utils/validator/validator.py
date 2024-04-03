@@ -5,7 +5,7 @@ import re
 
 class Validator:
 
-    def __init__(self, data: dict, rules: dict, titles: dict = None, dto: BasePayload = None, title_prefix: str =None):
+    def __init__(self, data: dict, rules: dict, titles: dict = None, dto: BasePayload = None, title_prefix: str = None):
         self.data = data
         self.rules = rules
         self.titles = titles if titles else {}
@@ -65,10 +65,6 @@ class Validator:
         if self.is_validated:
             return
 
-        from src.utils.logger import log
-        import json
-        log('log.txt', 'got into _validate')
-
         rules_checker = Rules()
         """Split base and nested rules"""
         base_rules = {}
@@ -115,9 +111,7 @@ class Validator:
             else:
                 """Check if field not in nested rules to not add all nested objects to validated data at once"""
                 if field in self.data and field not in nested_rules:
-                # if field in self.data and field:
                     self.validated_data[field] = self.data[field]
-        log('log.txt', 'base rules done')
         for field in nested_rules:
             """Check if field is array of objects, that required nested validation"""
             if isinstance(nested_rules[field], dict):
@@ -126,8 +120,7 @@ class Validator:
                 except KeyError:
                     continue
                 if not isinstance(nested_data, list):
-                    continue  # todo?
-                    raise Exception('Nested validation is available only for arrays')
+                    continue
                 """Create validator for nested objects"""
                 nested_validator = Validator({}, nested_rules[field])
                 """Traverse through nested objects and validate each one"""
@@ -151,12 +144,6 @@ class Validator:
                     else:
                         if field not in self.validated_data:
                             self.validated_data[field] = []
-                        # todo увеличивает len(nested_data) на 1 из-за чего впадает в бесконечный цикл.... 117 строка фиксед.. почему???
-                        # todo перетираются индексы в префиксах ошибок вложенных штук
-                        # todo перетираются вложенные объекты в целом (постман!)
-                        log('log.txt', 'nested_validator.validated(): ' + json.dumps(nested_validator.validated()))
-                        log('log.txt', 'self.title_prefix: ' + self.title_prefix if self.title_prefix else 'noen')
-                        log('log.txt', 'self.validated_data[field] ' + json.dumps(self.validated_data[field]))
                         self.validated_data[field].append(nested_validator.validated())
                 continue
         self.is_validated = True

@@ -111,7 +111,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
         async with db_manager.get_session() as session:
             q = select(Advertisement).options(joinedload(Advertisement.category))
             # filtering
-            if category_id:
+            if category_id: # todo child categories
                 q = q.where(Advertisement.category_id == category_id)
             # sorting
             for col_name in sort:

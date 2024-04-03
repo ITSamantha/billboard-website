@@ -39,6 +39,13 @@ export const login = (email: string, password: string) => {
     .catch((error) => console.error('Error fetching login:', error));
 };
 
+export const refreshToken = async (id: number) => {
+  return await axios
+    .post(BASE_URL + `auth/refresh`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error refresh token:', error));
+};
+
 export const logout = () => {
   axios
     .post(BASE_URL + 'auth/logout', {}, { withCredentials: true })
@@ -200,4 +207,17 @@ export const deleteFromFavorites = async (id: number) => {
     .delete(BASE_URL + `advertisements/favourites/${id}`)
     .then((response) => response.data)
     .catch((error) => console.error('Error delete from favorites:', error));
+};
+
+export const getAdvertisementsByPage = async (
+  page: number,
+  perPage: number,
+  categoryId: number
+) => {
+  return await axios
+    .get(BASE_URL + `advertisements`, {
+      params: { page: page, per_page: perPage, category_id: categoryId }
+    })
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching advertisements:', error));
 };

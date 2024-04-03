@@ -93,7 +93,7 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
   return (
     <Container maxWidth="md" style={{ marginBottom: 15 }}>
       <Typography variant="h6" gutterBottom>
-        Выберите категорию
+        Choose category
       </Typography>
       {!categories.length ? <Loader /> : renderTree(categories, 0, openIds)}
     </Container>

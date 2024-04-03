@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import Upload from './pages/Upload';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Register from './components/Register/Register';
-import Catalog from './components/Catalog/CategoriesBlock';
 import MapWrapper from './pages/Map';
 import Profile from './pages/profile/Profile';
 import ProfileEdit from './pages/profile/ProfileEdit';
@@ -42,14 +41,6 @@ function App() {
       element: (
         <RouterWrapper>
           <Login />
-        </RouterWrapper>
-      )
-    },
-    {
-      path: 'category/:categorySlug',
-      element: (
-        <RouterWrapper>
-          <Catalog />
         </RouterWrapper>
       )
     },

@@ -17,7 +17,7 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
       <section>
         <Grid container spacing={2}>
           {advertisements.slice(0, maxAdvertisements).map((ad) => (
-            <Grid item xs={12 / advertisementsInRow}>
+            <Grid item xs={12 / advertisementsInRow} key={ad.id}>
               <Link to={`/advertisement/${ad.id}`}>
                 <Paper>
                   <img src="https://http.cat/300" alt="Advertisement" height={'300px'} />

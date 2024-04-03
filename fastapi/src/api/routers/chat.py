@@ -52,7 +52,7 @@ async def find(chat_id: int, request: Request, auth: Auth = Depends()):
 
     return ApiResponse.payload(transform(
         chat,
-        ChatTransformer().include(['messages'])
+        ChatTransformer(request.state.user.id).include(['messages', "user"])
     ))
 
 

@@ -15,6 +15,8 @@ import AdvertisementCard from './components/Advertisement/AdvertisementCard';
 import Category from './pages/Category';
 import ProfileAllAdvertisements from './pages/profile/ProfileAllAdvertisements';
 import Favorites from './pages/profile/Favorites';
+import Chat from './pages/Chat';
+import MyChats from './pages/MyChats';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -89,6 +91,22 @@ function App() {
       element: (
         <RouterWrapper>
           <Favorites />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/chats',
+      element: (
+        <RouterWrapper>
+          <MyChats />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/chat/:id',
+      element: (
+        <RouterWrapper>
+          <Chat />
         </RouterWrapper>
       )
     },

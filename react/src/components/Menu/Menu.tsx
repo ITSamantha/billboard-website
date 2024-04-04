@@ -34,6 +34,9 @@ const Menu = () => {
                   <Link to="/upload-form">
                     <Button variant="contained">Upload</Button>
                   </Link>
+                  <Link to="/chats">
+                    <Button variant="contained">My chats</Button>
+                  </Link>
                   <Button variant="contained">Logout</Button>
                 </div>
               )}

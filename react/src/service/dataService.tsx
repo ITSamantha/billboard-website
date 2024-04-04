@@ -25,16 +25,12 @@ export const register = (
     .catch((error) => console.error('Error fetching register:', error));
 };
 
-export const login = (email: string, password: string) => {
-  axios
-    .post(
-      BASE_URL + 'auth/login',
-      {
-        email: email,
-        password: password
-      },
-      { withCredentials: true }
-    )
+export const login = async (email: string, password: string) => {
+  return await axios
+    .post(BASE_URL + 'auth/login', {
+      email: email,
+      password: password
+    })
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching login:', error));
 };
@@ -220,4 +216,32 @@ export const getAdvertisementsByPage = async (
     })
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching advertisements:', error));
+};
+
+export const sendMessage = async (id: number, message: string) => {
+  return await axios
+    .post(BASE_URL + `chats/${id}/messages`, { text: message })
+    .then((response) => response.data)
+    .catch((error) => console.error('Error sending message:', error));
+};
+
+export const createChat = async (id: number) => {
+  return await axios
+    .post(BASE_URL + `chats`, { user_id: id })
+    .then((response) => response.data)
+    .catch((error) => console.error('Error creating chat:', error));
+};
+
+export const getChat = async (id: any) => {
+  return await axios
+    .get(BASE_URL + `chats/${id}`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error getting chat:', error));
+};
+
+export const getAllChats = async () => {
+  return await axios
+    .get(BASE_URL + `chats`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error getting all chats:', error));
 };

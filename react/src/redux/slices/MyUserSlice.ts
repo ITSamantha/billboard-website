@@ -8,12 +8,10 @@ interface MyUserState {
   hasError: boolean;
 }
 
-export const fetchLogin = createAsyncThunk(
-  'myUser/fetchLogin',
-  async (data: { email: string; password: string }) => {
-    return await enter(data.email, data.password);
-  }
-);
+export const fetchLogin = createAsyncThunk('myUser/fetchLogin', async (data: any) => {
+  const res = await enter(data.email, data.password);
+  return res;
+});
 
 export const fetchRegister = createAsyncThunk('myUser/fetchRegister', async (data: any) => {
   const res = await register(data.email, data.password, data.phone, data.lastName, data.firstName);

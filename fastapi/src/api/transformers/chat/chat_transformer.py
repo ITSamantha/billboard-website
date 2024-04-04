@@ -21,5 +21,5 @@ class ChatTransformer(BaseTransformer):
         return self.collection(chat.messages, ChatMessageTransformer())
 
     def include_user(self, chat):
-        chat_user = chat.chat_users[0] if chat.chat_users[0] != self.user_id else chat.chat_users[1]
+        chat_user = chat.chat_users[0] if chat.chat_users[0].id != self.user_id else chat.chat_users[1]
         return self.item(chat_user.user, UserTransformer())

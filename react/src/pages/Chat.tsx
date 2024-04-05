@@ -1,11 +1,14 @@
-import { Avatar, Button, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button, TextField, ThemeProvider } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../redux/slices/MyUserSlice';
 import WebSocketInstance from './WebSocketInstance';
 import { useParams } from 'react-router-dom';
 import { getChat, sendMessage } from '../service/dataService';
 import Loader from '../components/Loader';
+import ChatHeader from '../components/Chat/ChatHeader';
+import { THEME } from './profile/Profile';
+import ChatMessage from '../components/Chat/ChatMessage';
 
 type ChatInfo = {
   id: number;
@@ -14,7 +17,7 @@ type ChatInfo = {
   messages: Message[];
 };
 
-type Message = {
+export type Message = {
   id: number;
   chat_id: number;
   text: string;
@@ -50,6 +53,7 @@ const Chat = () => {
         setLoading(false);
       }
     }
+
     fetchData();
   }, [id, token]);
 
@@ -79,6 +83,13 @@ const Chat = () => {
     }
   };
 
+  const messageBlockRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    messageBlockRef.current?.scrollIntoView({ block:"end" })
+  }, [])
+
+
   if (loading) {
     return (
       <div>
@@ -92,30 +103,29 @@ const Chat = () => {
   }
 
   return (
-    <div>
-      <Avatar alt="User Avatar" src="https://http.cat/200" />
+    <ThemeProvider theme={THEME}>
       <div>
-        {chatHistory.user.first_name} {chatHistory.user.last_name} {chatHistory.user.email}
+        <div className="Chat__Header">
+          <ChatHeader user={chatHistory.user} />
+        </div>
+        <div className="Chat__Messages" ref={messageBlockRef}>
+
+          {messages.map((message) => (
+            <ChatMessage message={message} received={message.chat_user && message.chat_user.user_id === chatHistory.user.id} />
+          ))}
+        </div>
+        <div className="Chat__Send">
+          <input
+            placeholder="Enter a message"
+            value={currentMessage}
+            onChange={(e) => {
+              setCurrentMessage(e.target.value);
+            }}
+          />
+          <button onClick={sendCurrentMessage}>Send</button>
+        </div>
       </div>
-      {messages.map((message) => {
-        return message.chat_user && message.chat_user.user_id === chatHistory.user.id ? (
-          <div key={message.id}>{message.text}</div>
-        ) : (
-          <div style={{ textAlign: 'center' }} key={message.id}>
-            {message.text}
-          </div>
-        );
-      })}
-      <TextField
-        rows={2}
-        maxRows={6}
-        value={currentMessage}
-        onChange={(e) => {
-          setCurrentMessage(e.target.value);
-        }}
-      />
-      <Button onClick={sendCurrentMessage}>Send</Button>
-    </div>
+    </ThemeProvider>
   );
 };
 

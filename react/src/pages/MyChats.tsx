@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAllChats } from '../service/dataService';
 import Loader from '../components/Loader';
-import { Avatar } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Container, ThemeProvider, Typography } from '@mui/material';
+import { THEME } from './profile/Profile';
+import ChatElement from '../components/Chat/ChatElement';
 
-type Chat = {
+export type Chat = {
   id: number;
   user: ProfileInfo;
   created_at: string;
   messages: Message[];
 };
 
-type Message = {
+export type Message = {
   id: number;
   chat_id: number;
   text: string;
@@ -20,7 +21,7 @@ type Message = {
   chat_user: ChatUser;
 };
 
-type ChatUser = {
+export type ChatUser = {
   id: number;
   chat_id: number;
   user_id: number;
@@ -60,28 +61,22 @@ const MyChats = () => {
   }
 
   return (
-    <div>
-      {chatList.map((chat: Chat, index) => (
-        <Link to={`/chat/${chat.id}`} key={chat.id}>
-          <div>
-            <Avatar alt="User Avatar" src="https://http.cat/200" />
-            <div>
-              {chat.user.first_name} {chat.user.last_name} {chat.user.email}
-            </div>
-            <div>
-              {chat.user.id === chat.messages[chat.messages.length - 1].chat_user.user_id
-                ? ''
-                : 'You: '}
-              {chat.messages[chat.messages.length - 1].text}
-              <div>
-                {' '}
-                {new Date(chat.messages[chat.messages.length - 1].created_at).toLocaleString()}
-              </div>
-            </div>
+    <ThemeProvider theme={THEME}>
+      <Container maxWidth="md">
+        <div className="Chat__Left">
+          <Typography variant="h4" fontWeight={500} style={{marginBottom: 15}}>My chats</Typography>
+          <div className="Chat__Container">
+            {chatList.length ? (
+              chatList.map((chat) => (
+                <ChatElement chat={chat} />
+              ))
+            ) : (
+              <Typography>You have no chats</Typography>
+            )}
           </div>
-        </Link>
-      ))}
-    </div>
+        </div>
+      </Container>
+    </ThemeProvider>
   );
 };
 

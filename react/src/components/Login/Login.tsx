@@ -24,8 +24,6 @@ function Login() {
   const error = useSelector(selectError);
   const loading = useSelector(selectLoading);
 
-  axios.defaults.withCredentials = true;
-
   const handleLogin = async () => {
     await dispatch(fetchLogin({ email, password }) as any);
     await dispatch(fetchMyUser());

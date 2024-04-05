@@ -19,13 +19,11 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
   const [openIds, setOpenIds] = React.useState<string[]>([]);
 
   const propagateCategory = (targetId: string, category: Category, categoryIdStack: string[]) => {
-    console.log('C', targetId, category, categoryIdStack);
+    if (category.id.toString() === targetId) {
+      setOpenIds(categoryIdStack);
+      return;
+    }
     category.children?.forEach((child) => {
-      if (child.id === targetId) {
-        console.log(categoryIdStack);
-        setOpenIds(categoryIdStack);
-        return;
-      }
       let currentStack = JSON.parse(JSON.stringify(categoryIdStack));
       currentStack.push(category.id);
       propagateCategory(targetId, child, currentStack);
@@ -33,14 +31,11 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
   };
 
   const openIdsWithCategory = (categoryId: string) => {
-    console.log('B', categories, categoryId);
     categories.forEach((x) => propagateCategory(categoryId, x, []));
   };
 
   useEffect(() => {
     if (categoryId) {
-      // page like /category/:categoryID
-      console.log('A', categoryId);
       openIdsWithCategory(categoryId);
     } else {
       // home page

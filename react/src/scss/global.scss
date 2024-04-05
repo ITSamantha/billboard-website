@@ -33,3 +33,138 @@
 #map {
   height: 100%;
 }
+
+.chat-link {
+  text-decoration: none;
+}
+
+.Chat__Left {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+body, html, button, input {
+  font-family: Montserrat, sans-serif !important;
+}
+
+.ChatHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-top: 30px;
+  &__Avatar {
+    margin-right: 12px;
+  }
+  &__Name {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  &__Online {
+    color: #666;
+    font-size: 14px;
+  }
+}
+.Chat__Title {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.Chat {
+  &__Messages {
+    width: 40%;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: auto;
+    height: calc(100vh - 300px);
+    overflow-y: scroll;
+  }
+  &__Header {
+    width: 40%;
+    margin: auto;
+  }
+  &__Send {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+    margin: 25px auto auto;
+    input {
+      padding: 10px 15px;
+      border: 1px solid rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      outline: none;
+      width: calc(100% - 160px);
+      font-size: 16px;
+    }
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #c7cdff;
+      padding: 12px 30px;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+}
+.ChatMessage {
+  margin-bottom: 15px;
+  display: block;
+  border-radius: 8px;
+  padding: 10px 18px;
+  &__Wrapper {
+    display: flex;
+    &._received {
+      .ChatMessage {
+        background: #c7cdff;
+      }
+    }
+    &._sent {
+      justify-content: flex-end;
+      .ChatMessage {
+        background: #ffc773;
+        text-align: right;
+      }
+    }
+  }
+  .ChatMessage_Wrapper {
+    display: fle;
+  }
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 1px 1px 8px 1px rgba(0,0,0, 0.1);
+  width: 400px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .avatar {
+    margin-right: 16px;
+  }
+
+  .content {
+    flex: 1;
+
+    .user-info {
+      font-weight: bold;
+      margin-bottom: 0px;
+    }
+
+    .last-message {
+      margin-bottom: 0px;
+    }
+
+    .message-time {
+      color: #666;
+    }
+  }
+}

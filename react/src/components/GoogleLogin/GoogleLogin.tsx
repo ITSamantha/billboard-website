@@ -1,7 +1,7 @@
-import { Button } from '@mui/material';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { FaGoogle } from 'react-icons/fa';
 
 interface Profile {
   picture: string;
@@ -55,7 +55,7 @@ const GoogleLogin = () => {
     setProfile(null);
   };
 
-  return <Button onClick={() => login()}> Continue with Google </Button>;
+  return <button onClick={() => login()}><FaGoogle /> Continue with Google</button>;
 };
 
 export default GoogleLogin;

@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchLogin,
-  fetchMyUser,
-  selectError,
-  selectLoading,
-  selectMyUser
-} from '../../redux/slices/MyUserSlice';
+import { fetchLogin, fetchMyUser, selectError, selectLoading, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
-import { Input } from '@mui/material';
+import { TextField, ThemeProvider } from '@mui/material';
 import Loader from '../Loader';
+import { THEME } from '../../pages/profile/Profile';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -36,7 +30,8 @@ function Login() {
     }
   }, [user, navigate]);
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+  };
 
   if (error) {
     return <div>Error. Reload page</div>;
@@ -50,69 +45,80 @@ function Login() {
   }
 
   return (
-    <>
-      <div className="page-container">
-        <nav id="headerContainer">
-          <div className="uitk-layout-flex uitk-layout-flex-align-items-center uitk-toolbar">
-            <Link to="/" className="back-btn-login">
-              <IoIosArrowRoundBack />
+    <><ThemeProvider theme={THEME}>
+      <div className="Login">
+        <nav className="Login__Navigate">
+          <div className="Login__Navigate__Back">
+            <Link to="/">
+              <IoIosArrowRoundBack /> Back
             </Link>
           </div>
         </nav>
-        <div className="uitk-layout-flex uitk-layout-flex-align-content-center uitk-layout-flex-align-items-center uitk-layout-flex-flex-direction-row uitk-layout-flex-justify-content-center">
-          <div className="uitk-spacing uitk-spacing-padding-inline-six uitk-layout-flex-item-align-self-center uitk-layout-flex-item uitk-layout-flex-item-max-width-one_hundred_twelve uitk-layout-flex-item-flex-basis-one_hundred_twelve">
-            <div className="uitk-layout-flex uitk-layout-flex-flex-direction-column uitk-spacing uitk-spacing-padding-block-six">
-              <h1 className="uitk-heading uitk-heading-4 uitk-layout-flex-item">
+        <div className="Login__Block">
+          <div>
+            <div>
+              <h1>
                 היכנס או צור חשבון
               </h1>
             </div>
 
-            <div
-              id="signin-with-google-container"
-              className="uitk-layout-flex-item-align-self-center uitk-layout-flex-item"
-            >
-              <div className="uitk-text uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-blockend-six">
+            <div className="Login__Social">
+              <div>
                 אם אין לך חשבון אתה יכול <a href="/sign-up">ליצור חשבון חדש</a> או להתחבר עם שירותים
                 אחרים
               </div>
-              <div className="uitk-layout-flex">
-                <GoogleLogin />
-              </div>
-              <div className="uitk-text uitk-type-center uitk-type-300 uitk-text-default-theme uitk-spacing uitk-spacing-margin-block-six">
-                אוֹ
+              <div className="Login__Social__Buttons">
+                <div className="Login__Social__Buttons__Item">
+                  <GoogleLogin />
+                </div>
               </div>
             </div>
-            <div className="uitk-layout-flex uitk-layout-flex-flex-direction-column uitk-layout-flex-gap-six">
-              <Input
-                placeholder="Email"
-                type="text"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              ></Input>
-              <Input
-                placeholder="Last name"
-                type="password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              ></Input>
+            <div className="Login__Or">or</div>
+            <div className="Login__Form">
+              <div className="Login__Input">
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  defaultValue={email}
+                  name="email"
+                  onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="family-name"
+                />
+              </div>
+              <div className="Login__Input">
 
-              <button
-                onClick={handleLogin}
-                id="loginFormSubmitButton"
-                type="submit"
-                className="uitk-button uitk-button-large uitk-button-has-text uitk-button-primary"
-              >
-                לְהַמשִׁיך
-              </button>
-              <Link to={'/register'}>
-                <button>Register</button>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="password"
+                  type="password"
+                  label="Password"
+                  defaultValue={password}
+                  name="password"
+                  onChange={(event) => setPassword(event.target.value)}
+                  autoComplete="family-name"
+                />
+              </div>
+              <div className="Login__Button">
+                <button
+                  onClick={handleLogin}
+                  type="submit"
+                >
+                  לְהַמשִׁיך
+                </button>
+              </div>
+              <Link to={'/register'} className="Login__Redirect">
+                If you have no account you can register
               </Link>
             </div>
           </div>
         </div>
       </div>
+    </ThemeProvider>
     </>
   );
 }

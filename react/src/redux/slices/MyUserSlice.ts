@@ -52,11 +52,6 @@ const MyUserSlice = createSlice({
       })
       .addCase(fetchLogin.fulfilled, (state, action: PayloadAction<any>) => {
         state.token = action.payload;
-        axios.interceptors.request.use(function (config) {
-          config.headers.jwt_access_token =  state.token;
-          return config;
-      });
-      
         state.isLoading = false;
         state.hasError = false;
       })

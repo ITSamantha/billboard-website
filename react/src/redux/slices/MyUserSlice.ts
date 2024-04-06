@@ -1,5 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getMyUser, register, login as enter } from '../../service/dataService';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 interface MyUserState {
   user: any;
@@ -50,6 +52,11 @@ const MyUserSlice = createSlice({
       })
       .addCase(fetchLogin.fulfilled, (state, action: PayloadAction<any>) => {
         state.token = action.payload;
+        axios.interceptors.request.use(function (config) {
+          config.headers.jwt_access_token =  state.token;
+          return config;
+      });
+      
         state.isLoading = false;
         state.hasError = false;
       })

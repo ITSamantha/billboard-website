@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost/';
+const BASE_URL = 'https://api.uvuv643.ru/';
 
 export const register = (
   email: string,

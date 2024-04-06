@@ -17,10 +17,15 @@ import ProfileAllAdvertisements from './pages/profile/ProfileAllAdvertisements';
 import Favorites from './pages/profile/Favorites';
 import Chat from './pages/Chat';
 import MyChats from './pages/MyChats';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { selectToken } from './redux/slices/MyUserSlice';
 
 export const APP_URL = 'http://localhost:3000/';
 
+
 function App() {
+
   const router = createBrowserRouter([
     {
       path: '/',

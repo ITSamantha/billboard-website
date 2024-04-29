@@ -50,7 +50,6 @@ body, html, button, input {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-  margin-top: 30px;
   &__Avatar {
     margin-right: 12px;
   }
@@ -69,8 +68,21 @@ body, html, button, input {
 }
 
 .Chat {
+  &__Wrapper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: auto;
+  }
+  &__Left {
+    width: 430px;
+    margin-top: 0;
+  }
+  &__Right {
+    width: 500px;
+  }
   &__Messages {
-    width: 40%;
+    width: 100%;
     padding-left: 15px;
     padding-right: 15px;
     margin: auto;
@@ -78,7 +90,7 @@ body, html, button, input {
     overflow-y: scroll;
   }
   &__Header {
-    width: 40%;
+    width: 100%;
     margin: auto;
   }
   &__Send {

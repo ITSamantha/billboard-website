@@ -1,7 +1,6 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getMyUser, register, login as enter } from '../../service/dataService';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createApi, getMyUser, login as enter, register} from '../../service/dataService';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 
 interface MyUserState {
   user: any;
@@ -11,18 +10,15 @@ interface MyUserState {
 }
 
 export const fetchLogin = createAsyncThunk('myUser/fetchLogin', async (data: any) => {
-  const res = await enter(data.email, data.password);
-  return res;
+  return await enter(data.email, data.password);
 });
 
 export const fetchRegister = createAsyncThunk('myUser/fetchRegister', async (data: any) => {
-  const res = await register(data.email, data.password, data.phone, data.lastName, data.firstName);
-  return res;
+  return await register(data.email, data.password, data.phone, data.lastName, data.firstName);
 });
 
 export const fetchMyUser = createAsyncThunk('myUser/fetchMyUser', async () => {
-  const res = await getMyUser();
-  return res;
+  return await getMyUser();
 });
 
 const initialState: MyUserState = {
@@ -42,6 +38,10 @@ const MyUserSlice = createSlice({
       state.token = null;
       state.isLoading = false;
       state.hasError = false;
+      createApi().post('auth/logout').then(() => {
+        localStorage.removeItem("user")
+        window.location.reload()
+      })
     }
   },
   extraReducers: (builder) => {
@@ -88,7 +88,19 @@ const MyUserSlice = createSlice({
   }
 });
 
-export const selectMyUser = (state: any) => state.myUser.user;
+export const selectMyUser = (state: any) => {
+  if (state.myUser.user) return state.myUser.user
+  let userJson = localStorage.getItem('user')
+  if (userJson) {
+    return JSON.parse(userJson)
+  // } else {
+  //   createApi().get('users/me').then(response => {
+  //     localStorage.setItem("user", JSON.stringify(response.data))
+  //
+  //   })
+  }
+};
+
 export const selectLoading = (state: any) => state.myUser.isLoading;
 export const selectError = (state: any) => state.myUser.hasError;
 export const selectToken = (state: any) => state.myUser.token;

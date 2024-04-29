@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
-import GoogleLogin from '../GoogleLogin/GoogleLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin, fetchMyUser, selectError, selectLoading, selectMyUser } from '../../redux/slices/MyUserSlice';
-import { AppDispatch } from '../../redux/store';
+import { fetchLogin, fetchMyUser, selectError, selectLoading, selectMyUser } from '../redux/slices/MyUserSlice';
+import { AppDispatch } from '../redux/store';
 import { TextField, ThemeProvider } from '@mui/material';
-import Loader from '../Loader';
-import { THEME } from '../../pages/profile/Profile';
+import Loader from '../components/Loader';
+import { THEME } from './profile/Profile';
+import GoogleLogin from "../components/GoogleLogin/GoogleLogin";
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -64,7 +64,7 @@ function Login() {
 
             <div className="Login__Social">
               <div>
-                אם אין לך חשבון אתה יכול <a href="/sign-up">ליצור חשבון חדש</a> או להתחבר עם שירותים
+                אם אין לך חשבון אתה יכול <a href="/register">ליצור חשבון חדש</a> או להתחבר עם שירותים
                 אחרים
               </div>
               <div className="Login__Social__Buttons">
@@ -85,11 +85,10 @@ function Login() {
                   defaultValue={email}
                   name="email"
                   onChange={(event) => setEmail(event.target.value)}
-                  autoComplete="family-name"
+                  autoComplete="email"
                 />
               </div>
               <div className="Login__Input">
-
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -100,7 +99,7 @@ function Login() {
                   defaultValue={password}
                   name="password"
                   onChange={(event) => setPassword(event.target.value)}
-                  autoComplete="family-name"
+                  autoComplete="password"
                 />
               </div>
               <div className="Login__Button">

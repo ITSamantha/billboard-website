@@ -1,12 +1,12 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RouterWrapper from './RouterWrapper';
-import Login from './components/Login/Login';
+import Login from './pages/Login';
 import './scss/main.scss';
 import Home from './pages/Home';
 import Upload from './pages/Upload';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import Register from './components/Register/Register';
+import Register from './pages/Register';
 import MapWrapper from './pages/Map';
 import Profile from './pages/profile/Profile';
 import ProfileEdit from './pages/profile/ProfileEdit';
@@ -16,13 +16,19 @@ import Category from './pages/Category';
 import ProfileAllAdvertisements from './pages/profile/ProfileAllAdvertisements';
 import Favorites from './pages/profile/Favorites';
 import Chat from './pages/Chat';
-import MyChats from './pages/MyChats';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectToken } from './redux/slices/MyUserSlice';
+import axios from "axios";
 
 export const APP_URL = 'http://localhost:3000/';
 
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  if (error.response.status === 401) {
+    localStorage.removeItem("user")
+    window.location.reload()
+  }
+  return error;
+});
 
 function App() {
 
@@ -103,7 +109,7 @@ function App() {
       path: '/chats',
       element: (
         <RouterWrapper>
-          <MyChats />
+          <Chat />
         </RouterWrapper>
       )
     },

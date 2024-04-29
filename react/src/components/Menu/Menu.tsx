@@ -1,6 +1,6 @@
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectMyUser } from '../../redux/slices/MyUserSlice';
+import {logout, selectMyUser} from '../../redux/slices/MyUserSlice';
 import { useEffect } from 'react';
 import { Button } from '@mui/material';
 
@@ -8,6 +8,13 @@ const Menu = () => {
   const user = useSelector(selectMyUser);
 
   useEffect(() => {}, [user]);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <header className="global-navigation-site-header">
       <div className="global-navigation-site-header-container">
@@ -37,7 +44,7 @@ const Menu = () => {
                   <Link to="/chats">
                     <Button variant="contained">My chats</Button>
                   </Link>
-                  <Button variant="contained">Logout</Button>
+                  <Button variant="contained" onClick={handleLogout}>Logout</Button>
                 </div>
               )}
 

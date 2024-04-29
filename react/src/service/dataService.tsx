@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'https://api.uvuv643.ru/';
 
-const createApi = () => {
+export const createApi = () => {
   return axios.create({
     baseURL: BASE_URL,
     withCredentials: false,

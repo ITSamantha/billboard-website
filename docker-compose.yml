@@ -69,7 +69,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot/ --email uvuv.space@gmail.com -d api.uvuv643.ru -d uvuv643.ru --agree-tos --cert-name otiva
+    command: certonly --webroot -w /var/www/certbot/ --email uvuv.space@gmail.com -d api.otiva.space -d otiva.space --agree-tos --cert-name otiva
 
 networks:
   otiva:

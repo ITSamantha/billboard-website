@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.api.routers import auth,  review, category, chat, user
+from src.api.routers import auth,  review, category, chat, user, filter, files, test
 from src.api.routers.advertisement import advertisement
 
 from src.api.routers.location import location
@@ -16,4 +16,7 @@ def create_app_routers(app: FastAPI):
     app.include_router(ws_chat.router)
     app.include_router(chat.router)
     app.include_router(user.router)
+    app.include_router(filter.router)
+    app.include_router(files.router)
+    app.include_router(test.router)
     return app

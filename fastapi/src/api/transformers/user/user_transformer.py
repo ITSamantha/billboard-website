@@ -6,9 +6,10 @@ from src.utils.time import json_datetime, time_ago_in_words
 class UserTransformer(BaseTransformer):
     def __init__(self):
         super().__init__()
-        self.available_includes = []
+        self.available_includes = ["advertisements",
+                                   "ad_favourites"]
         self.default_includes = [
-            'user_status',
+            'user_status'
         ]
 
     def transform(self, user):
@@ -30,3 +31,11 @@ class UserTransformer(BaseTransformer):
 
     def include_user_status(self, user):
         return self.item(user.user_status, UserStatusTransformer())
+
+    def include_advertisements(self, user):
+        from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+        return self.collection(user.advertisements, AdvertisementTransformer())
+
+    def include_ad_favourites(self, user):
+        from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
+        return self.collection([ad.advertisement for ad in user.ad_favourites], AdvertisementTransformer())

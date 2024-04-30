@@ -20,5 +20,7 @@ class Filter(Base):
 
     order: Mapped[int] = mapped_column(nullable=False)
 
+    filter_values: Mapped[List["FilterValue"]] = relationship(uselist=True, lazy="selectin")
+
     def __repr__(self) -> str:
         return f"Filter(id={self.id}, title={self.title}, filter_type_id={self.filter_type_id}, order={self.order})"

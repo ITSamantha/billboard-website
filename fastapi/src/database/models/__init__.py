@@ -46,7 +46,10 @@ from src.database.models.many_to_many.advertisement__ad_tag import Advertisement
 # ==TRANSACTIONS==
 from src.database.models.transactions.transaction import Transaction
 
+"""CHAT"""
 from src.database.models.entities.chat import Chat
 from src.database.models.entities.chat_message import ChatMessage
 from src.database.models.entities.chat_message_attachement import ChatMessageAttachement
 from src.database.models.entities.chat_user import ChatUser
+
+from src.database.models.entities.file import File

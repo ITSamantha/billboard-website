@@ -5,6 +5,8 @@ from typing import List
 from src.database.models.entities.chat_message import ChatMessage
 from src.database.models.entities.chat_user import ChatUser
 
+from src.database.models.entities.chat_message import ChatMessage
+
 
 class Chat(Base):
     __tablename__ = "chats"

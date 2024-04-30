@@ -25,18 +25,20 @@ app = get_application()
 
 # admin = setup_admin(app, db_manager.engine)
 
+
 @app.on_event("startup")
 async def startup_event():
     await redis.init_pool()
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
     await redis.close_pool()
 
+
 @app.exception_handler(AppValidationException)
 async def validation_failed(request: Request, exc: AppValidationException):
     return ApiResponse.errors(exc.errors, status_code=422)
-
 
 if __name__ == "__main__":
     uvicorn.run(

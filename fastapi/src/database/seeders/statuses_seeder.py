@@ -10,12 +10,14 @@ class StatusesSeeder(GenericSeeder):
                 AdStatus.PAID: {"title": "paid", "is_shown": True},
                 AdStatus.NOT_PAID: {"title": "not paid", "is_shown": False},
                 AdStatus.ACTIVE: {"title": "active", "is_shown": True},
-                AdStatus.BLOCKED: {"title": "blocked", "is_shown": False},
-                AdStatus.MEOW: {"title": "smth test", "is_shown": False}
+                AdStatus.BLOCKED: {"title": "blocked", "is_shown": False}
             },
             BookingStatus: {
                 BookingStatus.PAID: {"title": "paid"},
-                BookingStatus.NOT_PAID: {"title": "not paid"}
+                BookingStatus.NOT_PAID: {"title": "not paid"},
+                BookingStatus.IN_PROCESS: {"title": "in progress"},
+                BookingStatus.APPROVED: {"title": "approved"},
+                BookingStatus.CANCELED: {"title": "canceled"}
             },
             UserStatus: {
                 UserStatus.ACTIVE: {'title': 'active', 'is_available': True},

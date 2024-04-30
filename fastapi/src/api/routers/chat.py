@@ -24,15 +24,15 @@ router = APIRouter(
 async def index(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     async with db_manager.get_session() as session:
-        q = select(Chat)\
-            .filter(Chat.id.in_(select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct()))\
+        q = select(Chat) \
+            .filter(Chat.id.in_(select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct())) \
             .options(joinedload(Chat.messages))  # todo limit messages
         res = await session.execute(q)
 
         chats = res.unique().scalars().all()
     return ApiResponse.payload(transform(
         chats,
-        ChatTransformer().include(['messages'])
+        ChatTransformer(request.state.user.id).include(['messages', "user"])
     ))
 
 
@@ -41,8 +41,8 @@ async def find(chat_id: int, request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
     async with db_manager.get_session() as session:
         #  todo chat must have chat_user with request.state.user.id == user_id
-        q = select(Chat)\
-            .where(Chat.id == chat_id)\
+        q = select(Chat) \
+            .where(Chat.id == chat_id) \
             .options(joinedload(Chat.messages))  # todo limit messages
         res = await session.execute(q)
         chat = res.scalar()
@@ -52,7 +52,7 @@ async def find(chat_id: int, request: Request, auth: Auth = Depends()):
 
     return ApiResponse.payload(transform(
         chat,
-        ChatTransformer().include(['messages'])
+        ChatTransformer(request.state.user.id).include(['messages', "user"])
     ))
 
 
@@ -68,15 +68,19 @@ async def store(request: Request, auth: Auth = Depends()):
     async with db_manager.get_session() as session:
         subquery1 = select(ChatUser.chat_id).where(ChatUser.user_id == payload.user_id).distinct()
         subquery2 = select(ChatUser.chat_id).where(ChatUser.user_id == request.state.user.id).distinct()
-        q = select(Chat)\
-            .where(Chat.id.in_(subquery1))\
+        q = select(Chat) \
+            .where(Chat.id.in_(subquery1)) \
             .where(Chat.id.in_(subquery2))
 
         res = await session.execute(q)
         chats = res.unique().scalars().all()
 
-    if chats:
-        return ApiResponse.error('Chat between these users already exists')
+    if chats and len(chats) > 0:
+        return ApiResponse.payload(transform(
+            chats[0],
+            ChatTransformer()
+        ))
+        # return ApiResponse.error('Chat between these users already exists')
     #  create chat
     chat: Chat = await SqlAlchemyRepository(db_manager.get_session, Chat).create({})
     #  add users to chat
@@ -109,7 +113,7 @@ async def store_message(chat_id: int, request: Request, auth: Auth = Depends()):
     # chat must have current user as ChatUser
     async with db_manager.get_session() as session:
         q = select(Chat) \
-            .options(joinedload(Chat.chat_users))\
+            .options(joinedload(Chat.chat_users)) \
             .where(Chat.id == chat_id)
         res = await session.execute(q)
         chat: Chat = res.scalar()

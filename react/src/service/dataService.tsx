@@ -1,16 +1,27 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://api.uvuv643.ru/';
+const BASE_URL = 'https://api.otiva.space/';
 
 export const createApi = () => {
-  return axios.create({
+  let apiInstance = axios.create({
     baseURL: BASE_URL,
     withCredentials: false,
     headers: {
       'Content-type': 'application/json',
       'x-jwt-access-token': localStorage.getItem('access_token')
     }
+  })
+  apiInstance.interceptors.response.use(function (response) {
+    return response
+  }, function (response) {
+    if (response.status !== 401) return response
+    if (response.config.url.includes('login') || response.config.url.includes('register')) {
+      return response
+    }
+    localStorage.removeItem("user")
+    window.location.replace('/login')
   });
+  return apiInstance
 };
 
 let api = createApi();
@@ -37,6 +48,7 @@ export const register = (
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       api = createApi();
+      localStorage.setItem("user", JSON.stringify(response.data))
       return response.data;
     })
     .catch((error) => console.error('Error fetching register:', error));
@@ -51,6 +63,7 @@ export const login = async (email: string, password: string) => {
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       api = createApi();
+      localStorage.setItem("user", JSON.stringify(response.data))
       return response.data;
     })
     .catch((error) => console.error('Error fetching login:', error));
@@ -64,7 +77,11 @@ export const refreshToken = async (id: number) => {
 
 export const logout = () => {
   api.post('auth/logout', {})
-    .then((response) => response.data)
+    .then((response) => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+    })
     .catch((error) => console.error('Error fetching logout:', error));
 };
 

@@ -1,19 +1,27 @@
-import {useDispatch, useSelector} from 'react-redux';
-import { Link } from 'react-router-dom';
-import {logout, selectMyUser} from '../../redux/slices/MyUserSlice';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { Button } from '@mui/material';
+import { logout } from '../../service/dataService';
 
 const Menu = () => {
+
   const user = useSelector(selectMyUser);
 
-  useEffect(() => {}, [user]);
+  // useEffect(() => {
+  //   console.log(user)
+  // }, [user]);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const handleLogout = () => {
-    dispatch(logout());
+    logout();
+    dispatch(logoutUser());
+    navigate('/login')
   };
+
+  console.log('USER', user);
 
   return (
     <header className="global-navigation-site-header">
@@ -31,7 +39,7 @@ const Menu = () => {
                 <div
                   className="uitk-layout-flex uitk-layout-flex-align-items-center uitk-layout-flex-justify-content-flex-start uitk-layout-flex-flex-wrap-nowrap uitk-spacing uitk-spacing-padding-inlinestart-one uitk-layout-flex-item uitk-layout-flex-item-flex-basis-half_width uitk-layout-flex-item-flex-grow-1"
                   id="primary-navigation"
-                ></div>
+                />
               </div>
               {user && (
                 <div>

@@ -1,25 +1,72 @@
-import { Button } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import {
+  addToFavorites,
+  deleteFromFavorites,
+  getAdvertisementById
+} from '../../service/dataService';
+import Loader from '../Loader';
+import { Button } from '@mui/material';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useSelector } from 'react-redux';
+import { selectMyUser } from '../../redux/slices/MyUserSlice';
 
-type Props = {
-  title: string;
-  description: string;
-  address: string;
-  tags: string[];
-  isBooking: boolean;
-  reviews: string[];
-  creationDate: string;
-  price: number;
-  userId: number;
-  status: string;
-  photosPaths: string[];
-};
+const AdvertisementCard = () => {
+  const { id } = useParams();
+  const [ad, setAd] = useState<AdInfo | null>(null);
+  const user = useSelector(selectMyUser);
 
-const AdvertisementCard = ({ title, description, address }: Props) => {
+  useEffect(() => {
+    async function fetchData() {
+      let data = await getAdvertisementById(Number(id));
+      setAd(data);
+    }
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {}, [user]);
+
+  const handleFavorite = () => {
+    addToFavorites(Number(id));
+  };
+
+  const handleUnfavorite = () => {
+    deleteFromFavorites(Number(id));
+  };
+
+  if (!ad) {
+    return <Loader />;
+  }
+
   return (
     <div className="AdvertisementCard">
-      <div>{title}</div>
+      <img src="https://http.cat/300" alt="Advertisement" height={'300px'} />
+      <div>{ad.title}</div>
+      <div>{ad.user_description}</div>
+      <div>Price: {ad.price}</div>
+      <div>{ad.created_at_str}</div>
+      <div>{ad.reviews}</div>
+      <Link to={`/profile/${ad.user.id}`}>
+        <div>
+          Seller: {ad.user.first_name} {ad.user.last_name}
+        </div>
+      </Link>
+      {user &&
+        !user.advertisements.some((ad: AdInfo) => ad.id === Number(id)) &&
+        user.ad_favourites.some((ad: AdInfo) => ad.id === Number(id)) && (
+          <Button onClick={handleFavorite}>
+            <FavoriteIcon />
+          </Button>
+        )}
+      {user &&
+        !user.advertisements.some((ad: AdInfo) => ad.id === Number(id)) &&
+        !user.ad_favourites.some((ad: AdInfo) => ad.id === Number(id)) && (
+          <Button onClick={handleUnfavorite}>
+            <FavoriteBorderIcon />
+          </Button>
+        )}
+
       <Link to={'/chat'}>
         <Button>Contact the seller</Button>
       </Link>

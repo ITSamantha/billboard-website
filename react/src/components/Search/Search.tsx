@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Input } from '@mui/material';
 import '../../scss/search.scss';
 
 const Search = () => {

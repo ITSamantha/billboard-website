@@ -1,9 +1,20 @@
-import React from 'react';
-import { Button, Dropdown, Space } from 'antd';
+import {useDispatch, useSelector} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa';
+import {logout, selectMyUser} from '../../redux/slices/MyUserSlice';
+import { useEffect } from 'react';
+import { Button } from '@mui/material';
 
 const Menu = () => {
+  const user = useSelector(selectMyUser);
+
+  useEffect(() => {}, [user]);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <header className="global-navigation-site-header">
       <div className="global-navigation-site-header-container">
@@ -20,33 +31,28 @@ const Menu = () => {
                 <div
                   className="uitk-layout-flex uitk-layout-flex-align-items-center uitk-layout-flex-justify-content-flex-start uitk-layout-flex-flex-wrap-nowrap uitk-spacing uitk-spacing-padding-inlinestart-one uitk-layout-flex-item uitk-layout-flex-item-flex-basis-half_width uitk-layout-flex-item-flex-grow-1"
                   id="primary-navigation"
-                >
-                  <Dropdown
-                    menu={{
-                      items: [
-                        {
-                          key: '4',
-                          danger: true,
-                          label: 'a danger item'
-                        }
-                      ]
-                    }}
-                  >
-                    <Space>קטגוריות מוצרים</Space>
-                  </Dropdown>
+                ></div>
+              </div>
+              {user && (
+                <div>
+                  <Link to={`/profile/${user.id}`}>
+                    <Button variant="contained">Profile</Button>
+                  </Link>
+                  <Link to="/upload-form">
+                    <Button variant="contained">Upload</Button>
+                  </Link>
+                  <Link to="/chats">
+                    <Button variant="contained">My chats</Button>
+                  </Link>
+                  <Button variant="contained" onClick={handleLogout}>Logout</Button>
                 </div>
-              </div>
-              <div>
-                <Link to="/profile">
-                  <Button type="primary">Profile</Button>
+              )}
+
+              {!user && (
+                <Link to="/login">
+                  <Button variant="contained">Login</Button>
                 </Link>
-                <Link to="/upload-form">
-                  <Button type="primary">Upload</Button>
-                </Link>
-                <Link to="/sign-in">
-                  <Button type="primary">הרשמה/התחברות</Button>
-                </Link>
-              </div>
+              )}
             </div>
           </div>
         </section>

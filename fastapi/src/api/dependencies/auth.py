@@ -1,6 +1,7 @@
 from fastapi import Request, HTTPException, WebSocket
 from jose import JWTError
 from typing import Optional
+import logging
 
 from src.database.models.entities.user import User
 from src.database.session_manager import db_manager
@@ -18,7 +19,7 @@ class Auth:
     async def check_access_token(self, request: Request):
         access_token = request.cookies.get('jwt_access_token')
         if access_token is None:
-            access_token = request.headers.get('jwt_access_token')
+            access_token = request.headers.get('x-jwt-access-token')
             if access_token is None:
                 raise HTTPException(detail='Access token is not present', status_code=401)
         _, user = await self.check_token(access_token, TokenType.ACCESS)

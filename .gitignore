@@ -1,3 +1,7 @@
 .idea
 */.env
 update.bat
+fastapi/core.*
+fastapi/storage
+fastapi/log.txt
+certbot/*

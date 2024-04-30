@@ -32,9 +32,7 @@ async def register(request: Request):
                 "user_status_id": UserStatus.ACTIVE})
     except Exception as e:
         return ApiResponse.error(str(e))
-    return ApiResponse.payload({
-        'user_id': user.id
-    })
+    return ApiResponse.payload({"success": True})
 
 
 @router.post("/login")

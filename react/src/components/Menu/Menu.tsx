@@ -20,8 +20,6 @@ const Menu = () => {
     navigate('/login');
   };
 
-  console.log('USER', user);
-
   return (
     <header className="global-navigation-site-header">
       <div className="global-navigation-site-header-container">

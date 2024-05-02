@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../redux/slices/MyUserSlice';
 import WebSocketInstance from './WebSocketInstance';
-import { useParams } from 'react-router-dom';
-import { getAllChats, getChat, sendMessage } from '../service/dataService';
+import {useParams} from 'react-router-dom';
+import { BASE_WS_URL, getAllChats, getChat, sendMessage } from '../service/dataService';
 import Loader from '../components/Loader';
 import ChatHeader from '../components/Chat/ChatHeader';
 import { THEME } from './profile/Profile';
@@ -53,31 +53,89 @@ const Chat = () => {
     const fetchData = async () => {
       setLoading(true);
 
-      try {
-        const chats = await getAllChats();
-        setChatList(chats);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+
+            try {
+                const chats = await getAllChats();
+                setChatList(chats);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        async function fetchData() {
+            setLoading(true);
+            try {
+                let chat = await getChat(Number(id));
+                setChatHistory(chat);
+                setMessages(chat.messages);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
+    }, [id, token]);
+
+    useEffect(() => {
+        if (token) {
+            const websocket = new WebSocketInstance(BASE_WS_URL + 'ws/notifications');
+
+            websocket.onopen = () => {
+                console.log('WebSocket connected');
+                websocket.send(token);
+            };
+
+            websocket.onmessage = (event) => {
+                console.log("Message received", event.data)
+                try {
+                    let newMessage = JSON.parse(event.data)
+                    if (!messages.filter(msg => msg.id === newMessage.data.id).length) {
+                        setMessages([...messages, newMessage.data])
+                    }
+                } catch (e) {
+                    console.error("JSON PARSE ERROR!")
+                }
+            };
+        }
+    }, [token]);
+
+    const sendCurrentMessage = () => {
+        if (currentMessage) {
+            setMessages((prevMessages) => [...prevMessages, {text: currentMessage}] as any);
+            sendMessage(Number(id), currentMessage);
+            setCurrentMessage('');
+        }
     };
 
     fetchData();
   }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        let chat = await getChat(Number(id));
-        setChatHistory(chat);
-        setMessages(chat.messages);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
+    useEffect(() => {
+        let chatMessageDiv = document.querySelector('.Chat__Messages')
+        if (chatMessageDiv) {
+            chatMessageDiv.scrollTop = chatMessageDiv.scrollHeight;
+        }
+    }, [messages])
+
+
+    if (loading) {
+        return (
+            <div>
+                <Loader/>
+            </div>
+        );
     }
 
     fetchData();

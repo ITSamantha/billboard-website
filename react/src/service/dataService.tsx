@@ -28,8 +28,6 @@ export const createApi = () => {
         window.location.reload()
       })
       .catch((e) => {
-        console.log(e)
-        alert()
         localStorage.removeItem("user")
         window.location.replace('/login')
       })

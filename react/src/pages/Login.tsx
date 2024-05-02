@@ -21,7 +21,8 @@ function Login() {
     try {
       await dispatch(fetchLogin({ email, password }))
       if (localStorage.getItem("access_token")) {
-        await dispatch(fetchMyUser());
+        let myUser = await dispatch(fetchMyUser());
+        localStorage.setItem('user', JSON.stringify(myUser.payload))
         navigate('/')
       } else {
         setError("Incorrect credentials. Please try again.")

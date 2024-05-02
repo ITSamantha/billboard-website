@@ -9,10 +9,6 @@ const Menu = () => {
 
   const user = useSelector(selectMyUser);
 
-  useEffect(() => {
-    console.log(user)
-  }, [user]);
-
   const dispatch = useDispatch();
   const navigate = useNavigate()
 

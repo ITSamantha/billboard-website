@@ -7,13 +7,13 @@ import { persistReducer } from 'redux-persist';
 // Configure Redux Persist
 const persistConfig = {
   key: 'root',
-  storage,
+  storage
 };
 
 // Combine reducers
 const rootReducer = combineReducers({
   myUser: myUserReducer,
-  user: userReducer,
+  user: userReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -21,9 +21,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware({
-    serializableCheck: false, // to avoid serializable check on redux-persist
-  }),
+    getDefaultMiddleware({
+      serializableCheck: false // to avoid serializable check on redux-persist
+    })
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

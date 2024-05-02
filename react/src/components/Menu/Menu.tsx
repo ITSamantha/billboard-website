@@ -6,16 +6,15 @@ import { logout } from '../../service/dataService';
 import { useEffect } from 'react';
 
 const Menu = () => {
-
   const user = useSelector(selectMyUser);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     dispatch(logoutUser());
-    navigate('/login')
+    navigate('/login');
   };
 
   return (
@@ -49,7 +48,9 @@ const Menu = () => {
                   <Link to="/chats">
                     <Button variant="contained">My chats</Button>
                   </Link>
-                  <Button variant="contained" onClick={handleLogout}>Logout</Button>
+                  <Button variant="contained" onClick={handleLogout}>
+                    Logout
+                  </Button>
                 </div>
               )}
 

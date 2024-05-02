@@ -143,9 +143,88 @@ const Register = () => {
                       </div>
                   </div>
               </div>
-          </div>
+
+              <div className="Login__Social">
+                <div>
+                  אם אין לך חשבון אתה יכול <a href="/login">ליצור חשבון חדש</a> או להתחבר עם שירותים
+                  אחרים
+                </div>
+                <div className="Login__Social__Buttons">
+                  <div className="Login__Social__Buttons__Item">
+                    <GoogleLogin />
+                  </div>
+                </div>
+              </div>
+              <div className="Login__Or">or</div>
+              <div className="Login__Form">
+                <div className="Login__Input">
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="first-name"
+                    label="First name"
+                    defaultValue={firstName}
+                    name="first-name"
+                    type="text"
+                    onChange={(event) => setFirstName(event.target.value)}
+                    autoComplete="first-name"
+                  />
+                </div>
+                <div className="Login__Input">
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="last-name"
+                    label="Last name"
+                    defaultValue={lastName}
+                    type="text"
+                    name="last-name"
+                    onChange={(event) => setLastName(event.target.value)}
+                    autoComplete="last-name"
+                  />
+                </div>
+                <div className="Login__Input">
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="email"
+                    type="email"
+                    label="Email"
+                    defaultValue={email}
+                    name="email"
+                    onChange={(event) => setEmail(event.target.value)}
+                    autoComplete="email"
+                  />
+                </div>
+                <div className="Login__Input">
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="password"
+                    type="password"
+                    label="Password"
+                    defaultValue={password}
+                    name="password"
+                    onChange={(event) => setPassword(event.target.value)}
+                    autoComplete="family-name"
+                  />
+                </div>
+                <div className="Login__Button">
+                  <button onClick={handleRegister} type="submit">
+                    Register
+                  </button>
+                </div>
+                <Link to={'/login'} className="Login__Redirect">
+                  If you already have an account you can login
+                </Link>
+              </div>
+        </div>
       </ThemeProvider>
-      </>
+    </>
   );
 };
 

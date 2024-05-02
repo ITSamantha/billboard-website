@@ -8,12 +8,11 @@ interface RouterWrapperProps {
 }
 
 function RouterWrapper(props: RouterWrapperProps) {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(initialUpdate());
-  }, [])
+  }, []);
 
   return (
     <div className="container">

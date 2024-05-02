@@ -16,12 +16,11 @@ import Category from './pages/Category';
 import ProfileAllAdvertisements from './pages/profile/ProfileAllAdvertisements';
 import Favorites from './pages/profile/Favorites';
 import Chat from './pages/Chat';
-import axios from "axios";
+import axios from 'axios';
 
 export const APP_URL = 'http://localhost:3000/';
 
 function App() {
-
   const router = createBrowserRouter([
     {
       path: '/',

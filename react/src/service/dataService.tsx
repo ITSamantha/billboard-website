@@ -9,7 +9,8 @@ export const createApi = () => {
     withCredentials: false,
     headers: {
       'Content-type': 'application/json',
-      'x-jwt-access-token': localStorage.getItem('access_token')
+      'x-jwt-access-token': localStorage.getItem('access_token'),
+      'x-jwt-refresh-token': localStorage.getItem('refresh_token'),
     }
   })
   apiInstance.interceptors.response.use(function (response) {
@@ -17,11 +18,21 @@ export const createApi = () => {
   }, function (error) {
     let response = error.response
     if (response.status !== 401) return Promise.reject(error)
-    if (response.config.url.includes('login') || response.config.url.includes('register')) {
+    if (response.config.url.includes('login') || response.config.url.includes('register') || response.config.url.includes('refresh')) {
       return Promise.reject(error)
     }
-    localStorage.removeItem("user")
-    window.location.replace('/login')
+    apiInstance.post('auth/refresh')
+      .then(response => {
+        localStorage.setItem('access_token', response.data.access_token)
+        localStorage.setItem('refresh_token', response.data.refresh_token)
+        window.location.reload()
+      })
+      .catch((e) => {
+        console.log(e)
+        alert()
+        localStorage.removeItem("user")
+        window.location.replace('/login')
+      })
   });
   return apiInstance
 };

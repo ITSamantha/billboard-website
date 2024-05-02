@@ -72,7 +72,7 @@ const MyUserSlice = createSlice({
         state.hasError = false;
       })
       .addCase(fetchRegister.fulfilled, (state, action: PayloadAction<any>) => {
-        state.token = action.payload;
+        state.token = action.payload.access_token;
         state.isLoading = false;
         state.hasError = false;
       })

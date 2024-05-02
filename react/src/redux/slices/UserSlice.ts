@@ -34,6 +34,7 @@ const UserSlice = createSlice({
         state.hasError = false;
       })
       .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
+        alert("get user " + JSON.stringify(action.payload))
         state.user = action.payload;
         state.isLoading = false;
         state.hasError = false;

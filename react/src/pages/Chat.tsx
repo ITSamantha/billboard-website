@@ -110,7 +110,7 @@ const Chat = () => {
 
     const sendCurrentMessage = () => {
         if (currentMessage) {
-            setMessages((prevMessages) => [...prevMessages, {text: currentMessage}] as any);
+            setMessages((prevMessages) => [...prevMessages, {text: currentMessage   }] as any);
             sendMessage(Number(id), currentMessage);
             setCurrentMessage('');
         }
@@ -140,7 +140,7 @@ const Chat = () => {
                 <div className="Chat__Left">
                     <Typography variant="h4" fontWeight={500} style={{marginBottom: 15}}>My chats</Typography>
                     <div className="Chat__Container">
-                        {chatList.length ? (
+                        {chatList?.length ? (
                             chatList.map((chat) => (
                                 <ChatElement chat={chat}/>
                             ))

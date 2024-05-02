@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from fastapi import APIRouter, Depends, Request
 
@@ -23,12 +23,30 @@ async def get_address(address_id: int, request: Request, auth: Auth = Depends())
     await auth.check_access_token(request)
 
     try:
-        address: models.Address = await SqlAlchemyRepository(db_manager.get_session, models.Address)\
+        address: models.Address = await SqlAlchemyRepository(db_manager.get_session, models.Address) \
             .get_single(id=address_id)
         if not address:
             raise Exception("Address is not found.")
 
         return ApiResponse.payload(transform(address, AddressTransformer()))
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@address_router.get(path='')
+async def get_user_addresses(user_id: int, request: Request, auth: Auth = Depends()):
+    """Get user addresses. """
+
+    await auth.check_access_token(request)
+
+    try:
+        advertisements: List[models.Advertisement] = await SqlAlchemyRepository(db_manager.get_session,
+                                                                                models.Advertisement) \
+            .get_multi(user_id=user_id)
+
+        addresses: List[models.Address] = list(set([ad.address for ad in advertisements]))
+
+        return ApiResponse.payload(transform(addresses, AddressTransformer()))
     except Exception as e:
         return ApiResponse.error(str(e))
 
@@ -53,7 +71,7 @@ async def create_ad_address(request: Request, auth: Auth = Depends()):
     validator.validated()
 
     try:
-        address: models.Address = await SqlAlchemyRepository(db_manager.get_session, models.Address)\
+        address: models.Address = await SqlAlchemyRepository(db_manager.get_session, models.Address) \
             .create(validator.all())
 
         return ApiResponse.payload(transform(address, AddressTransformer()))

@@ -3,13 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logoutUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { Button } from '@mui/material';
 import { logout } from '../../service/dataService';
+import { useEffect } from 'react';
 
 const Menu = () => {
   const user = useSelector(selectMyUser);
 
-  // useEffect(() => {
-  //   console.log(user)
-  // }, [user]);
+  useEffect(() => {
+    console.log(user)
+  }, [user]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,9 +41,11 @@ const Menu = () => {
               </div>
               {user && (
                 <div>
-                  <Link to={`/profile/${user.id}`}>
-                    <Button variant="contained">Profile</Button>
-                  </Link>
+                  {user.id && (
+                    <Link to={`/profile/${user.id}`}>
+                      <Button variant="contained">Profile</Button>
+                    </Link>
+                  )}
                   <Link to="/upload-form">
                     <Button variant="contained">Upload</Button>
                   </Link>

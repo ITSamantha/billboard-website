@@ -23,7 +23,7 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
-# admin = setup_admin(app, db_manager.engine)
+
 
 
 @app.on_event("startup")
@@ -39,6 +39,7 @@ async def shutdown_event():
 @app.exception_handler(AppValidationException)
 async def validation_failed(request: Request, exc: AppValidationException):
     return ApiResponse.errors(exc.errors, status_code=422)
+
 
 if __name__ == "__main__":
     uvicorn.run(

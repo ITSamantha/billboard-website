@@ -15,12 +15,21 @@ function Login() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectMyUser);
   const navigate = useNavigate();
-  const error = useSelector(selectError);
-  const loading = useSelector(selectLoading);
+  const [error, setError] = useState<string>('')
 
   const handleLogin = async () => {
-    await dispatch(fetchLogin({ email, password }) as any);
-    await dispatch(fetchMyUser());
+    try {
+      await dispatch(fetchLogin({ email, password }))
+      if (localStorage.getItem("access_token")) {
+        await dispatch(fetchMyUser());
+        navigate('/')
+      } else {
+        setError("Incorrect credentials. Please try again.")
+      }
+    } catch (error) {
+      console.error(error)
+    }
+
   };
 
   useEffect(() => {
@@ -30,19 +39,6 @@ function Login() {
     }
   }, [user, navigate]);
 
-  const handleLogout = () => {
-  };
-
-  if (error) {
-    return <div>Error. Reload page</div>;
-  }
-  if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
 
   return (
     <><ThemeProvider theme={THEME}>
@@ -102,6 +98,7 @@ function Login() {
                   autoComplete="password"
                 />
               </div>
+              { error && <div className="Login__Error">{ error }</div> }
               <div className="Login__Button">
                 <button
                   onClick={handleLogin}

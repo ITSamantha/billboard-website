@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://api.otiva.space/';
+export const BASE_URL = 'https://api.otiva.space/';
+export const BASE_WS_URL = 'wss://api.otiva.space/';
 
 export const createApi = () => {
   let apiInstance = axios.create({
@@ -13,10 +14,11 @@ export const createApi = () => {
   })
   apiInstance.interceptors.response.use(function (response) {
     return response
-  }, function (response) {
-    if (response.status !== 401) return response
+  }, function (error) {
+    let response = error.response
+    if (response.status !== 401) return Promise.reject(error)
     if (response.config.url.includes('login') || response.config.url.includes('register')) {
-      return response
+      return Promise.reject(error)
     }
     localStorage.removeItem("user")
     window.location.replace('/login')
@@ -27,14 +29,14 @@ export const createApi = () => {
 let api = createApi();
 
 
-export const register = (
+export const  register = (
   email: string,
   password: string,
   phone: string,
   lastName: string,
   firstName: string
 ) => {
-  api.post(
+  return api.post(
     'auth/register',
     {
       email: email,
@@ -47,11 +49,8 @@ export const register = (
     .then((response) => {
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
-      api = createApi();
-      localStorage.setItem("user", JSON.stringify(response.data))
       return response.data;
     })
-    .catch((error) => console.error('Error fetching register:', error));
 };
 
 export const login = async (email: string, password: string) => {
@@ -66,7 +65,6 @@ export const login = async (email: string, password: string) => {
       localStorage.setItem("user", JSON.stringify(response.data))
       return response.data;
     })
-    .catch((error) => console.error('Error fetching login:', error));
 };
 
 export const refreshToken = async (id: number) => {

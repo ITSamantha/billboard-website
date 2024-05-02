@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import '../scss/register.scss';
 import GoogleLogin from '../components/GoogleLogin/GoogleLogin';
-import { register } from '../service/dataService';
+import { getMyUser, register } from '../service/dataService';
 import {Link, useNavigate} from 'react-router-dom';
 import {Button, IconButton, Input, InputAdornment, OutlinedInput, TextField, ThemeProvider} from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {IoIosArrowRoundBack} from "react-icons/io";
 import {THEME} from "./profile/Profile";
+import { fetchMyUser } from '../redux/slices/MyUserSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../redux/store';
 
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -17,6 +20,9 @@ const Register = () => {
   const [password, setPassword] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [error, setError] = useState<string>()
 
   const handleClickShowPassword = () => setPasswordVisible((show) => !show);
 
@@ -26,9 +32,13 @@ const Register = () => {
 
   const handleRegister = () => {
     console.log(firstName, lastName, email, password, phone);
-    register(email, password, phone, lastName, firstName);
-    // TODO: check if login is successful
-    navigate('/home');
+    register(email, password, phone, lastName, firstName).then(async () => {
+      let myUser = await dispatch(fetchMyUser());
+      localStorage.setItem('user', JSON.stringify(myUser))
+      navigate('/');
+    }).catch(error => {
+      setError(error.response.data.detail)
+    });
   };
 
   return (
@@ -118,7 +128,8 @@ const Register = () => {
                                   autoComplete="family-name"
                               />
                           </div>
-                          <div className="Login__Button">
+                        { error && <div className="Login__Error">{ error }</div> }
+                        <div className="Login__Button">
                               <button
                                   onClick={handleRegister}
                                   type="submit"

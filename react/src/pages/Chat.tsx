@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {selectToken} from '../redux/slices/MyUserSlice';
 import WebSocketInstance from './WebSocketInstance';
 import {useParams} from 'react-router-dom';
-import {getAllChats, getChat, sendMessage} from '../service/dataService';
+import { BASE_WS_URL, getAllChats, getChat, sendMessage } from '../service/dataService';
 import Loader from '../components/Loader';
 import ChatHeader from '../components/Chat/ChatHeader';
 import {THEME} from './profile/Profile';
@@ -87,25 +87,30 @@ const Chat = () => {
 
     useEffect(() => {
         if (token) {
-            const websocket = new WebSocketInstance('ws://localhost/ws/notifications');
+            const websocket = new WebSocketInstance(BASE_WS_URL + 'ws/notifications');
 
             websocket.onopen = () => {
                 console.log('WebSocket connected');
-                websocket.send(token.access_token);
+                websocket.send(token);
             };
 
             websocket.onmessage = (event) => {
-                console.log(event.data);
-                const message = JSON.parse(event.data);
-                console.log(message);
-                setMessages((prevMessages) => [...prevMessages, message]);
+                console.log("Message received", event.data)
+                try {
+                    let newMessage = JSON.parse(event.data)
+                    if (!messages.filter(msg => msg.id === newMessage.data.id).length) {
+                        setMessages([...messages, newMessage.data])
+                    }
+                } catch (e) {
+                    console.error("JSON PARSE ERROR!")
+                }
             };
         }
     }, [token]);
 
     const sendCurrentMessage = () => {
         if (currentMessage) {
-            setMessages((prevMessages) => [...prevMessages, currentMessage] as any);
+            setMessages((prevMessages) => [...prevMessages, {text: currentMessage}] as any);
             sendMessage(Number(id), currentMessage);
             setCurrentMessage('');
         }
@@ -114,8 +119,11 @@ const Chat = () => {
     const messageBlockRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        messageBlockRef.current?.scrollIntoView({block: "end"})
-    }, [])
+        let chatMessageDiv = document.querySelector('.Chat__Messages')
+        if (chatMessageDiv) {
+            chatMessageDiv.scrollTop = chatMessageDiv.scrollHeight;
+        }
+    }, [messages])
 
 
     if (loading) {

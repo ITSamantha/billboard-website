@@ -54,7 +54,6 @@ const Chat = () => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-
             try {
                 const chats = await getAllChats();
                 setChatList(chats);
@@ -64,7 +63,6 @@ const Chat = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, []);
 
@@ -81,28 +79,24 @@ const Chat = () => {
                 setLoading(false);
             }
         }
-
         fetchData();
     }, [id, token]);
 
     useEffect(() => {
         if (token) {
             const websocket = new WebSocketInstance(BASE_WS_URL + 'ws/notifications');
-
             websocket.onopen = () => {
                 console.log('WebSocket connected');
                 websocket.send(token);
             };
-
             websocket.onmessage = (event) => {
-                console.log("Message received", event.data)
                 try {
                     let newMessage = JSON.parse(event.data)
-                    if (!messages.filter(msg => msg.id === newMessage.data.id).length) {
-                        setMessages([...messages, newMessage.data])
+                    if (!messages.some(msg => msg.id === newMessage.data.id)) {
+                        setMessages((oldMessages) => [...oldMessages, newMessage.data])
                     }
                 } catch (e) {
-                    console.error("JSON PARSE ERROR!")
+                    console.error("Json parse error", e)
                 }
             };
         }
@@ -110,7 +104,7 @@ const Chat = () => {
 
     const sendCurrentMessage = () => {
         if (currentMessage) {
-            setMessages((prevMessages) => [...prevMessages, {text: currentMessage   }] as any);
+            setMessages((prevMessages) => [...prevMessages, {text: currentMessage}] as any);
             sendMessage(Number(id), currentMessage);
             setCurrentMessage('');
         }
@@ -157,7 +151,6 @@ const Chat = () => {
                                     <ChatHeader user={chatHistory.user}/>
                                 </div>
                                 <div className="Chat__Messages" ref={messageBlockRef}>
-
                                     {messages.map((message) => (
                                         <ChatMessage message={message} received={message.chat_user && message.chat_user.user_id === chatHistory.user.id}/>
                                     ))}
@@ -169,11 +162,12 @@ const Chat = () => {
                                         onChange={(e) => {
                                             setCurrentMessage(e.target.value);
                                         }}
+                                        onKeyDown={(e) => e.key === 'Enter' && sendCurrentMessage()}
                                     />
                                     <button onClick={sendCurrentMessage}>Send</button>
                                 </div>
                             </>
-                        ) : 'No messages yet'
+                        ) : ''
                     }
 
                 </div>

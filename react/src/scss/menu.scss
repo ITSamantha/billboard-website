@@ -6,3 +6,58 @@ html {
   scrollbar-gutter: stable;
   overflow: auto;
 }
+html,body {
+  padding: 0;
+  margin: 0;
+}
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 100%;
+}
+
+a {
+  color: $main;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.Header {
+  height: 90px;
+  background: $light;
+  &__Wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__Logo {
+    height: 50px;
+    img {
+      max-height: 100%;
+    }
+  }
+  &__Navbar {
+    display: flex;
+    align-items: center;
+    &__Item {
+      display: inline-block;
+      margin-right: 25px;
+      margin-left: 25px;
+    }
+  }
+  &__Auth {
+    &__Button {
+      padding: 8px 32px;
+      border: 2px solid $main;
+      border-radius: 12px;
+      transition: 0.3s;
+      &:hover {
+        background: $main;
+        color: white;
+      }
+    }
+  }
+}

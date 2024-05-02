@@ -15,10 +15,13 @@ function RouterWrapper(props: RouterWrapperProps) {
   }, []);
 
   return (
-    <div className="container">
+    // <div className="container">
+    <>
       <Menu />
       {props.children}
-    </div>
+    </>
+    // </div>
+
   );
 }
 

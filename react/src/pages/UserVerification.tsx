@@ -1,4 +1,3 @@
-import { Button, Input } from 'antd';
 import { useState } from 'react';
 
 const UserVerification = () => {

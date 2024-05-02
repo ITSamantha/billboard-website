@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Menu from './components/Menu/Menu';
 
 interface RouterWrapperProps {

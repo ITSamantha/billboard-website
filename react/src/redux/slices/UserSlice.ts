@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { login as enter, register } from '../../service/dataService';
+import { getUserById } from '../../service/dataService';
 
 interface UserState {
   user: object;
@@ -7,13 +7,8 @@ interface UserState {
   hasError: boolean;
 }
 
-export const fetchLogin = createAsyncThunk('user/fetchLogin', async (data: any) => {
-  return await enter(data.email, data.password);
-});
-
-export const fetchRegister = createAsyncThunk('user/fetchRegister', async (data: any) => {
-  const res = await register(data.email, data.password, data.phone, data.lastName, data.firstName);
-  return res;
+export const fetchUser = createAsyncThunk('users/fetchUser', async (data: any) => {
+  return await getUserById(data.id);
 });
 
 const initialState: UserState = {
@@ -34,30 +29,16 @@ const UserSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLogin.pending, (state, action) => {
+      .addCase(fetchUser.pending, (state, action) => {
         state.isLoading = true;
         state.hasError = false;
       })
-      .addCase(fetchLogin.fulfilled, (state, action: PayloadAction<any>) => {
-        state.user = action.payload;
-        console.log(action.payload);
-        state.isLoading = false;
-        state.hasError = false;
-      })
-      .addCase(fetchLogin.rejected, (state, action) => {
-        state.hasError = true;
-        state.isLoading = false;
-      })
-      .addCase(fetchRegister.pending, (state, action) => {
-        state.isLoading = true;
-        state.hasError = false;
-      })
-      .addCase(fetchRegister.fulfilled, (state, action: PayloadAction<any>) => {
+      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.user = action.payload;
         state.isLoading = false;
         state.hasError = false;
       })
-      .addCase(fetchRegister.rejected, (state, action) => {
+      .addCase(fetchUser.rejected, (state, action) => {
         state.hasError = true;
         state.isLoading = false;
       });

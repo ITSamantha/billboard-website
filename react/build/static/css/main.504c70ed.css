@@ -1,0 +1,56 @@
+.header-row {
+  justify-content: space-between;
+}
+.header-row,
+.header-row > div {
+  align-items: center;
+  display: flex;
+}
+.uitk-header-brand-logo {
+  margin-left: 30px;
+}
+.header-add-button {
+  align-items: center;
+  border: 1px solid #0c4c71;
+  border-radius: 15px !important;
+  display: flex;
+  margin-left: 15px;
+  padding: 8px 15px;
+}
+.header-add-button svg {
+  margin: 0 7px;
+}
+.back-btn-login {
+  color: #0d4eaf;
+  cursor: pointer;
+  display: flex;
+  font-size: 36px;
+  justify-content: flex-end;
+  width: 100%;
+}
+#map {
+  height: 100%;
+}
+.map-icon {
+  border: 8px solid #017175;
+  border-radius: 50%;
+  cursor: pointer;
+  display: block;
+  height: 24px;
+  width: 24px;
+}
+.Map {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: space-between;
+}
+.Map__Content {
+  height: 100%;
+  width: calc(100% - 500px);
+}
+.Map__Item {
+  height: 100%;
+  width: 500px;
+}
+/*# sourceMappingURL=main.504c70ed.css.map*/

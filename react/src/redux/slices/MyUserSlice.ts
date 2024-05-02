@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createApi, getMyUser, login as enter, register} from '../../service/dataService';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createApi, getMyUser, login as enter, register } from '../../service/dataService';
 import axios from 'axios';
 
 interface MyUserState {
@@ -34,9 +34,9 @@ const MyUserSlice = createSlice({
   initialState,
   reducers: {
     initialUpdate: (state) => {
-      let userJson = localStorage.getItem("user")
+      let userJson = localStorage.getItem('user');
       if (userJson) {
-        state.user = JSON.parse(userJson)
+        state.user = JSON.parse(userJson);
         state.token = null;
         state.isLoading = false;
         state.hasError = false;
@@ -47,9 +47,11 @@ const MyUserSlice = createSlice({
       state.token = null;
       state.isLoading = false;
       state.hasError = false;
-      createApi().post('auth/logout').then(() => {
-        localStorage.removeItem("user")
-      })
+      createApi()
+        .post('auth/logout')
+        .then(() => {
+          localStorage.removeItem('user');
+        });
     }
   },
   extraReducers: (builder) => {
@@ -97,7 +99,7 @@ const MyUserSlice = createSlice({
 });
 
 export const selectMyUser = (state: any) => {
-  return state.myUser.user
+  return state.myUser.user;
 };
 
 export const selectLoading = (state: any) => state.myUser.isLoading;

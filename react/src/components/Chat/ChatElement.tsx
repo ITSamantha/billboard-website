@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 import { Avatar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import {ChatType} from "../../pages/Chat";
+import { ChatType } from '../../pages/Chat';
 
 type ChatElementProps = {
-  chat: ChatType
-}
+  chat: ChatType;
+};
 
-const   ChatElement = ({ chat } : ChatElementProps) => {
+const ChatElement = ({ chat }: ChatElementProps) => {
   return (
     <Link to={`/chat/${chat.id}`} key={chat.id} className="chat-link">
       <div className="chat-item">
@@ -28,7 +28,7 @@ const   ChatElement = ({ chat } : ChatElementProps) => {
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default ChatElement
+export default ChatElement;

@@ -10,22 +10,24 @@ export const createApi = () => {
       'Content-type': 'application/json',
       'x-jwt-access-token': localStorage.getItem('access_token')
     }
-  })
-  apiInstance.interceptors.response.use(function (response) {
-    return response
-  }, function (response) {
-    if (response.status !== 401) return response
-    if (response.config.url.includes('login') || response.config.url.includes('register')) {
-      return response
-    }
-    localStorage.removeItem("user")
-    window.location.replace('/login')
   });
-  return apiInstance
+  apiInstance.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (response) {
+      if (response.status !== 401) return response;
+      if (response.config.url.includes('login') || response.config.url.includes('register')) {
+        return response;
+      }
+      localStorage.removeItem('user');
+      window.location.replace('/login');
+    }
+  );
+  return apiInstance;
 };
 
 let api = createApi();
-
 
 export const register = (
   email: string,
@@ -34,53 +36,54 @@ export const register = (
   lastName: string,
   firstName: string
 ) => {
-  api.post(
-    'auth/register',
-    {
+  api
+    .post('auth/register', {
       email: email,
       password: password,
       phone_number: phone,
       last_name: lastName,
       first_name: firstName
-    }
-  )
+    })
     .then((response) => {
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       api = createApi();
-      localStorage.setItem("user", JSON.stringify(response.data))
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     })
     .catch((error) => console.error('Error fetching register:', error));
 };
 
 export const login = async (email: string, password: string) => {
-  return await api.post('auth/login', {
-    email: email,
-    password: password
-  })
+  return await api
+    .post('auth/login', {
+      email: email,
+      password: password
+    })
     .then((response) => {
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       api = createApi();
-      localStorage.setItem("user", JSON.stringify(response.data))
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     })
     .catch((error) => console.error('Error fetching login:', error));
 };
 
 export const refreshToken = async (id: number) => {
-  return await api.post(`auth/refresh`)
+  return await api
+    .post(`auth/refresh`)
     .then((response) => response.data)
     .catch((error) => console.error('Error refresh token:', error));
 };
 
 export const logout = () => {
-  api.post('auth/logout', {})
+  api
+    .post('auth/logout', {})
     .then((response) => {
-      localStorage.removeItem("user");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
+      localStorage.removeItem('user');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     })
     .catch((error) => console.error('Error fetching logout:', error));
 };
@@ -93,7 +96,8 @@ export const getCategories = (categorySlug: string | undefined) => {
 };
 
 export const getCategoriesList = async () => {
-  return await api.get('categories')
+  return await api
+    .get('categories')
     .then((response) => {
       return response.data;
     })
@@ -103,7 +107,8 @@ export const getCategoriesList = async () => {
 };
 
 export const getFilterList = async (categoryId: string) => {
-  return await api.get('categories/' + categoryId + '/filters')
+  return await api
+    .get('categories/' + categoryId + '/filters')
     .then((response) => {
       return response.data;
     })
@@ -146,7 +151,7 @@ export const getFilters = (categorySlug: string | undefined) => {
   ];
 };
 
-export const createAd = (
+export const createAd = async (
   title: string,
   description: string,
   price: number,
@@ -159,9 +164,8 @@ export const createAd = (
   house: string,
   flat: string | undefined
 ) => {
-  api.post(
-    'advertisements',
-    {
+  return await api
+    .post('advertisements', {
       title: title,
       user_description: description,
       ad_type_id: adTypeId,
@@ -169,62 +173,67 @@ export const createAd = (
       category_id: categoryId,
       ad_tags: adTags,
       city_id: cityId,
+      address_id: null,
       country_id: countryId,
       street: street,
       house: house,
       flat: flat
-    }
-  )
-    .then((r) => {
-      console.log(r);
-      return r.data;
-    });
+    })
+    .then((r) => r.data);
 };
 
 export const getCountries = async () => {
-  return await api.get('countries')
+  return await api
+    .get('countries')
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching countries:', error));
 };
 
 export const getCities = async () => {
-  return await api.get('cities')
+  return await api
+    .get('cities')
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching cities:', error));
 };
 
 export const getMyUser = async () => {
-  return await api.get('users/me')
+  return await api
+    .get('users/me')
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching my user:', error));
 };
 
 export const getUserById = async (id: number) => {
-  return await api.get(`users/${id}`)
+  return await api
+    .get(`users/${id}`)
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching user:', error));
 };
 
 export const getAdvertisementById = async (id: number) => {
-  return await api.get(`advertisements/${id}`)
+  return await api
+    .get(`advertisements/${id}`)
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching advertisement:', error));
 };
 
 export const getAdvertisementTypes = async () => {
-  return await api.get(`advertisements/ad_type`)
+  return await api
+    .get(`advertisements/ad_type`)
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching advertisement types:', error));
 };
 
 export const addToFavorites = async (id: number) => {
-  return await api.post(`advertisements/favourites`, { advertisement_id: id })
+  return await api
+    .post(`advertisements/favourites`, { advertisement_id: id })
     .then((response) => response.data)
     .catch((error) => console.error('Error add to favorites:', error));
 };
 
 export const deleteFromFavorites = async (id: number) => {
-  return await api.delete(`advertisements/favourites/${id}`)
+  return await api
+    .delete(`advertisements/favourites/${id}`)
     .then((response) => response.data)
     .catch((error) => console.error('Error delete from favorites:', error));
 };
@@ -234,33 +243,38 @@ export const getAdvertisementsByPage = async (
   perPage: number,
   categoryId: number
 ) => {
-  return await api.get(`advertisements`, {
-    params: { page: page, per_page: perPage, category_id: categoryId }
-  })
+  return await api
+    .get(`advertisements`, {
+      params: { page: page, per_page: perPage, category_id: categoryId }
+    })
     .then((response) => response.data)
     .catch((error) => console.error('Error fetching advertisements:', error));
 };
 
 export const sendMessage = async (id: number, message: string) => {
-  return await api.post(`chats/${id}/messages`, { text: message })
+  return await api
+    .post(`chats/${id}/messages`, { text: message })
     .then((response) => response.data)
     .catch((error) => console.error('Error sending message:', error));
 };
 
 export const createChat = async (id: number) => {
-  return await api.post(`chats`, { user_id: id })
+  return await api
+    .post(`chats`, { user_id: id })
     .then((response) => response.data)
     .catch((error) => console.error('Error creating chat:', error));
 };
 
 export const getChat = async (id: any) => {
-  return await api.get(`chats/${id}`)
+  return await api
+    .get(`chats/${id}`)
     .then((response) => response.data)
     .catch((error) => console.error('Error getting chat:', error));
 };
 
 export const getAllChats = async () => {
-  return await api.get(`chats`)
+  return await api
+    .get(`chats`)
     .then((response) => response.data)
     .catch((error) => console.error('Error getting all chats:', error));
 };

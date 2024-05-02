@@ -113,32 +113,6 @@ function Login() {
                   If you have no account you can register
                 </Link>
               </div>
-              <div className="Login__Input">
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="password"
-                  type="password"
-                  label="Password"
-                  defaultValue={password}
-                  name="password"
-                  onChange={(event) => setPassword(event.target.value)}
-                  autoComplete="password"
-                />
-              </div>
-              { error && <div className="Login__Error">{ error }</div> }
-              <div className="Login__Button">
-                <button
-                  onClick={handleLogin}
-                  type="submit"
-                >
-                  לְהַמשִׁיך
-                </button>
-              </div>
-              <Link to={'/register'} className="Login__Redirect">
-                If you have no account you can register
-              </Link>
             </div>
           </div>
         </div>

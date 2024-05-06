@@ -11,6 +11,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
+import ReviewBlock from '../Review/ReviewBlock';
 
 const AdvertisementCard = () => {
   const { id } = useParams();
@@ -48,7 +49,6 @@ const AdvertisementCard = () => {
       <div>{ad.user_description}</div>
       <div>Price: {ad.price}</div>
       <div>{ad.created_at_str}</div>
-      <div>{ad.reviews}</div>
       <div>Type: {ad.ad_type.title}</div>
       <div>Category: {ad.category.title}</div>
       <Link to={`/profile/${ad.user.id}`}>
@@ -76,6 +76,8 @@ const AdvertisementCard = () => {
       <Link to={'/chat'}>
         <Button>Contact the seller</Button>
       </Link>
+
+      <ReviewBlock reviews={ad.reviews} />
     </div>
   );
 };

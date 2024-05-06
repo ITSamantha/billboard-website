@@ -5,7 +5,7 @@ type AdInfo = {
   auto_booking: boolean;
   bookable: boolean;
   created_at_str: string;
-  reviews: string[];
+  reviews: Review[];
   deleted_at: string | null;
   updated_at: string;
   created_at: string;
@@ -24,6 +24,18 @@ type AdInfo = {
 type Category = {
   id: number;
   title: string;
+};
+
+type Review = {
+  id: number;
+  rating: number;
+  text: string;
+  advertisement_id: number;
+  created_at: string;
+  created_at_str: string;
+  updated_at: string;
+  updated_at_str: string;
+  deleted_at: string | null;
 };
 
 type Status = {

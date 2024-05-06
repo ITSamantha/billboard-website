@@ -37,16 +37,33 @@ const UploadForm = () => {
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
 
+  function encodeImageFileAsURL(files: FileList | null) {
+    if (!files) {
+      return;
+    }
+    console.log(files);
+    const filesArray: File[] = Array.from(files);
+    filesArray.forEach((file: File) => {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        console.log('RESULT', reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   useEffect(() => {
     async function fetchData() {
-      let countries = await getCountries();
-      let cities = await getCities();
-      let types = await getAdvertisementTypes();
-      let categories = await getCategoriesList();
-      setCities(cities);
-      setCountries(countries);
-      setAdTypes(types);
-      setCategories(categories);
+      const [countriesData, citiesData, typesData, categoriesData] = await Promise.all([
+        getCountries(),
+        getCities(),
+        getAdvertisementTypes(),
+        getCategoriesList()
+      ]);
+      setCountries(countriesData);
+      setCities(citiesData);
+      setAdTypes(typesData);
+      setCategories(categoriesData);
     }
     fetchData();
   }, []);
@@ -98,6 +115,20 @@ const UploadForm = () => {
   return (
     <div className="upload-form">
       <div>Create post</div>
+      <input
+        accept="image/*"
+        style={{ display: 'none' }}
+        id="raised-button-file"
+        multiple
+        type="file"
+        onChange={(e) => encodeImageFileAsURL(e.target.files)}
+      />
+      <label htmlFor="raised-button-file">
+        <Button variant="contained" component="span">
+          Upload
+        </Button>
+      </label>
+
       <Input
         placeholder="Title *"
         type="text"

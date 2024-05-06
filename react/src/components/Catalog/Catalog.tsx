@@ -1,6 +1,6 @@
 import CatalogTree from './CatalogTree';
 import FilterItems from './FilterItems';
-import { getAdvertisementsByPage, getCategoriesList } from '../../service/dataService';
+import { getAdvertisementsByPage, getCategoriesList, getCategory } from '../../service/dataService';
 import { useEffect, useState } from 'react';
 import { Pagination, Stack } from '@mui/material';
 import AdvertisementBlock from '../Advertisement/AdvertisementBlock';
@@ -15,10 +15,17 @@ const Catalog = ({ categoryId }: CatalogProps) => {
   const [page, setPage] = useState<number>(1);
   const [adsPerPage, setAdsPerPage] = useState<number>(1);
   const [advertisements, setAdvertisements] = useState<AdInfo[]>([]);
+  const [categoryChildren, setCategoryChildren] =  useState<Category[]>([]);
 
   useEffect(() => {
     getCategoriesList().then((r) => setCategories(r));
   }, []);
+
+  useEffect(() => {
+    if(categoryId){
+      getCategory(categoryId).then((category) => setCategoryChildren(category.children));
+    }
+  }, [categoryId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,7 +48,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
       </div>)
 }
       <div style={{ display: 'grid' }}>
-      <CategoriesBlock categories={categories} />
+      {categoryId ? <CategoriesBlock categories={categoryChildren} /> : <CategoriesBlock categories={categories} />}
       {categoryId && ( 
         <div>
         <AdvertisementBlock

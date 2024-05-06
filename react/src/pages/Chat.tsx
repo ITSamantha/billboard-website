@@ -11,35 +11,6 @@ import { THEME } from './profile/Profile';
 import ChatMessage from '../components/Chat/ChatMessage';
 import ChatElement from '../components/Chat/ChatElement';
 
-export type ChatType = {
-  id: number;
-  user: ProfileInfo;
-  created_at: string;
-  messages: Message[];
-};
-
-export type Message = {
-  id: number;
-  chat_id: number;
-  text: string;
-  created_at: string;
-  seen_at: string | null;
-  chat_user: ChatUser;
-};
-
-export type ChatUser = {
-  id: number;
-  chat_id: number;
-  user_id: number;
-};
-
-type ChatInfo = {
-  id: number;
-  user: ProfileInfo;
-  created_at: string;
-  messages: Message[];
-};
-
 const Chat = () => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

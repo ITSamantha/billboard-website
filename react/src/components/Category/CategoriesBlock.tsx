@@ -1,14 +1,23 @@
+import { Link } from 'react-router-dom';
 
 type Props = {
-    categories: Category[];
-}
+  categories: Category[];
+};
 
 const CategoriesBlock = ({ categories }: Props) => {
-    return(<div>{categories.map((category) => (<div>
-        <div>{category.title}</div>
-        <div>{category.id}</div>
-    </div>))}
-        
-    </div>)
+  return (
+    <div>
+        Categories
+      {categories.map((category) => (
+        <div>
+          <img src="https://http.cat/201" alt="category" style={{ height: '100px' }}></img>
+          <Link to={`/category/${category.id}`}>
+            {' '}
+            <div>{category.title}</div>
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
 };
 export default CategoriesBlock;

@@ -1,4 +1,3 @@
-
 import CatalogTree from './CatalogTree';
 import FilterItems from './FilterItems';
 import { getAdvertisementsByPage, getCategoriesList } from '../../service/dataService';
@@ -36,12 +35,15 @@ const Catalog = ({ categoryId }: CatalogProps) => {
 
   return (
     <div className="Catalog">
-      <div style={{ width: 300 }}>
+     {categoryId && (<div style={{ width: 300 }}>
         <CatalogTree categories={categories} categoryId={categoryId} />
         {categoryId && <FilterItems categoryId={categoryId} />}
-      </div>
-      <CategoriesBlock categories={categories}/>
+      </div>)
+}
       <div style={{ display: 'grid' }}>
+      <CategoriesBlock categories={categories} />
+      {categoryId && ( 
+        <div>
         <AdvertisementBlock
           advertisements={advertisements}
           advertisementsInRow={4}
@@ -50,6 +52,8 @@ const Catalog = ({ categoryId }: CatalogProps) => {
         <Stack spacing={2}>
           <Pagination count={12} shape="rounded" onChange={handlePageChange} page={page} />
         </Stack>
+        </div>)}
+       
       </div>
     </div>
   );

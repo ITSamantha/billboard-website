@@ -11,6 +11,7 @@ type AdInfo = {
   created_at: string;
   ad_photos: string[];
   ad_tags: string[];
+  category: Category;
   creationDate: string;
   price: number;
   userId: number;
@@ -18,6 +19,11 @@ type AdInfo = {
   ad_type: AdType;
   address: object;
   user: ProfileInfo;
+};
+
+type Category = {
+  id: number;
+  title: string;
 };
 
 type Status = {

@@ -36,7 +36,7 @@ const MyUserSlice = createSlice({
     initialUpdate: (state) => {
       let userJson = localStorage.getItem('user');
       if (userJson) {
-        state.user = JSON.parse(userJson)
+        state.user = JSON.parse(userJson);
         state.token = localStorage.getItem('access_token');
         state.isLoading = false;
         state.hasError = false;

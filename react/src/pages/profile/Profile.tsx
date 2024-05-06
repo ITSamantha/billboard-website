@@ -9,13 +9,14 @@ import {
   Typography,
   ThemeProvider
 } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, selectUser } from '../../redux/slices/UserSlice';
-import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
+import { fetchMyUser, logoutUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { AppDispatch } from '../../redux/store';
 import AdvertisementBlock from '../../components/Advertisement/AdvertisementBlock';
 import Loader from '../../components/Loader';
+import { logout } from '../../service/dataService';
 
 type ProfileInfo = {
   id: number;
@@ -33,6 +34,7 @@ const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser);
   const myUser = useSelector(selectMyUser);
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<ProfileInfo | null>(null);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
 
@@ -43,6 +45,12 @@ const Profile = () => {
     }
     fetchData();
   }, [dispatch, id]);
+
+  const handleLogout = () => {
+    logout();
+    dispatch(logoutUser());
+    navigate('/login');
+  };
 
   useEffect(() => {
     setIsMyProfile(myUser?.id == id);
@@ -66,6 +74,10 @@ const Profile = () => {
         <Typography variant="h4" component="h4" gutterBottom fontWeight={600}>
           User Profile
         </Typography>
+        <Button variant="contained" onClick={handleLogout}>
+          {' '}
+          Logout{' '}
+        </Button>
         <section className={classes.section}>
           <Typography variant="h5" component="h5" className={classes.sectionTitle}>
             Personal Information

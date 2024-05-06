@@ -1,7 +1,24 @@
-.catalog-container { 
+.Catalog {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     margin: auto;
-    gap: 70px;
-}   
+    & > div:first-child {
+        width: 300px;
+    }
+    & > div:last-child {
+        width: calc(100% - 300px);
+    }
+}
+
+.CatalogTree {
+    padding-top: 30px;
+    h5 {
+        font-size: 24px;
+        margin: 0;
+    }
+    &__Category {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}

@@ -131,7 +131,7 @@ export const getCategoriesList = async () => {
     });
 };
 
-export const getFilterList = async (categoryId: string) => {
+export const getFilterList = async (categoryId: number) => {
   return await api
     .get('categories/' + categoryId + '/filters')
     .then((response) => {

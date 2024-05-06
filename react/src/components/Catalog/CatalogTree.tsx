@@ -20,7 +20,7 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: number }> = 
 
     const propagateCategory = (targetId: number, category: Category, categoryIdStack: number[]) => {
         if (category.id === targetId) {
-            setOpenIds(categoryIdStack);
+            setOpenIds([...categoryIdStack, targetId]);
             return;
         }
         category.children?.forEach((child) => {
@@ -53,23 +53,27 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: number }> = 
         });
     };
 
+    useEffect(() => {
+        console.log("OpenIDS", openIds)
+    }, [openIds])
+
     const renderTree = (nodes: Category[], level: number, openIds: number[]) => (
         <List>
             {nodes.map((node, index) => (
                 <React.Fragment key={index}>
                     <ListItem
                         style={{padding: 0, marginLeft: 20 * level}}
-                        onClick={() => handleClick(node.id)}
+
                     >
                         {node.children && node.children.length ? (
-                            <>
-                                <span>{node.title}</span>
+                            <Link to={'/category/' + node.id}   >
+                                <span className="CatalogTree__Title">{node.title}</span>
                                 {node.children &&
                                     (openIds.includes(node.id) ? <RiArrowDropUpLine/> : <RiArrowDropDownLine/>)}
-                            </>
+                            </Link>
                         ) : (
                             <Link to={'/category/' + node.id}>
-                                <span className="CatalogTree__">{ node.title }</span>
+                                <span className="CatalogTree__Title">{ node.title }</span>
                             </Link>
                         )}
                     </ListItem>

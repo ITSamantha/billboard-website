@@ -24,11 +24,16 @@ const Menu = () => {
               <Link to="/" className="Header__Navbar__Item">
                 Advertisements
               </Link>
-              <Link to="/upload-form" className="Header__Navbar__Item">
-                Upload
-              </Link>
+              { !user && (
+                  <Link to="/login" className="Header__Navbar__Item">
+                    Upload
+                  </Link>
+              )}
               {user && (
                 <>
+                  <Link to="/upload-form" className="Header__Navbar__Item">
+                    Upload
+                  </Link>
                   <Link to="/chats" className="Header__Navbar__Item">
                     Chats
                   </Link>

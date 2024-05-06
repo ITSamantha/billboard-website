@@ -1,9 +1,11 @@
-import CatalogTree, { Category } from './CatalogTree';
+
+import CatalogTree from './CatalogTree';
 import FilterItems from './FilterItems';
 import { getAdvertisementsByPage, getCategoriesList } from '../../service/dataService';
 import { useEffect, useState } from 'react';
 import { Pagination, Stack } from '@mui/material';
 import AdvertisementBlock from '../Advertisement/AdvertisementBlock';
+import CategoriesBlock from '../Category/CategoriesBlock';
 
 type CatalogProps = {
   categoryId?: number;
@@ -38,6 +40,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
         <CatalogTree categories={categories} categoryId={categoryId} />
         {categoryId && <FilterItems categoryId={categoryId} />}
       </div>
+      <CategoriesBlock categories={categories}/>
       <div style={{ display: 'grid' }}>
         <AdvertisementBlock
           advertisements={advertisements}

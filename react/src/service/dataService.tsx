@@ -267,8 +267,17 @@ export const deleteFromFavorites = async (id: number) => {
 export const getAdvertisementsByPage = async (
   page: number,
   perPage: number,
-  categoryId: number
+  categoryId?: number
 ) => {
+  if (Number.isNaN(categoryId)) {
+    console.log(categoryId);
+    return await api
+      .get(`advertisements`, {
+        params: { page: page, per_page: perPage }
+      })
+      .then((response) => response.data)
+      .catch((error) => console.error('Error fetching advertisements:', error));
+  }
   return await api
     .get(`advertisements`, {
       params: { page: page, per_page: perPage, category_id: categoryId }

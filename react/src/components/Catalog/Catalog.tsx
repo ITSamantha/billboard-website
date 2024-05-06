@@ -4,6 +4,7 @@ import FilterItems from './FilterItems';
 import { getAdvertisementsByPage, getCategoriesList } from '../../service/dataService';
 import { useEffect, useState } from 'react';
 import { Pagination, Stack } from '@mui/material';
+import AdvertisementBlock from '../Advertisement/AdvertisementBlock';
 
 type CatalogProps = {
   categoryId?: string;
@@ -12,15 +13,24 @@ type CatalogProps = {
 const Catalog = ({ categoryId }: CatalogProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [adsPerPage, setAdsPerPage] = useState<number>(1);
+  const [advertisements, setAdvertisements] = useState<AdInfo[]>([]);
+
   useEffect(() => {
     getCategoriesList().then((r) => setCategories(r));
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      let ads = await getAdvertisementsByPage(page, adsPerPage, Number(categoryId));
+      setAdvertisements(ads.data);
+    }
+    fetchData();
+  }, [adsPerPage, categoryId, page]);
+
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-
-    // async function fetchData
-    // getAdvertisementsByPage(page, 20, Number(categoryId));
+    getAdvertisementsByPage(page, adsPerPage, Number(categoryId));
   };
 
   return (
@@ -29,9 +39,16 @@ const Catalog = ({ categoryId }: CatalogProps) => {
         <CatalogTree categories={categories} categoryId={categoryId} />
         {categoryId && <FilterItems categoryId={categoryId} />}
       </div>
-      <Stack spacing={2}>
-        <Pagination count={12} shape="rounded" onChange={handlePageChange} page={page} />
-      </Stack>
+      <div style={{ display: 'grid' }}>
+        <AdvertisementBlock
+          advertisements={advertisements}
+          advertisementsInRow={4}
+          maxAdvertisements={6}
+        />
+        <Stack spacing={2}>
+          <Pagination count={12} shape="rounded" onChange={handlePageChange} page={page} />
+        </Stack>
+      </div>
     </div>
   );
 };

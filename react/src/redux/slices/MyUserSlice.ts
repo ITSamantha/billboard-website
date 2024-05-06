@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi, getMyUser, login as enter, register } from '../../service/dataService';
-import axios from 'axios';
 
 interface MyUserState {
   user: any;

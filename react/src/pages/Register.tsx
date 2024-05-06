@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
 import '../scss/register.scss';
 import GoogleLogin from '../components/GoogleLogin/GoogleLogin';
-import { getMyUser, register } from '../service/dataService';
+import { register } from '../service/dataService';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Button,
-  IconButton,
-  Input,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  ThemeProvider
-} from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { TextField, ThemeProvider } from '@mui/material';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import { THEME } from './profile/Profile';
 import { fetchMyUser } from '../redux/slices/MyUserSlice';

@@ -5,13 +5,6 @@ import {RiArrowDropDownLine} from 'react-icons/ri';
 import {Link} from 'react-router-dom';
 import Loader from '../Loader';
 
-export type Category = {
-    id: number;
-    title: string;
-    url: string;
-    children?: Category[];
-};
-
 const CategoryTree: React.FC<{ categories: Category[]; categoryId?: number }> = ({
                                                                                      categories,
                                                                                      categoryId

@@ -24,6 +24,8 @@ type AdInfo = {
 type Category = {
   id: number;
   title: string;
+  url: string;
+  children?: Category[];
 };
 
 type Review = {

@@ -23,7 +23,7 @@ class Category(Base):
     children: Mapped[List["Category"]] = relationship("Category", cascade='all, delete-orphan', lazy='joined',
                                                       order_by="Category.order")
 
-    image_id: Mapped[int] = mapped_column(ForeignKey("files.id"), nullable=True, primary_key=True)
+    image_id: Mapped[int] = mapped_column(ForeignKey("files.id"), nullable=True)
     image: Mapped['File'] = relationship('File', lazy='joined', uselist=False)
     @property
     def image_link(self):

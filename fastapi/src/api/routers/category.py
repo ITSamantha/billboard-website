@@ -98,20 +98,25 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
             res = await session.execute(q)
             category = res.scalar()
 
-        category.id = data['title']
-        category.id = data['order']
-        category.id = data['meta_title']
-        category.id = data['meta_description']
-        category.id = data['url']
-        category.id = data['parent_id']
-        category.id = data['bookable']
-        category.id = data['map_addressable']
+        category.title = data['title']
+        category.order = data['order']
+        category.meta_title = data['meta_title']
+        category.meta_description = data['meta_description']
+        category.url = data['url']
+        category.parent_id = data['parent_id']
+        category.bookable = data['bookable']
+        category.map_addressable = data['map_addressable']
 
-        if not data['image_id'] and data['image']:
-            if category.image_id:
-                storage.remove(category.image)
-            file = await File.save(data['image'])
-            category.image_id = file.id
+        if data['image_id']:
+            pass
+        else:
+            if data['image']:
+                file = await File.save(data['image'])
+                category.image_id = file.id
+            else:
+                if category.image:
+                    storage.remove(category.image)
+                category.image_id = None
 
         async with db_manager.get_session() as session:
             await session.commit()

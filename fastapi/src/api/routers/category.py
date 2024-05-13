@@ -65,7 +65,7 @@ async def create_category(request: Request, auth: Auth = Depends()):
             file = await File.save(data['image'])
 
         category: models.Category = await CategoryRepository(db_manager.get_session, models.Category) \
-            .create(validator.all() | {'image_id': file.id if file else None})
+            .create(validator.but(['image']) | {'image_id': file.id if file else None})
 
         return ApiResponse.payload({"category_id": category.id})  # TODO: CHECK?
     except Exception as e:

@@ -7,10 +7,11 @@ from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.api.transformers.filter.filter_transformer import FilterTransformer
 from src.database import models
-from src.database.models import CategoryFilter
+from src.database.models import CategoryFilter, File
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.repository.crud.category_repository import CategoryRepository
+from src.utils.storage import storage
 from src.utils.transformer import transform
 from src.utils.validator import Validator
 
@@ -50,15 +51,19 @@ async def create_category(request: Request, auth: Auth = Depends()):
         'url': ['required', 'string'],
         'parent_id': ['nullable', 'integer'],
         'bookable': ['required', 'bool'],
-        'map_addressable': ['required', 'bool']
+        'map_addressable': ['required', 'bool'],
+        'image': ['nullable', 'string'],
     })
 
-    validator.validated()
+    data = validator.validated()
 
     try:
+        file = None
+        if 'image' in data:
+            file = await File.save(data['image'])
 
         category: models.Category = await CategoryRepository(db_manager.get_session, models.Category) \
-            .create(validator.all())
+            .create(validator.all() | {'image_id': file.id if file else None})
 
         return ApiResponse.payload({"category_id": category.id})  # TODO: CHECK?
     except Exception as e:
@@ -70,21 +75,40 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
-        'title': ['nullable', 'string'],
-        'order': ['nullable', 'integer'],
-        'meta_title': ['nullable', 'string'],
-        'meta_description': ['nullable', 'string'],
-        'url': ['nullable', 'string'],
-        'parent_id': ['nullable', 'integer'],
-        'bookable': ['nullable', 'bool'],
-        'map_addressable': ['nullable', 'bool']
+        'title': ['required', 'string'],
+        'order': ['required', 'integer'],
+        'meta_title': ['required', 'string'],
+        'meta_description': ['required', 'string'],
+        'url': ['required', 'string'],
+        'parent_id': ['required', 'integer'],
+        'bookable': ['required', 'bool'],
+        'map_addressable': ['required', 'bool'],
+        'image_id': ['nullable', 'int'],
+        'image': ['nullable', 'string'],
     })
 
-    validator.validated()
+    data = validator.validated()
 
     try:
-        category: models.Category = await CategoryRepository(db_manager.get_session, models.Category) \
-            .update(validator.not_null(), id=category_id)
+        category: models.Category = await SqlAlchemyRepository(db_manager.get_session, models.Category) \
+            .get_single(id=category_id)
+
+        category.id = data['title']
+        category.id = data['order']
+        category.id = data['meta_title']
+        category.id = data['meta_description']
+        category.id = data['url']
+        category.id = data['parent_id']
+        category.id = data['bookable']
+        category.id = data['map_addressable']
+
+        if not data['image_id']:
+            storage.remove(category.image)
+            file = await File.save(data['image'])
+            category.image_id = file.id
+
+        async with db_manager.get_session() as session:
+            await session.commit()
 
         return ApiResponse.payload(transform(category, CategoryTransformer()))
     except Exception as e:

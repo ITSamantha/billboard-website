@@ -24,6 +24,12 @@ class Category(Base):
     children: Mapped[List["Category"]] = relationship("Category", cascade='all, delete-orphan', lazy='joined',
                                                       order_by="Category.order")
 
+    image_id: Mapped[int] = mapped_column(ForeignKey("files.id"), nullable=True, primary_key=True)
+    image: Mapped['File'] = relationship('File', lazy='joined', uselist=False)
+    @property
+    def image_link(self):
+        return self.image.link
+
     bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
     map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)
 

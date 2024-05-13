@@ -18,6 +18,7 @@ class CategoryTransformer(BaseTransformer):
             "meta_title": category.meta_title,
             "meta_description": category.meta_description,
             "parent_id": category.parent_id,
+            'image': category.image_link
         }
 
     def include_children(self, category):

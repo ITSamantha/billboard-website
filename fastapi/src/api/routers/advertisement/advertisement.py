@@ -88,6 +88,89 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
         if len(payload['ad_photos']) > 0:
+            files_to_create = []
+            for file in payload['ad_photos']:
+                try:
+                    int(file)
+                except ValueError:
+                    files_to_create.append(file)
+                    pass
+
+            new_file_ids = []
+            for file in files_to_create:
+                try:
+                    file = await File.save(file)
+                    new_file_ids.append(file.id)
+                except Exception as e:
+                    return ApiResponse.error(str(e))
+            async with db_manager.get_session() as session:
+                for file_id in new_file_ids:
+                    session.add(AdPhoto(advertisement_id=advertisement.id, photo_id=file_id))
+                await session.commit()
+
+        return ApiResponse.payload(
+            transform(
+                advertisement,
+                AdvertisementTransformer().include(['ad_photos'])
+            )
+        )
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+
+@router.put("/{advertisement_id}")
+async def create_advertisement(advertisement_id: int, request: Request, auth: Auth = Depends()):
+    """Create advertisement."""
+
+    await auth.check_access_token(request)
+
+    validator = Validator(await request.json(), {
+        "title": ["required", "string"],
+        "user_description": ["required", "string"],
+        "ad_type_id": ["required", "integer"],
+        "price": ["required", "float"],
+        "category_id": ["required", "integer"],
+        "ad_tags": ["required", "list"],
+        "ad_photos": ["required", "list"],
+
+        # address info
+        # "address_id": ["nullable", "integer"],
+        # "city_id": ["required_without:address_id", "integer"],
+        # "country_id": ["required_without:address_id", "integer"],
+        # "street": ["required_without:address_id", "string"],
+        # "house": ["required_without:address_id", "string"],
+        # "flat": ["nullable", "string"],
+        # "longitude": ["nullable", "float"],
+        # "latitude": ["nullable", "float"]
+    })
+
+    payload = validator.validated()
+
+    try:
+        # if not payload["address_id"]:
+        #     address: Address = await AdvertisementRepository(db_manager.get_session, Address) \
+        #         .create(validator.only(
+        #         ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude"]))
+        #     payload["address_id"] = address.id
+
+        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement)\
+            .get_single(id=advertisement_id)
+        advertisement.title = payload['title']
+        advertisement.user_description = payload['user_description']
+        advertisement.ad_type_id = payload['ad_type_id']
+        advertisement.price = payload['price']
+        advertisement.category_id = payload['category_id']
+
+        if len(payload["ad_tags"]) > 0:
+            async with db_manager.get_session() as session:
+                # bad approach.
+                q = delete(AdvertisementAdTag).where(AdvertisementAdTag.id.in_(payload['ad_tags']))
+                await session.execute(q)
+            tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
+            await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
+
+        if len(payload['ad_photos']) > 0:
+            # todo this is advertisement update ad photos logic. Move to update when update will be available
             file_ids_to_keep = []
             files_to_create = []
             for file in payload['ad_photos']:
@@ -151,9 +234,11 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
             res = await session.execute(q)
             advertisements = res.unique().scalars().all()
 
+            count_query = select(func.count(Advertisement.id))
+            if category_id: # todo child categories
+                count_query = count_query.where(Advertisement.category_id == category_id)
             res = await session.execute(
-                # todo сломается при добавлении фильтров. Сделать два объекта query и применять фильтры к обоим?
-                select(func.count(Advertisement.id)).where(Advertisement.category_id == category_id)
+                count_query
             )
             advertisements_count = res.scalar()
             pages_total = math.ceil(advertisements_count / per_page)

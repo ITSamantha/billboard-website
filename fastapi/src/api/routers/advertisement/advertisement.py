@@ -153,7 +153,7 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
         #         ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude"]))
         #     payload["address_id"] = address.id
 
-        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement)\
+        advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
             .get_single(id=advertisement_id)
         advertisement.title = payload['title']
         advertisement.user_description = payload['user_description']
@@ -167,11 +167,10 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
         if len(payload["ad_tags"]) > 0:
             async with db_manager.get_session() as session:
                 # bad approach.
-                q = delete(AdvertisementAdTag)\
-                .filter(
-                    AdvertisementAdTag.ad_tag_id.in_(payload['ad_tags']),
-                    AdvertisementAdTag.advertisement_id == advertisement.id
-                )
+                q = delete(AdvertisementAdTag) \
+                    .filter(
+                        AdvertisementAdTag.advertisement_id == advertisement.id
+                    )
                 await session.execute(q)
             tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
@@ -199,7 +198,7 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
                 await session.commit()
 
             async with db_manager.get_session() as session:
-                q = delete(AdPhoto)\
+                q = delete(AdPhoto) \
                     .filter(
                     AdPhoto.photo_id.notin_([*file_ids_to_keep, *new_file_ids]),
                     AdPhoto.advertisement_id == advertisement.id
@@ -232,7 +231,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
         async with db_manager.get_session() as session:
             q = select(Advertisement).options(joinedload(Advertisement.category))
             # filtering
-            if category_id: # todo child categories
+            if category_id:  # todo child categories
                 q = q.where(Advertisement.category_id == category_id)
             # sorting
             for col_name in sort:
@@ -246,7 +245,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
             advertisements = res.unique().scalars().all()
 
             count_query = select(func.count(Advertisement.id))
-            if category_id: # todo child categories
+            if category_id:  # todo child categories
                 count_query = count_query.where(Advertisement.category_id == category_id)
             res = await session.execute(
                 count_query

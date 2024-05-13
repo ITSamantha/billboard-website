@@ -45,7 +45,14 @@ class Advertisement(Base):
 
     # ad_photos: Mapped[List["AdPhoto"]] = relationship(uselist=True, lazy="selectin")
     # ad_photos: Mapped[List["File"]] = relationship('File', secondary='ad_photo', foreign_keys='AdPhoto.advertisement_id', uselist=True, lazy="selectin")
-    ad_photos: Mapped[List["File"]] = relationship('File', primaryjoin='and_(Advertisement.id==AdPhoto.advertisement_id)', uselist=True, lazy="selectin")
+    ad_photos: Mapped[List["File"]] = relationship(
+        'File',
+        secondary='ad_photo',
+        primaryjoin='Advertisement.id==ad_photo.advertisement_id',
+        secondaryjoin='File.id==ad_photo.file_id',
+        uselist=True,
+        lazy="selectin"
+    )
 
     ad_priorities: Mapped[List["AdPriority"]] = relationship(uselist=True,
                                                              lazy="selectin")

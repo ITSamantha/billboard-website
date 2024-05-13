@@ -164,11 +164,12 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
         async with db_manager.get_session() as session:
             await session.commit()
 
-
         if len(payload["ad_tags"]) > 0:
             async with db_manager.get_session() as session:
                 # bad approach.
-                q = delete(AdvertisementAdTag).where(AdvertisementAdTag.id.in_(payload['ad_tags']))
+                q = delete(AdvertisementAdTag)\
+                    .where(AdvertisementAdTag.ad_tag_id.in_(payload['ad_tags']))\
+                    .where(AdvertisementAdTag.advertisement_id==advertisement.id)
                 await session.execute(q)
             tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)

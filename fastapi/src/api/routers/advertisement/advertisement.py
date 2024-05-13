@@ -161,6 +161,10 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
         advertisement.price = payload['price']
         advertisement.category_id = payload['category_id']
 
+        async with db_manager.get_session() as session:
+            await session.commit()
+
+
         if len(payload["ad_tags"]) > 0:
             async with db_manager.get_session() as session:
                 # bad approach.
@@ -170,7 +174,6 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
         if len(payload['ad_photos']) > 0:
-            # todo this is advertisement update ad photos logic. Move to update when update will be available
             file_ids_to_keep = []
             files_to_create = []
             for file in payload['ad_photos']:
@@ -193,8 +196,11 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
                 await session.commit()
 
             async with db_manager.get_session() as session:
-                q = delete(AdPhoto).where(AdPhoto.photo_id.notin_([*file_ids_to_keep, *new_file_ids])).where(AdPhoto.advertisement_id==advertisement.id)
+                q = delete(AdPhoto)\
+                    .where(AdPhoto.photo_id.notin_([*file_ids_to_keep, *new_file_ids]))\
+                    .where(AdPhoto.advertisement_id==advertisement.id)
                 await session.execute(q)
+                await session.commit()
 
         return ApiResponse.payload(
             transform(

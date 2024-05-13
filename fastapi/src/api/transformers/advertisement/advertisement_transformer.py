@@ -3,6 +3,7 @@ from src.api.transformers.address_transformer import AddressTransformer
 from src.api.transformers.advertisement import AdTagTransformer, AdTypeTransformer, AdPhotoTransformer, \
     AdStatusTransformer
 from src.api.transformers.category_transformer import CategoryTransformer
+from src.api.transformers.file_transformer import FileTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.user import UserTransformer
 from src.utils.time import json_datetime, time_ago_in_words
@@ -44,7 +45,7 @@ class AdvertisementTransformer(BaseTransformer):
         return self.collection(ad.ad_tags, AdTagTransformer())
 
     def include_ad_photos(self, ad):
-        return self.collection(ad.ad_photos, AdPhotoTransformer())
+        return self.collection(ad.ad_photos, FileTransformer())
 
     def include_category(self, ad):
         return self.item(ad.category, CategoryTransformer())

@@ -83,13 +83,15 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
 
         if len(payload["ad_tags"]) > 0:
             tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
-
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
+
+        if len(payload['ad_photos']) > 0:
+            pass
 
         return ApiResponse.payload(
             transform(
                 advertisement,
-                AdvertisementTransformer()
+                AdvertisementTransformer().include(['ad_photos'])
             )
         )
     except Exception as e:

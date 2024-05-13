@@ -29,7 +29,7 @@ async def create_favourite(request: Request, auth: Auth = Depends()):
     validator.validated()
 
     try:
-        existing: AdFavourite = await await SqlAlchemyRepository(db_manager.get_session, AdFavourite) \
+        existing: AdFavourite = await SqlAlchemyRepository(db_manager.get_session, AdFavourite) \
             .get_multi(user_id=request.state.user.id, advertisement_id=validator.validated()['advertisement_id'])
 
         if existing:

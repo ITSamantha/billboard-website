@@ -117,7 +117,7 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
                 category.image_id = None
 
         with open('huy', 'w') as f:
-            f.write(category.image_id)
+            f.write(str(category.image_id))
         async with db_manager.get_session() as session:
             await session.commit()
 

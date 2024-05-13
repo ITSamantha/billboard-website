@@ -4,6 +4,7 @@ import random
 import string
 import shutil
 import base64
+from pathlib import Path
 
 
 class Storage:
@@ -34,6 +35,11 @@ class Storage:
             f.write(file_data)
 
         return filename, file_ext
+
+    def remove(self, file):
+        path = Path(settings_app.APP_PATH + '/storage/' + file.disk + '/' + file.path)
+        if path.exists():
+            path.unlink()
 
     def get_path(self, disk, file_name):
         return settings_app.APP_PATH + '/storage/' + disk + '/' + file_name

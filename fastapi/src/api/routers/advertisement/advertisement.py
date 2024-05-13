@@ -12,14 +12,16 @@ from src.api.transformers.booking.booking_transformer import BookingTransformer
 from src.api.transformers.review_transformer import ReviewTransformer
 from src.api.transformers.worktime_transformer import WorktimeTransformer
 from src.database import models
+from src.database.models.entities.file import Disk, File
 from src.repository.advertisement_repository import AdvertisementRepository
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
 from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Advertisement, Booking, \
-    AdBookingAvailable, BookingStatus, Review, Worktime, Category
+    AdBookingAvailable, BookingStatus, Review, Worktime, Category, AdPhoto
 from src.database.session_manager import db_manager
 
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
+from src.utils.storage import storage
 
 from src.utils.validator import Validator
 from src.utils.transformer import transform
@@ -27,7 +29,7 @@ from src.utils.query_params import get_params
 
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from sqlalchemy import desc, asc, func
+from sqlalchemy import desc, asc, func, delete
 
 import math
 
@@ -86,7 +88,25 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 
         if len(payload['ad_photos']) > 0:
-            pass
+            file_ids_to_keep = []
+            files_to_create = []
+            for file in payload['ad_photos']:
+                try:
+                    file_ids_to_keep.append(int(file))
+                except ValueError:
+                    files_to_create.append(file)
+                    pass
+
+            for file in files_to_create:
+                try:
+                    file = await File.save(file)
+                    file_ids_to_keep.append(file.id)
+                except Exception as e:
+                    return ApiResponse.error(str(e))
+
+            async with db_manager.get_session() as session:
+                q = delete(AdPhoto).where(AdPhoto.photo_id.notin_(file_ids_to_keep)).where(AdPhoto.advertisement_id==advertisement.id)
+                await session.execute(q)
 
         return ApiResponse.payload(
             transform(

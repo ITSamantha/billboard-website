@@ -83,7 +83,7 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
         'parent_id': ['required', 'integer'],
         'bookable': ['required', 'bool'],
         'map_addressable': ['required', 'bool'],
-        'image_id': ['nullable', 'int'],
+        'image_id': ['nullable', 'integer'],
         'image': ['nullable', 'string'],
     })
 

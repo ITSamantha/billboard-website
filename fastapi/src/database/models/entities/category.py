@@ -1,7 +1,6 @@
 from typing import Optional, List
-from fastapi import Request
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship, joinedload, selectinload
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.database.models.base import Base
 

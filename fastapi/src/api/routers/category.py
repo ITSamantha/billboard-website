@@ -107,7 +107,7 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
         category.bookable = data['bookable']
         category.map_addressable = data['map_addressable']
 
-        if data['image_id']:
+        if data['image_id'] is not None:
             pass
         else:
             if data['image']:

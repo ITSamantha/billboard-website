@@ -97,15 +97,20 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
                     files_to_create.append(file)
                     pass
 
+            new_file_ids = []
             for file in files_to_create:
                 try:
                     file = await File.save(file)
-                    file_ids_to_keep.append(file.id)
+                    new_file_ids.append(file.id)
                 except Exception as e:
                     return ApiResponse.error(str(e))
+            async with db_manager.get_session() as session:
+                for file_id in new_file_ids:
+                    session.add(AdPhoto(advertisement_id=advertisement.id, photo_id=file_id))
+                await session.commit()
 
             async with db_manager.get_session() as session:
-                q = delete(AdPhoto).where(AdPhoto.photo_id.notin_(file_ids_to_keep)).where(AdPhoto.advertisement_id==advertisement.id)
+                q = delete(AdPhoto).where(AdPhoto.photo_id.notin_([*file_ids_to_keep, *new_file_ids])).where(AdPhoto.advertisement_id==advertisement.id)
                 await session.execute(q)
 
         return ApiResponse.payload(

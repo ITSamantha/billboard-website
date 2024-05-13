@@ -28,7 +28,7 @@ class Category(Base):
     image: Mapped['File'] = relationship('File', lazy='joined', uselist=False)
     @property
     def image_link(self):
-        return self.image.link if self.image_id else None
+        return self.image.link if self.image else None
 
     bookable: Mapped[bool] = mapped_column(nullable=False, default=False)
     map_addressable: Mapped[bool] = mapped_column(nullable=False, default=False)

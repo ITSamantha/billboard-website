@@ -172,6 +172,7 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
                         AdvertisementAdTag.advertisement_id == advertisement.id
                     )
                 await session.execute(q)
+                await session.commit()
             tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
 

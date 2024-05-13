@@ -168,8 +168,10 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
             async with db_manager.get_session() as session:
                 # bad approach.
                 q = delete(AdvertisementAdTag)\
-                    .where(AdvertisementAdTag.ad_tag_id.in_(payload['ad_tags']))\
-                    .where(AdvertisementAdTag.advertisement_id==advertisement.id)
+                .filter(
+                    AdvertisementAdTag.ad_tag_id.in_(payload['ad_tags']),
+                    AdvertisementAdTag.advertisement_id == advertisement.id
+                )
                 await session.execute(q)
             tags = [{"advertisement_id": advertisement.id, "ad_tag_id": ad_tag_id} for ad_tag_id in payload["ad_tags"]]
             await SqlAlchemyRepository(db_manager.get_session, AdvertisementAdTag).bulk_create(tags)
@@ -198,8 +200,10 @@ async def create_advertisement(advertisement_id: int, request: Request, auth: Au
 
             async with db_manager.get_session() as session:
                 q = delete(AdPhoto)\
-                    .where(AdPhoto.photo_id.notin_([*file_ids_to_keep, *new_file_ids]))\
-                    .where(AdPhoto.advertisement_id==advertisement.id)
+                    .filter(
+                    AdPhoto.photo_id.notin_([*file_ids_to_keep, *new_file_ids]),
+                    AdPhoto.advertisement_id == advertisement.id
+                )
                 await session.execute(q)
                 await session.commit()
 

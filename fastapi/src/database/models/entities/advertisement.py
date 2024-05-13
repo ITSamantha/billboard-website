@@ -5,7 +5,7 @@ from fastapi import Request
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database.models import AdPhoto
+# from src.database.models import AdPhoto
 from src.database.models.base import Base
 
 
@@ -44,7 +44,7 @@ class Advertisement(Base):
     # ad_favourites: Mapped[List["AdFavourite"]] = relationship(uselist=True, lazy="selectin")
 
     # ad_photos: Mapped[List["AdPhoto"]] = relationship(uselist=True, lazy="selectin")
-    ad_photos: Mapped[List["File"]] = relationship('File', secondary='ad_photo', foreign_keys=[AdPhoto.advertisement_id], uselist=True, lazy="selectin")
+    ad_photos: Mapped[List["File"]] = relationship('File', secondary='ad_photo', foreign_keys='advertisement_id', uselist=True, lazy="selectin")
 
     ad_priorities: Mapped[List["AdPriority"]] = relationship(uselist=True,
                                                              lazy="selectin")

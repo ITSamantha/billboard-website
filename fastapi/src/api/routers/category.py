@@ -2,12 +2,14 @@ import json
 from typing import List
 
 from fastapi import APIRouter, UploadFile, Request, Depends
+from sqlalchemy import select
+
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.api.transformers.category_transformer import CategoryTransformer
 from src.api.transformers.filter.filter_transformer import FilterTransformer
 from src.database import models
-from src.database.models import CategoryFilter, File
+from src.database.models import CategoryFilter, File, Category
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.repository.crud.category_repository import CategoryRepository
@@ -90,8 +92,11 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
     data = validator.validated()
 
     try:
-        category: models.Category = await SqlAlchemyRepository(db_manager.get_session, models.Category) \
-            .get_single(id=category_id)
+        async with db_manager.get_session() as session:
+            q = select(Category)\
+                .where(Category.id == category_id)
+            res = await session.execute(q)
+            category = res.scalar()
 
         category.id = data['title']
         category.id = data['order']

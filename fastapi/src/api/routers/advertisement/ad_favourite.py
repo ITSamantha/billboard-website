@@ -50,4 +50,4 @@ async def delete_favourite(advertisement_id: int, request: Request, auth: Auth =
 
         return ApiResponse.payload({"advertisement_id": advertisement_id})
     except Exception as e:
-        return ApiResponse.error(str(e))
+        return ApiResponse.error('This advertisement is already added to favourites.')

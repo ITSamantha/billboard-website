@@ -108,7 +108,8 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
         category.id = data['map_addressable']
 
         if not data['image_id'] and data['image']:
-            storage.remove(category.image)
+            if category.image_id:
+                storage.remove(category.image)
             file = await File.save(data['image'])
             category.image_id = file.id
 

@@ -48,8 +48,8 @@ class Advertisement(Base):
     ad_photos: Mapped[List["File"]] = relationship(
         'File',
         secondary='ad_photo',
-        primaryjoin='Advertisement.id==ad_photo.advertisement_id',
-        secondaryjoin='File.id==ad_photo.file_id',
+        primaryjoin='Advertisement.id==AdPhoto.advertisement_id',
+        secondaryjoin='File.id==AdPhoto.file_id',
         uselist=True,
         lazy="selectin"
     )

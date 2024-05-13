@@ -98,27 +98,23 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
             res = await session.execute(q)
             category = res.scalar()
 
-        category.title = data['title']
-        category.order = data['order']
-        category.meta_title = data['meta_title']
-        category.meta_description = data['meta_description']
-        category.url = data['url']
-        category.parent_id = data['parent_id']
-        category.bookable = data['bookable']
-        category.map_addressable = data['map_addressable']
+            category.title = data['title']
+            category.order = data['order']
+            category.meta_title = data['meta_title']
+            category.meta_description = data['meta_description']
+            category.url = data['url']
+            category.parent_id = data['parent_id']
+            category.bookable = data['bookable']
+            category.map_addressable = data['map_addressable']
 
-        if data['image_id'] is None:
-            if data['image']:
-                file = await File.save(data['image'])
-                category.image_id = file.id
-            else:
-                if category.image:
-                    storage.remove(category.image)
-                category.image_id = None
-
-        with open('huy', 'w') as f:
-            f.write(str(category.image_id))
-        async with db_manager.get_session() as session:
+            if data['image_id'] is None:
+                if data['image']:
+                    file = await File.save(data['image'])
+                    category.image_id = file.id
+                else:
+                    if category.image:
+                        storage.remove(category.image)
+                    category.image_id = None
             await session.commit()
 
         return ApiResponse.payload(transform(category, CategoryTransformer()))

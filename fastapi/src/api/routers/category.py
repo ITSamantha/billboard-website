@@ -111,6 +111,8 @@ async def update_category(category_id: int, request: Request, auth: Auth = Depen
             if data['image']:
                 file = await File.save(data['image'])
                 category.image_id = file.id
+                with open('huy', 'w') as f:
+                    f.write('none' if file.id is None else str(file.id))
             else:
                 if category.image:
                     storage.remove(category.image)

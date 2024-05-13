@@ -33,7 +33,9 @@ class Auth:
     async def check_refresh_token(self, request: Request):
         refresh_token = request.cookies.get('jwt_refresh_token')
         if refresh_token is None:
-            raise HTTPException(detail='Refresh token is not present', status_code=401)
+            refresh_token = request.headers.get('x-jwt-refresh-token')
+            if refresh_token is None:
+                raise HTTPException(detail='Refresh token is not present', status_code=401)
         payload, _ = await self.check_token(refresh_token, TokenType.REFRESH)
         return payload
 

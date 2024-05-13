@@ -27,12 +27,12 @@ async def register(request: Request):
     payload = validator.validated()
 
     try:
-        user: User = await RegisterUseCase.register(
+        access_token, refresh_token = await RegisterUseCase.register(
             payload.only(['first_name', 'last_name', 'email', 'password', 'phone_number']) | {
                 "user_status_id": UserStatus.ACTIVE})
     except Exception as e:
         return ApiResponse.error(str(e))
-    return ApiResponse.payload({"success": True})
+    return format_jwt_response(access_token, refresh_token)
 
 
 @router.post("/login")

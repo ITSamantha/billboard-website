@@ -49,7 +49,7 @@ class Advertisement(Base):
         'File',
         secondary='ad_photo',
         primaryjoin='Advertisement.id==AdPhoto.advertisement_id',
-        secondaryjoin='File.id==AdPhoto.file_id',
+        secondaryjoin='File.id==AdPhoto.photo_id',
         uselist=True,
         lazy="selectin"
     )

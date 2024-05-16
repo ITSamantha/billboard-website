@@ -49,6 +49,7 @@ async def store(request: Request, auth: Auth = Depends()):
         'name': ['required', 'string'],
         'description': ['required', 'string'],
         'price': ['required', 'integer'],
+        'available_ads': ['required', 'integer'],
     })
     data = validator.validated()
     async with db_manager.get_session() as session:
@@ -56,10 +57,12 @@ async def store(request: Request, auth: Auth = Depends()):
             name=data['name'],
             description=data['description'],
             price=data['price'],
+            available_ads=data['available_ads'],
         ))
         await session.commit()
 
     return ApiResponse.success('Tariff added')
+
 
 @router.put("/{tariff_id}")
 async def update(tariff_id: int, request: Request, auth: Auth = Depends()):
@@ -69,6 +72,7 @@ async def update(tariff_id: int, request: Request, auth: Auth = Depends()):
         'name': ['required', 'string'],
         'description': ['required', 'string'],
         'price': ['required', 'integer'],
+        'available_ads': ['required', 'integer'],
     })
     data = validator.validated()
     async with db_manager.get_session() as session:

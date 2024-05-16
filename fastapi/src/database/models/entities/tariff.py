@@ -9,3 +9,4 @@ class Tariff(Base):
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
     price: Mapped[int] = mapped_column(nullable=False)
+    available_ads: Mapped[int] = mapped_column(nullable=False)

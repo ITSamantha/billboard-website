@@ -13,4 +13,5 @@ class TariffTransformer(BaseTransformer):
             "name": tariff.name,
             "description": tariff.description,
             "price": tariff.price,
+            "available_ads": tariff.available_ads,
         }

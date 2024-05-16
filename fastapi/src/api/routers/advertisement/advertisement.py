@@ -17,7 +17,7 @@ from src.repository.advertisement_repository import AdvertisementRepository
 from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
 
 from src.database.models import Address, AdStatus, AdvertisementAdTag, AdType, Advertisement, Booking, \
-    AdBookingAvailable, BookingStatus, Review, Worktime, Category, AdPhoto
+    AdBookingAvailable, BookingStatus, Review, Worktime, Category, AdPhoto, User
 from src.database.session_manager import db_manager
 
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
@@ -43,10 +43,13 @@ router.include_router(booking.router)
 
 
 @router.post("")
-async def create_advertisement(request: Request, auth: Auth = Depends()):
+async def store(request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
     await auth.check_access_token(request)
+
+    if request.user.available_ads == 0:
+        return ApiResponse.error('Insufficient balance')
 
     validator = Validator(await request.json(), {
         "title": ["required", "string"],
@@ -108,6 +111,12 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
                     session.add(AdPhoto(advertisement_id=advertisement.id, photo_id=file_id))
                 await session.commit()
 
+        await SqlAlchemyRepository(db_manager.get_session, User) \
+            .update(
+            data={'available_ads': request.state.user.available_ads - 1},
+            id=request.state.user.id
+        )
+
         return ApiResponse.payload(
             transform(
                 advertisement,
@@ -119,7 +128,7 @@ async def create_advertisement(request: Request, auth: Auth = Depends()):
 
 
 @router.put("/{advertisement_id}")
-async def create_advertisement(advertisement_id: int, request: Request, auth: Auth = Depends()):
+async def update(advertisement_id: int, request: Request, auth: Auth = Depends()):
     """Create advertisement."""
 
     await auth.check_access_token(request)

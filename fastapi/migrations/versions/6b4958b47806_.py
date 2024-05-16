@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('price', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.add_column('users', sa.Column('available_ads', sa.Integer(), nullable=False))
+    op.add_column('users', sa.Column('available_ads', sa.Integer(), nullable=False, server_default='true'))
     # ### end Alembic commands ###
 
 

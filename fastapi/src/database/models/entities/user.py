@@ -23,6 +23,8 @@ class User(Base):
     avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("avatar.id"), nullable=True)  # TODO: default avatar? Optional?
     password: Mapped[str] = mapped_column(nullable=True)
 
+    available_ads: Mapped[int] = mapped_column(nullable=False, default=0)
+
     phone_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
     email_verified_at: Mapped[Optional[datetime.datetime]] = mapped_column()
 

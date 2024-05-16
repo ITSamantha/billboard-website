@@ -61,4 +61,6 @@ async def verify(request: Request, auth: Auth = Depends()):
         await session.commit()
 
     await SqlAlchemyRepository(db_manager.get_session, User) \
-        .update(data={"phone_verified_at": datetime.datetime.now()}, id=request.state.user.id)
+        .update(data={"phone_verified_at": datetime.datetime.now(), 'available_ads': request.state.user.available_ads + 5}, id=request.state.user.id)
+
+    return ApiResponse.success('Phone has been successfully verified.')

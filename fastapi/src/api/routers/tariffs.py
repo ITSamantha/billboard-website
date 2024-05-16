@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("")
 async def index(request: Request, auth: Auth = Depends()):
     try:
         tariffs = await SqlAlchemyRepository(db_manager.get_session, Tariff)\

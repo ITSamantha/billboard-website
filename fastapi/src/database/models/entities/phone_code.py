@@ -11,5 +11,5 @@ class PhoneCode(Base):
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    code: Mapped[str] = mapped_column(nullable=False, unique=True)
+    code: Mapped[str] = mapped_column(nullable=False, primary_key=True)
     expires_at: Mapped[Optional[datetime]] = mapped_column(nullable=True)

@@ -22,6 +22,7 @@ class UserTransformer(BaseTransformer):
             "email_verified_at": json_datetime(user.email_verified_at),
             "phone_verified_at": json_datetime(user.phone_verified_at),
             "phone_number": user.phone_number,
+            "available_ads": user.available_ads,
             "created_at": json_datetime(user.created_at),
             "created_at_str": time_ago_in_words(user.created_at),
             "updated_at": json_datetime(user.updated_at),

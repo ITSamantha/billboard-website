@@ -53,3 +53,4 @@ from src.database.models.entities.chat_message_attachement import ChatMessageAtt
 from src.database.models.entities.chat_user import ChatUser
 
 from src.database.models.entities.file import File
+from src.database.models.entities.phone_code import  PhoneCode

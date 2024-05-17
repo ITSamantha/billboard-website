@@ -29,6 +29,8 @@ class AppConfig(BaseSettings):
     REDIS_PASSWORD: str
     REDIS_HOST: str
 
+    STRIPE_SECRET: str
+
     class Config:
         env_file = ".env"
 

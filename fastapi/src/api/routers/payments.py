@@ -80,9 +80,9 @@ async def success(request: Request, session_id: str):
         user.available_ads = user.available_ads + tariff.available_ads
         await session.commit()
 
-    return RedirectResponse("https://otiva.space?success")
+    return RedirectResponse("https://otiva.space/payment/success")
 
 
 @router.get('/fail')
 async def success():
-    return RedirectResponse("https://otiva.space?fail")
+    return RedirectResponse("https://otiva.space/payment/fail")

@@ -71,10 +71,10 @@ async def success(request: Request, session_id: str):
         return ApiResponse.error(str(e))
 
     tariff: Tariff = await SqlAlchemyRepository(db_manager.get_session, Tariff) \
-        .get_single(id=session.metadata.tariff_id)
+        .get_single(id=int(session.metadata.tariff_id))
 
     async with db_manager.get_session() as session:
-        q = select(User).where(User.id == session.metadata.user_id)
+        q = select(User).where(User.id == int(session.metadata.user_id))
         res = await session.execute(q)
         user = res.scalar()
         user.available_ads = user.available_ads + tariff.available_ads

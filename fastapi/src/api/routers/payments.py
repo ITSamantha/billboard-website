@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import RedirectResponse
+from sqlalchemy import select
 
 from src.api.dependencies.auth import Auth
 from src.api.responses.api_response import ApiResponse
 from src.config.app.config import settings_app
 import stripe
 
-from src.database.models import Tariff
+from src.database.models import Tariff, User
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.validator import Validator
@@ -64,9 +65,21 @@ async def create(request: Request, auth: Auth = Depends()):
 
 @router.get('/success')
 def success(request: Request, session_id: str):
-    session = stripe.checkout.Session.retrieve(session_id)
-    with open('huy', 'a') as f:
-        f.write(session.metadata)
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+    except Exception as e:
+        return ApiResponse.error(str(e))
+
+    tariff: Tariff = await SqlAlchemyRepository(db_manager.get_session, Tariff) \
+        .get_single(id=session.metadata.tariff_id)
+
+    async with db_manager.get_session() as session:
+        q = select(User).where(User.id == session.metadata.user_id)
+        res = await session.execute(q)
+        user = res.scalar()
+        user.available_ads = user.available_ads + tariff.available_ads
+        await session.commit()
+
     return RedirectResponse("https://otiva.space?success")
 
 

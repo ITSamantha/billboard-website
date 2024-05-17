@@ -18,13 +18,12 @@ router = APIRouter(
 )
 
 
-@router.post("")
+@router.post("/create")
 async def create(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
         'tariff_id': ['required', 'integer'],
-        'fail_url': ['required', 'string'],
     })
 
     payload = validator.validated()

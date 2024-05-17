@@ -64,7 +64,7 @@ async def create(request: Request, auth: Auth = Depends()):
 
 
 @router.get('/success')
-def success(request: Request, session_id: str):
+async def success(request: Request, session_id: str):
     try:
         session = stripe.checkout.Session.retrieve(session_id)
     except Exception as e:
@@ -84,5 +84,5 @@ def success(request: Request, session_id: str):
 
 
 @router.get('/fail')
-def success():
+async def success():
     return RedirectResponse("https://otiva.space?fail")

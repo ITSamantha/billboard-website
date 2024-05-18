@@ -13,6 +13,7 @@ const CategoriesBlock = ({ categories }: Props) => {
       </div>
     );
   }
+
   return (
     <div className="Categories">
       <h1>Categories</h1>

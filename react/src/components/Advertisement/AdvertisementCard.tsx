@@ -63,8 +63,8 @@ const AdvertisementCard = () => {
   };
 
   const handleDelete = async () => {
-      deleteAdvertisement(ad!.id);
-  }
+    deleteAdvertisement(ad!.id);
+  };
 
   if (!ad) {
     return <Loader />;
@@ -96,9 +96,11 @@ const AdvertisementCard = () => {
       {user && user.id !== ad.user.id ? (
         <Button onClick={handleGetChatId}>Contact the seller</Button>
       ) : (
-        <Button onClick={handleDelete}><DeleteOutlineIcon/></Button>
+        <Button onClick={handleDelete}>
+          <DeleteOutlineIcon />
+        </Button>
       )}
-     
+
       <ReviewBlock reviews={ad.reviews} />
     </div>
   );

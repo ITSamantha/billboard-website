@@ -21,7 +21,8 @@ function Login() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectMyUser);
   const navigate = useNavigate();
-  const [error, setError] = useState<string>('');
+  const error = useSelector(selectError);
+  const loading = useSelector(selectLoading);
 
   const handleLogin = async () => {
     try {
@@ -30,12 +31,8 @@ function Login() {
         let myUser = await dispatch(fetchMyUser());
         localStorage.setItem('user', JSON.stringify(myUser.payload));
         navigate('/');
-      } else {
-        setError('Incorrect credentials. Please try again.');
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -104,9 +101,11 @@ function Login() {
                 </div>
                 <div className="Login__Button">
                   <button onClick={handleLogin} type="submit">
-                    לְהַמשִׁיך
+                    <div> login</div>
                   </button>
+                  {loading ? <Loader /> : <></>}
                 </div>
+                <div>{error ? <div>Incorrect credentials. Please try again.</div> : <></>}</div>
                 <Link to={'/register'} className="Login__Redirect">
                   If you have no account you can register
                 </Link>

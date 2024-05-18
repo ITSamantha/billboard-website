@@ -48,7 +48,7 @@ async def store(request: Request, auth: Auth = Depends()):
 
     await auth.check_access_token(request)
 
-    if request.user.available_ads == 0:
+    if request.state.user.available_ads == 0:
         return ApiResponse.error('Insufficient balance')
 
     validator = Validator(await request.json(), {

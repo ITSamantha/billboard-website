@@ -1,9 +1,16 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectMyUser } from '../../redux/slices/MyUserSlice';
+import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
+import { AppDispatch } from '../../redux/store';
+import { useEffect } from 'react';
 
 const Menu = () => {
   const user = useSelector(selectMyUser);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchMyUser());
+  }, [dispatch]);
 
   return (
     <header className="Header">
@@ -42,7 +49,7 @@ const Menu = () => {
                 <Link to={`/profile/${user.id}`} className="Header__Auth__Button">
                   Profile
                 </Link>
-                <Link to={`/profile/${user.id}`} className="Header__Auth__Button">
+                <Link to={`/subscription`} className="Header__Auth__Button">
                   Balance: {user.available_ads} ads
                 </Link>
               </div>

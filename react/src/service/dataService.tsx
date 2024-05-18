@@ -371,3 +371,8 @@ export const getMyAddresses = async (userId: number) => {
     .then((response) => response.data)
     .catch((error) => console.error('Error getting my addresses', error));
 };
+
+export const deleteAdvertisement = async(id: number) =>{
+  return await api.delete(`/advertisements/${id}`).then((response) => response.data)
+  .catch((error) => console.error('Error deleting advertisement', error));
+}

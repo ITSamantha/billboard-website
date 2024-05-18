@@ -55,6 +55,9 @@ const Chat = () => {
         fetchData();
     }, [id, token]);
 
+
+    const ref = useRef<number>(0)
+
     useEffect(() => {
         if (token) {
             websocket.current.onopen = () => {

@@ -1,4 +1,8 @@
 .Advertisements {
+  &__All {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
   &__Wrapper {
     display: flex;
     flex-direction: row;
@@ -8,7 +12,7 @@
     margin-left: -20px;
     margin-right: -20px;
   }
-  h1 {
+  &__Title {
     font-size: 24px;
     margin-bottom: 0;
     display: block;

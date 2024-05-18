@@ -194,7 +194,8 @@ export const createAd = async (
   countryId: number,
   street: string,
   house: string,
-  flat: string | undefined
+  flat: string | undefined,
+  photos: string[]
 ) => {
   return await api
     .post('advertisements', {
@@ -204,7 +205,7 @@ export const createAd = async (
       price: price,
       category_id: categoryId,
       ad_tags: adTags,
-      ad_photos: [],
+      ad_photos: photos,
       city_id: cityId,
       address_id: null,
       country_id: countryId,
@@ -362,4 +363,11 @@ export const getChatId = async (userId: number) => {
     .post('chats', { user_id: userId })
     .then((response) => response.data)
     .catch((error) => console.error('Error getting chat id:', error));
+};
+
+export const getMyAddresses = async (userId: number) => {
+  return await api
+    .get('addresses?user_id=' + userId)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error getting my addresses', error));
 };

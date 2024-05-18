@@ -59,6 +59,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
         )}
         {categoryId && (
           <div>
+            <h1 className="Advertisements__Title">Advertisements in category {advertisements.length ? advertisements[0].category?.title : ''}:</h1>
             <AdvertisementBlock
               advertisements={advertisements}
               advertisementsInRow={4}

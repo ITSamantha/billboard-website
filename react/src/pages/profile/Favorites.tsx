@@ -7,7 +7,8 @@ import Loader from '../../components/Loader';
 const Favorites = () => {
   const user = useSelector(selectMyUser);
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+  }, [user]);
 
   if (!user) {
     return (
@@ -18,12 +19,15 @@ const Favorites = () => {
   }
 
   return (
-    <div>
-      <AdvertisementBlock
-        advertisements={user.ad_favourites}
-        advertisementsInRow={4}
-        maxAdvertisements={user.ad_favourites.length}
-      />
+    <div className="container">
+      <div className="Advertisements__All">
+        <h1 className="Advertisements__Title">Your favourite advertisements</h1>
+        <AdvertisementBlock
+          advertisements={user.ad_favourites}
+          advertisementsInRow={4}
+          maxAdvertisements={user.ad_favourites.length}
+        />
+      </div>
     </div>
   );
 };

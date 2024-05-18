@@ -4,9 +4,12 @@ import { Button, Container, FormHelperText, ThemeProvider, Typography } from '@m
 import CodeVerificationInput from '../../components/Profile/CodeVerificationInput';
 import { THEME } from './Profile';
 import { sendCode, tryCode } from '../../service/dataService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, ToastPosition, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchMyUser } from '../../redux/slices/MyUserSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +36,9 @@ const PhoneConfirmation = () => {
 
   const [codeTimeout, setCodeTimeout] = useState<number>(60)
 
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate()
+
   useEffect(() => {
 
     let interval = setInterval(() => {
@@ -52,7 +58,8 @@ const PhoneConfirmation = () => {
       if (errorFlag.current !== 0) return;
     }
     tryCode(verificationCode).then(response => {
-      toast.success('Phone was successfully verified and now you have 5 free advertisement to publish!.', {
+      dispatch(fetchMyUser());
+      toast.success('Phone was successfully verified and now you have 5 free advertisement to publish!', {
         position: 'top-center',
         autoClose: 5000,
         hideProgressBar: false,
@@ -60,6 +67,9 @@ const PhoneConfirmation = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        onClose: () => {
+          navigate('/')
+        }
       });
     }).catch(error => {
       console.log("real error", error)

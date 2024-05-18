@@ -144,7 +144,7 @@ const EditProfile = () => {
                 onChange={(event) => setPhone(event.target.value)}
                 autoComplete="tel"
               />
-              { user.phone_vertified_at ? (
+              { user.phone_verified_at ? (
                 <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>Your phone was already verified</Typography>
               ) : (
                 <Link to="/profile/phone" onClick={(e) => {

@@ -43,6 +43,7 @@ const Profile = () => {
       await dispatch(fetchMyUser());
       await dispatch(fetchUser({ id }));
     }
+
     fetchData();
   }, [dispatch, id]);
 
@@ -72,53 +73,67 @@ const Profile = () => {
   return (
     <ThemeProvider theme={THEME}>
       <Container maxWidth="md" className={classes.root}>
-        <Typography variant="h4" component="h4" gutterBottom fontWeight={600}>
-          User Profile
-        </Typography>
+
         <section className={classes.section}>
-          <Typography variant="h5" component="h5" className={classes.sectionTitle}>
-            Personal Information
-          </Typography>
-          <Grid container spacing={2} alignItems="center">
+          <h1 className="Profile__Title__Personal">{profile.first_name} {profile.last_name}</h1>
+
+          <Grid container spacing={3} alignItems="center" justifyContent="space-between">
             <Grid item>
-              <Avatar alt="User Avatar" src="https://http.cat/200" className={classes.avatar} />
+
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <Avatar sx={{ height: '100px', width: '100px' }} alt="User Avatar" src="https://http.cat/200" className={classes.avatar} />
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle1">Email: {profile.email}</Typography>
+                  <Typography variant="subtitle1">Phone: {profile.phone_number}</Typography>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1">
-                Name: {profile.first_name} {profile.last_name}
-              </Typography>
-              <Typography variant="subtitle1">Email: {profile.email}</Typography>
-              <Typography variant="subtitle1">Phone Number: {profile.phone_number}</Typography>
+
+              {isMyProfile && (
+                <section className={classes.section}>
+                  <div className="Profile__Link">
+                    <Link to="/profile/edit">
+                      <Button variant="contained" color="primary">
+                        Edit Personal Information
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="Profile__Link">
+                    <Button variant="contained" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </div>
+
+                </section>
+              )}
             </Grid>
           </Grid>
+
         </section>
         <AdvertisementBlock
           advertisements={profile.advertisements}
           advertisementsInRow={3}
           maxAdvertisements={6}
         />
-        {profile.advertisements.length > 6 && (
-          <Link to={`/profile/${id}/advertisements`}>
-            <Button>See all</Button>
-          </Link>
-        )}
-        {isMyProfile && (
-          <section className={classes.section}>
-            <Link to="/profile/edit">
-              <Button style={{ marginRight: '15px' }} variant="contained" color="primary">
-                Edit Personal Information
-              </Button>
-            </Link>
-            <Link to="/profile/favorites">
-              <Button style={{ marginRight: '15px' }} variant="contained" color="primary">
-                Favorites
-              </Button>
-            </Link>
-            <Button variant="contained" onClick={handleLogout}>
-              Logout
+
+        <div className="Profile__Buttons">
+          <Link to="/profile/favorites">
+            <Button variant="contained" color="primary">
+              Favorites
             </Button>
-          </section>
-        )}
+          </Link>
+
+          {profile.advertisements.length > 6 && (
+            <Link to={`/profile/${id}/advertisements`}>
+              <Button variant="contained" color="primary">See all</Button>
+            </Link>
+          )}
+
+        </div>
+
       </Container>
     </ThemeProvider>
   );
@@ -135,8 +150,9 @@ const useStyles = makeStyles({
     marginBottom: '24px'
   },
   sectionTitle: {
-    color: '#1a73e8',
+    color: '#000',
     fontSize: '24px',
+    fontWeight: 600,
     paddingBottom: '8px'
   },
   avatar: {
@@ -164,13 +180,24 @@ const useStyles = makeStyles({
 });
 
 export const THEME = createTheme({
-  typography: {
-    fontFamily: `"Montserrat", "Helvetica", "Arial", sans-serif`,
-    fontSize: 14,
-    fontWeightLight: 300,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500
-  }
-});
+    palette: {
+      primary: {
+        main: '#8002ff',
+        contrastText: '#fff' //button text white instead of black
+      },
+      background: {
+        default: '#8002ff'
+      }
+    },
+    typography: {
+      fontFamily: `"Montserrat", "Helvetica", "Arial", sans-serif`,
+      fontSize: 14,
+      fontWeightLight: 300,
+      fontWeightRegular: 400,
+      fontWeightMedium: 500
+    }
+  })
+
+;
 
 export default Profile;

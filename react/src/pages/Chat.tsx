@@ -82,14 +82,19 @@ const Chat = () => {
         fetchData();
     }, [id, token]);
 
+
+    const ref = useRef<number>(0)
+
     useEffect(() => {
-        if (token) {
+        if (token && ref.current === 0) {
+            ref.current += 1
             const websocket = new WebSocketInstance(BASE_WS_URL + 'ws/notifications');
             websocket.onopen = () => {
                 console.log('WebSocket connected');
                 websocket.send(token);
             };
             websocket.onmessage = (event) => {
+                console.log(event)
                 try {
                     let newMessage = JSON.parse(event.data)
                     if (!messages.some(msg => msg.id === newMessage.data.id)) {

@@ -113,7 +113,7 @@ export const logout = () => {
     .catch((error) => console.error('Error fetching logout:', error));
 };
 
-export const getCategory  = async (categoryId: number) => {
+export const getCategory = async (categoryId: number) => {
   return await api
     .get(`categories/${categoryId}`)
     .then((response) => response.data)

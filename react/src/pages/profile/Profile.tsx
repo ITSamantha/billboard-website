@@ -75,8 +75,7 @@ const Profile = () => {
           User Profile
         </Typography>
         <Button variant="contained" onClick={handleLogout}>
-          {' '}
-          Logout{' '}
+          Logout
         </Button>
         <section className={classes.section}>
           <Typography variant="h5" component="h5" className={classes.sectionTitle}>

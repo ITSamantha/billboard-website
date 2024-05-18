@@ -6,17 +6,16 @@ type Props = {
 };
 
 const CategoriesBlock = ({ categories }: Props) => {
-
-if(!categories){
+  if (!categories) {
     return (
-        <div>
-          <Loader />
-        </div>
-      );
-}
+      <div>
+        <Loader />
+      </div>
+    );
+  }
   return (
     <div>
-        Categories
+      Categories
       {categories.map((category) => (
         <div>
           <img src="https://http.cat/201" alt="category" style={{ height: '100px' }}></img>

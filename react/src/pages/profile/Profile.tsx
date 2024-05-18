@@ -74,9 +74,11 @@ const Profile = () => {
         <Typography variant="h4" component="h4" gutterBottom fontWeight={600}>
           User Profile
         </Typography>
-        <Button variant="contained" onClick={handleLogout}>
-          Logout
-        </Button>
+        {isMyProfile && (
+          <Button variant="contained" onClick={handleLogout}>
+            Logout
+          </Button>
+        )}
         <section className={classes.section}>
           <Typography variant="h5" component="h5" className={classes.sectionTitle}>
             Personal Information

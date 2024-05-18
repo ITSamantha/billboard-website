@@ -16,15 +16,6 @@ import { selectMyUser } from '../../redux/slices/MyUserSlice';
 import { getCities } from '../../service/dataService';
 import Loader from '../../components/Loader';
 
-const cities = [
-  { id: 1, label: 'New York' },
-  { id: 2, label: 'Los Angeles' },
-  { id: 3, label: 'Chicago' },
-  { id: 4, label: 'Houston' },
-  { id: 5, label: 'Phoenix' }
-  // Add more cities as needed
-];
-
 const useStyles = makeStyles({
   root: {
     marginTop: '1.5rem'

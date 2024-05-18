@@ -42,6 +42,7 @@ const AdvertisementCard = () => {
         setIsFavourite(isFav);
       }
     }
+
     fetchData();
   }, [dispatch, id]);
 
@@ -72,36 +73,51 @@ const AdvertisementCard = () => {
 
   return (
     <div className="AdvertisementCard">
-      <PhotoSlider photos={photos} />
-      <div>{ad.title}</div>
-      <div>{ad.user_description}</div>
-      <div>Price: {ad.price}</div>
-      <div>{ad.created_at_str}</div>
-      <div>Type: {ad.ad_type.title}</div>
-      <div>Category: {ad.category.title}</div>
-      <Link to={`/profile/${ad.user.id}`}>
-        <div>
-          Seller: {ad.user.first_name} {ad.user.last_name}
-        </div>
-      </Link>
-      {isFavourite ? (
-        <Button onClick={handleUnfavorite}>
-          <FavoriteIcon />
-        </Button>
-      ) : (
-        <Button onClick={handleFavorite}>
-          <FavoriteBorderIcon />
-        </Button>
-      )}
-      {user && user.id !== ad.user.id ? (
-        <Button onClick={handleGetChatId}>Contact the seller</Button>
-      ) : (
-        <Button onClick={handleDelete}>
-          <DeleteOutlineIcon />
-        </Button>
-      )}
+      <div className="container">
+        <div className="AdvertisementCard__Wrapper">
+          <div className="AdvertisementCard__Photos">
+            <PhotoSlider photos={photos} />
 
-      <ReviewBlock reviews={ad.reviews} />
+          </div>
+          <div className="AdvertisementCard__Content">
+            <div className="AdvertisementCard__Main">
+              <h1>{ad.title}</h1>
+              <div className="AdvertisementCard__Price">
+                ₪ {ad.price}
+              </div>
+            </div>
+            <div className="AdvertisementCard__Tag">{ad.ad_type.title}</div>
+            <div className="AdvertisementCard__Tag">{ad.category.title}</div>
+
+
+            <p>{ad.user_description}</p>
+            <div>{ad.created_at_str}</div>
+            <Link to={`/profile/${ad.user.id}`}>
+              <div>
+                Seller: {ad.user.first_name} {ad.user.last_name}
+              </div>
+            </Link>
+            {isFavourite ? (
+              <Button onClick={handleUnfavorite}>
+                <FavoriteIcon />
+              </Button>
+            ) : (
+              <Button onClick={handleFavorite}>
+                <FavoriteBorderIcon />
+              </Button>
+            )}
+            {user && user.id !== ad.user.id ? (
+              <Button onClick={handleGetChatId}>Contact the seller</Button>
+            ) : (
+              <Button onClick={handleDelete}>
+                <DeleteOutlineIcon />
+              </Button>
+            )}
+
+            <ReviewBlock reviews={ad.reviews} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

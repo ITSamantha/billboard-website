@@ -1,0 +1,27 @@
+.AdvertisementCard {
+  padding: 50px 0;
+  &__Wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__Photos {
+    width: 400px;
+  }
+  &__Content {
+    width: calc(100% - 400px);
+    padding-left: 30px;
+  }
+  &__Main {
+    display: flex;
+    align-items: center;
+    h1 {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+  }
+  &__Price {
+    margin-left: 15px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}

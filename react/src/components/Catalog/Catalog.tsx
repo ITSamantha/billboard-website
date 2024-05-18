@@ -11,7 +11,6 @@ type CatalogProps = {
 };
 
 const Catalog = ({ categoryId }: CatalogProps) => {
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(0);

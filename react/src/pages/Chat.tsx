@@ -11,7 +11,6 @@ import { THEME } from './profile/Profile';
 import ChatMessage from '../components/Chat/ChatMessage';
 import ChatElement from '../components/Chat/ChatElement';
 
-
 const Chat = () => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
   const [loadingChatList, setLoadingChatList] = useState<boolean>(true);
@@ -65,8 +64,10 @@ const Chat = () => {
       websocket.current.onmessage = (event) => {
         try {
           const newMessage = JSON.parse(event.data);
-          if (!messages.some((msg) => msg.id === newMessage.data.id) &&
-            newMessage.data.chat_id === parseInt(id || '-1')) {
+          if (
+            !messages.some((msg) => msg.id === newMessage.data.id) &&
+            newMessage.data.chat_id === parseInt(id || '-1')
+          ) {
             setMessages((oldMessages) => [...oldMessages, newMessage.data]);
           }
         } catch (e) {
@@ -104,14 +105,10 @@ const Chat = () => {
         <div className="Chat__Wrapper">
           <div className="Chat__Left">
             <div className="Chat__Container">
-            {chatList.length > 0 ? (
-                chatList.map((chat) => (
-                  <ChatElement chat={chat} key={chat.id} />
-                ))
+              {chatList.length > 0 ? (
+                chatList.map((chat) => <ChatElement chat={chat} key={chat.id} />)
               ) : (
-                <div>
-                  You have no chats
-                </div>
+                <div>You have no chats</div>
               )}
             </div>
           </div>
@@ -127,7 +124,9 @@ const Chat = () => {
                   {messages.map((message) => (
                     <ChatMessage
                       message={message}
-                      received={message.chat_user && message.chat_user.user_id === chatHistory.user.id}
+                      received={
+                        message.chat_user && message.chat_user.user_id === chatHistory.user.id
+                      }
                       key={message.id}
                     />
                   ))}
@@ -142,13 +141,10 @@ const Chat = () => {
                   <button onClick={sendCurrentMessage}>Send</button>
                 </div>
               </>
+            ) : chatList.length > 0 ? (
+              <div className="Chat__NotSelected">Select the person you want to chat with</div>
             ) : (
-              chatList.length > 0 ? (
-                <div className="Chat__NotSelected">Select the person you want to chat with</div>
-              ) : (
-                <div>
-                </div>
-              )
+              <div></div>
             )}
           </div>
         </div>

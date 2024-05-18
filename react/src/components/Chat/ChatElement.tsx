@@ -22,7 +22,7 @@ const ChatElement = ({ chat }: ChatElementProps) => {
             {chat.user.first_name} {chat.user.last_name} {chat.user.email}
           </Typography>
           <Typography variant="body2" className="last-message">
-            {lastMessage && lastMessage.chat_user && chat.user.id === lastMessage.chat_user.user_id 
+            {lastMessage && lastMessage.chat_user && chat.user.id === lastMessage.chat_user.user_id
               ? ''
               : 'You: '}
             {lastMessage ? lastMessage.text : 'No messages'}

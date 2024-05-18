@@ -23,9 +23,11 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
     <div>
       <section>
         <div className="Advertisements">
-          <h1>Advertisements in category {advertisements.length ? advertisements[0].category?.title : ''}:</h1>
+          <h1>
+            Advertisements in category{' '}
+            {advertisements.length ? advertisements[0].category?.title : ''}:
+          </h1>
           <div className="Advertisements__Wrapper">
-
             {advertisements.slice(0, maxAdvertisements).map((ad) => (
               <div className="Advertisement">
                 <div className="Advertisement__Wrapper">
@@ -34,18 +36,19 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
                       <img src="https://http.cat/300" alt="Advertisement" height={'300px'} />
                     </div>
                     <div className="Advertisement__Content">
-                      <h4>{trimText(ad.title, 35)}
+                      <h4>
+                        {trimText(ad.title, 35)}
                         <span>{ad.price.toFixed(2)} ₪</span>
                       </h4>
                       <p>{trimText(ad.user_description)}</p>
                       <span className="Advertisement__Address">
-                        { ad.address && (
+                        {ad.address && (
                           <>
-                            <CiLocationOn /> {ad.address.country.title}, {ad.address.city.title}, {ad.address.street}
+                            <CiLocationOn /> {ad.address.country.title}, {ad.address.city.title},{' '}
+                            {ad.address.street}
                           </>
                         )}
-
-                  </span>
+                      </span>
                     </div>
                   </Link>
                 </div>

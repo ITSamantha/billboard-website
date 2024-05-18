@@ -9,7 +9,9 @@ const Menu = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchMyUser());
+    if (user) {
+      dispatch(fetchMyUser());
+    }
   }, [dispatch]);
 
   return (

@@ -19,7 +19,7 @@ export const createApi = () => {
     },
     function (error) {
       let response = error.response;
-      if (response.status !== 401) throw error
+      if (response.status !== 401) throw error;
       if (
         response.config.url.includes('login') ||
         response.config.url.includes('register') ||
@@ -277,7 +277,6 @@ export const getAdvertisementsByPage = async (
   categoryId?: number
 ) => {
   if (Number.isNaN(categoryId)) {
-    console.log(categoryId);
     return await api
       .get(`advertisements`, {
         params: { page: page, per_page: perPage }
@@ -321,7 +320,6 @@ export const getAllChats = async () => {
     .catch((error) => console.error('Error getting all chats:', error));
 };
 
-
 export const sendCode = async () => {
   return await api
     .post(`phone/send_code`)
@@ -335,14 +333,14 @@ export const tryCode = async (code: string) => {
       code: code
     })
     .then((response) => {
-      console.log("???", response)
-      return response.data
+      console.log('???', response);
+      return response.data;
     })
     .catch((error) => {
-      console.error('Error verifying code:', error)
-      throw error
+      console.error('Error verifying code:', error);
+      throw error;
     });
-}
+};
 
 export const getSubscriptions = async () => {
   return await api

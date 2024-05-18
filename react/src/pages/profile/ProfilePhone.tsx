@@ -28,22 +28,21 @@ const PhoneConfirmation = () => {
   const classes = useStyles();
   const [verificationCode, setVerificationCode] = useState('');
 
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const errorFlag = useRef<number>(0);
 
-  const [codeTimeout, setCodeTimeout] = useState<number>(60)
+  const [codeTimeout, setCodeTimeout] = useState<number>(60);
 
   useEffect(() => {
-
     let interval = setInterval(() => {
       setCodeTimeout((old) => {
-        return Math.max(0, old - 1)
-      })
-    }, 1000)
+        return Math.max(0, old - 1);
+      });
+    }, 1000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [])
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleSend = (event: any) => {
     event?.preventDefault();
@@ -51,28 +50,32 @@ const PhoneConfirmation = () => {
     if (event === null) {
       if (errorFlag.current !== 0) return;
     }
-    tryCode(verificationCode).then(response => {
-      toast.success('Phone was successfully verified and now you have 5 free advertisement to publish!.', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+    tryCode(verificationCode)
+      .then((response) => {
+        toast.success(
+          'Phone was successfully verified and now you have 5 free advertisement to publish!.',
+          {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          }
+        );
+      })
+      .catch((error) => {
+        console.log('real error', error);
+        setError(error.response.data.detail);
+        errorFlag.current += 1;
+        setTimeout(() => {
+          errorFlag.current -= 1;
+          if (errorFlag.current === 0) {
+            setError('');
+          }
+        }, 3000);
       });
-    }).catch(error => {
-      console.log("real error", error)
-      setError(error.response.data.detail);
-      errorFlag.current += 1;
-      setTimeout(() => {
-        errorFlag.current -= 1;
-        if (errorFlag.current === 0) {
-          setError("");
-        }
-      }, 3000);
-    })
-
   };
 
   useEffect(() => {
@@ -106,7 +109,7 @@ const PhoneConfirmation = () => {
           </div>
           {error && (
             <div style={{ marginBottom: 15 }}>
-              <FormHelperText error>{ error }</FormHelperText>
+              <FormHelperText error>{error}</FormHelperText>
             </div>
           )}
 
@@ -120,24 +123,25 @@ const PhoneConfirmation = () => {
             Submit
           </Button>
         </form>
-        <Link to="." style={{ display: "block", marginTop: 15 }} onClick={(e) => {
-          e.preventDefault()
-          if (codeTimeout <= 0) {
-            sendCode().then((response) => {
-              setCodeTimeout(60)
-              console.log("code sent", response)
-            })
-          }
-        }}>{
-          codeTimeout <= 0 ? (
-            <>
-              Send code again
-            </>
+        <Link
+          to="."
+          style={{ display: 'block', marginTop: 15 }}
+          onClick={(e) => {
+            e.preventDefault();
+            if (codeTimeout <= 0) {
+              sendCode().then((response) => {
+                setCodeTimeout(60);
+                console.log('code sent', response);
+              });
+            }
+          }}
+        >
+          {codeTimeout <= 0 ? (
+            <>Send code again</>
           ) : (
-            <>
-              You can send code again in { codeTimeout } seconds
-            </>
-          )}</Link>
+            <>You can send code again in {codeTimeout} seconds</>
+          )}
+        </Link>
       </Container>
       <ToastContainer />
     </ThemeProvider>

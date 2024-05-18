@@ -50,10 +50,10 @@ const EditProfile = () => {
   const classes = useStyles();
   const user = useSelector(selectMyUser);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
     async function fetchData() {
       let cities = await getCities();
       setCities(cities);
@@ -135,22 +135,26 @@ const EditProfile = () => {
                 onChange={(event) => setPhone(event.target.value)}
                 autoComplete="tel"
               />
-              { user.phone_vertified_at ? (
-                <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>Your phone was already verified</Typography>
+              {user.phone_vertified_at ? (
+                <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>
+                  Your phone was already verified
+                </Typography>
               ) : (
-                <Link to="/profile/phone" onClick={(e) => {
-                  e.preventDefault()
-                  sendCode().then((response) => {
-                    console.log("code sent", response)
-                  })
-                  navigate("/profile/phone")
-                }}>
+                <Link
+                  to="/profile/phone"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    sendCode().then((response) => {
+                      console.log('code sent', response);
+                    });
+                    navigate('/profile/phone');
+                  }}
+                >
                   <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>
                     Confirm Phone
                   </Typography>
                 </Link>
               )}
-
             </Grid>
             <Grid item xs={12} sm={6}>
               <Autocomplete

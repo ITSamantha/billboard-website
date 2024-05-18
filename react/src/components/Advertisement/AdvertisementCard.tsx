@@ -72,9 +72,13 @@ const AdvertisementCard = () => {
           <FavoriteBorderIcon />
         </Button>
       )}
-      <Link to={'/chat'}>
-        <Button>Contact the seller</Button>
-      </Link>
+      {user && user.id !== ad.user.id ? (
+        <Link to={'/chat'}>
+          <Button>Contact the seller</Button>
+        </Link>
+      ) : (
+        <></>
+      )}
 
       <ReviewBlock reviews={ad.reviews} />
     </div>

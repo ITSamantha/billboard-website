@@ -113,7 +113,7 @@ export const logout = () => {
     .catch((error) => console.error('Error fetching logout:', error));
 };
 
-export const getCategory  = async (categoryId: number) => {
+export const getCategory = async (categoryId: number) => {
   return await api
     .get(`categories/${categoryId}`)
     .then((response) => response.data)
@@ -307,7 +307,7 @@ export const createChat = async (id: number) => {
     .catch((error) => console.error('Error creating chat:', error));
 };
 
-export const getChat = async (id: any) => {
+export const getChat = async (id: number) => {
   return await api
     .get(`chats/${id}`)
     .then((response) => response.data)
@@ -320,6 +320,7 @@ export const getAllChats = async () => {
     .then((response) => response.data)
     .catch((error) => console.error('Error getting all chats:', error));
 };
+
 
 export const sendCode = async () => {
   return await api
@@ -341,4 +342,18 @@ export const tryCode = async (code: string) => {
       console.error('Error verifying code:', error)
       throw error
     });
+}
+
+export const getSubscriptions = async () => {
+  return await api
+    .get('tariffs')
+    .then((response) => response.data)
+    .catch((error) => console.error('Error getting subscriptions:', error));
+};
+
+export const createPayment = async (tariff: number) => {
+  return await api
+    .post('payments/create', { tariff_id: tariff })
+    .then((response) => response.data)
+    .catch((error) => console.error('Error creating payment:', error));
 };

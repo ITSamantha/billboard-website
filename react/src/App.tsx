@@ -16,6 +16,8 @@ import Category from './pages/Category';
 import ProfileAllAdvertisements from './pages/profile/ProfileAllAdvertisements';
 import Favorites from './pages/profile/Favorites';
 import Chat from './pages/Chat';
+import Subscription from './pages/Subscription';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 export const APP_URL = 'http://localhost:3000/';
 
@@ -130,6 +132,22 @@ function App() {
       element: (
         <RouterWrapper>
           <ProfilePhone />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/subscription',
+      element: (
+        <RouterWrapper>
+          <Subscription />
+        </RouterWrapper>
+      )
+    },
+    {
+      path: '/payment/success',
+      element: (
+        <RouterWrapper>
+          <PaymentSuccess />
         </RouterWrapper>
       )
     }

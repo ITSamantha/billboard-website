@@ -13,6 +13,7 @@ type CatalogProps = {
 const Catalog = ({ categoryId }: CatalogProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(0);
   const [adsPerPage, setAdsPerPage] = useState<number>(1);
   const [advertisements, setAdvertisements] = useState<AdInfo[]>([]);
   const [categoryChildren, setCategoryChildren] =  useState<Category[]>([]);
@@ -31,6 +32,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
     async function fetchData() {
       let ads = await getAdvertisementsByPage(page, adsPerPage, Number(categoryId));
       setAdvertisements(ads.data);
+      setPagesCount(ads.pages_count);
     }
     fetchData();
   }, [adsPerPage, categoryId, page]);
@@ -57,7 +59,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
           maxAdvertisements={6}
         />
         <Stack spacing={2}>
-          <Pagination count={12} shape="rounded" onChange={handlePageChange} page={page} />
+          <Pagination count={pagesCount} shape="rounded" onChange={handlePageChange} page={page} />
         </Stack>
         </div>)}
        

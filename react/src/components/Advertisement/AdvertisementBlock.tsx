@@ -23,10 +23,6 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
     <div>
       <section>
         <div className="Advertisements">
-          <h1>
-            Advertisements in category{' '}
-            {advertisements.length ? advertisements[0].category?.title : ''}:
-          </h1>
           <div className="Advertisements__Wrapper">
             {advertisements.slice(0, maxAdvertisements).map((ad) => (
               <div className="Advertisement">

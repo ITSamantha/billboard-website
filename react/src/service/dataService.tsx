@@ -76,6 +76,7 @@ export const register = (
     .then((response) => {
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
+      api = createApi();
       return response.data;
     });
 };
@@ -90,7 +91,6 @@ export const login = async (email: string, password: string) => {
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       api = createApi();
-      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     });
 };

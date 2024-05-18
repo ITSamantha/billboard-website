@@ -7,8 +7,7 @@ import Loader from '../../components/Loader';
 const Favorites = () => {
   const user = useSelector(selectMyUser);
 
-  useEffect(() => {
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   if (!user) {
     return (

@@ -58,21 +58,27 @@ const Catalog = ({ categoryId }: CatalogProps) => {
         )}
         {categoryId && (
           <div>
-            <h1 className="Advertisements__Title">Advertisements in category {advertisements.length ? advertisements[0].category?.title : ''}:</h1>
+            <h1 className="Advertisements__Title">
+              Advertisements in category{' '}
+              {advertisements.length ? advertisements[0].category?.title : ''}:
+            </h1>
             <AdvertisementBlock
               advertisements={advertisements}
               advertisementsInRow={4}
               maxAdvertisements={Infinity}
             />
-            {pagesCount ? 
-            (<Stack spacing={2}>
-              <Pagination
-                count={pagesCount}
-                shape="rounded"
-                onChange={handlePageChange}
-                page={page}
-              />
-            </Stack>): <></>}
+            {pagesCount ? (
+              <Stack spacing={2}>
+                <Pagination
+                  count={pagesCount}
+                  shape="rounded"
+                  onChange={handlePageChange}
+                  page={page}
+                />
+              </Stack>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>

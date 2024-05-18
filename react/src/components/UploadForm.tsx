@@ -6,7 +6,8 @@ import {
   getCategories,
   getCategoriesList,
   getCities,
-  getCountries, getMyAddresses
+  getCountries,
+  getMyAddresses
 } from '../service/dataService';
 import { Autocomplete, Button, Input, TextField } from '@mui/material';
 import Loader from './Loader';
@@ -52,8 +53,8 @@ const UploadForm = () => {
   const [addressId, setAddressId] = useState<number>();
 
   useEffect(() => {
-    setAddressId(undefined)
-  }, [addressMode])
+    setAddressId(undefined);
+  }, [addressMode]);
 
   useEffect(() => {
     if (user !== null) {
@@ -73,7 +74,7 @@ const UploadForm = () => {
     setLoading(true);
     filesArray.forEach((file: File) => {
       let reader = new FileReader();
-      reader.onloadend = function() {
+      reader.onloadend = function () {
         if (typeof reader.result === 'string') {
           images.push(reader.result);
         }
@@ -89,7 +90,6 @@ const UploadForm = () => {
         clearInterval(interval);
       }
     }, 3000);
-
   }
 
   useEffect(() => {
@@ -144,7 +144,11 @@ const UploadForm = () => {
       street,
       house,
       flat,
-      [base64Images[mainPhotoIndex], ...base64Images.slice(0, mainPhotoIndex), ...base64Images.slice(mainPhotoIndex + 1)]
+      [
+        base64Images[mainPhotoIndex],
+        ...base64Images.slice(0, mainPhotoIndex),
+        ...base64Images.slice(mainPhotoIndex + 1)
+      ]
     ).then((r) => navigate(`/advertisement/${r.id}`));
   };
 
@@ -164,7 +168,9 @@ const UploadForm = () => {
           <div className="Upload__Photos">
             <label htmlFor="photos">
               <div className="Upload__Button Upload__Button--Files">
-                <div><HiOutlinePhoto /></div>
+                <div>
+                  <HiOutlinePhoto />
+                </div>
                 <div>Upload files</div>
               </div>
             </label>
@@ -178,15 +184,22 @@ const UploadForm = () => {
             />
 
             <div className="Upload__Photos__Selected">
-              {loading ? <Loader /> : (
+              {loading ? (
+                <Loader />
+              ) : (
                 base64Images.map((el, index) => (
-                  <div className={'Upload__Photos__Selected__Item ' + (index === mainPhotoIndex ? '_active' : '')} onClick={() => setMainPhotoIndex(index)}>
+                  <div
+                    className={
+                      'Upload__Photos__Selected__Item ' +
+                      (index === mainPhotoIndex ? '_active' : '')
+                    }
+                    onClick={() => setMainPhotoIndex(index)}
+                  >
                     <img src={el} alt="#" />
                   </div>
                 ))
               )}
             </div>
-
           </div>
           <div className="Upload__Inputs">
             <div className="Upload__Item">
@@ -219,12 +232,7 @@ const UploadForm = () => {
                 options={adTypes}
                 getOptionLabel={(option) => option?.title}
                 onChange={(event, value) => setAdType((value as Data | null)?.id)}
-                renderInput={(params) => (
-                  <TextField
-                    label="Advertisement type"
-                    {...params}
-                  />
-                )}
+                renderInput={(params) => <TextField label="Advertisement type" {...params} />}
               />
             </div>
             <div className="Upload__Item">
@@ -233,12 +241,7 @@ const UploadForm = () => {
                 options={categories}
                 getOptionLabel={(option) => option?.title}
                 onChange={(event, value) => setCategoryId((value as Data | null)?.id)}
-                renderInput={(params) => (
-                  <TextField
-                    label="Category"
-                    {...params}
-                  />
-                )}
+                renderInput={(params) => <TextField label="Category" {...params} />}
               />
             </div>
             <div className="Upload__Item">
@@ -259,7 +262,6 @@ const UploadForm = () => {
 
             <div className="Upload__AddressMode">
               <div className="Upload__Item">
-
                 <Autocomplete
                   id="address_mode"
                   options={[
@@ -278,12 +280,7 @@ const UploadForm = () => {
                   ]}
                   getOptionLabel={(option) => option?.title}
                   onChange={(event, value) => setAddressMode((value as Data | null)?.id)}
-                  renderInput={(params) => (
-                    <TextField
-                      label="How to enter address?"
-                      {...params}
-                    />
-                  )}
+                  renderInput={(params) => <TextField label="How to enter address?" {...params} />}
                 />
               </div>
             </div>
@@ -291,9 +288,11 @@ const UploadForm = () => {
             {addressMode === 1 && (
               <div className="Upload__Map">
                 <div className="Upload__Item">
-                  <MapInput onChange={(smhth) => {
-                    console.log(smhth);
-                  }} />
+                  <MapInput
+                    onChange={(smhth) => {
+                      console.log(smhth);
+                    }}
+                  />
                 </div>
               </div>
             )}
@@ -301,7 +300,6 @@ const UploadForm = () => {
             {addressMode === 0 && (
               <div className="Upload__OldAddress">
                 <div className="Upload__Item">
-
                   <Autocomplete
                     id="address_id"
                     options={myAddresses.map((el) => {
@@ -312,12 +310,7 @@ const UploadForm = () => {
                     })}
                     getOptionLabel={(option) => option?.title}
                     onChange={(event, value) => setAddressId((value as Data | null)?.id)}
-                    renderInput={(params) => (
-                      <TextField
-                        label="Address"
-                        {...params}
-                      />
-                    )}
+                    renderInput={(params) => <TextField label="Address" {...params} />}
                   />
                 </div>
               </div>
@@ -331,12 +324,7 @@ const UploadForm = () => {
                     options={countries}
                     getOptionLabel={(option) => option?.title}
                     onChange={(event, value) => setCountry((value as Data | null)?.id)}
-                    renderInput={(params) => (
-                      <TextField
-                        label="Country"
-                        {...params}
-                      />
-                    )}
+                    renderInput={(params) => <TextField label="Country" {...params} />}
                   />
                 </div>
                 <div className="Upload__Item">
@@ -345,9 +333,7 @@ const UploadForm = () => {
                     options={cities}
                     getOptionLabel={(option) => option?.title}
                     onChange={(event, value) => setCity((value as Data | null)?.id)}
-                    renderInput={(params) => (
-                      <TextField {...params} label="City" />
-                    )}
+                    renderInput={(params) => <TextField {...params} label="City" />}
                   />
                 </div>
                 <div className="Upload__Item">
@@ -382,7 +368,9 @@ const UploadForm = () => {
 
             <div>{error}</div>
             {/* TODO: make text red */}
-            <button className="Upload__Button" onClick={handleCreate}>Create</button>
+            <button className="Upload__Button" onClick={handleCreate}>
+              Create
+            </button>
           </div>
         </div>
       </div>

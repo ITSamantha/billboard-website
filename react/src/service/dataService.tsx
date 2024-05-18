@@ -92,6 +92,9 @@ export const login = async (email: string, password: string) => {
       localStorage.setItem('refresh_token', response.data.refresh_token);
       api = createApi();
       return response.data;
+    })
+    .catch((error) => {
+      throw new Error('Incorrect credentials. Please try again.');
     });
 };
 
@@ -370,4 +373,11 @@ export const getMyAddresses = async (userId: number) => {
     .get('addresses?user_id=' + userId)
     .then((response) => response.data)
     .catch((error) => console.error('Error getting my addresses', error));
+};
+
+export const deleteAdvertisement = async (id: number) => {
+  return await api
+    .delete(`/advertisements/${id}`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error deleting advertisement', error));
 };

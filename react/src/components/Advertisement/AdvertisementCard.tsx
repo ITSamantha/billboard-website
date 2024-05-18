@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   addToFavorites,
+  deleteAdvertisement,
   deleteFromFavorites,
   getAdvertisementById,
   getChatId
@@ -13,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import ReviewBlock from '../Review/ReviewBlock';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import PhotoSlider from '../PhotoSlider/PhotoSlider';
 
 const AdvertisementCard = () => {
@@ -60,6 +62,10 @@ const AdvertisementCard = () => {
     navigate(`/chat/${chatId.id}`);
   };
 
+  const handleDelete = async () => {
+    deleteAdvertisement(ad!.id);
+  };
+
   if (!ad) {
     return <Loader />;
   }
@@ -90,7 +96,9 @@ const AdvertisementCard = () => {
       {user && user.id !== ad.user.id ? (
         <Button onClick={handleGetChatId}>Contact the seller</Button>
       ) : (
-        <></>
+        <Button onClick={handleDelete}>
+          <DeleteOutlineIcon />
+        </Button>
       )}
 
       <ReviewBlock reviews={ad.reviews} />

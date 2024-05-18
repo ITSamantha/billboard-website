@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CiLocationOn } from 'react-icons/ci';
+import Loader from '../Loader';
 
 type Props = {
   advertisements: AdInfo[];
@@ -15,8 +16,12 @@ function trimText(text: string, maxLength: number = 50): string {
 }
 
 const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisements }: Props) => {
-  if (!advertisements || advertisements.length === 0) {
-    return <div> No advertisements found!</div>;
+  if (!advertisements) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

@@ -204,6 +204,7 @@ export const createAd = async (
       price: price,
       category_id: categoryId,
       ad_tags: adTags,
+      ad_photos: [],
       city_id: cityId,
       address_id: null,
       country_id: countryId,

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   addToFavorites,
   deleteFromFavorites,
-  getAdvertisementById
+  getAdvertisementById,
+  getChatId
 } from '../../service/dataService';
 import Loader from '../Loader';
 import { Button } from '@mui/material';
@@ -18,24 +19,37 @@ const AdvertisementCard = () => {
   const [ad, setAd] = useState<AdInfo | null>(null);
   const user = useSelector(selectMyUser);
   const dispatch = useDispatch();
-
-  useEffect(() => {}, [user]);
+  const [isFavourite, setIsFavourite] = useState<boolean>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       let data = await getAdvertisementById(Number(id));
       await dispatch(fetchMyUser() as any);
       setAd(data);
+      if (user) {
+        const isFav = user.ad_favourites.some((ad: AdInfo) => ad.id === Number(id));
+        setIsFavourite(isFav);
+      }
     }
     fetchData();
   }, [dispatch, id]);
 
   const handleFavorite = async () => {
+    setIsFavourite(true);
     await addToFavorites(Number(id));
+    await dispatch(fetchMyUser() as any);
   };
 
   const handleUnfavorite = async () => {
+    setIsFavourite(false);
     await deleteFromFavorites(Number(id));
+    await dispatch(fetchMyUser() as any);
+  };
+
+  const handleGetChatId = async () => {
+    const chatId = await getChatId(ad!.user.id);
+    navigate(`/chat/${chatId.id}`);
   };
 
   if (!ad) {
@@ -56,26 +70,20 @@ const AdvertisementCard = () => {
           Seller: {ad.user.first_name} {ad.user.last_name}
         </div>
       </Link>
-      {user &&
-        user.ad_favourites.some((ad: AdInfo) => {
-          return ad.id === Number(id);
-        }) && (
-          <Button onClick={handleUnfavorite}>
-            <FavoriteIcon />
-          </Button>
-        )}
-      {user &&
-        user.ad_favourites.find((ad: AdInfo) => {
-          return ad.id === Number(id);
-        }) === undefined && (
-          <Button onClick={handleFavorite}>
-            <FavoriteBorderIcon />
-          </Button>
-        )}
-
-      <Link to={'/chat'}>
-        <Button>Contact the seller</Button>
-      </Link>
+      {isFavourite ? (
+        <Button onClick={handleUnfavorite}>
+          <FavoriteIcon />
+        </Button>
+      ) : (
+        <Button onClick={handleFavorite}>
+          <FavoriteBorderIcon />
+        </Button>
+      )}
+      {user && user.id !== ad.user.id ? (
+        <Button onClick={handleGetChatId}>Contact the seller</Button>
+      ) : (
+        <></>
+      )}
 
       <ReviewBlock reviews={ad.reviews} />
     </div>

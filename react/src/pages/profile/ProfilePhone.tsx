@@ -37,7 +37,7 @@ const PhoneConfirmation = () => {
   const [codeTimeout, setCodeTimeout] = useState<number>(60);
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -56,19 +56,22 @@ const PhoneConfirmation = () => {
     if (event === null) {
       if (errorFlag.current !== 0) return;
     }
-      tryCode(verificationCode).then(response => {
-      dispatch(fetchMyUser());
-      toast.success('Phone was successfully verified and now you have 5 free advertisement to publish!', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        onClose: () => {
-          navigate('/')
-        }
+    tryCode(verificationCode)
+      .then((response) => {
+        dispatch(fetchMyUser());
+        toast.success(
+          'Phone was successfully verified and now you have 5 free advertisement to publish!',
+          {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onClose: () => {
+              navigate('/');
+            }
           }
         );
       })

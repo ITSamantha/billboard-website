@@ -54,10 +54,32 @@ a {
       border: 2px solid $main;
       border-radius: 12px;
       transition: 0.3s;
+      display: inline-block;
       &:hover {
         background: $main;
         color: white;
       }
     }
+  }
+}
+
+@media (max-width: 1200px) {
+  .Header {
+    height: auto;
+    max-height: none;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    &__Navbar {
+      margin-top: 10px;
+      margin-bottom: 15px;
+      &__Item {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
+  }
+  .Header__Wrapper {
+    flex-direction: column;
+    align-items: center;
   }
 }

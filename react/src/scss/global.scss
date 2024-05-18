@@ -68,6 +68,15 @@ body, html, button, input {
 }
 
 .Chat {
+  padding-top: 30px;
+  &__NotSelected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    height: 100%;
+    width: 100%;
+  }
   &__Wrapper {
     display: flex;
     justify-content: space-between;
@@ -76,10 +85,13 @@ body, html, button, input {
   }
   &__Left {
     width: 430px;
-    margin-top: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
   &__Right {
     width: 500px;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
   &__Messages {
     width: 100%;

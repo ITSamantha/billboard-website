@@ -21,22 +21,21 @@ function Login() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectMyUser);
   const navigate = useNavigate();
-  const [error, setError] = useState<string>('')
+  const [error, setError] = useState<string>('');
 
   const handleLogin = async () => {
     try {
-      await dispatch(fetchLogin({ email, password }))
-      if (localStorage.getItem("access_token")) {
+      await dispatch(fetchLogin({ email, password }));
+      if (localStorage.getItem('access_token')) {
         let myUser = await dispatch(fetchMyUser());
-        localStorage.setItem('user', JSON.stringify(myUser.payload))
-        navigate('/')
+        localStorage.setItem('user', JSON.stringify(myUser.payload));
+        navigate('/');
       } else {
-        setError("Incorrect credentials. Please try again.")
+        setError('Incorrect credentials. Please try again.');
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-
   };
 
   useEffect(() => {
@@ -45,7 +44,6 @@ function Login() {
       navigate(`/profile/${id}`);
     }
   }, [user, navigate]);
-
 
   return (
     <>

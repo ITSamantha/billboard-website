@@ -35,7 +35,7 @@ type Filter = {
 };
 
 type FilterProps = {
-  categoryId: string;
+  categoryId: number;
 };
 
 const FilterItems = ({ categoryId }: FilterProps) => {

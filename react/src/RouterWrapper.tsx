@@ -12,7 +12,7 @@ function RouterWrapper(props: RouterWrapperProps) {
 
   useEffect(() => {
     dispatch(initialUpdate());
-  }, []);
+  }, [dispatch]);
 
   return (
     // <div className="container">
@@ -21,7 +21,6 @@ function RouterWrapper(props: RouterWrapperProps) {
       {props.children}
     </>
     // </div>
-
   );
 }
 

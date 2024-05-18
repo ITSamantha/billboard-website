@@ -5,12 +5,13 @@ type AdInfo = {
   auto_booking: boolean;
   bookable: boolean;
   created_at_str: string;
-  reviews: string[];
+  reviews: Review[];
   deleted_at: string | null;
   updated_at: string;
   created_at: string;
   ad_photos: string[];
   ad_tags: string[];
+  category: Category;
   creationDate: string;
   price: number;
   userId: number;
@@ -18,6 +19,25 @@ type AdInfo = {
   ad_type: AdType;
   address: object;
   user: ProfileInfo;
+};
+
+type Category = {
+  id: number;
+  title: string;
+  url: string;
+  children?: Category[];
+};
+
+type Review = {
+  id: number;
+  rating: number;
+  text: string;
+  advertisement_id: number;
+  created_at: string;
+  created_at_str: string;
+  updated_at: string;
+  updated_at_str: string;
+  deleted_at: string | null;
 };
 
 type Status = {

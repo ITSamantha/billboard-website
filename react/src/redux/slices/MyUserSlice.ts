@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi, getMyUser, login as enter, register } from '../../service/dataService';
-import axios from 'axios';
 
 interface MyUserState {
   user: any;
@@ -36,7 +35,7 @@ const MyUserSlice = createSlice({
     initialUpdate: (state) => {
       let userJson = localStorage.getItem('user');
       if (userJson) {
-        state.user = JSON.parse(userJson)
+        state.user = JSON.parse(userJson);
         state.token = localStorage.getItem('access_token');
         state.isLoading = false;
         state.hasError = false;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Message } from '../../pages/Chat';
 
 type ChatMessageProps = {
   message: Message;

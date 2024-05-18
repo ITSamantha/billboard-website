@@ -10,28 +10,36 @@ export const createApi = () => {
     headers: {
       'Content-type': 'application/json',
       'x-jwt-access-token': localStorage.getItem('access_token'),
-      'x-jwt-refresh-token': localStorage.getItem('refresh_token'),
+      'x-jwt-refresh-token': localStorage.getItem('refresh_token')
     }
-  })
-  apiInstance.interceptors.response.use(function (response) {
-    return response
-  }, function (error) {
-    let response = error.response
-    if (response.status !== 401) return Promise.reject(error)
-    if (response.config.url.includes('login') || response.config.url.includes('register') || response.config.url.includes('refresh')) {
-      return Promise.reject(error)
-    }
-    apiInstance.post('auth/refresh')
-      .then(response => {
-        localStorage.setItem('access_token', response.data.access_token)
-        localStorage.setItem('refresh_token', response.data.refresh_token)
-        window.location.reload()
-      })
-      .catch((e) => {
-        localStorage.removeItem("user")
-        window.location.replace('/login')
-      })
   });
+  apiInstance.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      let response = error.response;
+      if (response.status !== 401) return Promise.reject(error);
+      if (
+        response.config.url.includes('login') ||
+        response.config.url.includes('register') ||
+        response.config.url.includes('refresh')
+      ) {
+        return Promise.reject(error);
+      }
+      apiInstance
+        .post('auth/refresh')
+        .then((response) => {
+          localStorage.setItem('access_token', response.data.access_token);
+          localStorage.setItem('refresh_token', response.data.refresh_token);
+          window.location.reload();
+        })
+        .catch((e) => {
+          localStorage.removeItem('user');
+          window.location.replace('/login');
+        });
+    }
+  );
   apiInstance.interceptors.response.use(
     function (response) {
       return response;
@@ -50,17 +58,15 @@ export const createApi = () => {
 
 let api = createApi();
 
-
-export const  register = (
+export const register = (
   email: string,
   password: string,
   phone: string,
   lastName: string,
   firstName: string
 ) => {
-  return api.post(
-    'auth/register',
-    {
+  return api
+    .post('auth/register', {
       email: email,
       password: password,
       phone_number: phone,
@@ -71,7 +77,7 @@ export const  register = (
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       return response.data;
-    })
+    });
 };
 
 export const login = async (email: string, password: string) => {
@@ -86,7 +92,7 @@ export const login = async (email: string, password: string) => {
       api = createApi();
       localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
-    })
+    });
 };
 
 export const refreshToken = async (id: number) => {
@@ -107,6 +113,13 @@ export const logout = () => {
     .catch((error) => console.error('Error fetching logout:', error));
 };
 
+export const getCategory  = async (categoryId: number) => {
+  return await api
+    .get(`categories/${categoryId}`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error fetching countries:', error));
+};
+
 export const getCategories = (categorySlug: string | undefined) => {
   return [
     { id: 1, name: 'first', isLast: true },
@@ -125,7 +138,7 @@ export const getCategoriesList = async () => {
     });
 };
 
-export const getFilterList = async (categoryId: string) => {
+export const getFilterList = async (categoryId: number) => {
   return await api
     .get('categories/' + categoryId + '/filters')
     .then((response) => {
@@ -251,6 +264,7 @@ export const addToFavorites = async (id: number) => {
 };
 
 export const deleteFromFavorites = async (id: number) => {
+  console.log(id);
   return await api
     .delete(`advertisements/favourites/${id}`)
     .then((response) => response.data)
@@ -260,8 +274,17 @@ export const deleteFromFavorites = async (id: number) => {
 export const getAdvertisementsByPage = async (
   page: number,
   perPage: number,
-  categoryId: number
+  categoryId?: number
 ) => {
+  if (Number.isNaN(categoryId)) {
+    console.log(categoryId);
+    return await api
+      .get(`advertisements`, {
+        params: { page: page, per_page: perPage }
+      })
+      .then((response) => response.data)
+      .catch((error) => console.error('Error fetching advertisements:', error));
+  }
   return await api
     .get(`advertisements`, {
       params: { page: page, per_page: perPage, category_id: categoryId }

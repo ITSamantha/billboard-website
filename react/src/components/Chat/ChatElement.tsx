@@ -1,7 +1,6 @@
 import React from 'react';
 import { Avatar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { ChatType } from '../../pages/Chat';
 
 type ChatElementProps = {
   chat: ChatType;

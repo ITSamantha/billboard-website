@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logoutUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import { Button } from '@mui/material';
-import { logout } from '../../service/dataService';
 import { useEffect } from 'react';
 
 const Menu = () => {
@@ -11,35 +10,46 @@ const Menu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    dispatch(logoutUser());
-    navigate('/login');
-  };
-
   return (
     <header className="Header">
       <div className="container">
         <div className="Header__Wrapper">
           <div className="Header__Logo">
-            <Link to="/"><img src="/images/Logo.png" alt="Logo" /></Link>
+            <Link to="/">
+              <img src="/images/Logo.png" alt="Logo" />
+            </Link>
           </div>
           <div className="Header__Navbar">
             <>
-              <Link to="/" className="Header__Navbar__Item">Advertisements</Link>
-              <Link to="/upload-form" className="Header__Navbar__Item">Upload</Link>
-              { user && (
+              <Link to="/" className="Header__Navbar__Item">
+                Advertisements
+              </Link>
+              { !user && (
+                  <Link to="/login" className="Header__Navbar__Item">
+                    Upload
+                  </Link>
+              )}
+              {user && (
                 <>
-                  <Link to="/chats" className="Header__Navbar__Item">Chats</Link>
+                  <Link to="/upload-form" className="Header__Navbar__Item">
+                    Upload
+                  </Link>
+                  <Link to="/chats" className="Header__Navbar__Item">
+                    Chats
+                  </Link>
                 </>
               )}
             </>
           </div>
           <div className="Header__Auth">
-            { user ? (
-              <Link to={`/profile/${user.id}`} className="Header__Auth__Button">Profile</Link>
+            {user ? (
+              <Link to={`/profile/${user.id}`} className="Header__Auth__Button">
+                Profile
+              </Link>
             ) : (
-              <Link to="/login" className="Header__Auth__Button">Login</Link>
+              <Link to="/login" className="Header__Auth__Button">
+                Login
+              </Link>
             )}
           </div>
         </div>

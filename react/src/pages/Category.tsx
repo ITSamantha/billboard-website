@@ -15,7 +15,7 @@ const Category = () => {
   return (
     <div>
       <Search />
-      <Catalog categoryId={params.id} />
+      <Catalog categoryId={parseInt(params.id)} />
     </div>
   );
 };

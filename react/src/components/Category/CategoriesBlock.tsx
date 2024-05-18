@@ -17,7 +17,7 @@ const CategoriesBlock = ({ categories }: Props) => {
     <div>
       Categories
       {categories.map((category) => (
-        <div>
+        <div key={category.id}>
           <img src="https://http.cat/201" alt="category" style={{ height: '100px' }}></img>
           <Link to={`/category/${category.id}`}>
             <div>{category.title}</div>

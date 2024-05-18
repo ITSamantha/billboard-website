@@ -18,24 +18,31 @@ const AdvertisementCard = () => {
   const [ad, setAd] = useState<AdInfo | null>(null);
   const user = useSelector(selectMyUser);
   const dispatch = useDispatch();
-
-  useEffect(() => {}, [user]);
+  const [isFavourite, setIsFavourite] = useState<boolean>();
 
   useEffect(() => {
     async function fetchData() {
       let data = await getAdvertisementById(Number(id));
       await dispatch(fetchMyUser() as any);
       setAd(data);
+      if (user) {
+        const isFav = user.ad_favourites.some((ad: AdInfo) => ad.id === Number(id));
+        setIsFavourite(isFav);
+      }
     }
     fetchData();
   }, [dispatch, id]);
 
   const handleFavorite = async () => {
+    setIsFavourite(true);
     await addToFavorites(Number(id));
+    await dispatch(fetchMyUser() as any);
   };
 
   const handleUnfavorite = async () => {
+    setIsFavourite(false);
     await deleteFromFavorites(Number(id));
+    await dispatch(fetchMyUser() as any);
   };
 
   if (!ad) {
@@ -56,23 +63,15 @@ const AdvertisementCard = () => {
           Seller: {ad.user.first_name} {ad.user.last_name}
         </div>
       </Link>
-      {user &&
-        user.ad_favourites.some((ad: AdInfo) => {
-          return ad.id === Number(id);
-        }) && (
-          <Button onClick={handleUnfavorite}>
-            <FavoriteIcon />
-          </Button>
-        )}
-      {user &&
-        user.ad_favourites.find((ad: AdInfo) => {
-          return ad.id === Number(id);
-        }) === undefined && (
-          <Button onClick={handleFavorite}>
-            <FavoriteBorderIcon />
-          </Button>
-        )}
-
+      {isFavourite ? (
+        <Button onClick={handleUnfavorite}>
+          <FavoriteIcon />
+        </Button>
+      ) : (
+        <Button onClick={handleFavorite}>
+          <FavoriteBorderIcon />
+        </Button>
+      )}
       <Link to={'/chat'}>
         <Button>Contact the seller</Button>
       </Link>

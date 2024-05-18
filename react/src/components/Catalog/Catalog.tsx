@@ -62,7 +62,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
             <AdvertisementBlock
               advertisements={advertisements}
               advertisementsInRow={4}
-              maxAdvertisements={6}
+              maxAdvertisements={Infinity}
             />
             <Stack spacing={2}>
               <Pagination

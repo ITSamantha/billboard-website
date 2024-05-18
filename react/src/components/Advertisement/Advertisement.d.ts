@@ -34,7 +34,7 @@ type AdInfo = {
   userId: number;
   ad_status: Status;
   ad_type: AdType;
-  address: object;
+  address: AdAddress;
   user: ProfileInfo;
 };
 

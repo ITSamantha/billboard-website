@@ -63,14 +63,15 @@ const Catalog = ({ categoryId }: CatalogProps) => {
               advertisementsInRow={4}
               maxAdvertisements={Infinity}
             />
-            <Stack spacing={2}>
+            {pagesCount ? 
+            (<Stack spacing={2}>
               <Pagination
                 count={pagesCount}
                 shape="rounded"
                 onChange={handlePageChange}
                 page={page}
               />
-            </Stack>
+            </Stack>): <></>}
           </div>
         )}
       </div>

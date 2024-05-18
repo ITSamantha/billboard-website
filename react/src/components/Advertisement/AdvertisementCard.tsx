@@ -13,6 +13,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyUser, selectMyUser } from '../../redux/slices/MyUserSlice';
 import ReviewBlock from '../Review/ReviewBlock';
+import PhotoSlider from '../PhotoSlider/PhotoSlider';
 
 const AdvertisementCard = () => {
   const { id } = useParams();
@@ -21,6 +22,13 @@ const AdvertisementCard = () => {
   const dispatch = useDispatch();
   const [isFavourite, setIsFavourite] = useState<boolean>();
   const navigate = useNavigate();
+
+  const photos = [
+    'https://http.cat/300',
+    'https://http.cat/200',
+    'https://http.cat/300',
+    'https://http.cat/300'
+  ];
 
   useEffect(() => {
     async function fetchData() {
@@ -58,7 +66,7 @@ const AdvertisementCard = () => {
 
   return (
     <div className="AdvertisementCard">
-      <img src="https://http.cat/300" alt="Advertisement" height={'300px'} />
+      <PhotoSlider photos={photos} />
       <div>{ad.title}</div>
       <div>{ad.user_description}</div>
       <div>Price: {ad.price}</div>

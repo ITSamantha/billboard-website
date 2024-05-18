@@ -11,7 +11,6 @@ type CatalogProps = {
 };
 
 const Catalog = ({ categoryId }: CatalogProps) => {
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(0);
@@ -65,14 +64,15 @@ const Catalog = ({ categoryId }: CatalogProps) => {
               advertisementsInRow={4}
               maxAdvertisements={Infinity}
             />
-            <Stack spacing={2}>
+            {pagesCount ? 
+            (<Stack spacing={2}>
               <Pagination
                 count={pagesCount}
                 shape="rounded"
                 onChange={handlePageChange}
                 page={page}
               />
-            </Stack>
+            </Stack>): <></>}
           </div>
         )}
       </div>

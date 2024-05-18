@@ -27,11 +27,8 @@ function Login() {
   const handleLogin = async () => {
     try {
       await dispatch(fetchLogin({ email, password }));
-      if (localStorage.getItem('access_token')) {
-        let myUser = await dispatch(fetchMyUser());
-        localStorage.setItem('user', JSON.stringify(myUser.payload));
+      await dispatch(fetchMyUser());
         navigate('/');
-      }
     } catch (error) {}
   };
 

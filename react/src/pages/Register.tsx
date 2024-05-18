@@ -31,11 +31,9 @@ const Register = () => {
   const handleRegister = () => {
     register(email, password, phone, lastName, firstName)
       .then(async () => {
-        if (localStorage.getItem('access_token')) {
           let myUser = await dispatch(fetchMyUser());
           localStorage.setItem('user', JSON.stringify(myUser.payload));
           navigate('/');
-        }
       })
       .catch((error) => {
         setError(error.response.data.detail);

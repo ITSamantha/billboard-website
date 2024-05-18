@@ -49,9 +49,7 @@ const Profile = () => {
   const handleLogout = () => {
     logout();
     dispatch(logoutUser());
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    localStorage.clear();
     navigate('/login');
   };
 

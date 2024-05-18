@@ -35,24 +35,11 @@ export const createApi = () => {
           window.location.reload();
         })
         .catch((e) => {
-          localStorage.removeItem('user');
+          localStorage.clear();
           window.location.replace('/login');
         });
     }
   );
-  // apiInstance.interceptors.response.use(
-  //   function (response) {
-  //     return response;
-  //   },
-  //   function (response) {
-  //     if (response.status !== 401) return response;
-  //     if (response.config.url.includes('login') || response.config.url.includes('register')) {
-  //       return response;
-  //     }
-  //     localStorage.removeItem('user');
-  //     window.location.replace('/login');
-  //   }
-  // );
   return apiInstance;
 };
 
@@ -109,9 +96,7 @@ export const logout = () => {
   api
     .post('auth/logout', {})
     .then((response) => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      localStorage.clear();
     })
     .catch((error) => console.error('Error fetching logout:', error));
 };

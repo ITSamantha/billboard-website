@@ -46,12 +46,11 @@ const MyUserSlice = createSlice({
       state.token = null;
       state.isLoading = false;
       state.hasError = false;
+      localStorage.clear();
       createApi()
         .post('auth/logout')
         .then(() => {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-          localStorage.removeItem('user');
+          localStorage.clear();
         });
     }
   },

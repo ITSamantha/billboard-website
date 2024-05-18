@@ -356,3 +356,10 @@ export const createPayment = async (tariff: number) => {
     .then((response) => response.data)
     .catch((error) => console.error('Error creating payment:', error));
 };
+
+export const getChatId = async (userId: number) => {
+  return await api
+    .post('chats', { user_id: userId })
+    .then((response) => response.data)
+    .catch((error) => console.error('Error getting chat id:', error));
+};

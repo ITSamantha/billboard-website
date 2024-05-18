@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   addToFavorites,
   deleteFromFavorites,
-  getAdvertisementById
+  getAdvertisementById,
+  getChatId
 } from '../../service/dataService';
 import Loader from '../Loader';
 import { Button } from '@mui/material';
@@ -19,6 +20,7 @@ const AdvertisementCard = () => {
   const user = useSelector(selectMyUser);
   const dispatch = useDispatch();
   const [isFavourite, setIsFavourite] = useState<boolean>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -43,6 +45,11 @@ const AdvertisementCard = () => {
     setIsFavourite(false);
     await deleteFromFavorites(Number(id));
     await dispatch(fetchMyUser() as any);
+  };
+
+  const handleGetChatId = async () => {
+    const chatId = await getChatId(ad!.user.id);
+    navigate(`/chat/${chatId.id}`);
   };
 
   if (!ad) {
@@ -73,9 +80,7 @@ const AdvertisementCard = () => {
         </Button>
       )}
       {user && user.id !== ad.user.id ? (
-        <Link to={'/chat'}>
-          <Button>Contact the seller</Button>
-        </Link>
+        <Button onClick={handleGetChatId}>Contact the seller</Button>
       ) : (
         <></>
       )}

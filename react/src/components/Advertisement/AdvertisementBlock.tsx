@@ -24,10 +24,10 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
                 </div>
                 <div className="Advertisement__Content">
                   <h4>{ad.title}
-                    <span> {Math.round(ad.price, 2)}</span>
+                    <span> {el.price.toFixed(2)}</span>
                   </h4>
                   <p>{ad.user_description}</p>
-                  <span className="Advertisement__Address">{ ad.a}</span>
+                  <span className="Advertisement__Address">{ad.address.toString()}</span>
                 </div>
               </Link>
             </div>

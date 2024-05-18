@@ -19,7 +19,7 @@ export const createApi = () => {
     },
     function (error) {
       let response = error.response;
-      if (response.status !== 401) return Promise.reject(error);
+      if (response.status !== 401) throw error
       if (
         response.config.url.includes('login') ||
         response.config.url.includes('register') ||
@@ -40,19 +40,19 @@ export const createApi = () => {
         });
     }
   );
-  apiInstance.interceptors.response.use(
-    function (response) {
-      return response;
-    },
-    function (response) {
-      if (response.status !== 401) return response;
-      if (response.config.url.includes('login') || response.config.url.includes('register')) {
-        return response;
-      }
-      localStorage.removeItem('user');
-      window.location.replace('/login');
-    }
-  );
+  // apiInstance.interceptors.response.use(
+  //   function (response) {
+  //     return response;
+  //   },
+  //   function (response) {
+  //     if (response.status !== 401) return response;
+  //     if (response.config.url.includes('login') || response.config.url.includes('register')) {
+  //       return response;
+  //     }
+  //     localStorage.removeItem('user');
+  //     window.location.replace('/login');
+  //   }
+  // );
   return apiInstance;
 };
 
@@ -319,4 +319,26 @@ export const getAllChats = async () => {
     .get(`chats`)
     .then((response) => response.data)
     .catch((error) => console.error('Error getting all chats:', error));
+};
+
+export const sendCode = async () => {
+  return await api
+    .post(`phone/send_code`)
+    .then((response) => response.data)
+    .catch((error) => console.error('Error sending code:', error));
+};
+
+export const tryCode = async (code: string) => {
+  return await api
+    .post(`phone/verify`, {
+      code: code
+    })
+    .then((response) => {
+      console.log("???", response)
+      return response.data
+    })
+    .catch((error) => {
+      console.error('Error verifying code:', error)
+      throw error
+    });
 };

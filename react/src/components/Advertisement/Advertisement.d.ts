@@ -1,3 +1,20 @@
+type AdAddress = {
+  "id": number,
+  "street": string,
+  "house": string,
+  "flat": string,
+  "longitude": number,
+  "latitude": number,
+  "country": {
+    "id": number,
+    "title": string
+  },
+  "city": {
+    "id": number,
+    "title": string
+  }
+}
+
 type AdInfo = {
   id: number;
   title: string;

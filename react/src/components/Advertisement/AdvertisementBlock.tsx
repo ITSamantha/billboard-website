@@ -15,6 +15,24 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
   return (
     <div>
       <section>
+        <div className="Advertisements">
+          {advertisements.slice(0, maxAdvertisements).map((ad) => (
+            <div className="Advertisement">
+              <Link to={`/advertisement/${ad.id}`}>
+                <div className="Advertisement__Image">
+                  <img src="https://http.cat/300" alt="Advertisement" height={'300px'} />
+                </div>
+                <div className="Advertisement__Content">
+                  <h4>{ad.title}
+                    <span> {Math.round(ad.price, 2)}</span>
+                  </h4>
+                  <p>{ad.user_description}</p>
+                  <span className="Advertisement__Address">{ ad.a}</span>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
         <Grid container spacing={2}>
           {advertisements.slice(0, maxAdvertisements).map((ad) => (
             <Grid item xs={12 / advertisementsInRow} key={ad.id}>

@@ -13,7 +13,7 @@ const Category = () => {
   }
 
   return (
-    <div>
+    <div className="container Category">
       <Search />
       <Catalog categoryId={parseInt(params.id)} />
     </div>

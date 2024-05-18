@@ -11,10 +11,11 @@ type CatalogProps = {
 };
 
 const Catalog = ({ categoryId }: CatalogProps) => {
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(0);
-  const [adsPerPage, setAdsPerPage] = useState<number>(1);
+  const [adsPerPage, setAdsPerPage] = useState<number>(15);
   const [advertisements, setAdvertisements] = useState<AdInfo[]>([]);
   const [categoryChildren, setCategoryChildren] = useState<Category[]>([]);
 
@@ -50,7 +51,7 @@ const Catalog = ({ categoryId }: CatalogProps) => {
           {categoryId && <FilterItems categoryId={categoryId} />}
         </div>
       )}
-      <div style={{ display: 'grid' }}>
+      <div style={{ display: 'grid', width: categoryId ? 'calc(100% - 300px)' : '100%' }}>
         {categoryId ? (
           <CategoriesBlock categories={categoryChildren} />
         ) : (

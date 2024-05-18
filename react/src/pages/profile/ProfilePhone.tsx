@@ -3,6 +3,10 @@ import { makeStyles } from '@mui/styles';
 import { Button, Container, FormHelperText, ThemeProvider, Typography } from '@mui/material';
 import CodeVerificationInput from '../../components/Profile/CodeVerificationInput';
 import { THEME } from './Profile';
+import { sendCode, tryCode } from '../../service/dataService';
+import { Link } from 'react-router-dom';
+import { ToastContainer, ToastPosition, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles({
   root: {
@@ -18,32 +22,57 @@ const useStyles = makeStyles({
   }
 });
 
-const NUMBER_OF_DIGITS_IN_CODE = 6;
+const NUMBER_OF_DIGITS_IN_CODE = 4;
 
 const PhoneConfirmation = () => {
   const classes = useStyles();
   const [verificationCode, setVerificationCode] = useState('');
 
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const errorFlag = useRef<number>(0);
+
+  const [codeTimeout, setCodeTimeout] = useState<number>(60)
+
+  useEffect(() => {
+
+    let interval = setInterval(() => {
+      setCodeTimeout((old) => {
+        return Math.max(0, old - 1)
+      })
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const handleSend = (event: any) => {
     event?.preventDefault();
+    if (errorFlag.current > 2) return;
     if (event === null) {
       if (errorFlag.current !== 0) return;
     }
-    if (verificationCode !== '123456') {
-      setError(true);
+    tryCode(verificationCode).then(response => {
+      toast.success('Phone was successfully verified and now you have 5 free advertisement to publish!.', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }).catch(error => {
+      console.log("real error", error)
+      setError(error.response.data.detail);
       errorFlag.current += 1;
       setTimeout(() => {
         errorFlag.current -= 1;
         if (errorFlag.current === 0) {
-          setError(false);
+          setError("");
         }
       }, 3000);
-    } else {
-      console.log('accepted');
-    }
+    })
+
   };
 
   useEffect(() => {
@@ -60,7 +89,7 @@ const PhoneConfirmation = () => {
     <ThemeProvider theme={THEME}>
       <Container maxWidth="xs" className={classes.root}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Phone Confirmation (123456 correct)
+          Phone Confirmation (1111 correct)
         </Typography>
 
         <Typography variant="body1" gutterBottom>
@@ -72,12 +101,12 @@ const PhoneConfirmation = () => {
             <CodeVerificationInput
               numberOfDigits={NUMBER_OF_DIGITS_IN_CODE}
               onChange={setVerificationCode}
-              error={error}
+              error={!!error}
             />
           </div>
           {error && (
             <div style={{ marginBottom: 15 }}>
-              <FormHelperText error>Incorrect code, please try again</FormHelperText>
+              <FormHelperText error>{ error }</FormHelperText>
             </div>
           )}
 
@@ -91,7 +120,26 @@ const PhoneConfirmation = () => {
             Submit
           </Button>
         </form>
+        <Link to="." style={{ display: "block", marginTop: 15 }} onClick={(e) => {
+          e.preventDefault()
+          if (codeTimeout <= 0) {
+            sendCode().then((response) => {
+              setCodeTimeout(60)
+              console.log("code sent", response)
+            })
+          }
+        }}>{
+          codeTimeout <= 0 ? (
+            <>
+              Send code again
+            </>
+          ) : (
+            <>
+              You can send code again in { codeTimeout } seconds
+            </>
+          )}</Link>
       </Container>
+      <ToastContainer />
     </ThemeProvider>
   );
 };

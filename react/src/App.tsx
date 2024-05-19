@@ -115,7 +115,7 @@ function App() {
       path: '/map',
       element: (
         <RouterWrapper>
-          <MapWrapper />
+          <MapWrapper points={[]} center={{ lat: 46, lng: 43 }}/>
         </RouterWrapper>
       )
     },

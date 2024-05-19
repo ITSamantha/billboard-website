@@ -74,10 +74,13 @@ const FilterItems = ({ categoryId }: FilterProps) => {
             ))}
           </Box>
         ))}
-        {filters.length ?  <Button variant="contained" color="primary" onClick={handleFiltersSet}>
-          Apply
-        </Button> : <></>}
-       
+        {filters.length ? (
+          <Button variant="contained" color="primary" onClick={handleFiltersSet}>
+            Apply
+          </Button>
+        ) : (
+          <></>
+        )}
       </Container>
     </ThemeProvider>
   );

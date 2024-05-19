@@ -73,16 +73,21 @@ const Profile = () => {
   return (
     <ThemeProvider theme={THEME}>
       <Container maxWidth="md" className={classes.root}>
-
         <section className={classes.section}>
-          <h1 className="Profile__Title__Personal">{profile.first_name} {profile.last_name}</h1>
+          <h1 className="Profile__Title__Personal">
+            {profile.first_name} {profile.last_name}
+          </h1>
 
           <Grid container spacing={3} alignItems="center" justifyContent="space-between">
             <Grid item>
-
               <Grid container spacing={2} alignItems="center">
                 <Grid item>
-                  <Avatar sx={{ height: '100px', width: '100px' }} alt="User Avatar" src="https://http.cat/200" className={classes.avatar} />
+                  <Avatar
+                    sx={{ height: '100px', width: '100px' }}
+                    alt="User Avatar"
+                    src="https://http.cat/200"
+                    className={classes.avatar}
+                  />
                 </Grid>
                 <Grid item>
                   <Typography variant="subtitle1">Email: {profile.email}</Typography>
@@ -91,7 +96,6 @@ const Profile = () => {
               </Grid>
             </Grid>
             <Grid item>
-
               {isMyProfile && (
                 <section className={classes.section}>
                   <div className="Profile__Link">
@@ -106,12 +110,10 @@ const Profile = () => {
                       Logout
                     </Button>
                   </div>
-
                 </section>
               )}
             </Grid>
           </Grid>
-
         </section>
         <AdvertisementBlock
           advertisements={profile.advertisements}
@@ -128,12 +130,12 @@ const Profile = () => {
 
           {profile.advertisements.length > 6 && (
             <Link to={`/profile/${id}/advertisements`}>
-              <Button variant="contained" color="primary">See all</Button>
+              <Button variant="contained" color="primary">
+                See all
+              </Button>
             </Link>
           )}
-
         </div>
-
       </Container>
     </ThemeProvider>
   );
@@ -180,24 +182,22 @@ const useStyles = makeStyles({
 });
 
 export const THEME = createTheme({
-    palette: {
-      primary: {
-        main: '#8002ff',
-        contrastText: '#fff' //button text white instead of black
-      },
-      background: {
-        default: '#8002ff'
-      }
+  palette: {
+    primary: {
+      main: '#8002ff',
+      contrastText: '#fff' //button text white instead of black
     },
-    typography: {
-      fontFamily: `"Montserrat", "Helvetica", "Arial", sans-serif`,
-      fontSize: 14,
-      fontWeightLight: 300,
-      fontWeightRegular: 400,
-      fontWeightMedium: 500
+    background: {
+      default: '#8002ff'
     }
-  })
-
-;
+  },
+  typography: {
+    fontFamily: `"Montserrat", "Helvetica", "Arial", sans-serif`,
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500
+  }
+});
 
 export default Profile;

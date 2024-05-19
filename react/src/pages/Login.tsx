@@ -28,7 +28,7 @@ function Login() {
     try {
       await dispatch(fetchLogin({ email, password }));
       await dispatch(fetchMyUser());
-        navigate('/');
+      navigate('/');
     } catch (error) {}
   };
 

@@ -8,7 +8,6 @@ import {
   getChatId
 } from '../../service/dataService';
 import Loader from '../Loader';
-import { Button } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
@@ -78,14 +77,11 @@ const AdvertisementCard = () => {
         <div className="AdvertisementCard__Wrapper">
           <div className="AdvertisementCard__Photos">
             <PhotoSlider photos={photos} />
-
           </div>
           <div className="AdvertisementCard__Content">
             <div className="AdvertisementCard__Main">
               <h1>{ad.title}</h1>
-              <div className="AdvertisementCard__Price">
-                ₪ {ad.price}
-              </div>
+              <div className="AdvertisementCard__Price">₪ {ad.price}</div>
             </div>
 
             <div className="AdvertisementCard__Tags">
@@ -94,7 +90,9 @@ const AdvertisementCard = () => {
             </div>
 
             <p>{ad.user_description}</p>
-            <div className="AdvertisementCard__Created" title={ad.created_at}>{ad.created_at_str}</div>
+            <div className="AdvertisementCard__Created" title={ad.created_at}>
+              {ad.created_at_str}
+            </div>
 
             <div className="AdvertisementCard__Seller">
               <h2>Seller information</h2>
@@ -124,7 +122,6 @@ const AdvertisementCard = () => {
                   </div>
                 )}
               </div>
-
             </div>
 
             <div className="AdvertisementCard__Address">
@@ -136,20 +133,26 @@ const AdvertisementCard = () => {
                   ad?.address?.street,
                   ad?.address?.house,
                   ad?.address?.flat
-                ].filter(el => el).join(', ')}
+                ]
+                  .filter((el) => el)
+                  .join(', ')}
               </p>
 
-              <MapWrapper points={[{
-                lat: ad?.address?.latitude,
-                lng: ad?.address?.longitude
-              }]} center={{ lat: ad?.address?.latitude || 60, lng: ad?.address?.longitude || 30 }} />
+              <MapWrapper
+                points={[
+                  {
+                    lat: ad?.address?.latitude,
+                    lng: ad?.address?.longitude
+                  }
+                ]}
+                center={{ lat: ad?.address?.latitude || 60, lng: ad?.address?.longitude || 30 }}
+              />
             </div>
 
             <div className="AdvertisementCard__Reviews">
               <h2>Reviews</h2>
               <ReviewBlock reviews={ad.reviews} />
             </div>
-
           </div>
         </div>
       </div>

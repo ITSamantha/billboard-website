@@ -8,7 +8,13 @@ type DisplayedPoint = {
   count?: number;
 };
 
-const Map = ({ points, center } : { points: google.maps.LatLngLiteral[], center: google.maps.LatLngLiteral }) => {
+const Map = ({
+  points,
+  center
+}: {
+  points: google.maps.LatLngLiteral[];
+  center: google.maps.LatLngLiteral;
+}) => {
   const [currentZoom, setCurrentZoom] = useState<number | undefined>(13);
   const [currentCenter, setCurrentCenter] = useState<google.maps.LatLng>();
   // const [points, setPoints] = useState<google.maps.LatLngLiteral[]>([]);
@@ -150,13 +156,7 @@ const Map = ({ points, center } : { points: google.maps.LatLngLiteral[], center:
           libraries={['marker', 'maps', 'geocoding']}
           version="beta"
         >
-          <MapComponent
-            map={map}
-            setMap={setMap}
-            center={center}
-            zoom={13}
-            onIdle={handleIdle}
-          />
+          <MapComponent map={map} setMap={setMap} center={center} zoom={13} onIdle={handleIdle} />
         </Wrapper>
       </div>
     </div>

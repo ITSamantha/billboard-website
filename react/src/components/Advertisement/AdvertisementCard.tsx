@@ -25,13 +25,6 @@ const AdvertisementCard = () => {
   const [isFavourite, setIsFavourite] = useState<boolean>();
   const navigate = useNavigate();
 
-  const photos = [
-    'https://http.cat/300',
-    'https://http.cat/200',
-    'https://http.cat/300',
-    'https://http.cat/300'
-  ];
-
   useEffect(() => {
     async function fetchData() {
       let data = await getAdvertisementById(Number(id));
@@ -76,7 +69,7 @@ const AdvertisementCard = () => {
       <div className="container">
         <div className="AdvertisementCard__Wrapper">
           <div className="AdvertisementCard__Photos">
-            <PhotoSlider photos={photos} />
+            <PhotoSlider photos={ad.ad_photos} />
           </div>
           <div className="AdvertisementCard__Content">
             <div className="AdvertisementCard__Main">

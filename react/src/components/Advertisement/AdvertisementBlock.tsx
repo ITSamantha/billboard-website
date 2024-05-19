@@ -34,7 +34,11 @@ const AdvertisementBlock = ({ advertisements, advertisementsInRow, maxAdvertisem
                 <div className="Advertisement__Wrapper">
                   <Link to={`/advertisement/${ad.id}`}>
                     <div className="Advertisement__Image">
-                      <img src="https://http.cat/300" alt="Advertisement" height={'300px'} />
+                      {ad.ad_photos.length === 0 ? (
+                        <img src="/images/noImage.svg" alt="Advertisement" height={'300px'} />
+                      ) : (
+                        <img src={ad.ad_photos[0].link} alt="Advertisement" height={'300px'} />
+                      )}
                     </div>
                     <div className="Advertisement__Content">
                       <h4>

@@ -26,7 +26,7 @@ type AdInfo = {
   deleted_at: string | null;
   updated_at: string;
   created_at: string;
-  ad_photos: string[];
+  ad_photos: Photo[];
   ad_tags: string[];
   category: Category;
   creationDate: string;
@@ -36,6 +36,11 @@ type AdInfo = {
   ad_type: AdType;
   address: AdAddress;
   user: ProfileInfo;
+};
+
+type Photo = {
+  id: number;
+  link: string;
 };
 
 type Category = {

@@ -37,12 +37,14 @@
   display: flex;
   justify-content: center;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .thumbnail {
+  object-fit: cover;
   width: 100px;
   height: 100px;
-  margin: 0 5px;
+  margin: 5px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: border-color 0.3s ease;

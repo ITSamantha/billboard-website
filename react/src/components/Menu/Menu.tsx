@@ -47,7 +47,7 @@ const Menu = () => {
           </div>
           <div className="Header__Auth">
             {user ? (
-              <div>
+              <div className="Header__Auth__Buttons">
                 <Link to={`/profile/${user.id}`} className="Header__Auth__Button">
                   Profile
                 </Link>

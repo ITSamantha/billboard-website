@@ -45,12 +45,12 @@ const Catalog = ({ categoryId }: CatalogProps) => {
   return (
     <div className="Catalog">
       {categoryId && (
-        <div style={{ width: 300 }}>
+        <div>
           <CatalogTree categories={categories} categoryId={categoryId} />
-          {categoryId && <FilterItems categoryId={categoryId} />}
+          {/*{categoryId && <FilterItems categoryId={categoryId} />}*/}
         </div>
       )}
-      <div style={{ display: 'grid', width: categoryId ? 'calc(100% - 300px)' : '100%' }}>
+      <div className={ categoryId ? '_active' : '' }>
         {categoryId ? (
           <CategoriesBlock categories={categoryChildren} />
         ) : (

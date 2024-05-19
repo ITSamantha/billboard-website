@@ -21,6 +21,14 @@
     h5 {
         font-size: 24px;
         margin: 0;
+        display: flex;
+        align-items: center;
+        span {
+            font-size: 38px;
+            margin-left: 10px;
+            display: none;
+            align-items: center;
+        }
     }
     &__Category {
         padding-top: 5px;
@@ -67,6 +75,57 @@
             font-weight: 500;
             text-align: center;
             margin-top: 5px;
+        }
+    }
+}
+
+@media (max-width: 1230px) {
+
+    .Catalog {
+        position: relative;
+        & > div:first-child {
+            width: 100%;
+            position: absolute;
+            background: white;
+        }
+        & > div:last-child {
+            padding-top: 75px;
+            width: 100%;
+            h1 {
+                display: none;
+            }
+        }
+    }
+
+    .CatalogTree {
+        h5 {
+            cursor: pointer;
+            span {
+                display: flex;
+                transition: 0.3s;
+                &._rotated {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        &__Items {
+            padding-bottom: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.3s;
+            &._active {
+                max-height: 1000px;
+            }
+        }
+    }
+
+    .Categories {
+        &__Item {
+            &__Wrapper {
+                width: 100%;
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
         }
     }
 }

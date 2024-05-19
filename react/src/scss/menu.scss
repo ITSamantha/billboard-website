@@ -79,6 +79,17 @@ a {
         margin-right: 5px;
       }
     }
+    &__Auth {
+      &__Button {
+        display: block;
+        margin-bottom: 7px;
+      }
+      &__Buttons {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
   }
   .Header__Wrapper {
     flex-direction: column;

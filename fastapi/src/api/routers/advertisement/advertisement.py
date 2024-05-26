@@ -163,12 +163,20 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
         #     payload["address_id"] = address.id
 
         advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
-            .get_single(id=advertisement_id)
-        advertisement.title = payload['title']
-        advertisement.user_description = payload['user_description']
-        advertisement.ad_type_id = payload['ad_type_id']
-        advertisement.price = payload['price']
-        advertisement.category_id = payload['category_id']
+            .update(
+            {
+                'title': payload['title'],
+                'user_description': payload['user_description'],
+                'ad_type_id': payload['ad_type_id'],
+                'price': payload['price'],
+                'category_id': payload['category_id']
+            },
+            id=advertisement_id)
+        # advertisement.title = payload['title']
+        # advertisement.user_description = payload['user_description']
+        # advertisement.ad_type_id = payload['ad_type_id']
+        # advertisement.price = payload['price']
+        # advertisement.category_id = payload['category_id']
 
         async with db_manager.get_session() as session:
             await session.commit()

@@ -20,7 +20,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(EmailType, nullable=False, unique=True)
     user_status_id: Mapped[int] = mapped_column(ForeignKey("user_status.id"), nullable=False)
     phone_number: Mapped[str] = mapped_column()  # TODO: nullable= False?, unique = True?
-    avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("avatar.id"), nullable=True)  # TODO: default avatar? Optional?
+    avatar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("files.id"), nullable=True)
     password: Mapped[str] = mapped_column(nullable=True)
 
     available_ads: Mapped[int] = mapped_column(nullable=False, default=0)
@@ -32,7 +32,7 @@ class User(Base):
     updated_at: Mapped[datetime.datetime] = mapped_column(nullable=False, default=datetime.datetime.now())
     deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
 
-    avatar: Mapped["Avatar"] = relationship(uselist=False, lazy="selectin")
+    avatar: Mapped["File"] = relationship(uselist=False, lazy="selectin")
     user_status: Mapped["UserStatus"] = relationship(uselist=False, lazy="selectin")
     bookings: Mapped[List["Booking"]] = relationship(uselist=True, lazy="selectin")
     reviews: Mapped[List["Review"]] = relationship(uselist=True, lazy="selectin")

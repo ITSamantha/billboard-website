@@ -11,11 +11,12 @@ from src.api.transformers.advertisement import AdvertisementTransformer
 from src.api.transformers.booking.booking_transformer import BookingTransformer
 from src.api.transformers.user import UserTransformer
 from src.database import models
-from src.database.models import Booking, AdFavourite, Advertisement
+from src.database.models import Booking, AdFavourite, Advertisement, File
 
 from src.database.session_manager import db_manager
 from src.repository.crud.base_crud_repository import SqlAlchemyRepository
 from src.utils.transformer import transform
+from src.utils.validator import Validator
 
 router = APIRouter(
     prefix="/users",
@@ -32,6 +33,39 @@ async def get_my(request: Request, auth: Auth = Depends()):
             UserTransformer().include(["ad_favourites", "advertisements"])
         )
     )
+
+
+@router.put('/me')
+async def update(request: Request, auth: Auth = Depends()):
+    await auth.check_access_token(request)
+
+    validator = Validator(await request.json(), {
+        "phone": ["required", "string", 'phone'],
+        "first_name": ["required", "string"],
+        "last_name": ["required", "string"],
+        "email": ["required", "string", 'email'],
+        'avatar': ['required'],
+    })
+
+    payload = validator.validated()
+
+    avatar_id = None
+    if payload['avatar'] is None:
+        await SqlAlchemyRepository(db_manager.get_session, File) \
+            .delete(id=request.state.user.avatar_id)
+    elif isinstance(payload['avatar'], int):
+        avatar_id = request.user.avatar_id
+    elif isinstance(payload['avatar'], str):
+        file = await File.save(payload['avatar'])
+        avatar_id = file.id
+
+    user = await SqlAlchemyRepository(db_manager.get_session, models.User)\
+        .update(validator.but(['avatar']) | {'avatar_id': avatar_id}, id=request.state.user.id)
+
+    return ApiResponse.payload(transform(
+        user,
+        UserTransformer()
+    ))
 
 
 @router.get('/me/account')

@@ -15,7 +15,8 @@ class UserTransformer(BaseTransformer):
     def transform(self, user):
         return {
             "id": user.id,
-            "avatar": "avatar",
+            "avatar_id": user.avatar.id if user.avatar else None,
+            "avatar": user.avatar.link if user.avatar else None,
             "first_name": user.first_name,
             "last_name": user.last_name,
             "email": user.email,

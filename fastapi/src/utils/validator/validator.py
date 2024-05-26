@@ -239,3 +239,12 @@ class Rules:
         ):
             return f"{title if title else key} field must a valid email."
         return None
+
+    @staticmethod
+    def phone(data: dict, key: str, title: str = None):
+        if key in data and not re.fullmatch(
+                re.compile(r'(\+\d{1,3})?\s?\(?\d{1,4}\)?[\s.-]?\d{3}[\s.-]?\d{4}'),
+                str(data[key])
+        ):
+            return f"{title if title else key} field must a valid phone."
+        return None

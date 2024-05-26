@@ -234,7 +234,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
         page = int(parsed_params['page']) if 'page' in parsed_params else 1
         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
-        search = parsed_params['category_id'] if 'category_id' in parsed_params else None
+        search = parsed_params['search'] if 'search' in parsed_params else None
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
         filters = parsed_params['filters'] if 'filters' in parsed_params else {}
 

@@ -40,7 +40,7 @@ async def update(request: Request, auth: Auth = Depends()):
     await auth.check_access_token(request)
 
     validator = Validator(await request.json(), {
-        "phone": ["required", "string", 'phone'],
+        "phone_number": ["required", "string", 'phone'],
         "first_name": ["required", "string"],
         "last_name": ["required", "string"],
         "email": ["required", "string", 'email'],

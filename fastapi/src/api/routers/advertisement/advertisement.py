@@ -29,7 +29,7 @@ from src.utils.query_params import get_params
 
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from sqlalchemy import desc, asc, func, delete
+from sqlalchemy import desc, asc, func, delete, or_
 
 import math
 
@@ -229,38 +229,60 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
 @router.get("")
 async def get_advertisements(request: Request, auth: Auth = Depends()):
     # await auth.check_access_token(request)
-    #  todo вынести всю логику с пагнацией для переиспользования
     try:
         parsed_params = get_params(request)
         page = int(parsed_params['page']) if 'page' in parsed_params else 1
         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
         category_id = int(parsed_params['category_id']) if 'category_id' in parsed_params else None
+        search = parsed_params['category_id'] if 'category_id' in parsed_params else None
         sort = parsed_params['sort'] if 'sort' in parsed_params else {}
         filters = parsed_params['filters'] if 'filters' in parsed_params else {}
 
         async with db_manager.get_session() as session:
-            q = select(Advertisement).options(joinedload(Advertisement.category))
-            # filtering
-            if category_id:  # todo child categories
-                q = q.where(Advertisement.category_id == category_id)
-            # sorting
-            for col_name in sort:
-                col = getattr(Advertisement, col_name)
-                q = q.order_by(asc(col) if sort[col_name] else desc(col))
-            # paginating
-            q = q.limit(per_page)
-            q = q.offset(per_page * (page - 1))
+            main_query = select(Advertisement)\
+                .options(joinedload(Advertisement.category))
+            count_query = select(func.count(Advertisement.id))
 
-            res = await session.execute(q)
+            queries = {'main': main_query, 'count': count_query}
+
+            for key in queries.keys():
+                # filtering
+                if category_id:  # todo child categories
+                    queries[key] = queries[key].where(Advertisement.category_id == category_id)
+                # search
+                if search:
+                    or_clauses = []
+                    for term in search.split(' '):
+                        or_clauses.append(Advertisement.title.like(f"%{term}%"))
+                        or_clauses.append(Advertisement.user_description.like(f"%{term}%"))
+                    queries[key] = queries[key].filter(or_(*or_clauses))
+                # sorting
+                for col_name in sort:
+                    col = getattr(Advertisement, col_name)
+                    queries[key] = queries[key].order_by(asc(col) if sort[col_name] else desc(col))
+                # paginating
+                queries[key] = queries[key].limit(per_page)
+                queries[key] = queries[key].offset(per_page * (page - 1))
+
+            main_query, count_query = queries['main'], queries['count']
+
+            res = await session.execute(main_query)
             advertisements = res.unique().scalars().all()
 
-            count_query = select(func.count(Advertisement.id))
-            if category_id:  # todo child categories
-                count_query = count_query.where(Advertisement.category_id == category_id)
-            res = await session.execute(
-                count_query
-            )
-            advertisements_count = res.scalar()
+            # count_query = select(func.count(Advertisement.id))
+            #
+            # if category_id:  # todo child categories
+            #     count_query = count_query.where(Advertisement.category_id == category_id)
+            #
+            # if search:
+            #     or_clauses = []
+            #     for term in search.split(' '):
+            #         or_clauses.append(Advertisement.title.like(f"%{term}%"))
+            #         or_clauses.append(Advertisement.user_description.like(f"%{term}%"))
+            #     count_query = count_query.filter(or_(*or_clauses))
+
+            count = await session.execute(count_query)
+            advertisements_count = count.scalar()
             pages_total = math.ceil(advertisements_count / per_page)
         return ApiResponse.paginated(transform(
             advertisements,

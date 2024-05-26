@@ -172,11 +172,6 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
                 'category_id': payload['category_id']
             },
             id=advertisement_id)
-        # advertisement.title = payload['title']
-        # advertisement.user_description = payload['user_description']
-        # advertisement.ad_type_id = payload['ad_type_id']
-        # advertisement.price = payload['price']
-        # advertisement.category_id = payload['category_id']
 
         async with db_manager.get_session() as session:
             await session.commit()
@@ -255,6 +250,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
 
             for key in queries.keys():
                 # filtering
+                queries[key] = queries[key].where(Advertisement.deleted_at is None)
                 if category_id:  # todo child categories
                     queries[key] = queries[key].where(Advertisement.category_id == category_id)
                 # search
@@ -319,35 +315,35 @@ async def get_ad_types(request: Request, auth: Auth = Depends()):
         return ApiResponse.error(str(e))
 
 
-@router.get("/search")
-async def search_advertisements(request: Request):
-    try:
-        parsed_params = get_params(request)
-        page = int(parsed_params['page']) if 'page' in parsed_params else 1
-        per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
-        query = parsed_params['query'] if 'query' in parsed_params else None
-
-        advertisement: List[Advertisement] = await AdvertisementRepository(db_manager.get_session,
-                                                                           Advertisement).search_multi(
-            query,
-            per_page, per_page * (page - 1)
-        )
-
-        if not advertisement:
-            raise Exception("There is no advertisement with this data.")
-
-        return ApiResponse.payload(
-            transform(
-                advertisement,
-                AdvertisementTransformer()
-                .include([
-                    'address', 'user', 'ad_tags',
-                    'ad_photos', 'category', 'reviews',
-                ])
-            )
-        )
-    except Exception as e:
-        return ApiResponse.error(str(e))
+# @router.get("/search")
+# async def search_advertisements(request: Request):
+#     try:
+#         parsed_params = get_params(request)
+#         page = int(parsed_params['page']) if 'page' in parsed_params else 1
+#         per_page = int(parsed_params['per_page']) if 'per_page' in parsed_params else 15
+#         query = parsed_params['query'] if 'query' in parsed_params else None
+#
+#         advertisement: List[Advertisement] = await AdvertisementRepository(db_manager.get_session,
+#                                                                            Advertisement).search_multi(
+#             query,
+#             per_page, per_page * (page - 1)
+#         )
+#
+#         if not advertisement:
+#             raise Exception("There is no advertisement with this data.")
+#
+#         return ApiResponse.payload(
+#             transform(
+#                 advertisement,
+#                 AdvertisementTransformer()
+#                 .include([
+#                     'address', 'user', 'ad_tags',
+#                     'ad_photos', 'category', 'reviews',
+#                 ])
+#             )
+#         )
+#     except Exception as e:
+#         return ApiResponse.error(str(e))
 
 
 @router.get("/{advertisement_id}")
@@ -360,8 +356,8 @@ async def get_advertisement(advertisement_id: int, request: Request, short: bool
         advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement).get_single(
             id=advertisement_id)
 
-        if not advertisement:
-            raise Exception("There is no advertisement with this data.")
+        if not advertisement or advertisement.deleted_at:
+            return ApiResponse.error('Not found', 404)
 
         return ApiResponse.payload(
             transform(

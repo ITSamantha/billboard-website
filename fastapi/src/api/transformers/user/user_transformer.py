@@ -36,7 +36,7 @@ class UserTransformer(BaseTransformer):
 
     def include_advertisements(self, user):
         from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer
-        return self.collection(user.advertisements, AdvertisementTransformer())
+        return self.collection(user.advertisements, AdvertisementTransformer().include(['ad_photos']))
 
     def include_ad_favourites(self, user):
         from src.api.transformers.advertisement.advertisement_transformer import AdvertisementTransformer

@@ -47,6 +47,7 @@ async def update(request: Request, auth: Auth = Depends()):
         'avatar': ['nullable'],
     })
 
+    validator.validate()
     payload = validator.validated()
 
     avatar_id = None

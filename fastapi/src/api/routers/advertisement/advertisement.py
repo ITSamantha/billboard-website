@@ -62,10 +62,11 @@ async def store(request: Request, auth: Auth = Depends()):
 
         # address info
         "address_id": ["nullable", "integer"],
-        "city_id": ["required_without:address_id", "integer"],
-        "country_id": ["required_without:address_id", "integer"],
-        "street": ["required_without:address_id", "string"],
-        "house": ["required_without:address_id", "string"],
+        "address": ["nullable", "string"],
+        "city_id": ["nullable", "integer"],
+        "country_id": ["nullable", "integer"],
+        "street": ["nullable", "string"],
+        "house": ["nullable", "string"],
         "flat": ["nullable", "string"],
         "longitude": ["nullable", "float"],
         "latitude": ["nullable", "float"]
@@ -77,7 +78,7 @@ async def store(request: Request, auth: Auth = Depends()):
         if not payload["address_id"]:
             address: Address = await AdvertisementRepository(db_manager.get_session, Address) \
                 .create(validator.only(
-                ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude"]))
+                ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude", 'address']))
             payload["address_id"] = address.id
 
         advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
@@ -143,14 +144,14 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
         "ad_photos": ["required", "list"],
 
         # address info
-        # "address_id": ["nullable", "integer"],
+        "address": ["nullable", "string"],
         # "city_id": ["required_without:address_id", "integer"],
         # "country_id": ["required_without:address_id", "integer"],
         # "street": ["required_without:address_id", "string"],
         # "house": ["required_without:address_id", "string"],
         # "flat": ["nullable", "string"],
-        # "longitude": ["nullable", "float"],
-        # "latitude": ["nullable", "float"]
+        "longitude": ["nullable", "float"],
+        "latitude": ["nullable", "float"]
     })
 
     payload = validator.validated()
@@ -172,6 +173,15 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
                 'category_id': payload['category_id']
             },
             id=advertisement_id)
+
+        await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
+            .update(
+            {
+                'address': payload['address'],
+                'longitude': payload['longitude'],
+                'latitude': payload['latitude'],
+            },
+            id=advertisement.address_id)
 
         async with db_manager.get_session() as session:
             await session.commit()

@@ -55,7 +55,7 @@ async def update(request: Request, auth: Auth = Depends()):
         await SqlAlchemyRepository(db_manager.get_session, File) \
             .delete(id=request.state.user.avatar_id)
     elif isinstance(payload['avatar'], int):
-        avatar_id = request.user.avatar_id
+        avatar_id = request.state.user.avatar_id
     elif isinstance(payload['avatar'], str):
         file = await File.save(payload['avatar'])
         avatar_id = file.id

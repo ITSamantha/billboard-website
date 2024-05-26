@@ -145,11 +145,6 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
 
         # address info
         "address": ["nullable", "string"],
-        # "city_id": ["required_without:address_id", "integer"],
-        # "country_id": ["required_without:address_id", "integer"],
-        # "street": ["required_without:address_id", "string"],
-        # "house": ["required_without:address_id", "string"],
-        # "flat": ["nullable", "string"],
         "longitude": ["nullable", "float"],
         "latitude": ["nullable", "float"]
     })
@@ -157,11 +152,6 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
     payload = validator.validated()
 
     try:
-        # if not payload["address_id"]:
-        #     address: Address = await AdvertisementRepository(db_manager.get_session, Address) \
-        #         .create(validator.only(
-        #         ["city_id", "country_id", "street", "house", "flat", "longitude", "latitude"]))
-        #     payload["address_id"] = address.id
 
         advertisement: Advertisement = await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
             .update(
@@ -174,7 +164,7 @@ async def update(advertisement_id: int, request: Request, auth: Auth = Depends()
             },
             id=advertisement_id)
 
-        await SqlAlchemyRepository(db_manager.get_session, Advertisement) \
+        await SqlAlchemyRepository(db_manager.get_session, Address) \
             .update(
             {
                 'address': payload['address'],

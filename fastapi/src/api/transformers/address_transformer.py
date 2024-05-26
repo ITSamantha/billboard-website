@@ -15,6 +15,7 @@ class AddressTransformer(BaseTransformer):
     def transform(self, address):
         return {
             "id": address.id,
+            "address": address.address,
             "street": address.street,
             "house": address.house,
             "flat": address.flat,

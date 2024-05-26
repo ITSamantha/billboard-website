@@ -250,7 +250,7 @@ async def get_advertisements(request: Request, auth: Auth = Depends()):
 
             for key in queries.keys():
                 # filtering
-                queries[key] = queries[key].where(Advertisement.deleted_at is None)
+                queries[key] = queries[key].where(Advertisement.deleted_at == None)
                 if category_id:  # todo child categories
                     queries[key] = queries[key].where(Advertisement.category_id == category_id)
                 # search

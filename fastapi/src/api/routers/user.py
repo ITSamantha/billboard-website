@@ -44,7 +44,7 @@ async def update(request: Request, auth: Auth = Depends()):
         "first_name": ["required", "string"],
         "last_name": ["required", "string"],
         "email": ["required", "string", 'email'],
-        'avatar': ['required'],
+        'avatar': ['nullable'],
     })
 
     payload = validator.validated()

@@ -55,7 +55,11 @@ const GoogleLogin = () => {
     setProfile(null);
   };
 
-  return <button onClick={() => login()}><FaGoogle /> Continue with Google</button>;
+  return (
+    <button onClick={() => login()}>
+      <FaGoogle /> Continue with Google
+    </button>
+  );
 };
 
 export default GoogleLogin;

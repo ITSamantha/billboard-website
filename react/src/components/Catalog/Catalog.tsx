@@ -1,37 +1,87 @@
-import CatalogTree, { Category } from './CatalogTree';
-import '../../scss/catalog.scss';
+import CatalogTree from './CatalogTree';
 import FilterItems from './FilterItems';
-import { getAdvertisementsByPage, getCategoriesList } from '../../service/dataService';
+import { getAdvertisementsByPage, getCategoriesList, getCategory } from '../../service/dataService';
 import { useEffect, useState } from 'react';
 import { Pagination, Stack } from '@mui/material';
+import AdvertisementBlock from '../Advertisement/AdvertisementBlock';
+import CategoriesBlock from '../Category/CategoriesBlock';
 
 type CatalogProps = {
-  categoryId?: string;
+  categoryId?: number;
 };
 
 const Catalog = ({ categoryId }: CatalogProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(0);
+  const [adsPerPage, setAdsPerPage] = useState<number>(15);
+  const [advertisements, setAdvertisements] = useState<AdInfo[]>([]);
+  const [categoryChildren, setCategoryChildren] = useState<Category[]>([]);
+
   useEffect(() => {
     getCategoriesList().then((r) => setCategories(r));
   }, []);
 
+  useEffect(() => {
+    if (categoryId) {
+      getCategory(categoryId).then((category) => setCategoryChildren(category.children));
+    }
+  }, [categoryId]);
+
+  useEffect(() => {
+    async function fetchData() {
+      let ads = await getAdvertisementsByPage(page, adsPerPage, Number(categoryId));
+      setAdvertisements(ads.data);
+      setPagesCount(ads.pages_count);
+    }
+    fetchData();
+  }, [adsPerPage, categoryId, page]);
+
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-
-    // async function fetchData
-    // getAdvertisementsByPage(page, 20, Number(categoryId));
+    getAdvertisementsByPage(page, adsPerPage, Number(categoryId));
   };
 
   return (
-    <div className="catalog-container">
-      <div style={{ width: 300 }}>
-        <CatalogTree categories={categories} categoryId={categoryId} />
-        {categoryId && <FilterItems categoryId={categoryId} />}
+    <div className="Catalog">
+      {categoryId && (
+        <div>
+          <CatalogTree categories={categories} categoryId={categoryId} />
+          {/*{categoryId && <FilterItems categoryId={categoryId} />}*/}
+        </div>
+      )}
+      <div className={ categoryId ? '_active' : '' }>
+        {categoryId ? (
+          <CategoriesBlock categories={categoryChildren} />
+        ) : (
+          <CategoriesBlock categories={categories} />
+        )}
+        {categoryId && (
+          <div>
+            <h1 className="Advertisements__Title">
+              Advertisements in category{' '}
+              {advertisements.length ? advertisements[0].category?.title : ''}:
+            </h1>
+            <AdvertisementBlock
+              advertisements={advertisements}
+              advertisementsInRow={4}
+              maxAdvertisements={Infinity}
+            />
+            {pagesCount ? (
+              <Stack spacing={2}>
+                <Pagination
+                  count={pagesCount}
+                  shape="rounded"
+                  onChange={handlePageChange}
+                  page={page}
+                />
+              </Stack>
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
       </div>
-      <Stack spacing={2}>
-        <Pagination count={12} shape="rounded" onChange={handlePageChange} page={page} />
-      </Stack>
     </div>
   );
 };

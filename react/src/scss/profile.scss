@@ -18,8 +18,32 @@ $accent-color: #ea4335;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
+  &__Title__Personal {
+    font-weight: 600;
+    font-size: 32px;
+    margin-top: 70px;
+    color: #000;
+    margin-bottom: 15px;
+  }
+
+  &__Buttons {
+    margin-bottom: 50px;
+    display: flex;
+    a:first-child {
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+
+  &__Link {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
   &__Title {
-    color: $primary-color;
+    color: $main;
     font-size: 24px;
     margin-bottom: 20px;
   }
@@ -28,7 +52,7 @@ $accent-color: #ea4335;
     margin-bottom: 20px;
 
     &Title {
-      color: $primary-color;
+      color: $main;
       font-size: 20px;
       margin-bottom: 10px;
     }

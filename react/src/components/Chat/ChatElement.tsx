@@ -1,13 +1,18 @@
-import React from 'react'
+import React from 'react';
 import { Avatar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import {ChatType} from "../../pages/Chat";
 
 type ChatElementProps = {
-  chat: ChatType
-}
+  chat: ChatType;
+};
 
-const   ChatElement = ({ chat } : ChatElementProps) => {
+const ChatElement = ({ chat }: ChatElementProps) => {
+  if (!chat) {
+    return <></>;
+  }
+
+  const lastMessage = chat.messages[chat.messages.length - 1];
+
   return (
     <Link to={`/chat/${chat.id}`} key={chat.id} className="chat-link">
       <div className="chat-item">
@@ -17,18 +22,18 @@ const   ChatElement = ({ chat } : ChatElementProps) => {
             {chat.user.first_name} {chat.user.last_name} {chat.user.email}
           </Typography>
           <Typography variant="body2" className="last-message">
-            {chat.user.id === chat.messages[chat.messages.length - 1].chat_user.user_id
+            {lastMessage && lastMessage.chat_user && chat.user.id === lastMessage.chat_user.user_id
               ? ''
               : 'You: '}
-            {chat.messages[chat.messages.length - 1].text}
+            {lastMessage ? lastMessage.text : 'No messages'}
           </Typography>
           <Typography variant="caption" className="message-time">
-            {new Date(chat.messages[chat.messages.length - 1].created_at).toLocaleString()}
+            {lastMessage ? new Date(lastMessage.created_at).toLocaleString() : ''}
           </Typography>
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default ChatElement
+export default ChatElement;

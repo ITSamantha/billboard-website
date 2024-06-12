@@ -1,4 +1,20 @@
-.Search{
-    display: flex;
-    padding: 50px;
+.Search {
+  display: flex;
+
+  &__Button {
+    margin-left: 15px;
+
+    button {
+      height: 100%;
+      width: 56px;
+      border: none;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      cursor: pointer;
+      background: $main;
+    }
+  }
 }

@@ -1,26 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Container, List, ListItem, ListItemText, Collapse } from '@mui/material';
 import { RiArrowDropUpLine } from 'react-icons/ri';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import Loader from '../Loader';
 
-export type Category = {
-  id: string;
-  title: string;
-  url: string;
-  children?: Category[];
-};
+const CategoryTree: React.FC<{ categories: Category[]; categoryId?: number }> = ({
+                                                                                   categories,
+                                                                                   categoryId
+                                                                                 }) => {
+  const [openIds, setOpenIds] = React.useState<number[]>([]);
 
-const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = ({
-  categories,
-  categoryId
-}) => {
-  const [openIds, setOpenIds] = React.useState<string[]>([]);
+  const [openedDropdown, setOpenedDropdown] = useState<boolean>(false);
 
-  const propagateCategory = (targetId: string, category: Category, categoryIdStack: string[]) => {
-    if (category.id.toString() === targetId) {
-      setOpenIds(categoryIdStack);
+  const propagateCategory = (targetId: number, category: Category, categoryIdStack: number[]) => {
+    if (category.id === targetId) {
+      setOpenIds([...categoryIdStack, targetId]);
       return;
     }
     category.children?.forEach((child) => {
@@ -30,7 +25,7 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
     });
   };
 
-  const openIdsWithCategory = (categoryId: string) => {
+  const openIdsWithCategory = (categoryId: number) => {
     categories.forEach((x) => propagateCategory(categoryId, x, []));
   };
 
@@ -43,7 +38,7 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
     }
   }, [categoryId, categories]);
 
-  const handleClick = (id: string) => {
+  const handleClick = (id: number) => {
     setOpenIds((prevOpenIds) => {
       if (prevOpenIds.includes(id)) {
         return prevOpenIds.filter((openId) => openId !== id);
@@ -53,29 +48,32 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
     });
   };
 
-  const renderTree = (nodes: Category[], level: number, openIds: string[]) => (
+  useEffect(() => {
+    console.log('OpenIDS', openIds);
+  }, [openIds]);
+
+  const renderTree = (nodes: Category[], level: number, openIds: number[]) => (
     <List>
       {nodes.map((node, index) => (
         <React.Fragment key={index}>
-          <ListItem
-            style={{ padding: 0, marginLeft: 10 * level }}
-            onClick={() => handleClick(node.id)}
-          >
+          <ListItem style={{ padding: 0, marginLeft: 20 * level }}>
             {node.children && node.children.length ? (
-              <>
-                <ListItemText primary={node.title} />
-                {node.children &&
-                  (openIds.includes(node.id) ? <RiArrowDropUpLine /> : <RiArrowDropDownLine />)}
-              </>
-            ) : (
               <Link to={'/category/' + node.id}>
-                <ListItemText primary={node.title} />
+                <span className="CatalogTree__Title">{node.title} {node.children &&
+                  (openIds.includes(node.id) ? <RiArrowDropUpLine style={{ marginBottom: -3}}/> : <RiArrowDropDownLine style={{ marginBottom: -3}} />)}</span>
+
+              </Link>
+            ) : (
+              <Link to={'/category/' + node.id} onClick={() => setOpenedDropdown(false)}>
+                <span className="CatalogTree__Title">{node.title}</span>
               </Link>
             )}
           </ListItem>
           {node.children && node.children.length ? (
             <Collapse in={openIds.includes(node.id)} timeout="auto" unmountOnExit>
-              {renderTree(node.children, level + 1, openIds)}
+              <div className={'CatalogTree__Category'}>
+                {renderTree(node.children, level + 1, openIds)}
+              </div>
             </Collapse>
           ) : (
             ''
@@ -86,12 +84,12 @@ const CategoryTree: React.FC<{ categories: Category[]; categoryId?: string }> = 
   );
 
   return (
-    <Container maxWidth="md" style={{ marginBottom: 15 }}>
-      <Typography variant="h6" gutterBottom>
-        Choose category
-      </Typography>
-      {!categories.length ? <Loader /> : renderTree(categories, 0, openIds)}
-    </Container>
+    <div className="CatalogTree">
+      <h5 onClick={() => { setOpenedDropdown((prev) => !prev )}}>Filters <span className={openedDropdown ? '_rotated': ''}><RiArrowDropDownLine /></span></h5>
+      <div className={"CatalogTree__Items " + (openedDropdown ? '_active' : '')}>
+        {!categories.length ? <Loader /> : renderTree(categories, 0, openIds)}
+      </div>
+    </div>
   );
 };
 

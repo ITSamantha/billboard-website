@@ -1,7 +1,131 @@
-.catalog-container { 
+.Category {
+    margin-top: 50px;
+    padding-bottom: 50px;
+}
+
+.Catalog {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     margin: auto;
-    gap: 70px;
-}   
+    & > div:first-child {
+        width: 300px;
+    }
+    & > div:last-child {
+        width: calc(100% - 300px);
+    }
+}
+
+.CatalogTree {
+    padding-top: 30px;
+    h5 {
+        font-size: 24px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        span {
+            font-size: 38px;
+            margin-left: 10px;
+            display: none;
+            align-items: center;
+        }
+    }
+    &__Category {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    &__Title {
+        margin-top: 5px;
+        display: inline-block;
+    }
+}
+
+.Categories {
+    h1 {
+        margin-top: 30px;
+        font-size: 24px;
+        margin-bottom: 0;
+    }
+    &__Wrapper {
+        padding-top: 15px;
+        padding-bottom: 30px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+    &__Item {
+
+        &__Wrapper {
+            width: 33.3%;
+            flex: 0 0 33.3%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-bottom: 15px;
+        }
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        h3 {
+            color: #000;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 5px;
+        }
+    }
+}
+
+@media (max-width: 1230px) {
+
+    .Catalog {
+        position: relative;
+        & > div:first-child {
+            width: 100%;
+            position: absolute;
+            background: white;
+        }
+        & > div:last-child {
+            padding-top: 75px;
+            width: 100%;
+            h1 {
+                display: none;
+            }
+        }
+    }
+
+    .CatalogTree {
+        h5 {
+            cursor: pointer;
+            span {
+                display: flex;
+                transition: 0.3s;
+                &._rotated {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        &__Items {
+            padding-bottom: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.3s;
+            &._active {
+                max-height: 1000px;
+            }
+        }
+    }
+
+    .Categories {
+        &__Item {
+            &__Wrapper {
+                width: 100%;
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+        }
+    }
+}

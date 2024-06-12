@@ -1,0 +1,85 @@
+.Advertisements {
+  &__All {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  &__Wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  &__Title {
+    font-size: 24px;
+    margin-bottom: 0;
+    display: block;
+    margin-top: 0;
+  }
+}
+
+.Advertisement {
+  flex: 0 0 33.3%;
+  width: 33.3%;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+
+  h4, p, span {
+    color: #000;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    span {
+      flex: 0 0 120px;
+      font-size: 20px;
+      color: #000;
+      font-weight: 600;
+      text-align: right;
+    }
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 7px;
+  }
+  &__Content > span {
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: right;
+  }
+
+  &__Image {
+    img {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+    }
+  }
+}
+
+@media (max-width: 1230px) {
+  .Advertisements {
+    padding-left: 20px;
+    padding-right: 20px;
+
+  }
+  .Advertisement {
+    max-width: 100%;
+    width: 100%;
+    flex: 0 0 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

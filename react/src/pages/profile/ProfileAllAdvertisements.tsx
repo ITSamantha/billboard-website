@@ -24,12 +24,15 @@ const ProfileAllAdvertisements = () => {
     );
   }
   return (
-    <div>
-      <AdvertisementBlock
-        advertisements={user.advertisements}
-        advertisementsInRow={4}
-        maxAdvertisements={user.advertisements.length}
-      />
+    <div className="container">
+      <div className="Advertisements__All">
+        <h1 className="Advertisements__Title">Your advertisements</h1>
+        <AdvertisementBlock
+          advertisements={user.advertisements}
+          advertisementsInRow={4}
+          maxAdvertisements={user.advertisements.length}
+        />
+      </div>
     </div>
   );
 };

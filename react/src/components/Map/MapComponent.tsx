@@ -31,7 +31,7 @@ function MapComponent({ center, zoom, children, onClick, onIdle, map, setMap }: 
         new window.google.maps.Map(ref.current, {
           center,
           zoom,
-          mapId: 'DEMO_MAP_ID' // d5f70aa737c73675
+          mapId: 'd5f70aa737c73675' // 
         })
       );
     }

@@ -1,8 +1,81 @@
-.upload-form{
-    display: grid;
-    place-items: center;
-    width: 400px;
-    margin: auto;
-    padding: 20px;
-    gap:5px;
+#photos {
+    display: none;
+}
+
+.Upload {
+    input {
+        width: 100%;
+    }
+    &__Container {
+        max-width: 1000px;
+        margin: auto;
+    }
+    &__Wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__Inputs {
+        padding-left: 15px;
+        width: 600px;
+        padding-bottom: 50px;
+    }
+
+    &__Button {
+        background: none;
+        padding: 12px 48px;
+        color: #8002ff;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: 0.3s;
+        display: inline-block;
+        border: 2px solid #8002ff;
+        font-size: 18px;
+        &--Files {
+            padding: 50px 15px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            border: 2px dashed #8002ff;
+
+            div:first-child {
+                font-size: 42px;
+            }
+        }
+    }
+    &__Photos {
+        width: 400px;
+        padding-right: 15px;
+
+        &__Selected {
+            margin-top: 15px;
+            &__Item {
+                max-width: 162px;
+                margin-right: 15px;
+                margin-left: 15px;
+                cursor: pointer;
+                display: inline-block;
+                margin-top: 10px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 15px;
+                border: 3px dashed transparent;
+                padding: 15px;
+                &._active {
+                    border-color: #8002ff;
+                }
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+    &__Item {
+        margin-bottom: 30px;
+
+    }
+    .MuiTextField-root {
+        width: 100%;
+    }
 }

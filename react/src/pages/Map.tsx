@@ -8,20 +8,26 @@ type DisplayedPoint = {
   count?: number;
 };
 
-const Map = () => {
+const Map = ({
+  points,
+  center
+}: {
+  points: google.maps.LatLngLiteral[];
+  center: google.maps.LatLngLiteral;
+}) => {
   const [currentZoom, setCurrentZoom] = useState<number | undefined>(13);
   const [currentCenter, setCurrentCenter] = useState<google.maps.LatLng>();
-  const [points, setPoints] = useState<google.maps.LatLngLiteral[]>([]);
+  // const [points, setPoints] = useState<google.maps.LatLngLiteral[]>([]);
 
   const displayedPoints = useRef<DisplayedPoint[]>([]);
 
-  useEffect(() => {
-    setPoints(
-      [...new Array(10000)].map(() => {
-        return { lng: Math.random() * 360 - 180, lat: Math.random() * 180 - 90 };
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   setPoints(
+  //     [...new Array(10000)].map(() => {
+  //       return { lng: Math.random() * 360 - 180, lat: Math.random() * 180 - 90 };
+  //     })
+  //   );
+  // }, []);
 
   const handleIdle = (map: google.maps.Map) => {
     setCurrentZoom(map.getZoom());
@@ -150,16 +156,9 @@ const Map = () => {
           libraries={['marker', 'maps', 'geocoding']}
           version="beta"
         >
-          <MapComponent
-            map={map}
-            setMap={setMap}
-            center={{ lat: 46, lng: 43 }}
-            zoom={13}
-            onIdle={handleIdle}
-          ></MapComponent>
+          <MapComponent map={map} setMap={setMap} center={center} zoom={13} onIdle={handleIdle} />
         </Wrapper>
       </div>
-      <div className="Map__Item"></div>
     </div>
   );
 };

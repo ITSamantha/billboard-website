@@ -8,9 +8,11 @@ const data = [
 
 const Home = () => {
   return (
-    <div>
-      <Search />
-      <Catalog />
+    <div className="Home">
+      <div className="container">
+        <Search />
+        <Catalog />
+      </div>
     </div>
   );
 };

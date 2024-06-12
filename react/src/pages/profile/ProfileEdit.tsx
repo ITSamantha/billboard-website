@@ -10,20 +10,11 @@ import {
   Typography
 } from '@mui/material';
 import { THEME } from './Profile';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectMyUser } from '../../redux/slices/MyUserSlice';
-import { getCities } from '../../service/dataService';
+import { getCities, sendCode } from '../../service/dataService';
 import Loader from '../../components/Loader';
-
-const cities = [
-  { id: 1, label: 'New York' },
-  { id: 2, label: 'Los Angeles' },
-  { id: 3, label: 'Chicago' },
-  { id: 4, label: 'Houston' },
-  { id: 5, label: 'Phoenix' }
-  // Add more cities as needed
-];
 
 const useStyles = makeStyles({
   root: {
@@ -59,7 +50,10 @@ const EditProfile = () => {
   const classes = useStyles();
   const user = useSelector(selectMyUser);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    console.log(user);
     async function fetchData() {
       let cities = await getCities();
       setCities(cities);
@@ -141,11 +135,26 @@ const EditProfile = () => {
                 onChange={(event) => setPhone(event.target.value)}
                 autoComplete="tel"
               />
-              <Link to="/profile/phone">
+              {user.phone_vertified_at ? (
                 <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>
-                  Confirm Phone
+                  Your phone was already verified
                 </Typography>
-              </Link>
+              ) : (
+                <Link
+                  to="/profile/phone"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    sendCode().then((response) => {
+                      console.log('code sent', response);
+                    });
+                    navigate('/profile/phone');
+                  }}
+                >
+                  <Typography variant="body2" align="right" style={{ marginTop: '8px' }}>
+                    Confirm Phone
+                  </Typography>
+                </Link>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Autocomplete

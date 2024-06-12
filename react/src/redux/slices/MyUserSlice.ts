@@ -1,6 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createApi, getMyUser, login as enter, register} from '../../service/dataService';
-import axios from 'axios';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createApi, getMyUser, login as enter, register } from '../../service/dataService';
 
 interface MyUserState {
   user: any;
@@ -14,7 +13,7 @@ export const fetchLogin = createAsyncThunk('myUser/fetchLogin', async (data: any
 });
 
 export const fetchRegister = createAsyncThunk('myUser/fetchRegister', async (data: any) => {
-  return await register(data.email, data.password, data.phone, data.lastName, data.firstName);
+  return register(data.email, data.password, data.phone, data.lastName, data.firstName);
 });
 
 export const fetchMyUser = createAsyncThunk('myUser/fetchMyUser', async () => {
@@ -33,15 +32,26 @@ const MyUserSlice = createSlice({
   name: 'myUser',
   initialState,
   reducers: {
-    logout: (state) => {
+    initialUpdate: (state) => {
+      let userJson = localStorage.getItem('user');
+      if (userJson) {
+        state.user = JSON.parse(userJson);
+        state.token = localStorage.getItem('access_token');
+        state.isLoading = false;
+        state.hasError = false;
+      }
+    },
+    logoutUser: (state) => {
       state.user = null;
       state.token = null;
       state.isLoading = false;
       state.hasError = false;
-      createApi().post('auth/logout').then(() => {
-        localStorage.removeItem("user")
-        window.location.reload()
-      })
+      localStorage.clear();
+      createApi()
+        .post('auth/logout')
+        .then(() => {
+          localStorage.clear();
+        });
     }
   },
   extraReducers: (builder) => {
@@ -51,7 +61,8 @@ const MyUserSlice = createSlice({
         state.hasError = false;
       })
       .addCase(fetchLogin.fulfilled, (state, action: PayloadAction<any>) => {
-        state.token = action.payload;
+        state.token = action.payload.access_token;
+        localStorage.setItem('user', JSON.stringify(action.payload));
         state.isLoading = false;
         state.hasError = false;
       })
@@ -64,7 +75,7 @@ const MyUserSlice = createSlice({
         state.hasError = false;
       })
       .addCase(fetchRegister.fulfilled, (state, action: PayloadAction<any>) => {
-        state.token = action.payload;
+        state.token = action.payload.access_token;
         state.isLoading = false;
         state.hasError = false;
       })
@@ -89,21 +100,13 @@ const MyUserSlice = createSlice({
 });
 
 export const selectMyUser = (state: any) => {
-  if (state.myUser.user) return state.myUser.user
-  let userJson = localStorage.getItem('user')
-  if (userJson) {
-    return JSON.parse(userJson)
-  // } else {
-  //   createApi().get('users/me').then(response => {
-  //     localStorage.setItem("user", JSON.stringify(response.data))
-  //
-  //   })
-  }
+  return state.myUser.user;
 };
 
 export const selectLoading = (state: any) => state.myUser.isLoading;
 export const selectError = (state: any) => state.myUser.hasError;
 export const selectToken = (state: any) => state.myUser.token;
-export const { logout } = MyUserSlice.actions;
+export const { logoutUser } = MyUserSlice.actions;
+export const { initialUpdate } = MyUserSlice.actions;
 
 export default MyUserSlice.reducer;

@@ -35,7 +35,7 @@ type Filter = {
 };
 
 type FilterProps = {
-  categoryId: string;
+  categoryId: number;
 };
 
 const FilterItems = ({ categoryId }: FilterProps) => {
@@ -74,9 +74,13 @@ const FilterItems = ({ categoryId }: FilterProps) => {
             ))}
           </Box>
         ))}
-        <Button variant="contained" color="primary" onClick={handleFiltersSet}>
-          Apply
-        </Button>
+        {filters.length ? (
+          <Button variant="contained" color="primary" onClick={handleFiltersSet}>
+            Apply
+          </Button>
+        ) : (
+          <></>
+        )}
       </Container>
     </ThemeProvider>
   );

@@ -24,7 +24,7 @@ const Favorites = () => {
         <AdvertisementBlock
           advertisements={user.ad_favourites}
           advertisementsInRow={4}
-          maxAdvertisements={user.ad_favourites.length}
+          maxAdvertisements={user?.ad_favourites?.length}
         />
       </div>
     </div>

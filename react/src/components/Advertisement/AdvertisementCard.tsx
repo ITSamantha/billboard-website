@@ -31,7 +31,7 @@ const AdvertisementCard = () => {
       await dispatch(fetchMyUser() as any);
       setAd(data);
       if (user) {
-        const isFav = user.ad_favourites.some((ad: AdInfo) => ad.id === Number(id));
+        const isFav = user?.ad_favourites?.some((ad: AdInfo) => ad.id === Number(id));
         setIsFavourite(isFav);
       }
     }
